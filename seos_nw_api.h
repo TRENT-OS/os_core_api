@@ -32,6 +32,28 @@ typedef struct _Seos_NW_Client_t
 } seos_nw_client_struct;
 
 
+#if !defined(CUSTOM_SEOS_NETWORK_STACK_API_TYPES)
+
+    // Protocol families.
+    #define PF_INET     2   // IP protocol family.
+    #define PF_INET6    10  // IP version 6.
+
+
+    #define AF_INET     PF_INET
+    #define AF_INET6    PF_INET6
+
+    // Socket definition
+    #define SOCK_STREAM    2
+    #define SOCK_DGRAM     1
+
+
+    typedef void*  Seos_nw_context;
+    typedef int    seos_socket_handle_t;
+    typedef int    seos_nw_server_handle_t;
+
+#endif
+
+
 
 /**
  * @brief Create a socket and connect to it
