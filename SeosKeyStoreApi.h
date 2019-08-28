@@ -58,15 +58,13 @@ SeosKeyStoreApi_getKey(SeosKeyStoreCtx*         keyStoreCtx,
  *
  * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
- * @param name          name of the keyHandle we want to delete
  *
  * @return SEOS_ERROR_NOT_FOUND
  *
  */
 seos_err_t
 SeosKeyStoreApi_deleteKey(SeosKeyStoreCtx*          keyStoreCtx,
-                          SeosCrypto_KeyHandle      keyHandle,
-                          const char*               name);
+                          SeosCrypto_KeyHandle      keyHandle);
 
 /**
  * @brief Closes a key with a given handle
@@ -85,7 +83,6 @@ SeosKeyStoreApi_closeKey(SeosKeyStoreCtx*          keyStoreCtx,
  *
  * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
- * @param name          name of the key to be copied
  * @param destKeyStore  pointer to the destination key store
  *
  * @return SEOS_ERROR_GENERIC
@@ -97,7 +94,6 @@ SeosKeyStoreApi_closeKey(SeosKeyStoreCtx*          keyStoreCtx,
 seos_err_t
 SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*        keyStoreCtx,
                         SeosCrypto_KeyHandle    keyHandle,
-                        const char*             name,
                         SeosKeyStoreCtx*        destKeyStore);
 /**
  * @brief Moves the key from the current key store to
@@ -106,7 +102,6 @@ SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*        keyStoreCtx,
  *
  * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
- * @param name          name of the key to be moved
  * @param destKeyStore  pointer to the destination key store
  *
  * @return SEOS_ERROR_GENERIC
@@ -118,7 +113,6 @@ SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*        keyStoreCtx,
 seos_err_t
 SeosKeyStoreApi_moveKey(SeosKeyStoreCtx*        keyStoreCtx,
                         SeosCrypto_KeyHandle    keyHandle,
-                        const char*             name,
                         SeosKeyStoreCtx*        destKeyStore);
 /**
  * @brief Generates a key with a given name using an RNG, stores the key into the key store
