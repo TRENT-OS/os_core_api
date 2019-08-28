@@ -56,32 +56,27 @@ SeosKeyStoreApi_getKey(SeosKeyStoreCtx*         keyStoreCtx,
 /**
  * @brief Deletes a key with a given name from the keystore
  *
- * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
  *
  * @return SEOS_ERROR_NOT_FOUND
  *
  */
 seos_err_t
-SeosKeyStoreApi_deleteKey(SeosKeyStoreCtx*          keyStoreCtx,
-                          SeosCrypto_KeyHandle      keyHandle);
+SeosKeyStoreApi_deleteKey(SeosCrypto_KeyHandle keyHandle);
 
 /**
  * @brief Closes a key with a given handle
  *
- * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
  *
  * @return SEOS_ERROR_INVALID_HANDLE
  *
  */
 seos_err_t
-SeosKeyStoreApi_closeKey(SeosKeyStoreCtx*          keyStoreCtx,
-                         SeosCrypto_KeyHandle      keyHandle);
+SeosKeyStoreApi_closeKey(SeosCrypto_KeyHandle keyHandle);
 /**
  * @brief Copies the key from the current key store to the destination key store
  *
- * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
  * @param destKeyStore  pointer to the destination key store
  *
@@ -92,15 +87,13 @@ SeosKeyStoreApi_closeKey(SeosKeyStoreCtx*          keyStoreCtx,
  *
  */
 seos_err_t
-SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*        keyStoreCtx,
-                        SeosCrypto_KeyHandle    keyHandle,
+SeosKeyStoreApi_copyKey(SeosCrypto_KeyHandle    keyHandle,
                         SeosKeyStoreCtx*        destKeyStore);
 /**
  * @brief Moves the key from the current key store to
  * the destination key store (after the operation the key is no longer in the
  * current key store)
  *
- * @param keyStoreCtx   pointer to keyStoreCtx
  * @param keyHandle     receives the key handle
  * @param destKeyStore  pointer to the destination key store
  *
@@ -111,8 +104,7 @@ SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*        keyStoreCtx,
  *
  */
 seos_err_t
-SeosKeyStoreApi_moveKey(SeosKeyStoreCtx*        keyStoreCtx,
-                        SeosCrypto_KeyHandle    keyHandle,
+SeosKeyStoreApi_moveKey(SeosCrypto_KeyHandle    keyHandle,
                         SeosKeyStoreCtx*        destKeyStore);
 /**
  * @brief Generates a key with a given name using an RNG, stores the key into the key store
