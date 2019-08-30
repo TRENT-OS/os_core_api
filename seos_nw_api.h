@@ -54,12 +54,9 @@ typedef struct
 #if !defined(CUSTOM_SEOS_NETWORK_STACK_API_TYPES)
 
     // Protocol families.
-    #define SEOS_PF_INET     2   // IP protocol family.
-    #define SEOS_PF_INET6    10  // IP version 6.
 
-
-    #define SEOS_AF_INET     SEOS_PF_INET
-    #define SEOS_AF_INET6    SEOS_PF_INET6
+    #define SEOS_AF_INET     2   // IP protocol family.
+    #define SEOS_AF_INET6    10  // IP version 6.
 
     // Socket definition
     #define SEOS_SOCK_STREAM    2
