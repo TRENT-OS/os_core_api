@@ -129,5 +129,15 @@ SeosKeyStoreApi_generateKey(SeosKeyStoreCtx*            keyStoreCtx,
                             unsigned int                algorithm,
                             unsigned int                flags,
                             size_t                      lenBits);
+/**
+ * @brief Deletes all the keys from the keystore
+ *
+ * @param keyStoreCtx   pointer to keyStoreCtx
+ *
+ * @retval SEOS_ERROR_NOT_FOUND
+ *
+ */
+seos_err_t
+SeosKeyStoreApi_wipeKeyStore(SeosKeyStoreCtx* keyStoreCtx);
 
 /** @} */
