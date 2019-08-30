@@ -24,7 +24,7 @@
  * @ingroup seos_nw_api
 
 */
-typedef struct _Seos_NW_Server_t
+typedef struct
 {
     int domain;                /**< domain is as of now AF_INET */
     int type;                  /**< type is as of now SOCK_STREAM */
@@ -42,7 +42,7 @@ typedef struct _Seos_NW_Server_t
 */
 
 
-typedef struct _Seos_NW_Client_t
+typedef struct
 {
     int domain;                     /**< domain is as of now AF_INET */
     int type;                       /**< type is as of now SOCK_STREAM */
