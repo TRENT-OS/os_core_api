@@ -16,13 +16,6 @@
  * @brief generate random number
  *
  * @param cryptoCtx (required) pointer to the seos_crypto context
- * @param flags allows selecting a fast random source for bulk data or more
- *  secure source for cryptographically secure random data. Fast random data
- *  generation is usually implemented uses a PRNG seeded by a nonce obtained
- *  from a slow true RNG
- * @param saltBuffer (optional) is used with PRNGs only, it may be ignore if
- *  random data is obtained from a HW source
- * @param saltLen capacity of saltBuffer
  * @param buffer random data buffer container
  * @param len capacity of buffer
  *
@@ -38,12 +31,15 @@
  *
  */
 seos_err_t
-SeosCryptoApi_getRandomData(SeosCryptoCtx*  cryptoCtx,
-                            unsigned int    flags,
-                            void const*     saltBuffer,
-                            size_t          saltLen,
-                            void*           buffer,
-                            size_t          dataLen);
+SeosCryptoApi_rngGetBytes(SeosCryptoCtx*    cryptoCtx,
+                          void**            buffer,
+                          size_t            dataLen);
+
+seos_err_t
+SeosCryptoApi_rngReSeed(SeosCryptoCtx*      cryptoCtx,
+                        const void*         seed,
+                        size_t              seedLen);
+
 /**
  * @brief initializes a digest context (local or remote) with the semantic of
  * SeosCryptoDigest_init() and gives back an handle to it
