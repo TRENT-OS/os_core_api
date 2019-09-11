@@ -138,48 +138,45 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*             cryptoCtx,
                              size_t                     dataLen,
                              void**                     digest,
                              size_t*                    digestSize);
+
 /**
- * @brief creates a random key and gives back an handle
- *
- * @param cryptoCtx (required) pointer to the seos crypto rpc object to be used
- * @param pKeyHandle (required) pointer to the key handle.
- *  This is an <b>output</b> parameter
- * @param algorithm cipher algorithm for which the key is created
- * @param flags \see SeosCryptoKey_Flags
- * @param lenBits lenth of the key in bits
- *
- * @return an error code
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
+ * @brief Key API
  *
  */
 seos_err_t
-SeosCryptoApi_keyGenerate(SeosCryptoCtx*            cryptoCtx,
-                          SeosCrypto_KeyHandle*     pKeyHandle,
-                          unsigned int              algorithm,
-                          unsigned int              flags,
-                          size_t                    lenBits);
-/**
- * @brief imports a raw key via \p keyImportBuffer and gives back an handle.
- * Remaining parameters are like for SeosCryptoApi_keyGenerate()
- *
- */
+SeosCryptoApi_keyInit(SeosCryptoCtx*                   ctx,
+                      SeosCrypto_KeyHandle*            keyHandle,
+                      unsigned int                     type,
+                      unsigned int                     flags,
+                      size_t                           bits);
+
 seos_err_t
-SeosCryptoApi_keyImport(SeosCryptoCtx*              cryptoCtx,
-                        SeosCrypto_KeyHandle*       pKeyHandle,
-                        unsigned int                algorithm,
-                        unsigned int                flags,
-                        const void*                 keyImportBuffer,
-                        size_t                      keyImportLenBits);
-/**
- * @brief closes the key context referred by \p keyHandle
- *
- * @retval SEOS_ERROR_INVALID_HANDLE
- *
- */
+SeosCryptoApi_keyGenerate(SeosCryptoCtx*               ctx,
+                          SeosCrypto_KeyHandle         keyHandle);
+
 seos_err_t
-SeosCryptoApi_keyClose(SeosCryptoCtx*           cryptoCtx,
-                       SeosCrypto_KeyHandle     keyHandle);
+SeosCryptoApi_keyGeneratePair(SeosCryptoCtx*           ctx,
+                              SeosCrypto_KeyHandle     prvKeyHandle,
+                              SeosCrypto_KeyHandle     pubKeyHandle);
+
+seos_err_t
+SeosCryptoApi_keyImport(SeosCryptoCtx*                 ctx,
+                        SeosCrypto_KeyHandle           keyHandle,
+                        SeosCrypto_KeyHandle           wrapKeyHandle,
+                        const void*                    keyBytes,
+                        size_t                         keySize);
+
+seos_err_t
+SeosCryptoApi_keyExport(SeosCryptoCtx*                 ctx,
+                        SeosCrypto_KeyHandle           keyHandle,
+                        SeosCrypto_KeyHandle           wrapKeyHandle,
+                        void**                         buf,
+                        size_t*                        bufSize);
+
+seos_err_t
+SeosCryptoApi_keyDeInit(SeosCryptoCtx*                 ctx,
+                        SeosCrypto_KeyHandle           keyHandle);
+
 /**
  * @brief initializes a cipher context
  *
