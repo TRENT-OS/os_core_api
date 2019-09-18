@@ -209,6 +209,27 @@ SeosCryptoApi_signatureVerify(SeosCryptoCtx*                 ctx,
                               size_t                         signatureSize);
 
 /**
+ * @brief Agreement API
+ *
+ */
+seos_err_t
+SeosCryptoApi_agreementInit(SeosCryptoCtx*                cryptoCtx,
+                            SeosCrypto_AgreementHandle*   pAgrHandle,
+                            unsigned int                  algorithm,
+                            SeosCrypto_KeyHandle          prvHandle);
+
+seos_err_t
+SeosCryptoApi_agreementDeInit(SeosCryptoCtx*               cryptoCtx,
+                              SeosCrypto_AgreementHandle   agrHandle);
+
+seos_err_t
+SeosCryptoApi_agreementComputeShared(SeosCryptoCtx*                 cryptoCtx,
+                                     SeosCrypto_AgreementHandle     agrHandle,
+                                     SeosCrypto_KeyHandle           pubHandle,
+                                     void*                          shared,
+                                     size_t*                        sharedSize);
+
+/**
  * @brief initializes a cipher context (local or remote) with the semantic of
  * SeosCryptoCipher_init() and gives back an handle to it
  *
