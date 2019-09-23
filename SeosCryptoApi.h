@@ -61,9 +61,7 @@ SeosCryptoApi_rngReSeed(SeosCryptoCtx*      cryptoCtx,
 seos_err_t
 SeosCryptoApi_digestInit(SeosCryptoCtx*                 cryptoCtx,
                          SeosCrypto_DigestHandle*       pDigestHandle,
-                         unsigned int                   algorithm,
-                         void*                          iv,
-                         size_t                         ivLen);
+                         unsigned int                   algorithm);
 /**
  * @brief closes the digest context referred by \p digestHandle
  *
@@ -134,9 +132,7 @@ SeosCryptoApi_digestUpdate(SeosCryptoCtx*               cryptoCtx,
 seos_err_t
 SeosCryptoApi_digestFinalize(SeosCryptoCtx*             cryptoCtx,
                              SeosCrypto_DigestHandle    digestHandle,
-                             const void*                data,
-                             size_t                     dataLen,
-                             void**                     digest,
+                             void*                      digest,
                              size_t*                    digestSize);
 
 /**
