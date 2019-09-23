@@ -301,20 +301,20 @@ SeosCryptoApi_cipherUpdate(SeosCryptoCtx*               cryptoCtx,
                            SeosCrypto_CipherHandle      cipherHandle,
                            const void*                  data,
                            size_t                       dataLen,
-                           void**                       output,
+                           void*                        output,
                            size_t*                      outputSize);
 /**
  * @brief given the reference to the cipher context \p cipherHandle, it performs
- * the semantic of SeosCryptoCipher_updateAd()
+ * the semantic of SeosCryptoCipher_start()
  *
  * @retval SEOS_ERROR_INVALID_HANDLE
  *
  */
 seos_err_t
-SeosCryptoApi_cipherUpdateAd(SeosCryptoCtx*               cryptoCtx,
-                             SeosCrypto_CipherHandle      cipherHandle,
-                             const void*                  data,
-                             size_t                       dataLen);
+SeosCryptoApi_cipherStart(SeosCryptoCtx*               cryptoCtx,
+                          SeosCrypto_CipherHandle      cipherHandle,
+                          const void*                  data,
+                          size_t                       dataLen);
 
 /**
  * @brief given the reference to the cipher context \p cipherHandle, it performs
@@ -326,20 +326,7 @@ SeosCryptoApi_cipherUpdateAd(SeosCryptoCtx*               cryptoCtx,
 seos_err_t
 SeosCryptoApi_cipherFinalize(SeosCryptoCtx*               cryptoCtx,
                              SeosCrypto_CipherHandle      cipherHandle,
-                             void**                       output,
+                             void*                        output,
                              size_t*                      outputSize);
-
-/**
- * @brief given the reference to the cipher context \p cipherHandle, it performs
- * the semantic of SeosCryptoCipher_verifyTag()
- *
- * @retval SEOS_ERROR_INVALID_HANDLE
- *
- */
-seos_err_t
-SeosCryptoApi_cipherVerifyTag(SeosCryptoCtx*               cryptoCtx,
-                              SeosCrypto_CipherHandle      cipherHandle,
-                              const void*                  tag,
-                              size_t                       tagSize);
 
 /** @} */
