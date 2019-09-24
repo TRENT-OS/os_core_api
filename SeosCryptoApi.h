@@ -18,9 +18,10 @@
  *
  */
 seos_err_t
-SeosCryptoApi_rngGetBytes(SeosCryptoCtx*    cryptoCtx,
-                          void*             buf,
-                          size_t            bufSize);
+SeosCryptoApi_rngGetBytes(SeosCryptoCtx*        cryptoCtx,
+                          unsigned int          flags,
+                          void*                 buf,
+                          size_t                bufSize);
 
 /**
  * @brief Reseed the internal RNG
