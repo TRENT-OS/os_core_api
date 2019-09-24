@@ -32,8 +32,8 @@
  */
 seos_err_t
 SeosCryptoApi_rngGetBytes(SeosCryptoCtx*    cryptoCtx,
-                          void**            buffer,
-                          size_t            dataLen);
+                          void*             buf,
+                          size_t            bufSize);
 
 seos_err_t
 SeosCryptoApi_rngReSeed(SeosCryptoCtx*      cryptoCtx,
@@ -166,7 +166,7 @@ seos_err_t
 SeosCryptoApi_keyExport(SeosCryptoCtx*                 ctx,
                         SeosCrypto_KeyHandle           keyHandle,
                         SeosCrypto_KeyHandle           wrapKeyHandle,
-                        void**                         buf,
+                        void*                          buf,
                         size_t*                        bufSize);
 
 seos_err_t
