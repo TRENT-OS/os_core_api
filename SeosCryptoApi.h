@@ -11,6 +11,8 @@
  */
 #pragma once
 
+// -------------------------------- RNG API ------------------------------------
+
 /**
  * @brief Generate random numbers
  *
@@ -29,6 +31,8 @@ SeosCryptoApi_rngReSeed(SeosCryptoCtx*      cryptoCtx,
                         const void*         seed,
                         size_t              seedLen);
 
+// ------------------------------ Digest API -----------------------------------
+
 /**
  * @brief Initialize a digest object
  *
@@ -43,8 +47,8 @@ SeosCryptoApi_digestInit(SeosCryptoCtx*                 cryptoCtx,
  *
  */
 seos_err_t
-SeosCryptoApi_digestClose(SeosCryptoCtx*                cryptoCtx,
-                          SeosCrypto_DigestHandle       digestHandle);
+SeosCryptoApi_digestFree(SeosCryptoCtx*                cryptoCtx,
+                         SeosCrypto_DigestHandle       digestHandle);
 
 /**
  * @brief Add data to a digest
@@ -65,6 +69,8 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*             cryptoCtx,
                              SeosCrypto_DigestHandle    digestHandle,
                              void*                      digest,
                              size_t*                    digestSize);
+
+// -------------------------------- Key API ------------------------------------
 
 /**
  * @brief Initialize key object
@@ -121,8 +127,10 @@ SeosCryptoApi_keyExport(SeosCryptoCtx*                 ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_keyDeInit(SeosCryptoCtx*                 ctx,
-                        SeosCrypto_KeyHandle           keyHandle);
+SeosCryptoApi_keyFree(SeosCryptoCtx*                 ctx,
+                      SeosCrypto_KeyHandle           keyHandle);
+
+// ----------------------------- Signature API ---------------------------------
 
 /**
  * @brief Initialize a signature object
@@ -140,8 +148,8 @@ SeosCryptoApi_signatureInit(SeosCryptoCtx*                ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_signatureDeInit(SeosCryptoCtx*               ctx,
-                              SeosCrypto_SignatureHandle   sigHandle);
+SeosCryptoApi_signatureFree(SeosCryptoCtx*               ctx,
+                            SeosCrypto_SignatureHandle   sigHandle);
 
 /**
  * @brief Sign a hash value
@@ -167,6 +175,8 @@ SeosCryptoApi_signatureVerify(SeosCryptoCtx*                 ctx,
                               const void*                    signature,
                               size_t                         signatureSize);
 
+// ----------------------------- Agreement API ---------------------------------
+
 /**
  * @brief Initialize an (key) agreement object
  *
@@ -182,8 +192,8 @@ SeosCryptoApi_agreementInit(SeosCryptoCtx*                cryptoCtx,
  *
  */
 seos_err_t
-SeosCryptoApi_agreementDeInit(SeosCryptoCtx*               cryptoCtx,
-                              SeosCrypto_AgreementHandle   agrHandle);
+SeosCryptoApi_agreementFree(SeosCryptoCtx*               cryptoCtx,
+                            SeosCrypto_AgreementHandle   agrHandle);
 
 /**
  * @brief Agree on a shared key
@@ -195,6 +205,8 @@ SeosCryptoApi_agreementAgree(SeosCryptoCtx*                 cryptoCtx,
                              SeosCrypto_KeyHandle           pubHandle,
                              void*                          shared,
                              size_t*                        sharedSize);
+
+// ------------------------------- Cipher API ----------------------------------
 
 /**
  * @brief Initialize a cipher object
@@ -212,8 +224,8 @@ SeosCryptoApi_cipherInit(SeosCryptoCtx*                 cryptoCtx,
  *
  */
 seos_err_t
-SeosCryptoApi_cipherClose(SeosCryptoCtx*                cryptoCtx,
-                          SeosCrypto_CipherHandle       cipherHandle);
+SeosCryptoApi_cipherFree(SeosCryptoCtx*                cryptoCtx,
+                         SeosCrypto_CipherHandle       cipherHandle);
 
 /**
  * @brief Encrypt data in chunks
