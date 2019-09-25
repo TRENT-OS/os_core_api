@@ -11,6 +11,13 @@
  */
 #pragma once
 
+#include "SeosCryptoAgreement_Impl.h"
+#include "SeosCryptoCipher_Impl.h"
+#include "SeosCryptoDigest_Impl.h"
+#include "SeosCryptoKey_Impl.h"
+#include "SeosCryptoRng_Impl.h"
+#include "SeosCryptoSignature_Impl.h"
+
 // -------------------------------- RNG API ------------------------------------
 
 /**
@@ -18,10 +25,10 @@
  *
  */
 seos_err_t
-SeosCryptoApi_rngGetBytes(SeosCryptoCtx*        ctx,
-                          const unsigned int    flags,
-                          void*                 buf,
-                          const size_t          bufSize);
+SeosCryptoApi_rngGetBytes(SeosCryptoCtx*            ctx,
+                          const SeosCryptoRng_Flags flags,
+                          void*                     buf,
+                          const size_t              bufSize);
 
 /**
  * @brief Reseed the internal RNG
@@ -39,9 +46,9 @@ SeosCryptoApi_rngReSeed(SeosCryptoCtx*      ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_digestInit(SeosCryptoCtx*             ctx,
-                         SeosCrypto_DigestHandle*   pDigestHandle,
-                         const unsigned int         algorithm);
+SeosCryptoApi_digestInit(SeosCryptoCtx*                     ctx,
+                         SeosCrypto_DigestHandle*           pDigestHandle,
+                         const SeosCryptoDigest_Algorithm   algorithm);
 
 /**
  * @brief Finish a digest object
@@ -78,11 +85,11 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_keyInit(SeosCryptoCtx*                   ctx,
-                      SeosCrypto_KeyHandle*            keyHandle,
-                      const unsigned int               type,
-                      const unsigned int               flags,
-                      const size_t                     bits);
+SeosCryptoApi_keyInit(SeosCryptoCtx*                ctx,
+                      SeosCrypto_KeyHandle*         keyHandle,
+                      const SeosCryptoKey_Type      type,
+                      const SeosCryptoKey_Flags     flags,
+                      const size_t                  bits);
 
 /**
  * @brief Generate key with internal RNG
@@ -138,11 +145,11 @@ SeosCryptoApi_keyFree(SeosCryptoCtx*                ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_signatureInit(SeosCryptoCtx*                ctx,
-                            SeosCrypto_SignatureHandle*   pSigHandle,
-                            const unsigned int            algorithm,
-                            const SeosCrypto_KeyHandle    prvHandle,
-                            const SeosCrypto_KeyHandle    pubHandle);
+SeosCryptoApi_signatureInit(SeosCryptoCtx*                      ctx,
+                            SeosCrypto_SignatureHandle*         pSigHandle,
+                            const SeosCryptoSignature_Algorithm algorithm,
+                            const SeosCrypto_KeyHandle          prvHandle,
+                            const SeosCrypto_KeyHandle          pubHandle);
 
 /**
  * @brief Finish a signature object
@@ -183,10 +190,10 @@ SeosCryptoApi_signatureVerify(SeosCryptoCtx*                    ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_agreementInit(SeosCryptoCtx*                ctx,
-                            SeosCrypto_AgreementHandle*   pAgrHandle,
-                            const unsigned int            algorithm,
-                            const SeosCrypto_KeyHandle    prvHandle);
+SeosCryptoApi_agreementInit(SeosCryptoCtx*                      ctx,
+                            SeosCrypto_AgreementHandle*         pAgrHandle,
+                            const SeosCryptoAgreement_Algorithm algorithm,
+                            const SeosCrypto_KeyHandle          prvHandle);
 
 /**
  * @brief Finish a (key) agreement object
@@ -213,12 +220,12 @@ SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
  * @brief Initialize a cipher object
  */
 seos_err_t
-SeosCryptoApi_cipherInit(SeosCryptoCtx*                 ctx,
-                         SeosCrypto_CipherHandle*       pCipherHandle,
-                         const unsigned int             algorithm,
-                         const SeosCrypto_KeyHandle     keyHandle,
-                         const void*                    iv,
-                         const size_t                   ivLen);
+SeosCryptoApi_cipherInit(SeosCryptoCtx*                     ctx,
+                         SeosCrypto_CipherHandle*           pCipherHandle,
+                         const SeosCryptoCipher_Algorithm   algorithm,
+                         const SeosCrypto_KeyHandle         keyHandle,
+                         const void*                        iv,
+                         const size_t                       ivLen);
 
 /**
  * @brief Finish cipher object
