@@ -63,7 +63,7 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_digestUpdate(SeosCryptoCtx*                   ctx,
+SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
                            const SeosCrypto_DigestHandle    digestHandle,
                            const void*                      data,
                            const size_t                     dataLen);
@@ -240,7 +240,7 @@ SeosCryptoApi_cipherFree(SeosCryptoCtx*                 ctx,
  *
  */
 seos_err_t
-SeosCryptoApi_cipherUpdate(SeosCryptoCtx*                   ctx,
+SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
                            const SeosCrypto_CipherHandle    cipherHandle,
                            const void*                      data,
                            const size_t                     dataLen,
