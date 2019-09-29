@@ -9,3 +9,10 @@ target_include_directories(${PROJECT_NAME}
         ""
 )
 
+# if invoked from the SOES sandbox, provide a documentation build target
+if (COMMAND seos_create_doxygen_target)
+
+    # there are no pre or post steps
+    seos_create_doxygen_target(seos_core_api_doc ":" ":")
+
+endif()
