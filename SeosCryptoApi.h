@@ -41,12 +41,22 @@ SeosCryptoApi_rngReSeed(SeosCryptoCtx*      cryptoCtx,
                         size_t              seedLen);
 
 /**
- * @brief initializes a digest context (local or remote) with the semantic of
- * SeosCryptoDigest_init() and gives back an handle to it
+ * @brief initializes a digest context (local or remote)
  *
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
+ * @param self (required) pointer to SeosCryptoCtx context
+ * @param pDigestHandle (required) output parameter to receive the handle of the
+ *  created local or remote digest context
+ * @param algorithm the digest algorithm
+ * @param iv (optional) the initialization vector
+ * @param ivLen the initialization vector length
  *
+ * @return an error code
+ * @retval SEOS_SUCCESS if all right
+ * @retval SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is
+ *  missing
+ * @retval SEOS_ERROR_NOT_SUPPORTED if there is no implementation for the given
+ *  algorithm
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if not enough resources
  */
 seos_err_t
 SeosCryptoApi_digestInit(SeosCryptoCtx*                 cryptoCtx,
@@ -64,9 +74,23 @@ seos_err_t
 SeosCryptoApi_digestClose(SeosCryptoCtx*                cryptoCtx,
                           SeosCrypto_DigestHandle       digestHandle);
 /**
- * @brief given the reference to the digest context \p digestHandle, it performs
- * the semantic of SeosCryptoDigest_update()
+ * @brief updates the computation of the digest providing a new block of data
  *
+ * @param self (required) pointer to the SeosCryptoCtx context
+ * @param digestHandle (required) handle that refers to a local or remote digest
+ *  context
+ * @param data (required) the data block
+ * @param dataLen the length of the data block
+ *
+ * @return an error code.
+ *
+ * @retval SEOS_SUCCESS if all right
+ * @retval SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is
+ *  missing or wrong
+ * @retval SEOS_ERROR_NOT_SUPPORTED if there is no implementation for the given
+ *  algorithm
+ * @retval SEOS_ERROR_ABORTED if the underlying implementation of the algorithm
+ *  fails for any reason
  * @retval SEOS_ERROR_INVALID_HANDLE
  *
  */
@@ -76,9 +100,34 @@ SeosCryptoApi_digestUpdate(SeosCryptoCtx*               cryptoCtx,
                            const void*                  data,
                            size_t                       dataLen);
 /**
- * @brief given the reference to the digest context \p digestHandle, it performs
- * the semantic of SeosCryptoDigest_finalize()
+ * @brief finalizes the computation of the digest providing a new block of data
+ *  or padding (when data == NULL).
  *
+ * @param self (required) pointer to the SeosCryptoCtx context
+ * @param digestHandle (required) handle that refers to a local or remote digest
+ *  context
+ * @param data (optional) the data block. When not provided (== NULL) then
+ *  padding is done
+ * @param dataLen the length of the data block
+ * @param digest (required) a pointer to the buffer containing the digest.
+ *  When *digest == NULL then a buffer is provided as output parameter otherwise
+ *  if provided by the caller then it is just used. In this last case
+ *  *digestSize is taken first as input to check the boundaries of the buffer
+ *  and then in any case is set to the size of the digest before to return
+ * @param digestSize (required) size of digest. Can work both as input or
+ *  output parameter as described for \p digest
+ *
+ * @return an error code.
+ *
+ * @retval SEOS_SUCCESS if all right
+ * @retval SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is
+ *  missing or wrong
+ * @retval SEOS_ERROR_NOT_SUPPORTED if there is no implementation for the given
+ *  algorithm
+ * @retval SEOS_ERROR_ABORTED if the underlying implementation of the algorithm
+ *  fails for any reason or the output buffer is not big enough
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if the size of the digest buffer provided
+ *  by the caller is not enough to hold the data generated
  * @retval SEOS_ERROR_INVALID_HANDLE
  *
  */
@@ -132,11 +181,24 @@ seos_err_t
 SeosCryptoApi_keyClose(SeosCryptoCtx*           cryptoCtx,
                        SeosCrypto_KeyHandle     keyHandle);
 /**
- * @brief initializes a cipher context (local or remote) with the semantic of
- * SeosCryptoCipher_init() and gives back an handle to it
+ * @brief initializes a cipher context
  *
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
+ * @param self (required) pointer to the SeosCryptoCtx context
+ * @param pCipherHandle (required) output parameter to receive the handle of the
+ *  created local or remote cipher context
+ * @param algorithm the cipher algorithm
+ * @param key (required) the cipher key
+ * @param iv (optional) the initialization vector
+ * @param ivLen the initialization vector length
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if all right
+ * @retval SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is
+ *  missing or wrong
+ * @retval SEOS_ERROR_NOT_SUPPORTED if there is no implementation for the given
+ *  algorithm
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if not enough resources
+ *
  */
 seos_err_t
 SeosCryptoApi_cipherInit(SeosCryptoCtx*                 cryptoCtx,
@@ -155,9 +217,32 @@ seos_err_t
 SeosCryptoApi_cipherClose(SeosCryptoCtx*                cryptoCtx,
                           SeosCrypto_CipherHandle       cipherHandle);
 /**
- * @brief given the reference to the cipher context \p cipherHandle, it performs
- * the semantic of SeosCryptoCipher_update()
+ * @brief performs cipher operation on a block
  *
+ * @param self (required) pointer to the SeosCryptoCtx context
+ * @param cipherHandle (required) handle that refers to a local or remote cipher
+ *  context
+ * @param data (required) input buffer
+ * @param dataLen input data legth
+ * @param output (optional) input/output parameter cointaining the pointer to
+ *  the output buffer. If content is == NULL, then it is set to a local (to the
+ *  context) buffer and the content of \p outputSize is set to the correct value
+ *  of the amount of written data. Otherwise (!= NULL) the given buffer is used
+ *  as output and the value in \p outputSize is used (in the meaning of capacity
+ *  of the buffer) for boundary check before writing. If write is possible then
+ *  the value of \p outputSize is set to the correct value of the amount of
+ *  written data.
+ * @param outputSize (required) input/output parameter holding the capacity/size
+ *  of \p output
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if all right
+ * @retval SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is
+ *  missing or wrong
+ * @retval SEOS_ERROR_NOT_SUPPORTED if there is no implementation for the given
+ *  algorithm
+ * @retval SEOS_ERROR_ABORTED if the underlying implementation of the algorithm
+ *  fails for any reason or the output buffer is not big enough
  * @retval SEOS_ERROR_INVALID_HANDLE
  *
  */
