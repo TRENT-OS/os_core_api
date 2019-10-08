@@ -178,7 +178,39 @@ SeosCryptoApi_keyDeInit(SeosCryptoCtx*                 ctx,
                         SeosCrypto_KeyHandle           keyHandle);
 
 /**
- * @brief initializes a cipher context
+ * @brief Signature API
+ *
+ */
+seos_err_t
+SeosCryptoApi_signatureInit(SeosCryptoCtx*                ctx,
+                            SeosCrypto_SignatureHandle*   pSigHandle,
+                            unsigned int                  algorithm,
+                            SeosCrypto_KeyHandle          prvHandle,
+                            SeosCrypto_KeyHandle          pubHandle);
+
+seos_err_t
+SeosCryptoApi_signatureDeInit(SeosCryptoCtx*               ctx,
+                              SeosCrypto_SignatureHandle   sigHandle);
+
+seos_err_t
+SeosCryptoApi_signatureSign(SeosCryptoCtx*                 ctx,
+                            SeosCrypto_SignatureHandle     sigHandle,
+                            const void*                    hash,
+                            size_t                         hashSize,
+                            void*                          signature,
+                            size_t*                        signatureSize);
+
+seos_err_t
+SeosCryptoApi_signatureVerify(SeosCryptoCtx*                 ctx,
+                              SeosCrypto_SignatureHandle     sigHandle,
+                              const void*                    hash,
+                              size_t                         hashSize,
+                              const void*                    signature,
+                              size_t                         signatureSize);
+
+/**
+ * @brief initializes a cipher context (local or remote) with the semantic of
+ * SeosCryptoCipher_init() and gives back an handle to it
  *
  * @param self (required) pointer to the SeosCryptoCtx context
  * @param pCipherHandle (required) output parameter to receive the handle of the
