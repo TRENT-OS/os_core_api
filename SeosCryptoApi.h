@@ -1,10 +1,10 @@
 /**
  * Copyright (C) 2019, Hensoldt Cyber GmbH
  *
- * @addtogroup API
+ * @defgroup SeosCryptoApi SEOS Crypto API
  * @{
  *
- * @file SeosCryptoAPI.h
+ * @file SeosCryptoApi.h
  *
  * @brief SEOS Crypto API library
  *
@@ -30,9 +30,6 @@
  * from the entropy source into the RNG state to enhance prediction resistance.
  * This behavior can be modified by passing respective \p flags.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p bufSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param flags (optional) flags for RNG operation
  * @param buf (required) buffer for random bytes
@@ -43,7 +40,8 @@
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
  * @retval SEOS_ERROR_ABORTED if the internal RNG had a failure
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p flags are not supported by RNG
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p bufSize is too large
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_rngGetBytes(SeosCryptoCtx*            ctx,
@@ -54,23 +52,21 @@ SeosCryptoApi_rngGetBytes(SeosCryptoCtx*            ctx,
 /**
  * @brief Reseed the internal RNG
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p seedLen.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param seed (required) additional seed to feed into RNG state
- * @param seedLen (required) length of seed data
+ * @param seedSize (required) length of seed data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid*
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
  * @retval SEOS_ERROR_ABORTED if the RNG had a failure
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p seedLen is too large
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
+ *  `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_rngReSeed(SeosCryptoCtx*      ctx,
                         const void*         seed,
-                        const size_t        seedLen);
+                        const size_t        seedSize);
 
 // ------------------------------ Digest API -----------------------------------
 
@@ -85,7 +81,7 @@ SeosCryptoApi_rngReSeed(SeosCryptoCtx*      ctx,
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pDigestHandle (required) pointer to digest handle
- * @param algorithm (required) digest algorithm to use, see #SeosCryptoDigest_Algorithm
+ * @param algorithm (required) digest algorithm to use
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -117,16 +113,10 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
 /**
  * @brief Process block of data with digest algorithm
  *
- * Update internal state of digest algorithm with another block of data.
- *
- * The amount of data that can be passed here is limited to approx. 4000 bytes
- * (PAGE_SIZE - sizeof(size_t)),  this applies to \p dataLen. As a result
- * larger blocks of data need to be broken into smaller chunks by the caller.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param digestHandle (required) initialized digest handle
  * @param data (required) data to process with digest
- * @param dataLen (required) length of data
+ * @param dataSize (required) length of data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -134,25 +124,26 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if processing of the block failed or if digest was
  * was already finalized
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
+ *  `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
-                            const SeosCrypto_DigestHandle    digestHandle,
-                            const void*                      data,
-                            const size_t                     dataLen);
+                            const SeosCrypto_DigestHandle   digestHandle,
+                            const void*                     data,
+                            const size_t                    dataSize);
 
 /**
  * @brief Finish digest computation to produce digest
  *
  * Write the digest resulting from any preceding calls to process into a buffer.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p digestSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param digestHandle (required) initialized digest handle
  * @param digest (required) buffer to write digest to
- * @param digestSize (required) size of digest buffer
+ * @param digestSize (required) size of digest buffer, will be set to the amount
+ * of bytes written to \p digest (or the minimum size if it fails due too small
+ * buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -160,6 +151,10 @@ SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if the digest could not be produced or if no
  * blocks were processed before finalizing or if finalize was already called
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
+ * resulting digest
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
@@ -180,20 +175,21 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  *
  * The following types of keys with the following key sizes can be generated
  * with this function:
- * - SeosCryptoKey_Type_RSA_PRV:        RSA private key (128-4096 bits)
- * - SeosCryptoKey_Type_DH_PRV:         DH private key (64-4096 bits)
- * - SeosCryptoKey_Type_SECP256R1_PRV:  ECC private key for SECP256r1 curve
- * - SeosCryptoKey_Type_AES:            AES key (128, 192, 256 bits)
+ * - `SeosCryptoKey_Type_RSA_PRV`:        RSA private key (128-4096 bits)
+ * - `SeosCryptoKey_Type_DH_PRV`:         DH private key (64-4096 bits)
+ * - `SeosCryptoKey_Type_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
+ * - `SeosCryptoKey_Type_AES`:            AES key (128, 192, 256 bits)
  *
  * Keys can have attributes, which have a flag parameter. The following flags are
  * supported at key generation:
- * - SeosCryptoKey_Flags_NONE:                  Key cannot be exported
- * - SeosCryptoKey_Flags_EXPORTABLE_RAW:        Key is exportable in 'raw' form
- * - SeosCryptoKey_Flags_EXPORTABLE_WRAPPED:    Key has to be wrapped before export
- * 
+ * - `SeosCryptoKey_Flags_NONE`:                  Key cannot be exported
+ * - `SeosCryptoKey_Flags_EXPORTABLE_RAW`:        Key is exportable in 'raw' form
+ * - `SeosCryptoKey_Flags_EXPORTABLE_WRAPPED`:    Key has to be wrapped before export
+ *
  * Here are some example specs for typical keys:
  * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
  *    value). Use a parameter spec which already provides the prime P and base G.
+ *    \code{.c}
  *      static const SeosCryptoKey_Spec dh101pSpec = {
  *          .type = SeosCryptoKey_SpecType_PARAMS,
  *          .key = {
@@ -206,7 +202,9 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  *              }
  *          }
  *      };
+ *    \endcode
  * 2. Create a 128 bit AES key and make it exportable, use a bit spec for that:
+ *    \code{.c}
  *      static const SeosCryptoKey_Spec aes128Spec = {
  *          .type = SeosCryptoKey_SpecType_BITS,
  *          .key = {
@@ -215,7 +213,9 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  *              .params.bits = 128
  *          }
  *      };
-  * 3. Create 1024-bit RSA privkey, again using a bit spec:
+ *    \endcode
+ * 3. Create 1024-bit RSA privkey, again using a bit spec:
+ *    \code{.c}
  *      static const SeosCryptoKey_Spec rsa128Spec = {
  *          .type = SeosCryptoKey_SpecType_BITS,
  *          .key = {
@@ -223,6 +223,7 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  *              .params.bits = 1024
  *          }
  *      };
+ *    \endcode
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pKeyHandle (required) pointer to key handle
@@ -251,14 +252,14 @@ SeosCryptoApi_keyGenerate(SeosCryptoCtx*             ctx,
  * have to be called in sequence.
  *
  * A public key can be computed based on a private key \p prvKeyHandle of this type:
- * - SeosCryptoKey_Type_RSA_PRV:        RSA private key
- * - SeosCryptoKey_Type_DH_PRV:         DH private key
- * - SeosCryptoKey_Type_SECP256R1_PRV:  ECC private key for SECP256r1 curve
- * 
+ * - `SeosCryptoKey_Type_RSA_PRV`:        RSA private key
+ * - `SeosCryptoKey_Type_DH_PRV`:         DH private key
+ * - `SeosCryptoKey_Type_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
+ *
  * The following values are supported for as flags for \p attribs:
- * - SeosCryptoKey_Flags_NONE: Key cannot be exported
- * - SeosCryptoKey_Flags_EXPORTABLE_RAW: Key is exportable in 'raw' form
- * - SeosCryptoKey_Flags_EXPORTABLE_WRAPPED: Key has to be wrapped before export
+ * - `SeosCryptoKey_Flags_NONE`:                Key cannot be exported
+ * - `SeosCryptoKey_Flags_EXPORTABLE_RAW`:      Key is exportable in 'raw' form
+ * - `SeosCryptoKey_Flags_EXPORTABLE_WRAPPED`:  Key has to be wrapped before export
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pPrvKeyHandle (required) pointer to handle for private key
@@ -268,10 +269,8 @@ SeosCryptoApi_keyGenerate(SeosCryptoCtx*             ctx,
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
- * this includes giving incorrect values for \p bits when these are clearly defined
- * (e.g., for AES)
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported or if the
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p prvKeyHandle is not supported
  * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
  */
@@ -291,18 +290,18 @@ SeosCryptoApi_keyMakePublic(SeosCryptoCtx*                  ctx,
  * During import, the sizes of the keys will be checked (e.g., based on the modulus
  * provided by RSA or based on the amounts of bytes passed for AES). The following
  * types and keysizes of the imported \p keyData are supported:
- * - SeosCryptoKey_Type_AES:            AES key (128, 192, 256 bits)
- * - SeosCryptoKey_Type_RSA_PRV:        RSA private key (128 - 4096 bits)
- * - SeosCryptoKey_Type_RSA_PUB:        RSA public key (128 - 4096 bits)
- * - SeosCryptoKey_Type_DH_PRV:         DH private key (64 - 4096 bits)
- * - SeosCryptoKey_Type_DH_PUB:         DH public key (64 - 4096 bits)
- * - SeosCryptoKey_Type_SECP256r1_PRV:  ECC private key for SECP256r1 curve
- * - SeosCryptoKey_Type_SECP256r1_PUB:  ECC public key for SECP256r1 curve
+ * - `SeosCryptoKey_Type_AES`:            AES key (128, 192, 256 bits)
+ * - `SeosCryptoKey_Type_RSA_PRV`:        RSA private key (128 - 4096 bits)
+ * - `SeosCryptoKey_Type_RSA_PUB`:        RSA public key (128 - 4096 bits)
+ * - `SeosCryptoKey_Type_DH_PRV`:         DH private key (64 - 4096 bits)
+ * - `SeosCryptoKey_Type_DH_PUB`:         DH public key (64 - 4096 bits)
+ * - `SeosCryptoKey_Type_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
+ * - `SeosCryptoKey_Type_SECP256r1_PUB`:  ECC public key for SECP256r1 curve
  *
  * The following values are supported as flags of the \p keyData attribs:
- * - SeosCryptoKey_Flags_NONE:                  Key cannot be exported
- * - SeosCryptoKey_Flags_EXPORTABLE_RAW:        Key is exportable in 'raw' form
- * - SeosCryptoKey_Flags_EXPORTABLE_WRAPPED:    Key has to be wrapped before export
+ * - `SeosCryptoKey_Flags_NONE`:                  Key cannot be exported
+ * - `SeosCryptoKey_Flags_EXPORTABLE_RAW`:        Key is exportable in 'raw' form
+ * - `SeosCryptoKey_Flags_EXPORTABLE_WRAPPED`:    Key has to be wrapped before export
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pKeyHandle (required) pointer to key handle
@@ -313,12 +312,12 @@ SeosCryptoApi_keyMakePublic(SeosCryptoCtx*                  ctx,
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid;
- * this includes supplying an unexpected amount of bytes in \p keySize or an effective
- * key size that does not match what is expected for those where it is defined
- * (e.g., 120 bit key for AES)
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not NULL (wrapping is
- * not yet supported) or if \p type is not supported or if the size of the imported
- * key is not within the expected range (e.g., 20 bit modulus for RSA)
+ * this includes supplying \p keyData that has internal inconsistencies (e.g.
+ * too long buffer lengths) or key size that do not match what is expected
+ * for algorithms where it is discretely defined (e.g., 120 bit key for AES)
+ * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not `NULL` (wrapping is
+ * not yet supported) or if the data (e.g. sizes, key type, etc.) in \p keyData
+ * is not supported, e.g., size of DH prime is not within the expected range
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
 seos_err_t
@@ -331,9 +330,10 @@ SeosCryptoApi_keyImport(SeosCryptoCtx*              ctx,
  * @brief Export key data from key handle into buffer
  *
  * If the key is exportable, this function will write the key material stored
- * in the object indicated by \p keyHandle to a buffer. If the key is to be wrapped, 
- * a wrapping key must be given which then will be used to encrypt \p keyHandle 
- * before writing it to the buffer. If a key is not exportable, this function will fail.
+ * in the object indicated by \p keyHandle to a buffer. If the key is to be wrapped,
+ * a wrapping key must be given which then will be used to encrypt \p keyHandle
+ * before writing it to the buffer. If a key is not exportable, this function
+ * will fail.
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param keyHandle (required) handle of key to export
@@ -344,9 +344,9 @@ SeosCryptoApi_keyImport(SeosCryptoCtx*              ctx,
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ACCESS_DENIED if the key cannot be exported due to flags
+ * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due to flags
  * set during creation of the key object
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not NULL (wrapping is
+ * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not `NULL` (wrapping is
  * currently not supported)
  */
 seos_err_t
@@ -365,25 +365,29 @@ SeosCryptoApi_keyExport(SeosCryptoCtx*              ctx,
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param keyHandle (required) handle of key to export
- * @param keyParams (required) buffer for key params
- * @param paramSize (required) buffer for key data, will be set to effectively 
- * written parameter bytes
+ * @param param (required) buffer for key params
+ * @param paramSize (required) buffer for key data, will be set to effectively
+ * written bytes if function succeeds (or the minimum size if it fails due to too
+ * small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small
  * @retval SEOS_ERROR_NOT_SUPPORTED if key has no exportable parameters
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
+ * whole \p param
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_keyGetParams(SeosCryptoCtx*               ctx,
                            const SeosCrypto_KeyHandle   keyHandle,
-                           void*                        keyParams,
+                           void*                        param,
                            size_t*                      paramSize);
 
 /**
- * @brief Load pre-defined parameters 
+ * @brief Load pre-defined parameters
  *
  * For some protocols, it is possible to agree on a set of pre-defined parameters,
  * e.g. use SECP256r1 curve or a fixed DH group. This function allows to read those
@@ -391,22 +395,26 @@ SeosCryptoApi_keyGetParams(SeosCryptoCtx*               ctx,
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param name (required) name of the parameter set
- * @param keyParams (required) buffer for key params
- * @param paramSize (required) buffer for key data, will be set to effectively 
- * written parameter bytes
+ * @param param (required) buffer for key params
+ * @param paramSize (required) buffer for key data, will be set to effectively
+ * written bytes if function succeeds (or the minimum size if it fails due to too
+ * small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter
  * set
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
+ * whole \p param
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_keyLoadParams(SeosCryptoCtx*               ctx,
                             const SeosCryptoKey_Param    name,
-                            void*                        keyParams,
+                            void*                        param,
                             size_t*                      paramSize);
 
 /**
@@ -442,7 +450,7 @@ SeosCryptoApi_keyFree(SeosCryptoCtx*                ctx,
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pSigHandle (required) pointer to signature handle
- * @param algorithm (required) signature algorithm to use, see #SeosCryptoSignature_Algorithm
+ * @param algorithm (required) signature algorithm to use
  * @param prvHandle (optional) key to use for private operations
  * @param pubHandle (optional) key to use for public operations
  *
@@ -482,16 +490,14 @@ SeosCryptoApi_signatureFree(SeosCryptoCtx*                      ctx,
  * signature object; for this the \p prvHandle param must be set during signature
  * initialization.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p hashSize and \p signatureSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param sigHandle (required) signature handle
  * @param hash (required) hash value to sign
  * @param hashSize (required) size of hash
  * @param signature (required) buffer for resulting signature
  * @param signatureSize (required) size of signature buffer, will be set to
- * actually written amount of bytes if function succeeds
+ * actually written amount of bytes if function succeeds (or the minimum size
+ * if it fails due to too small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -499,8 +505,10 @@ SeosCryptoApi_signatureFree(SeosCryptoCtx*                      ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
  * if the cryptographic operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if the \p signatureSize is too small or \p
- * hashSize is too large
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
+ * the resulting \p signature
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
+ * greater than `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_signatureSign(SeosCryptoCtx*                      ctx,
@@ -517,9 +525,6 @@ SeosCryptoApi_signatureSign(SeosCryptoCtx*                      ctx,
  * fixed size (16-32 bytes). For this operation to work, the  \p pubHandle
  * param must be set during signature initialization.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p hashSize and \p signatureSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param sigHandle (required) signature handle
  * @param hash (required) hash value to recompute signature for
@@ -534,8 +539,8 @@ SeosCryptoApi_signatureSign(SeosCryptoCtx*                      ctx,
  * this includes passing a \p signatureSize that is unexpected (due to the key)
  * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
  * if the cryptographic operation failed (i.e., the signature was invalid)
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p signatureSize or \p hashSize
- * is too large
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
+ * greater than `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_signatureVerify(SeosCryptoCtx*                    ctx,
@@ -560,7 +565,7 @@ SeosCryptoApi_signatureVerify(SeosCryptoCtx*                    ctx,
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pAgrHandle (required) pointer to agreement handle
- * @param algorithm (required) key agreement algorithm to use, see #SeosCryptoAgreement_Algorithm
+ * @param algorithm (required) key agreement algorithm to use
  * @param prvHandle (required) handle of private key to use for key agreement
  *
  * @return an error code
@@ -603,15 +608,13 @@ SeosCryptoApi_agreementFree(SeosCryptoCtx*                      ctx,
  * chosen for DH. A final processing step should be applied to the agreed key in
  * order to produce a symmetric key of suitable size.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p sharedSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param agrHandle (required) initialized agreement handle
  * @param pubHandle (required) public key to use for key agreement
  * @param shared (required) buffer to hold shared secret
  * @param sharedSize (required) size of buffer, will be set to actual amount of
- * bytes written if function succeeds
+ * bytes written if function succeeds (or the minimum size if it fails due to too
+ * small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -619,7 +622,10 @@ SeosCryptoApi_agreementFree(SeosCryptoCtx*                      ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  * this includes passing the wrong type of key
  * @retval SEOS_ERROR_ABORTED if the underlying agreement operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
+ * the full result in the \p shared buffer
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
@@ -644,15 +650,12 @@ SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
  * - AES-GCM requires 12 bytes of IV
  * - AES-CBC requires 16 bytes of IV
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p ivLen.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param pCipherHandle (required) pointer to cipher handle
- * @param algorithm (required) cipher algorithm to use, see #SeosCryptoCipher_Algorithm
+ * @param algorithm (required) cipher algorithm to use
  * @param keyHandle (required) handle of key to use for cipher operation
- * @param iv (optional) initiialization vector required for some ciphers
- * @param ivLen (optional) length of initialization vector
+ * @param iv (optional) initialization vector required for some ciphers
+ * @param ivSize (optional) length of initialization vector
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -661,8 +664,9 @@ SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
  * or if \p iv is NOT set for an algorithm that does require an IV; also includes
  * mismatching IV sizes or passing a key that is not matching the algorithm
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the cipher failed
  * @retval SEOS_ERROR_ABORTED if setting the key internally failed
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the cipher failed or if
+ * \p ivSize is greater than `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_cipherInit(SeosCryptoCtx*                     ctx,
@@ -670,7 +674,7 @@ SeosCryptoApi_cipherInit(SeosCryptoCtx*                     ctx,
                          const SeosCryptoCipher_Algorithm   algorithm,
                          const SeosCrypto_KeyHandle         keyHandle,
                          const void*                        iv,
-                         const size_t                       ivLen);
+                         const size_t                       ivSize);
 
 /**
  * @brief Finish cipher object
@@ -694,11 +698,6 @@ SeosCryptoApi_cipherFree(SeosCryptoCtx*                 ctx,
  * in ENC mode, \p input will hold the plaintext and \p output will be the cipertext.
  * If operated in DEC mode, it will be vice versa.
  *
- * The amount of data that can be passed here is limited to approx. 4000 bytes
- * (PAGE_SIZE - sizeof(size_t)), this applies to \p inputLen and \p outputLen.
- * As a result larger blocks of data need to be broken into smaller chunks by
- * the caller.
- *
  * Special attention needs to be paid to the alignment of inputs:
  * - AES-ECB and AES-CBC require all inputs to be aligned to 16 byte blocks
  * - AES-GCM can deal with non-aligned blocks, but only in the last call to
@@ -707,10 +706,11 @@ SeosCryptoApi_cipherFree(SeosCryptoCtx*                 ctx,
  * @param ctx (required) pointer to the seos crypto context
  * @param cipherHandle (required) initialized cipher handle
  * @param input (required) input data for cipher
- * @param inputLen (required) length of input data
+ * @param inputSize (required) length of input data
  * @param output (required) buffer for resulting output data
  * @param outputSize (required) size of output buffer, will be set to actual
- * amount of bytes written if function succeeds
+ * amount of bytes written if function succeeds (or to the minimum size if it
+ * fails)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -718,19 +718,21 @@ SeosCryptoApi_cipherFree(SeosCryptoCtx*                 ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  * this includes passing \p inputSize that is not aligned with the underlying
  * blocksize
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small or \p inputLen
- * is too large
  * @retval SEOS_ERROR_ABORTED if the cryptographic operation failed or if process
  * was called without calling start (e.g., for GCM mode) or if process is called
  * after the cipher was already finalized
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
+ * the full result in the \p output buffer
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
+ * greater than `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
-                            const SeosCrypto_CipherHandle    cipherHandle,
-                            const void*                      input,
-                            const size_t                     inputLen,
-                            void*                            output,
-                            size_t*                          outputSize);
+                            const SeosCrypto_CipherHandle   cipherHandle,
+                            const void*                     input,
+                            const size_t                    inputSize,
+                            void*                           output,
+                            size_t*                         outputSize);
 
 /**
  * @brief Start encryption of data (only relevant for some algorithms)
@@ -741,13 +743,10 @@ SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
  *
  * Will not work with algorithms that don't require it (e.g., AES-ECB).
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p inputLen.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param cipherHandle (required) initialized cipher handle
  * @param input (optional) input data for cipher
- * @param inputLen (optional) length of input data
+ * @param inputSize (optional) length of input data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -755,32 +754,34 @@ SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if cipher object does not require start, or if it
  * was already started or if the internal cryptographic operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p inputLen is too large
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_cipherStart(SeosCryptoCtx*                ctx,
                           const SeosCrypto_CipherHandle cipherHandle,
                           const void*                   input,
-                          const size_t                  inputLen);
+                          const size_t                  inputSize);
 
 /**
  * @brief Finish encryption of data (only relevant for some algorithms)
  *
  * This function finishes a computation for certain algorithms. One example is
- * AES GCM: in encryption mode, finalize writes the authentication tag to \p buf,
+ * AES GCM: in encryption mode, finalize writes the authentication tag to \p tag,
  * in decryption mode it recomputes the tag internally and compares it with a
- * tag that must be provided in \p buf.
+ * tag that must be provided in \p tag.
+ *
+ * For GCM in encryption mode, the \p tagSize must be >= 4, as the resulting tag
+ * can be shortened if desired.
  *
  * Will not work with algorithms that don't require it.
  *
- * Buffer sizes are limited to approx. 4000 bytes (PAGE_SIZE - sizeof(size_t)),
- * this applies to \p bufSize.
- *
  * @param ctx (required) pointer to the seos crypto context
  * @param cipherHandle (required) initialized cipher handle
- * @param buf (required) input/output buffer for final cipher operation
- * @param bufSize (required) lenght of input/size of output buffer, will be set
- * to actual amount of bytes written if function succeeds
+ * @param tag (required) input/output buffer for final cipher operation
+ * @param tagSize (required) lenght of input/size of output buffer, will be set
+ * to actual amount of bytes written if function succeeds (or the minimum size
+ * fails)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -789,13 +790,15 @@ SeosCryptoApi_cipherStart(SeosCryptoCtx*                ctx,
  * @retval SEOS_ERROR_ABORTED if cipher does not require finalize, or if cipher
  * was already finalized or if it was not started and did not process any data yet
  * or if underlying operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p bufSize is either too small for data
- * written by finalize or too large
+ * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
+ * written to the \p tag buffer
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
+ * `SeosCrypto_BUFFER_SIZE`
  */
 seos_err_t
 SeosCryptoApi_cipherFinalize(SeosCryptoCtx*                 ctx,
                              const SeosCrypto_CipherHandle  cipherHandle,
-                             void*                          buf,
-                             size_t*                        bufSize);
+                             void*                          tag,
+                             size_t*                        tagSize);
 
 /** @} */
