@@ -189,41 +189,41 @@ SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
  * Here are some example specs for typical keys:
  * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
  *    value). Use a parameter spec which already provides the prime P and base G.
- *    \code{.c}
- *      static const SeosCryptoKey_Spec dh101pSpec = {
- *          .type = SeosCryptoKey_SpecType_PARAMS,
- *          .key = {
- *              .type = SeosCryptoKey_Type_DH_PRV,
- *              .params.dh = {
- *                  .pBytes = {0x12, 0xdf, 0x4d, 0x76, ... 0x07},
- *                  .pLen   = 13,
- *                  .gBytes = {0x00, 0x1e, 0x32, 0x15, ... 0xd6},
- *                  .gLen   = 13,
- *              }
+ *  \code{.c}
+ *  static const SeosCryptoKey_Spec dh101pSpec = {
+ *      .type = SeosCryptoKey_SpecType_PARAMS,
+ *      .key = {
+ *          .type = SeosCryptoKey_Type_DH_PRV,
+ *          .params.dh = {
+ *              .pBytes = {0x12, 0xdf, 0x4d, 0x76, ... 0x07},
+ *              .pLen   = 13,
+ *              .gBytes = {0x00, 0x1e, 0x32, 0x15, ... 0xd6},
+ *              .gLen   = 13,
  *          }
- *      };
- *    \endcode
+ *      }
+ *  };
+ *  \endcode
  * 2. Create a 128 bit AES key and make it exportable, use a bit spec for that:
- *    \code{.c}
- *      static const SeosCryptoKey_Spec aes128Spec = {
- *          .type = SeosCryptoKey_SpecType_BITS,
- *          .key = {
- *              .type = SeosCryptoKey_Type_AES,
- *              .attribs.flags = SeosCryptoKey_Flags_EXPORTABLE_RAW,
- *              .params.bits = 128
- *          }
- *      };
- *    \endcode
+ *  \code{.c}
+ *  static const SeosCryptoKey_Spec aes128Spec = {
+ *      .type = SeosCryptoKey_SpecType_BITS,
+ *      .key = {
+ *          .type = SeosCryptoKey_Type_AES,
+ *          .attribs.flags  = SeosCryptoKey_Flags_EXPORTABLE_RAW,
+ *          .params.bits    = 128
+ *      }
+ *  };
+ *  \endcode
  * 3. Create 1024-bit RSA privkey, again using a bit spec:
- *    \code{.c}
- *      static const SeosCryptoKey_Spec rsa128Spec = {
- *          .type = SeosCryptoKey_SpecType_BITS,
- *          .key = {
- *              .type = SeosCryptoKey_Type_RSA_PRV,
- *              .params.bits = 1024
- *          }
- *      };
- *    \endcode
+ *  \code{.c}
+ *  static const SeosCryptoKey_Spec rsa128Spec = {
+ *     .type = SeosCryptoKey_SpecType_BITS,
+ *     .key = {
+ *        .type = SeosCryptoKey_Type_RSA_PRV,
+ *        .params.bits = 1024
+ *      }
+ *  };
+ *  \endcode
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pKeyHandle (required) pointer to key handle
@@ -302,6 +302,60 @@ SeosCryptoApi_keyMakePublic(SeosCryptoCtx*                  ctx,
  * - `SeosCryptoKey_Flags_NONE`:                  Key cannot be exported
  * - `SeosCryptoKey_Flags_EXPORTABLE_RAW`:        Key is exportable in 'raw' form
  * - `SeosCryptoKey_Flags_EXPORTABLE_WRAPPED`:    Key has to be wrapped before export
+ *
+ * Here are some example key data configurations for typical types of keys:
+ * 1. Define a 128-bit AES key that is exportable:
+ *  \code{.c}
+ *  static const SeosCryptoKey_Data aes128Data =
+ *  {
+ *      .type = SeosCryptoKey_Type_AES,
+ *      .attribs.flags = SeosCryptoKey_Flags_EXPORTABLE_RAW,
+ *      .data.aes = {
+ *          .bytes  = "0123456789abcdef",
+ *          .len    = 16
+ *      }
+ *  };
+ *  \endcode
+ * 2. Define a 256-bit AES key that is NOT exportable:
+ *  \code{.c}
+ *  static const SeosCryptoKey_Data aes256Data =
+ *  {
+ *      .type = SeosCryptoKey_Type_AES,
+ *      .data.aes = {
+ *          .bytes  = "0123456789abcdef0123456789abcdef",
+ *          .len    = 32
+ *      }
+ *  };
+ *  \endcode
+ * 3. Define a SECP256r1 private key that is NOT exportable (abbreviated):
+ *  \code{.c}
+ *  static const SeosCryptoKey_Data secp256r1PrvData =
+ *  {
+ *      .type = SeosCryptoKey_Type_SECP256R1_PRV,
+ *      .data.secp256r1.prv = {
+ *          .dBytes = {0xc6, 0xef, 0x9c, 0x5d, ... 0x20},
+ *          .dLen   = 32,
+ *      }
+ *  };
+ *  \endcode
+ * 4. Define 1024-bit RSA private key that is exportable (abbreviated):
+ *  \code{.c}
+ *  static const SeosCryptoKey_Data rsa1024PrvData =
+ *  {
+ *      .type = SeosCryptoKey_Type_RSA_PRV,
+ *      .attribs.flags = SeosCryptoKey_Flags_EXPORTABLE_RAW,
+ *      .data.rsa.prv = {
+ *          .dBytes = {0x35, 0xe7, 0x4c, 0x80, ... 0x99},
+ *          .dLen   = 128,
+ *          .eBytes = {0x01, 0x00, 0x01},
+ *          .eLen   = 3,
+ *          .pBytes = {0xdd, 0x35, 0x19, 0x94, ... 0xa3},
+ *          .pLen   = 64,
+ *          .qBytes = {0xa9, 0x1e, 0xc2, 0x6b, ... 0xeb},
+ *          .qLen   = 64,
+ *      }
+ *  };
+ *  \endcode
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pKeyHandle (required) pointer to key handle
