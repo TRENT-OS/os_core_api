@@ -113,16 +113,20 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
 /**
  * @brief Process block of data with digest algorithm
  *
+ * Feed blocks of data into the internal state of the digest.
+ *
+ * This function can be called multiple times until the digest has been finalized.
+ *
  * @param ctx (required) pointer to the seos crypto context
  * @param digestHandle (required) initialized digest handle
- * @param data (required) data to process with digest
+ * @param data (required) data to process
  * @param dataSize (required) length of data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if processing of the block failed or if digest was
+ * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if digest was
  * was already finalized
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  `SeosCrypto_Size_DATAPORT`
@@ -137,6 +141,8 @@ SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
  * @brief Finish digest computation to produce digest
  *
  * Write the digest resulting from any preceding calls to process into a buffer.
+ *
+ * After the digest has been finalized, the digest object can only be freed.
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param digestHandle (required) initialized digest handle
