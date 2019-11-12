@@ -106,6 +106,23 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
                          const SeosCrypto_DigestHandle digestHandle);
 
 /**
+ * @brief Clone a digest object
+ *
+ * @param ctx (required) pointer to the seos crypto context
+ * @param dstDigHandle (required) initialized handle used as target
+ * @param srcDigHandle (required) initialized handle used as source
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ */
+seos_err_t
+SeosCryptoApi_digestClone(SeosCryptoCtx*                ctx,
+                          const SeosCrypto_DigestHandle dstDigHandle,
+                          const SeosCrypto_DigestHandle srcDigHandle);
+
+/**
  * @brief Process block of data with digest algorithm
  *
  * Feed blocks of data into the internal state of the digest.
