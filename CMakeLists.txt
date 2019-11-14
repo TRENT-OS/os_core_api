@@ -6,7 +6,8 @@ add_library(${PROJECT_NAME} INTERFACE)
 
 target_include_directories(${PROJECT_NAME}
     INTERFACE
-        ""
+        .
+        include
 )
 
 # if invoked from the SEOS sandbox, provide a documentation build target
