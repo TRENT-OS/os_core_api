@@ -41,7 +41,7 @@
  * @retval SEOS_ERROR_ABORTED if the internal RNG had a failure
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p flags are not supported by RNG
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_rngGetBytes(SeosCryptoCtx*            ctx,
@@ -61,7 +61,7 @@ SeosCryptoApi_rngGetBytes(SeosCryptoCtx*            ctx,
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
  * @retval SEOS_ERROR_ABORTED if the RNG had a failure
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
- *  `SeosCrypto_BUFFER_SIZE`
+ *  `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_rngReSeed(SeosCryptoCtx*      ctx,
@@ -125,7 +125,7 @@ SeosCryptoApi_digestFree(SeosCryptoCtx*                ctx,
  * @retval SEOS_ERROR_ABORTED if processing of the block failed or if digest was
  * was already finalized
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  `SeosCrypto_BUFFER_SIZE`
+ *  `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
@@ -154,7 +154,7 @@ SeosCryptoApi_digestProcess(SeosCryptoCtx*                  ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
  * resulting digest
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_digestFinalize(SeosCryptoCtx*                 ctx,
@@ -432,7 +432,7 @@ SeosCryptoApi_keyExport(SeosCryptoCtx*              ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  * whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_keyGetParams(SeosCryptoCtx*               ctx,
@@ -463,7 +463,7 @@ SeosCryptoApi_keyGetParams(SeosCryptoCtx*               ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  * whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_keyLoadParams(SeosCryptoCtx*               ctx,
@@ -562,7 +562,7 @@ SeosCryptoApi_signatureFree(SeosCryptoCtx*                      ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
  * the resulting \p signature
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
- * greater than `SeosCrypto_BUFFER_SIZE`
+ * greater than `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_signatureSign(SeosCryptoCtx*                      ctx,
@@ -594,7 +594,7 @@ SeosCryptoApi_signatureSign(SeosCryptoCtx*                      ctx,
  * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
  * if the cryptographic operation failed (i.e., the signature was invalid)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
- * greater than `SeosCrypto_BUFFER_SIZE`
+ * greater than `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_signatureVerify(SeosCryptoCtx*                    ctx,
@@ -679,7 +679,7 @@ SeosCryptoApi_agreementFree(SeosCryptoCtx*                      ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
  * the full result in the \p shared buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
@@ -720,7 +720,7 @@ SeosCryptoApi_agreementAgree(SeosCryptoCtx*                     ctx,
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval SEOS_ERROR_ABORTED if setting the key internally failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the cipher failed or if
- * \p ivSize is greater than `SeosCrypto_BUFFER_SIZE`
+ * \p ivSize is greater than `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_cipherInit(SeosCryptoCtx*                     ctx,
@@ -778,7 +778,7 @@ SeosCryptoApi_cipherFree(SeosCryptoCtx*                 ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
  * the full result in the \p output buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
- * greater than `SeosCrypto_BUFFER_SIZE`
+ * greater than `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
@@ -809,7 +809,7 @@ SeosCryptoApi_cipherProcess(SeosCryptoCtx*                  ctx,
  * @retval SEOS_ERROR_ABORTED if cipher object does not require start, or if it
  * was already started or if the internal cryptographic operation failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_cipherStart(SeosCryptoCtx*                ctx,
@@ -847,7 +847,7 @@ SeosCryptoApi_cipherStart(SeosCryptoCtx*                ctx,
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
  * written to the \p tag buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
- * `SeosCrypto_BUFFER_SIZE`
+ * `SeosCrypto_Size_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_cipherFinalize(SeosCryptoCtx*                 ctx,
