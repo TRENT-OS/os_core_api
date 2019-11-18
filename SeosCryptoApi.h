@@ -11,12 +11,7 @@
  */
 #pragma once
 
-#include "SeosCryptoAgreement_Impl.h"
-#include "SeosCryptoCipher_Impl.h"
-#include "SeosCryptoDigest_Impl.h"
-#include "SeosCryptoKey_Impl.h"
-#include "SeosCryptoRng_Impl.h"
-#include "SeosCryptoSignature_Impl.h"
+#include "SeosCrypto.h"
 
 // -------------------------------- RNG API ------------------------------------
 
