@@ -20,9 +20,7 @@
  * @param keyData           buffer containing the key data
  * @param keySize           size of the key data in bytes
  *
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
- * @retval SEOS_ERROR_OPERATION_DENIED
+ * @return seos_err_t
  *
  */
 seos_err_t
@@ -40,10 +38,7 @@ SeosKeyStoreApi_importKey(SeosKeyStoreCtx*          keyStoreCtx,
  * @param[out]  keySize         address of the variable which will be filled 
  *                              with key data size
  *
- * @return SEOS_ERROR_GENERIC
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
- * @retval SEOS_ERROR_OPERATION_DENIED
+ * @return seos_err_t
  *
  */
 seos_err_t
@@ -57,7 +52,7 @@ SeosKeyStoreApi_getKey(SeosKeyStoreCtx*         keyStoreCtx,
  * @param keyStoreCtx   pointer to keyStoreCtx
  * @param name          name of the key to delete
  *
- * @return SEOS_ERROR_NOT_FOUND
+ * @return seos_err_t
  *
  */
 seos_err_t
@@ -70,10 +65,7 @@ SeosKeyStoreApi_deleteKey(SeosKeyStoreCtx*         keyStoreCtx,
  * @param name          name of the key to copy
  * @param destKeyStore  pointer to the destination key store
  *
- * @return SEOS_ERROR_GENERIC
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
- * @retval SEOS_ERROR_OPERATION_DENIED
+ * @return seos_err_t
  *
  */
 seos_err_t
@@ -89,10 +81,7 @@ SeosKeyStoreApi_copyKey(SeosKeyStoreCtx*         keyStoreCtx,
  * @param name          name of the key to move
  * @param destKeyStore  pointer to the destination key store
  *
- * @return SEOS_ERROR_GENERIC
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE
- * @retval SEOS_ERROR_INVALID_PARAMETER
- * @retval SEOS_ERROR_OPERATION_DENIED
+ * @return seos_err_t
  *
  */
 seos_err_t
@@ -104,7 +93,7 @@ SeosKeyStoreApi_moveKey(SeosKeyStoreCtx*         keyStoreCtx,
  *
  * @param keyStoreCtx   pointer to keyStoreCtx
  *
- * @retval SEOS_ERROR_NOT_FOUND
+ * @return seos_err_t
  *
  */
 seos_err_t
