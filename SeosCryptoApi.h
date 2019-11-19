@@ -650,11 +650,14 @@ SeosCryptoApi_keyFree(SeosCryptoCtx*                ctx,
  * (verification) are possible.
  *
  * Currently supported algorithms are:
- * - RSA according to PKCS#1
+ * - RSA according to PKCS#1 v1.5
+ * - RSA according to PKCS#1 v2.1
  *
  * @param ctx (required) pointer to the seos crypto context
  * @param pSigHandle (required) pointer to signature handle
  * @param algorithm (required) signature algorithm to use
+ * @param digest (required) digest algorithm used for hashes processid with this
+ * signature object
  * @param prvHandle (optional) key to use for private operations
  * @param pubHandle (optional) key to use for public operations
  *
@@ -669,6 +672,7 @@ seos_err_t
 SeosCryptoApi_signatureInit(SeosCryptoCtx*                      ctx,
                             SeosCrypto_SignatureHandle*         pSigHandle,
                             const SeosCryptoSignature_Algorithm algorithm,
+                            const SeosCryptoDigest_Algorithm    digest,
                             const SeosCrypto_KeyHandle          prvHandle,
                             const SeosCrypto_KeyHandle          pubHandle);
 
