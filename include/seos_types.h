@@ -1,0 +1,16 @@
+/*
+ *  SEOS Chanmux helper definitions
+ *
+ *  Copyright (C) 2019, Hensoldt Cyber GmbH
+ */
+
+#pragma once
+
+#include <stddef.h>
+
+
+typedef struct
+{
+    void*          buffer;
+    size_t         len;
+} seos_shared_buffer_t;
