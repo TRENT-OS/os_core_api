@@ -2,7 +2,12 @@
  *  seos_nw_api.h
  *
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
-*/
+ */
+
+#pragma once
+
+#include "SeosError.h"
+#include <stdint.h>
 
 
 /**
@@ -11,11 +16,7 @@
  *
  * @brief Network stack API.These  API mostly interacts with core SEOS NWStack. \n
  *        This layer mostly supports all API's for the app for socket related operations.
- *
- *
  */
-#pragma once
-
 
 /**
  * @brief   seos_nw_server_struct contains elements that must be filled by APP to configure it
