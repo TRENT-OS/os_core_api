@@ -8,6 +8,8 @@
 
 #include <stddef.h>
 
+typedef void (*event_wait_func_t)(void);
+typedef void (*event_notify_func_t)(void);
 
 typedef struct
 {
