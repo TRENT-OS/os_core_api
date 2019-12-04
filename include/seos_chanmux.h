@@ -15,3 +15,11 @@ typedef struct
     unsigned int          id;
     seos_shared_buffer_t  port;
 } ChanMux_channelCtx_t;
+
+
+typedef struct
+{
+    unsigned int          id;
+    seos_shared_buffer_t  port_read;
+    seos_shared_buffer_t  port_write;
+} ChanMux_channelDuplexCtx_t;
