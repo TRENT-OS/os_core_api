@@ -25,11 +25,10 @@ typedef enum
 SeosCryptoApi_Signature_Alg;
 
 typedef struct SeosCryptoLib_Signature SeosCryptoLib_Signature;
-typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
 typedef struct
 {
     SeosCryptoLib_Signature* signature;
-    SeosCryptoApi_Context* api;
+    SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Signature;
 
 /**
@@ -61,7 +60,7 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Signature_init(
-    SeosCryptoApi_Context*            api,
+    SeosCryptoApi*                    api,
     SeosCryptoApi_Signature*          obj,
     const SeosCryptoApi_Signature_Alg algorithm,
     const SeosCryptoApi_Digest_Alg    digest,

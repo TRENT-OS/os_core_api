@@ -28,11 +28,10 @@ typedef enum
 SeosCryptoApi_Mac_Alg;
 
 typedef struct SeosCryptoLib_Mac SeosCryptoLib_Mac;
-typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
 typedef struct
 {
     SeosCryptoLib_Mac* mac;
-    SeosCryptoApi_Context* api;
+    SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Mac;
 
 /**
@@ -57,7 +56,7 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Mac_init(
-    SeosCryptoApi_Context*      api,
+    SeosCryptoApi*              api,
     SeosCryptoApi_Mac*          obj,
     const SeosCryptoApi_Mac_Alg algorithm);
 

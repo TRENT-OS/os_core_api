@@ -67,11 +67,10 @@ typedef enum
 SeosCryptoApi_Key_Type;
 
 typedef struct SeosCryptoLib_Key SeosCryptoLib_Key;
-typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
 typedef struct
 {
     SeosCryptoLib_Key* key;
-    SeosCryptoApi_Context* api;
+    SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Key;
 
 typedef struct
@@ -317,7 +316,7 @@ SeosCryptoApi_Key_Data;
  */
 seos_err_t
 SeosCryptoApi_Key_generate(
-    SeosCryptoApi_Context*        api,
+    SeosCryptoApi*                api,
     SeosCryptoApi_Key*            obj,
     const SeosCryptoApi_Key_Spec* spec);
 
@@ -416,7 +415,7 @@ SeosCryptoApi_Key_generate(
  */
 seos_err_t
 SeosCryptoApi_Key_import(
-    SeosCryptoApi_Context*        api,
+    SeosCryptoApi*                api,
     SeosCryptoApi_Key*            obj,
     const SeosCryptoApi_Key*      wrapObj,
     const SeosCryptoApi_Key_Data* keyData);
@@ -538,7 +537,7 @@ SeosCryptoApi_Key_getParams(
  */
 seos_err_t
 SeosCryptoApi_Key_loadParams(
-    SeosCryptoApi_Context*        api,
+    SeosCryptoApi*                api,
     const SeosCryptoApi_Key_Param name,
     void*                         param,
     size_t*                       paramSize);

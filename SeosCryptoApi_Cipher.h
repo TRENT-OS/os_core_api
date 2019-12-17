@@ -37,11 +37,10 @@ typedef enum
 SeosCryptoApi_Cipher_Alg;
 
 typedef struct SeosCryptoLib_Cipher SeosCryptoLib_Cipher;
-typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
 typedef struct
 {
     SeosCryptoLib_Cipher* cipher;
-    SeosCryptoApi_Context* api;
+    SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Cipher;
 
 /**
@@ -78,7 +77,7 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Cipher_init(
-    SeosCryptoApi_Context*         api,
+    SeosCryptoApi*                 api,
     SeosCryptoApi_Cipher*          obj,
     const SeosCryptoApi_Cipher_Alg algorithm,
     const SeosCryptoApi_Key*       key,

@@ -30,11 +30,10 @@ typedef enum
 SeosCryptoApi_Digest_Alg;
 
 typedef struct SeosCryptoLib_Digest SeosCryptoLib_Digest;
-typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
 typedef struct
 {
     SeosCryptoLib_Digest* digest;
-    SeosCryptoApi_Context* api;
+    SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Digest;
 
 /**
@@ -59,7 +58,7 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Digest_init(
-    SeosCryptoApi_Context*         api,
+    SeosCryptoApi*                 api,
     SeosCryptoApi_Digest*          obj,
     const SeosCryptoApi_Digest_Alg algorithm);
 

@@ -49,7 +49,7 @@ typedef int (SeosCryptoApi_Rng_EntropyFunc)(
  */
 seos_err_t
 SeosCryptoApi_Rng_getBytes(
-    SeosCryptoApi_Context*       api,
+    SeosCryptoApi*               api,
     const SeosCryptoApi_Rng_Flag flags,
     void*                        buf,
     const size_t                 bufSize);
@@ -70,8 +70,8 @@ SeosCryptoApi_Rng_getBytes(
  */
 seos_err_t
 SeosCryptoApi_Rng_reseed(
-    SeosCryptoApi_Context* api,
-    const void*            seed,
-    const size_t           seedSize);
+    SeosCryptoApi* api,
+    const void*    seed,
+    const size_t   seedSize);
 
 /** @} */
