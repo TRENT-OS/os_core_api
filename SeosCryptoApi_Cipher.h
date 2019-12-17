@@ -16,9 +16,6 @@
 
 #include <stddef.h>
 
-typedef struct SeosCryptoCipher SeosCryptoCipher;
-typedef SeosCryptoCipher* SeosCryptoApi_Cipher;
-
 #define SeosCryptoApi_Cipher_SIZE_AES_BLOCK         16
 #define SeosCryptoApi_Cipher_SIZE_AES_CBC_IV        16
 #define SeosCryptoApi_Cipher_SIZE_AES_GCM_IV        12
@@ -39,6 +36,14 @@ typedef enum
 }
 SeosCryptoApi_Cipher_Alg;
 
+typedef struct SeosCryptoLib_Cipher SeosCryptoLib_Cipher;
+typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
+typedef struct
+{
+    SeosCryptoLib_Cipher* cipher;
+    SeosCryptoApi_Context* api;
+} SeosCryptoApi_Cipher;
+
 /**
  * @brief Initialize a cipher object
  *
@@ -53,10 +58,10 @@ SeosCryptoApi_Cipher_Alg;
  * - AES-GCM requires 12 bytes of IV
  * - AES-CBC requires 16 bytes of IV
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param pCipherHandle (required) pointer to cipher handle
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to the Crypto context
  * @param algorithm (required) cipher algorithm to use
- * @param keyHandle (required) handle of key to use for cipher operation
+ * @param key (required) handle of key to use for cipher operation
  * @param iv (optional) initialization vector required for some ciphers
  * @param ivSize (optional) length of initialization vector
  *
@@ -73,18 +78,17 @@ SeosCryptoApi_Cipher_Alg;
  */
 seos_err_t
 SeosCryptoApi_Cipher_init(
-    SeosCryptoApi_Context*         ctx,
-    SeosCryptoApi_Cipher*          pCipherHandle,
+    SeosCryptoApi_Context*         api,
+    SeosCryptoApi_Cipher*          obj,
     const SeosCryptoApi_Cipher_Alg algorithm,
-    const SeosCryptoApi_Key        keyHandle,
+    const SeosCryptoApi_Key*       key,
     const void*                    iv,
     const size_t                   ivSize);
 
 /**
  * @brief Finish cipher object
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param cipherHandle (required) initialized cipher handle
+ * @param obj (required) pointer to the Cipher context
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -93,8 +97,7 @@ SeosCryptoApi_Cipher_init(
  */
 seos_err_t
 SeosCryptoApi_Cipher_free(
-    SeosCryptoApi_Context*     ctx,
-    const SeosCryptoApi_Cipher cipherHandle);
+    SeosCryptoApi_Cipher* obj);
 
 /**
  * @brief Process data blocks with the cipher
@@ -108,8 +111,7 @@ SeosCryptoApi_Cipher_free(
  * - AES-GCM can deal with non-aligned blocks, but only in the last call to
  *   this function.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param cipherHandle (required) initialized cipher handle
+ * @param obj (required) pointer to the Cipher context
  * @param input (required) input data for cipher
  * @param inputSize (required) length of input data
  * @param output (required) buffer for resulting output data
@@ -119,7 +121,6 @@ SeosCryptoApi_Cipher_free(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  * this includes passing \p inputSize that is not aligned with the underlying
  * blocksize
@@ -133,12 +134,11 @@ SeosCryptoApi_Cipher_free(
  */
 seos_err_t
 SeosCryptoApi_Cipher_process(
-    SeosCryptoApi_Context*     ctx,
-    const SeosCryptoApi_Cipher cipherHandle,
-    const void*                input,
-    const size_t               inputSize,
-    void*                      output,
-    size_t*                    outputSize);
+    SeosCryptoApi_Cipher* obj,
+    const void*           input,
+    const size_t          inputSize,
+    void*                 output,
+    size_t*               outputSize);
 
 /**
  * @brief Start encryption of data (only relevant for some algorithms)
@@ -149,14 +149,12 @@ SeosCryptoApi_Cipher_process(
  *
  * Will not work with algorithms that don't require it (e.g., AES-ECB).
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param cipherHandle (required) initialized cipher handle
+ * @param obj (required) pointer to the Cipher context
  * @param input (optional) input data for cipher
  * @param inputSize (optional) length of input data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if cipher object does not require start, or if it
  * was already started or if the internal cryptographic operation failed
@@ -165,10 +163,9 @@ SeosCryptoApi_Cipher_process(
  */
 seos_err_t
 SeosCryptoApi_Cipher_start(
-    SeosCryptoApi_Context*     ctx,
-    const SeosCryptoApi_Cipher cipherHandle,
-    const void*                input,
-    const size_t               inputSize);
+    SeosCryptoApi_Cipher* obj,
+    const void*           input,
+    const size_t          inputSize);
 
 /**
  * @brief Finish encryption of data (only relevant for some algorithms)
@@ -183,8 +180,7 @@ SeosCryptoApi_Cipher_start(
  *
  * Will not work with algorithms that don't require it.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param cipherHandle (required) initialized cipher handle
+ * @param obj (required) pointer to the Cipher context
  * @param tag (required) input/output buffer for final cipher operation
  * @param tagSize (required) lenght of input/size of output buffer, will be set
  * to actual amount of bytes written if function succeeds (or the minimum size
@@ -192,7 +188,6 @@ SeosCryptoApi_Cipher_start(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if cipher does not require finalize, or if cipher
  * was already finalized or if it was not started and did not process any data yet
@@ -204,9 +199,8 @@ SeosCryptoApi_Cipher_start(
  */
 seos_err_t
 SeosCryptoApi_Cipher_finalize(
-    SeosCryptoApi_Context*     ctx,
-    const SeosCryptoApi_Cipher cipherHandle,
-    void*                      tag,
-    size_t*                    tagSize);
+    SeosCryptoApi_Cipher* obj,
+    void*                 tag,
+    size_t*               tagSize);
 
 /** @} */

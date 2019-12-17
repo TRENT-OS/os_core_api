@@ -16,17 +16,13 @@
 
 #include <stddef.h>
 
-typedef struct SeosCryptoRng SeosCryptoRng;
-typedef SeosCryptoRng* SeosCryptoApi_Rng;
-
 typedef enum
 {
     SeosCryptoApi_Rng_FLAG_NONE = 0,
 } SeosCryptoApi_Rng_Flag;
 
 typedef int (SeosCryptoApi_Rng_EntropyFunc)(
-    void* ctx, unsigned char* buf,
-    size_t len);
+    void* ctx, unsigned char* buf, size_t len);
 
 /**
  * @brief Generate random numbers
@@ -38,7 +34,7 @@ typedef int (SeosCryptoApi_Rng_EntropyFunc)(
  * from the entropy source into the RNG state to enhance prediction resistance.
  * This behavior can be modified by passing respective \p flags.
  *
- * @param ctx (required) pointer to the seos crypto context
+ * @param api (required) pointer to the seos crypto context
  * @param flags (optional) flags for RNG operation
  * @param buf (required) buffer for random bytes
  * @param bufSize (required) amount of random bytes requested
@@ -53,7 +49,7 @@ typedef int (SeosCryptoApi_Rng_EntropyFunc)(
  */
 seos_err_t
 SeosCryptoApi_Rng_getBytes(
-    SeosCryptoApi_Context*       ctx,
+    SeosCryptoApi_Context*       api,
     const SeosCryptoApi_Rng_Flag flags,
     void*                        buf,
     const size_t                 bufSize);
@@ -61,7 +57,7 @@ SeosCryptoApi_Rng_getBytes(
 /**
  * @brief Reseed the internal RNG
  *
- * @param ctx (required) pointer to the seos crypto context
+ * @param api (required) pointer to the seos crypto context
  * @param seed (required) additional seed to feed into RNG state
  * @param seedSize (required) length of seed data
  *
@@ -74,7 +70,7 @@ SeosCryptoApi_Rng_getBytes(
  */
 seos_err_t
 SeosCryptoApi_Rng_reseed(
-    SeosCryptoApi_Context* ctx,
+    SeosCryptoApi_Context* api,
     const void*            seed,
     const size_t           seedSize);
 

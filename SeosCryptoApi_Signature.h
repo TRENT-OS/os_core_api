@@ -16,9 +16,6 @@
 
 #include <stddef.h>
 
-typedef struct SeosCryptoSignature SeosCryptoSignature;
-typedef SeosCryptoSignature* SeosCryptoApi_Signature;
-
 typedef enum
 {
     SeosCryptoApi_Signature_ALG_NONE = 0,
@@ -26,6 +23,14 @@ typedef enum
     SeosCryptoApi_Signature_ALG_RSA_PKCS1_V21
 }
 SeosCryptoApi_Signature_Alg;
+
+typedef struct SeosCryptoLib_Signature SeosCryptoLib_Signature;
+typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
+typedef struct
+{
+    SeosCryptoLib_Signature* signature;
+    SeosCryptoApi_Context* api;
+} SeosCryptoApi_Signature;
 
 /**
  * @brief Initialize a signature object
@@ -39,8 +44,8 @@ SeosCryptoApi_Signature_Alg;
  * - RSA according to PKCS#1 v1.5
  * - RSA according to PKCS#1 v2.1
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param pSigHandle (required) pointer to signature handle
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to Signature object
  * @param algorithm (required) signature algorithm to use
  * @param digest (required) digest algorithm used for hashes processid with this
  * signature object
@@ -56,17 +61,17 @@ SeosCryptoApi_Signature_Alg;
  */
 seos_err_t
 SeosCryptoApi_Signature_init(
-    SeosCryptoApi_Context*            ctx,
-    SeosCryptoApi_Signature*          pSigHandle,
+    SeosCryptoApi_Context*            api,
+    SeosCryptoApi_Signature*          obj,
     const SeosCryptoApi_Signature_Alg algorithm,
     const SeosCryptoApi_Digest_Alg    digest,
-    const SeosCryptoApi_Key           prvHandle,
-    const SeosCryptoApi_Key           pubHandle);
+    const SeosCryptoApi_Key*          prvKey,
+    const SeosCryptoApi_Key*          pubKey);
 
 /**
  * @brief Finish a signature object
  *
- * @param ctx (required) pointer to the seos crypto context
+ * @param obj (required) pointer to the Signatur object
  * @param sigHandle (required) signature handle
  *
  * @return an error code
@@ -76,8 +81,7 @@ SeosCryptoApi_Signature_init(
  */
 seos_err_t
 SeosCryptoApi_Signature_free(
-    SeosCryptoApi_Context*        ctx,
-    const SeosCryptoApi_Signature sigHandle);
+    SeosCryptoApi_Signature* obj);
 
 /**
  * @brief Sign a hash value
@@ -86,8 +90,7 @@ SeosCryptoApi_Signature_free(
  * signature object; for this the \p prvHandle param must be set during signature
  * initialization.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param sigHandle (required) signature handle
+ * @param obj (required) pointer to the Signature object
  * @param hash (required) hash value to sign
  * @param hashSize (required) size of hash
  * @param signature (required) buffer for resulting signature
@@ -97,7 +100,6 @@ SeosCryptoApi_Signature_free(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
  * if the cryptographic operation failed
@@ -108,12 +110,11 @@ SeosCryptoApi_Signature_free(
  */
 seos_err_t
 SeosCryptoApi_Signature_sign(
-    SeosCryptoApi_Context*        ctx,
-    const SeosCryptoApi_Signature sigHandle,
-    const void*                   hash,
-    const size_t                  hashSize,
-    void*                         signature,
-    size_t*                       signatureSize);
+    SeosCryptoApi_Signature* obj,
+    const void*              hash,
+    const size_t             hashSize,
+    void*                    signature,
+    size_t*                  signatureSize);
 
 /**
  * @brief Verify signature over a hash
@@ -122,8 +123,7 @@ SeosCryptoApi_Signature_sign(
  * fixed size (16-32 bytes). For this operation to work, the  \p pubHandle
  * param must be set during signature initialization.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param sigHandle (required) signature handle
+ * @param obj (required) pointer to the Signature object
  * @param hash (required) hash value to recompute signature for
  * @param hashSize (required) size of hash
  * @param signature (required) buffer for signature to verify
@@ -131,7 +131,6 @@ SeosCryptoApi_Signature_sign(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  * this includes passing a \p signatureSize that is unexpected (due to the key)
  * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
@@ -141,11 +140,10 @@ SeosCryptoApi_Signature_sign(
  */
 seos_err_t
 SeosCryptoApi_Signature_verify(
-    SeosCryptoApi_Context*        ctx,
-    const SeosCryptoApi_Signature sigHandle,
-    const void*                   hash,
-    const size_t                  hashSize,
-    const void*                   signature,
-    const size_t                  signatureSize);
+    SeosCryptoApi_Signature* obj,
+    const void*              hash,
+    const size_t             hashSize,
+    const void*              signature,
+    const size_t             signatureSize);
 
 /** @} */

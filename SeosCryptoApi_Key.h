@@ -16,9 +16,6 @@
 #include <stdint.h>
 #include <stddef.h>
 
-typedef struct SeosCryptoKey SeosCryptoKey;
-typedef SeosCryptoKey* SeosCryptoApi_Key;
-
 #define SeosCryptoApi_Key_SIZE_AES_MAX      32      ///< max 256 bit
 #define SeosCryptoApi_Key_SIZE_AES_MIN      16      ///< min 128 bit
 #define SeosCryptoApi_Key_SIZE_RSA_MAX      512     ///< max 4096 bit
@@ -68,6 +65,14 @@ typedef enum
     SeosCryptoApi_Key_TYPE_ECC_PUB
 }
 SeosCryptoApi_Key_Type;
+
+typedef struct SeosCryptoLib_Key SeosCryptoLib_Key;
+typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
+typedef struct
+{
+    SeosCryptoLib_Key* key;
+    SeosCryptoApi_Context* api;
+} SeosCryptoApi_Key;
 
 typedef struct
 {
@@ -296,8 +301,8 @@ SeosCryptoApi_Key_Data;
  *  };
  *  \endcode
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param pKeyHandle (required) pointer to key handle
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to Key object
  * @param spec (required) specification of key to create
  *
  * @return an error code
@@ -312,46 +317,9 @@ SeosCryptoApi_Key_Data;
  */
 seos_err_t
 SeosCryptoApi_Key_generate(
-    SeosCryptoApi_Context*        ctx,
-    SeosCryptoApi_Key*            pKeyHandle,
+    SeosCryptoApi_Context*        api,
+    SeosCryptoApi_Key*            obj,
     const SeosCryptoApi_Key_Spec* spec);
-
-/**
- * @brief Make a public key from a private key
- *
- * This function allocates a new key object and computes a public key based on
- * an exsiting private key. In order to make a keypair, generate() and makePublic()
- * have to be called in sequence.
- *
- * A public key can be computed based on a private key \p prvKeyHandle of this type:
- * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key
- * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key
- * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
- *
- * The following values are supported for as flags for \p attribs:
- * - `SeosCryptoApi_Key_FLAG_NONE`:                Key cannot be exported
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW`:      Key is exportable in 'raw' form
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED`:  Key has to be wrapped before export
- *
- * @param ctx (required) pointer to the seos crypto context
- * @param pPrvKeyHandle (required) pointer to handle for private key
- * @param pPubKeyHandle (required) pointer to handle for public key
- * @param attribs (required) attributes to assign to public key
- *
- * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p prvKeyHandle is not supported
- * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
- */
-seos_err_t
-SeosCryptoApi_Key_makePublic(
-    SeosCryptoApi_Context*           ctx,
-    SeosCryptoApi_Key*               pPubHandle,
-    const SeosCryptoApi_Key          prvKeyHandle,
-    const SeosCryptoApi_Key_Attribs* attribs);
 
 /**
  * @brief Import key data into key object from buffer
@@ -430,14 +398,13 @@ SeosCryptoApi_Key_makePublic(
  *  };
  *  \endcode
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param pKeyHandle (required) pointer to key handle
- * @param wrapKeyHandle (optional) handle to existing key for unwrapping
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to the Key object
+ * @param wrapObj (optional) key to use for unwrapping \p keyData
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid;
  * this includes supplying \p keyData that has internal inconsistencies (e.g.
  * too long buffer lengths) or key size that do not match what is expected
@@ -449,10 +416,45 @@ SeosCryptoApi_Key_makePublic(
  */
 seos_err_t
 SeosCryptoApi_Key_import(
-    SeosCryptoApi_Context*        ctx,
-    SeosCryptoApi_Key*            pKeyHandle,
-    const SeosCryptoApi_Key       wrapKeyHandle,
+    SeosCryptoApi_Context*        api,
+    SeosCryptoApi_Key*            obj,
+    const SeosCryptoApi_Key*      wrapObj,
     const SeosCryptoApi_Key_Data* keyData);
+
+
+/**
+ * @brief Make a public key from a private key
+ *
+ * This function allocates a new key object and computes a public key based on
+ * an exsiting private key. In order to make a keypair, generate() and makePublic()
+ * have to be called in sequence.
+ *
+ * A public key can be computed based on a private key \p prvKeyHandle of this type:
+ * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key
+ * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key
+ * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
+ *
+ * The following values are supported for as flags for \p attribs:
+ * - `SeosCryptoApi_Key_FLAG_NONE`:                Key cannot be exported
+ * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW`:      Key is exportable in 'raw' form
+ * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED`:  Key has to be wrapped before export
+ *
+ * @param obj (required) pointer to the Key object
+ * @param prvObj (required) private Key object
+ * @param attribs (required) attributes to assign to public key
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p prvKeyHandle is not supported
+ * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
+ */
+seos_err_t
+SeosCryptoApi_Key_makePublic(
+    SeosCryptoApi_Key*               obj,
+    const SeosCryptoApi_Key*         prvObj,
+    const SeosCryptoApi_Key_Attribs* attribs);
 
 /**
  * @brief Export key data from key handle into buffer
@@ -463,14 +465,12 @@ SeosCryptoApi_Key_import(
  * before writing it to the buffer. If a key is not exportable, this function
  * will fail.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param keyHandle (required) handle of key to export
- * @param wrapKeyHandle (optional) handle of key used for wrapping the key
+ * @param obj (required) pointer to the Key object
+ * @param wrapObj (optional) key used for wrapping the exported key
  * @param keyData (required) buffer for key data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due to flags
  * set during creation of the key object
@@ -478,12 +478,10 @@ SeosCryptoApi_Key_import(
  * currently not supported)
  */
 seos_err_t
-SeosCryptoApi_Key_export
-(
-    SeosCryptoApi_Context*  ctx,
-    const SeosCryptoApi_Key keyHandle,
-    const SeosCryptoApi_Key wrapKeyHandle,
-    SeosCryptoApi_Key_Data* keyData);
+SeosCryptoApi_Key_export(
+    const SeosCryptoApi_Key* obj,
+    const SeosCryptoApi_Key* wrapObj,
+    SeosCryptoApi_Key_Data*  keyData);
 
 /**
  * @brief Get shared parameters from key
@@ -493,8 +491,7 @@ SeosCryptoApi_Key_export
  * exportable flag is ignored here, as these are public parameters which may be
  * needed to generate more keys (e.g., in case of key exchange).
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param keyHandle (required) handle of key to export
+ * @param obj (required) pointer to the Key object
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
  * written bytes if function succeeds (or the minimum size if it fails due to too
@@ -502,7 +499,6 @@ SeosCryptoApi_Key_export
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_NOT_SUPPORTED if key has no exportable parameters
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
@@ -512,10 +508,9 @@ SeosCryptoApi_Key_export
  */
 seos_err_t
 SeosCryptoApi_Key_getParams(
-    SeosCryptoApi_Context*  ctx,
-    const SeosCryptoApi_Key keyHandle,
-    void*                   param,
-    size_t*                 paramSize);
+    const SeosCryptoApi_Key* obj,
+    void*                    param,
+    size_t*                  paramSize);
 
 /**
  * @brief Load pre-defined parameters
@@ -524,7 +519,7 @@ SeosCryptoApi_Key_getParams(
  * e.g. use SECP256r1 curve or a fixed DH group. This function allows to read those
  * parameters, so they can be used with a PARAM spec to generate keys.
  *
- * @param ctx (required) pointer to the seos crypto context
+ * @param api (required) pointer to the seos crypto context
  * @param name (required) name of the parameter set
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
@@ -533,7 +528,6 @@ SeosCryptoApi_Key_getParams(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter
  * set
@@ -544,7 +538,7 @@ SeosCryptoApi_Key_getParams(
  */
 seos_err_t
 SeosCryptoApi_Key_loadParams(
-    SeosCryptoApi_Context*        ctx,
+    SeosCryptoApi_Context*        api,
     const SeosCryptoApi_Key_Param name,
     void*                         param,
     size_t*                       paramSize);
@@ -555,17 +549,14 @@ SeosCryptoApi_Key_loadParams(
  * This function frees the memory associated with the key object and zeroizes
  * any key material that was stored internally.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param keyHandle (required) initialized key handle
+ * @param obj (required) pointer to the Key object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
 SeosCryptoApi_Key_free(
-    SeosCryptoApi_Context*  ctx,
-    const SeosCryptoApi_Key keyHandle);
+    SeosCryptoApi_Key* obj);
 
 /** @} */

@@ -16,9 +16,6 @@
 
 #include <stddef.h>
 
-typedef struct SeosCryptoAgreement SeosCryptoAgreement;
-typedef SeosCryptoAgreement* SeosCryptoApi_Agreement;
-
 typedef enum
 {
     SeosCryptoApi_Agreement_ALG_NONE = 0,
@@ -26,6 +23,14 @@ typedef enum
     SeosCryptoApi_Agreement_ALG_ECDH
 }
 SeosCryptoApi_Agreement_Alg;
+
+typedef struct SeosCryptoLib_Agreement SeosCryptoLib_Agreement;
+typedef struct SeosCryptoApi_Context SeosCryptoApi_Context;
+typedef struct
+{
+    SeosCryptoLib_Agreement* agreement;
+    SeosCryptoApi_Context* api;
+} SeosCryptoApi_Agreement;
 
 /**
  * @brief Initialize an agreement object
@@ -38,10 +43,10 @@ SeosCryptoApi_Agreement_Alg;
  * - DH
  * - ECDH
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param pAgrHandle (required) pointer to agreement handle
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to Agreement object
  * @param algorithm (required) key agreement algorithm to use
- * @param prvHandle (required) handle of private key to use for key agreement
+ * @param prvKey (required) handle of private key to use for key agreement
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -53,26 +58,23 @@ SeosCryptoApi_Agreement_Alg;
  */
 seos_err_t
 SeosCryptoApi_Agreement_init(
-    SeosCryptoApi_Context*            ctx,
-    SeosCryptoApi_Agreement*          pAgrHandle,
+    SeosCryptoApi_Context*            api,
+    SeosCryptoApi_Agreement*          obj,
     const SeosCryptoApi_Agreement_Alg algorithm,
-    const SeosCryptoApi_Key           prvHandle);
+    const SeosCryptoApi_Key*          prvKey);
 
 /**
  * @brief Finish a agreement object
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param agrHandle (required) initialized agreement handle
+ * @param obj (required) pointer to the Agreement object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
 SeosCryptoApi_Agreement_free(
-    SeosCryptoApi_Context*        ctx,
-    const SeosCryptoApi_Agreement agrHandle);
+    SeosCryptoApi_Agreement* obj);
 
 /**
  * @brief Agree on a shared value
@@ -85,9 +87,8 @@ SeosCryptoApi_Agreement_free(
  * chosen for DH. A final processing step should be applied to the agreed key in
  * order to produce a symmetric key of suitable size.
  *
- * @param ctx (required) pointer to the seos crypto context
- * @param agrHandle (required) initialized agreement handle
- * @param pubHandle (required) public key to use for key agreement
+ * @param obj (required) pointer to the Agreement object
+ * @param pubKey (required) public key to use for key agreement
  * @param shared (required) buffer to hold shared secret
  * @param sharedSize (required) size of buffer, will be set to actual amount of
  * bytes written if function succeeds (or the minimum size if it fails due to too
@@ -95,7 +96,6 @@ SeosCryptoApi_Agreement_free(
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid*
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  * this includes passing the wrong type of key
  * @retval SEOS_ERROR_ABORTED if the underlying agreement operation failed
@@ -106,10 +106,9 @@ SeosCryptoApi_Agreement_free(
  */
 seos_err_t
 SeosCryptoApi_Agreement_agree(
-    SeosCryptoApi_Context*        ctx,
-    const SeosCryptoApi_Agreement agrHandle,
-    const SeosCryptoApi_Key       pubHandle,
-    void*                         shared,
-    size_t*                       sharedSize);
+    SeosCryptoApi_Agreement* obj,
+    const SeosCryptoApi_Key* pubKey,
+    void*                    shared,
+    size_t*                  sharedSize);
 
 /** @} */
