@@ -1,0 +1,21 @@
+/*
+ *  SEOS CAmkES Interface for a NIC
+ *
+ *  Copyright (C) 2019, Hensoldt Cyber GmbH
+ *
+ */
+
+
+procedure seos_if_nic {
+
+    include "SeosError.h";
+
+    seos_err_t
+    tx_data(
+        inout  size_t  len
+    );
+
+    seos_err_t
+    get_mac(void);
+
+};
