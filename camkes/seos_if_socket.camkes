@@ -10,51 +10,51 @@ procedure seos_if_socket {
 
     seos_err_t
     socket_create(
-        in     int       domain,
-        in     int       type,
-        inout  int       pHandle
+        in     unsigned  domain,
+        in     unsigned  type,
+        inout  unsigned  pHandle
     );
 
     seos_err_t
     socket_close(
-        in     int       handle
+        in     unsigned  handle
     );
 
     seos_err_t
     socket_write(
-        in     int       handle,
+        in     unsigned  handle,
         inout  size_t    pLen
     );
 
     seos_err_t
     socket_read(
-        in     int       handle,
+        in     unsigned  handle,
         inout  size_t    pLen
     );
 
     seos_err_t
     socket_connect(
-        in     int       handle,
+        in     unsigned  handle,
         in     string    serverName,
-        in     int       port
+        in     uint16_t  port
     );
 
     seos_err_t
     socket_accept(
-        in     int       handle,
-        inout  int       pClient,
+        in     unsigned  handle,
+        inout  unsigned  pHandleClient,
         in     uint16_t  port
     );
 
     seos_err_t
     socket_listen(
-        in     int       handle,
-        in     int       backlog
+        in     unsigned  handle,
+        in     unsigned  backlog
     );
 
     seos_err_t
     socket_bind(
-        in     int       handle,
+        in     unsigned  handle,
         in     uint16_t  port
     );
 };

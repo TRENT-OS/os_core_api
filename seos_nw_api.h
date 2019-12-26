@@ -27,10 +27,10 @@
 */
 typedef struct
 {
-    int domain;                /**< domain is as of now AF_INET */
-    int type;                  /**< type is as of now SOCK_STREAM */
-    uint16_t listen_port;      /**< port to listen to e.g. 5555 */
-    int backlog;               /**< number of connections accepted (currently fixed =1)*/
+    unsigned  domain;      /**< domain is as of now AF_INET */
+    unsigned  type;        /**< type is as of now SOCK_STREAM */
+    uint16_t  listen_port; /**< port to listen to e.g. 5555 */
+    unsigned  backlog;     /**< number of connections accepted (currently fixed =1)*/
 } seos_nw_server_struct;
 
 
@@ -45,10 +45,10 @@ typedef struct
 
 typedef struct
 {
-    int domain;                     /**< domain is as of now AF_INET */
-    int type;                       /**< type is as of now SOCK_STREAM */
-    const char* name;               /**< name must be IP addr to connect to */
-    uint16_t port;                  /**< port is for e.g. HTTP port 80 */
+    unsigned      domain; /**< domain is as of now AF_INET */
+    unsigned      type;   /**< type is as of now SOCK_STREAM */
+    const char *  name;   /**< name must be IP addr to connect to */
+    uint16_t port;        /**< port is for e.g. HTTP port 80 */
 } seos_nw_client_struct;
 
 
@@ -64,9 +64,9 @@ typedef struct
     #define SEOS_SOCK_DGRAM     1
 
 
-    typedef void*  Seos_nw_context;
-    typedef int    seos_socket_handle_t;
-    typedef int    seos_nw_server_handle_t;
+    typedef void *    Seos_nw_context;
+    typedef unsigned  seos_socket_handle_t;
+    typedef unsigned  seos_nw_server_handle_t;
 
 #endif
 
