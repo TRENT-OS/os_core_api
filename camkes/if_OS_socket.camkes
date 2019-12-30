@@ -7,54 +7,43 @@
 procedure if_OS_socket {
 
     include "OS_Error.h";
+    include "OS_Network.h";
 
     OS_Error_t
-    socket_create(
-        in     unsigned  domain,
-        in     unsigned  type,
-        inout  unsigned  pHandle
+    client_socket_create(
+        refin  OS_client_socket_params_t  params,
+        out    unsigned int               clientSockerHandle
     );
 
     OS_Error_t
-    socket_close(
-        in     unsigned  handle
-    );
-
-    OS_Error_t
-    socket_write(
-        in     unsigned  handle,
-        inout  size_t    pLen
-    );
-
-    OS_Error_t
-    socket_read(
-        in     unsigned  handle,
-        inout  size_t    pLen
-    );
-
-    OS_Error_t
-    socket_connect(
-        in     unsigned  handle,
-        in     string    serverName,
-        in     uint16_t  port
+    server_socket_create(
+        refin  OS_server_socket_params_t  params,
+        out    unsigned int               serverSocketHandle
     );
 
     OS_Error_t
     socket_accept(
-        in     unsigned  handle,
-        inout  unsigned  pHandleClient,
-        in     uint16_t  port
+        in     unsigned int  serverSocketHandle,
+        out    unsigned int  clientSockerHandle,
     );
 
     OS_Error_t
-    socket_listen(
-        in     unsigned  handle,
-        in     unsigned  backlog
+    socket_close(
+        in     unsigned int  socketHandle
     );
 
-    OS_Error_t
-    socket_bind(
-        in     unsigned  handle,
-        in     uint16_t  port
+    seos_err_t
+    socket_write(
+        in     unsigned int  socketHandle,
+        inout  size_t        len
+        // data is passed via data port
+    );
+
+    seos_err_t
+    seos_err_t
+    socket_read(
+        in     unsigned int  socketHandle,
+        inout  size_t        len
+        // data is passed via data port
     );
 };
