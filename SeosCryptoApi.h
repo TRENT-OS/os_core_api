@@ -20,6 +20,7 @@ typedef enum
 {
     SeosCryptoApi_Mode_LIBRARY = 0,
     SeosCryptoApi_Mode_RPC_CLIENT,
+    SeosCryptoApi_Mode_ROUTER,
     SeosCryptoApi_Mode_RPC_SERVER_WITH_LIBRARY,
 } SeosCryptoApi_Mode;
 
@@ -85,12 +86,19 @@ typedef struct
 
 typedef struct
 {
+    SeosCryptoApi_RpcClient_Config client;
+    SeosCryptoApi_Lib_Config lib;
+} SeosCryptoApi_Router_Config;
+
+typedef struct
+{
     SeosCryptoApi_Mode mode;
     SeosCryptoApi_MemIf mem;
     union
     {
         SeosCryptoApi_Lib_Config lib;
         SeosCryptoApi_RpcClient_Config client;
+        SeosCryptoApi_Router_Config router;
     } impl;
     SeosCryptoApi_RpcServer_Config server;
 } SeosCryptoApi_Config;
