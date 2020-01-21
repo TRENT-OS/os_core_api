@@ -484,6 +484,23 @@ SeosCryptoApi_Key_getParams(
     size_t*                  paramSize);
 
 /**
+ * @brief Get attributes from key
+ *
+ * All keys have a set of attributes which can be extracted with this function.
+ *
+ * @param obj (required) pointer to the Key object
+ * @param attribs (required) buffer for attributes
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ */
+seos_err_t
+SeosCryptoApi_Key_getAttribs(
+    const SeosCryptoApi_Key*   obj,
+    SeosCryptoApi_Key_Attribs* attribs);
+
+/**
  * @brief Load pre-defined parameters
  *
  * For some protocols, it is possible to agree on a set of pre-defined parameters,
