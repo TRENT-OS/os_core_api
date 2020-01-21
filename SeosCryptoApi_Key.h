@@ -46,8 +46,6 @@ typedef enum
 typedef enum
 {
     SeosCryptoApi_Key_FLAG_NONE                = 0,
-    SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW      = (1u << 0),
-    SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED  = (1u << 1)
 }
 SeosCryptoApi_Key_Flag;
 
@@ -399,7 +397,6 @@ SeosCryptoApi_Key_generate(
  *
  * @param api (required) pointer to the seos crypto context
  * @param obj (required) pointer to the Key object
- * @param wrapObj (optional) key to use for unwrapping \p keyData
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
@@ -408,35 +405,25 @@ SeosCryptoApi_Key_generate(
  * this includes supplying \p keyData that has internal inconsistencies (e.g.
  * too long buffer lengths) or key size that do not match what is expected
  * for algorithms where it is discretely defined (e.g., 120 bit key for AES)
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not `NULL` (wrapping is
- * not yet supported) or if the data (e.g. sizes, key type, etc.) in \p keyData
- * is not supported, e.g., size of DH prime is not within the expected range
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
 seos_err_t
 SeosCryptoApi_Key_import(
     SeosCryptoApi*                api,
     SeosCryptoApi_Key*            obj,
-    const SeosCryptoApi_Key*      wrapObj,
     const SeosCryptoApi_Key_Data* keyData);
-
 
 /**
  * @brief Make a public key from a private key
  *
  * This function allocates a new key object and computes a public key based on
- * an exsiting private key. In order to make a keypair, generate() and makePublic()
+ * an existing private key. In order to make a keypair, generate() and makePublic()
  * have to be called in sequence.
  *
  * A public key can be computed based on a private key \p prvKeyHandle of this type:
  * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key
  * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key
  * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
- *
- * The following values are supported for as flags for \p attribs:
- * - `SeosCryptoApi_Key_FLAG_NONE`:                Key cannot be exported
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW`:      Key is exportable in 'raw' form
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED`:  Key has to be wrapped before export
  *
  * @param obj (required) pointer to the Key object
  * @param prvObj (required) private Key object
@@ -459,27 +446,21 @@ SeosCryptoApi_Key_makePublic(
  * @brief Export key data from key handle into buffer
  *
  * If the key is exportable, this function will write the key material stored
- * in the object indicated by \p keyHandle to a buffer. If the key is to be wrapped,
- * a wrapping key must be given which then will be used to encrypt \p keyHandle
- * before writing it to the buffer. If a key is not exportable, this function
- * will fail.
+ * in the object indicated by \p keyHandle to a buffer. If a key is not exportable,
+ * this function will fail.
  *
  * @param obj (required) pointer to the Key object
- * @param wrapObj (optional) key used for wrapping the exported key
  * @param keyData (required) buffer for key data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due to flags
+ * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
  * set during creation of the key object
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p wrapKeyHandle is not `NULL` (wrapping is
- * currently not supported)
  */
 seos_err_t
 SeosCryptoApi_Key_export(
     const SeosCryptoApi_Key* obj,
-    const SeosCryptoApi_Key* wrapObj,
     SeosCryptoApi_Key_Data*  keyData);
 
 /**
