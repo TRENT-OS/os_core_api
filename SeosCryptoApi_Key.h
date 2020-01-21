@@ -15,6 +15,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 #define SeosCryptoApi_Key_SIZE_AES_MAX      32      ///< max 256 bit
 #define SeosCryptoApi_Key_SIZE_AES_MIN      16      ///< min 128 bit
@@ -187,6 +188,7 @@ SeosCryptoApi_Key_DhPrv;
 typedef struct
 {
     SeosCryptoApi_Key_Flag flags;
+    bool exportable;
 } SeosCryptoApi_Key_Attribs;
 
 typedef struct
@@ -253,12 +255,6 @@ SeosCryptoApi_Key_Data;
  * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
  * - `SeosCryptoApi_Key_TYPE_AES`:            AES key (128, 192, 256 bits)
  *
- * Keys can have attributes, which have a flag parameter. The following flags are
- * supported at key generation:
- * - `SeosCryptoApi_Key_FLAG_NONE`:                  Key cannot be exported
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW`:        Key is exportable in 'raw' form
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED`:    Key has to be wrapped before export
- *
  * Here are some example specs for typical keys:
  * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
  *    value). Use a parameter spec which already provides the prime P and base G.
@@ -282,8 +278,8 @@ SeosCryptoApi_Key_Data;
  *      .type = SeosCryptoApi_Key_SPECTYPE_BITS,
  *      .key = {
  *          .type = SeosCryptoApi_Key_TYPE_AES,
- *          .attribs.flags  = SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW,
- *          .params.bits    = 128
+ *          .attribs.exportable = true,
+ *          .params.bits = 128
  *      }
  *  };
  *  \endcode
@@ -322,8 +318,6 @@ SeosCryptoApi_Key_generate(
  * @brief Import key data into key object from buffer
  *
  * This function allocates a key object and imports key material from a buffer.
- * If the key material is wrapped, a wrapping key must be given so that the key
- * material can be unwrapped before importing it.
  *
  * During import, the sizes of the keys will be checked (e.g., based on the modulus
  * provided by RSA or based on the amounts of bytes passed for AES). The following
@@ -336,18 +330,13 @@ SeosCryptoApi_Key_generate(
  * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
  * - `SeosCryptoApi_Key_TYPE_SECP256r1_PUB`:  ECC public key for SECP256r1 curve
  *
- * The following values are supported as flags of the \p keyData attribs:
- * - `SeosCryptoApi_Key_FLAG_NONE`:                  Key cannot be exported
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW`:        Key is exportable in 'raw' form
- * - `SeosCryptoApi_Key_FLAG_EXPORTABLE_WRAPPED`:    Key has to be wrapped before export
- *
  * Here are some example key data configurations for typical types of keys:
  * 1. Define a 128-bit AES key that is exportable:
  *  \code{.c}
  *  static const SeosCryptoApi_Key_Data aes128Data =
  *  {
  *      .type = SeosCryptoApi_Key_TYPE_AES,
- *      .attribs.flags = SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW,
+ *      .attribs.exportable = true,
  *      .data.aes = {
  *          .bytes  = "0123456789abcdef",
  *          .len    = 16
@@ -359,6 +348,7 @@ SeosCryptoApi_Key_generate(
  *  static const SeosCryptoApi_Key_Data aes256Data =
  *  {
  *      .type = SeosCryptoApi_Key_TYPE_AES,
+ *      .attribs.exportable = false,
  *      .data.aes = {
  *          .bytes  = "0123456789abcdef0123456789abcdef",
  *          .len    = 32
@@ -370,6 +360,7 @@ SeosCryptoApi_Key_generate(
  *  static const SeosCryptoApi_Key_Data secp256r1PrvData =
  *  {
  *      .type = SeosCryptoApi_Key_TYPE_SECP256R1_PRV,
+ *      .attribs.exportable = false,
  *      .data.secp256r1.prv = {
  *          .dBytes = {0xc6, 0xef, 0x9c, 0x5d, ... 0x20},
  *          .dLen   = 32,
@@ -381,7 +372,7 @@ SeosCryptoApi_Key_generate(
  *  static const SeosCryptoApi_Key_Data rsa1024PrvData =
  *  {
  *      .type = SeosCryptoApi_Key_TYPE_RSA_PRV,
- *      .attribs.flags = SeosCryptoApi_Key_FLAG_EXPORTABLE_RAW,
+ *      .attribs.exportable = true,
  *      .data.rsa.prv = {
  *          .dBytes = {0x35, 0xe7, 0x4c, 0x80, ... 0x99},
  *          .dLen   = 128,
