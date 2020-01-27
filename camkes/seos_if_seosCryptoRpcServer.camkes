@@ -1,0 +1,290 @@
+/*
+ *  SEOS CAmkES Interface for the RPC Server of the Crypto API
+ *
+ *  Copyright (C) 2019-2020, Hensoldt Cyber GmbH
+ *
+ */
+
+procedure seos_if_seosCryptoRpcServer {
+    include "SeosCryptoApi.h";
+    include "SeosCryptoRpcServer.h";
+
+    // ---------------------------------- RNG ----------------------------------
+
+    seos_err_t
+    Rng_getBytes
+    (
+        in SeosCryptoApi_Ptr api,
+        in unsigned int flags,
+        in size_t bufSize
+    );
+    seos_err_t
+    Rng_reseed
+    (
+        in SeosCryptoApi_Ptr api,
+        in size_t seedLen
+    );
+
+    // ---------------------------------- MAC ----------------------------------
+
+    seos_err_t
+    Mac_init
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Mac_Ptr pMacObj,
+        in unsigned int algorithm
+    );
+    seos_err_t
+    Mac_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Mac_Ptr macObj
+    );
+    seos_err_t
+    Mac_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Mac_CPtr macObj
+    );
+    seos_err_t
+    Mac_start
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Mac_Ptr macObj,
+        in size_t secretSize
+    );
+    seos_err_t
+    Mac_process
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Mac_Ptr macObj,
+        in size_t dataSize
+    );
+    seos_err_t
+    Mac_finalize
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Mac_Ptr macObj,
+        inout size_t macSize
+    );
+
+    // -------------------------------- Digest ---------------------------------
+
+    seos_err_t
+    Digest_init
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Digest_Ptr pDigestObj,
+        in unsigned int algorithm
+    );
+    seos_err_t
+    Digest_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Digest_CPtr digestObj
+    );
+    seos_err_t
+    Digest_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Digest_Ptr digestObj
+    );
+    seos_err_t
+    Digest_clone
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Digest_Ptr dstDigObj,
+        in SeosCryptoLib_Digest_CPtr srcDigObj
+    );
+    seos_err_t
+    Digest_process
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Digest_Ptr digestObj,
+        in size_t inLen
+    );
+    seos_err_t
+    Digest_finalize
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Digest_Ptr digestObj,
+        inout size_t digestSize
+    );
+
+    // --------------------------------- Key -----------------------------------
+
+    seos_err_t
+    Key_generate
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Key_Ptr pKeyObj
+    );
+    seos_err_t
+    Key_makePublic
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Key_Ptr pPubKeyObj,
+        in SeosCryptoLib_Key_CPtr prvKeyObj
+    );
+    seos_err_t
+    Key_import
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Key_Ptr pKeyObj
+    );
+    seos_err_t
+    Key_export
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Key_CPtr keyObj
+    );
+    seos_err_t
+    Key_getParams
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Key_CPtr keyObj,
+        inout size_t paramSize
+    );
+    seos_err_t
+    Key_getAttribs
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Key_CPtr keyObj
+    );
+    seos_err_t
+    Key_loadParams
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoApi_Key_Param name,
+        inout size_t paramSize
+    );
+    seos_err_t
+    Key_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Key_CPtr keyObj
+    );
+    seos_err_t
+    Key_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Key_Ptr keyObj
+    );
+
+    // ------------------------------- Signature -------------------------------
+
+    seos_err_t
+    Signature_init
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Signature_Ptr pSigObj,
+        in unsigned int algorithm,
+        in unsigned int digest,
+        in SeosCryptoLib_Key_CPtr prvObj,
+        in SeosCryptoLib_Key_CPtr pubObj
+    );
+    seos_err_t
+    Signature_verify (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Signature_Ptr sigObj,
+        in size_t hashSize,
+        in size_t signatureSize
+    );
+    seos_err_t
+    Signature_sign
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Signature_Ptr sigObj,
+        in size_t hashSize,
+        inout size_t signatureSize
+    );
+    seos_err_t
+    Signature_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Signature_CPtr sigObj
+    );
+    seos_err_t
+    Signature_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Signature_Ptr sigObj
+    );
+
+    // ----------------------------- Agreement ---------------------------------
+
+    seos_err_t
+    Agreement_init
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Agreement_Ptr pAgrObj,
+        in unsigned int algorithm,
+        in SeosCryptoLib_Key_CPtr prvObj
+    );
+    seos_err_t
+    Agreement_agree
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Agreement_Ptr agrObj,
+        in SeosCryptoLib_Key_CPtr pubObj,
+        inout size_t sharedSize
+    );
+    seos_err_t
+    Agreement_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Agreement_CPtr agrObj
+    );
+    seos_err_t
+    Agreement_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Agreement_Ptr agrObj
+    );
+
+    // -------------------------------- Cipher ---------------------------------
+
+    seos_err_t
+    Cipher_init
+    (
+        in SeosCryptoApi_Ptr api,
+        inout SeosCryptoLib_Cipher_Ptr pCipherObj,
+        in unsigned int algorithm,
+        in SeosCryptoLib_Key_CPtr keyObj,
+        in size_t ivLen
+    );
+    seos_err_t
+    Cipher_exists
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Cipher_CPtr cipherObj
+    );
+    seos_err_t
+    Cipher_free
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Cipher_Ptr cipherObj
+    );
+    seos_err_t
+    Cipher_process
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        in size_t inLen,
+        inout size_t outSize
+    );
+    seos_err_t
+    Cipher_start
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        in size_t len
+    );
+    seos_err_t
+    Cipher_finalize
+    (
+        in SeosCryptoApi_Ptr api,
+        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        inout size_t len
+    );
+};
