@@ -133,6 +133,25 @@ SeosTlsApi_read(
     size_t*             dataSize);
 
 /**
+ * @brief Reset a TLS connection
+ *
+ * Reset an initialized and used TLS API context for re-use. After this, given
+ * that the associated socket is still connected, the TLS connection needs to be
+ * re-established with via the handshake() function.
+ *
+ * @param ctx (required) pointer to the TLS context
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
+ * @retval SEOS_ERROR_ABORTED if the re-set failed
+ */
+seos_err_t
+SeosTlsApi_reset(
+    SeosTlsApi_Context* ctx);
+
+/**
  * @brief Free a TLS object
  *
  * Frees the memory allocted with a TLS object.
