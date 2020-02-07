@@ -53,8 +53,9 @@
  *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
 seos_err_t
-SeosTlsApi_init(SeosTlsApi_Context*         ctx,
-                const SeosTlsApi_Config*    cfg);
+SeosTlsApi_init(
+    SeosTlsApi_Context*      ctx,
+    const SeosTlsApi_Config* cfg);
 
 /**
  * @brief Perform the TLS handshake
@@ -75,7 +76,8 @@ SeosTlsApi_init(SeosTlsApi_Context*         ctx,
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not already established
  */
 seos_err_t
-SeosTlsApi_handshake(SeosTlsApi_Context*    ctx);
+SeosTlsApi_handshake(
+    SeosTlsApi_Context* ctx);
 
 /**
  * @brief Write to TLS connection
@@ -97,9 +99,10 @@ SeosTlsApi_handshake(SeosTlsApi_Context*    ctx);
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established*
  */
 seos_err_t
-SeosTlsApi_write(SeosTlsApi_Context*    ctx,
-                 const void*            data,
-                 const size_t           dataSize);
+SeosTlsApi_write(
+    SeosTlsApi_Context* ctx,
+    const void*         data,
+    const size_t        dataSize);
 
 /**
  * @brief Read from a TLS connection
@@ -124,9 +127,10 @@ SeosTlsApi_write(SeosTlsApi_Context*    ctx,
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 seos_err_t
-SeosTlsApi_read(SeosTlsApi_Context*     ctx,
-                void*                   data,
-                size_t*                 dataSize);
+SeosTlsApi_read(
+    SeosTlsApi_Context* ctx,
+    void*               data,
+    size_t*             dataSize);
 
 /**
  * @brief Free a TLS object
@@ -141,6 +145,7 @@ SeosTlsApi_read(SeosTlsApi_Context*     ctx,
  *  NULL pointer, invalid sizes, etc.)
  */
 seos_err_t
-SeosTlsApi_free(SeosTlsApi_Context*     ctx);
+SeosTlsApi_free(
+    SeosTlsApi_Context* ctx);
 
 /** @} */
