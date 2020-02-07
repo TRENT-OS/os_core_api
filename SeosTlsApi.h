@@ -1,10 +1,10 @@
 /**
  * Copyright (C) 2019, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoTls SEOS TLS API
+ * @defgroup SeosTlsApi SEOS TLS API
  * @{
  *
- * @file SeosCryptoTls.h
+ * @file SeosTlsApi.h
  *
  * @brief SEOS TLS API library
  *
@@ -47,13 +47,15 @@
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
  * @retval SEOS_ERROR_NOT_SUPPORTED if any of the choices in \p policy are at this
- * point not supported by the TLS API (e.g., DH min lengths, ...)
+ *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
 seos_err_t
 SeosTlsApi_init(SeosTlsApi_Context*         ctx,
                 const SeosTlsApi_Config*    cfg);
+
 /**
  * @brief Perform the TLS handshake
  *
@@ -68,7 +70,9 @@ SeosTlsApi_init(SeosTlsApi_Context*         ctx,
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
+ * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not already established
  */
 seos_err_t
 SeosTlsApi_handshake(SeosTlsApi_Context*    ctx);
@@ -85,9 +89,12 @@ SeosTlsApi_handshake(SeosTlsApi_Context*    ctx);
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
  * @retval SEOS_ERROR_ABORTED if the write failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
+ * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established*
  */
 seos_err_t
 SeosTlsApi_write(SeosTlsApi_Context*    ctx,
@@ -109,9 +116,12 @@ SeosTlsApi_write(SeosTlsApi_Context*    ctx,
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
  * @retval SEOS_ERROR_ABORTED if the read failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
+ * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 seos_err_t
 SeosTlsApi_read(SeosTlsApi_Context*     ctx,
@@ -127,7 +137,8 @@ SeosTlsApi_read(SeosTlsApi_Context*     ctx,
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_ABORTED if the read failed
+ * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid sizes, etc.)
  */
 seos_err_t
 SeosTlsApi_free(SeosTlsApi_Context*     ctx);
