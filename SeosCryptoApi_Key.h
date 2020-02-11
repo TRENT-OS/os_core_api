@@ -17,6 +17,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "compiler.h"
+
 #define SeosCryptoApi_Key_SIZE_AES_MAX      32      ///< max 256 bit
 #define SeosCryptoApi_Key_SIZE_AES_MIN      16      ///< min 128 bit
 #define SeosCryptoApi_Key_SIZE_RSA_MAX      512     ///< max 4096 bit
@@ -71,6 +73,10 @@ typedef struct
     SeosCryptoLib_Key* key;
     SeosCryptoApi_Impl impl;
 } SeosCryptoApi_Key;
+
+// Add this for keys that are coming from another API instance to make usage
+// more clear and clean.
+typedef SeosCryptoLib_Key* SeosCryptoApi_Key_RemotePtr;
 
 typedef struct
 {
@@ -546,5 +552,43 @@ SeosCryptoApi_Key_loadParams(
 seos_err_t
 SeosCryptoApi_Key_free(
     SeosCryptoApi_Key* obj);
+
+/**
+ * @brief Migrate a key object from a remote API instance to our instance
+ *
+ * With the RPC functionality of the Crypto API it is possible to have an RPC
+ * server with an instance of the LIB in one component and an RPC client in
+ * another component that uses the same LIB.
+ *
+ * Now, if we are on the RPC client side and get a pointer to a Key object of the
+ * LIB (which lives in the RPC server), we need to use this function to create a
+ * Key object which can be used through the RPC client.
+ *
+ * The reason for this is that the API key object "knows" its API context and
+ * contains a pointer to the LIB Key object (which holds the actual data). This
+ * function sets the correct API context of a API key object (for the RPC client)
+ * together with the pointer to the actual Key (on the RPC server).
+ *
+ * @param api (required) pointer to the seos crypto context
+ * @param obj (required) pointer to the API Key object
+ * @param ptr (required) pointer to the LIB Key object from the remote instance
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ */
+seos_err_t
+SeosCryptoApi_Key_migrate(
+    SeosCryptoApi*                    api,
+    SeosCryptoApi_Key*                obj,
+    const SeosCryptoApi_Key_RemotePtr ptr);
+
+// Helper to get the RemotePtr from an API key object
+INLINE SeosCryptoApi_Key_RemotePtr
+SeosCryptoApi_Key_getPtr(
+    SeosCryptoApi_Key* obj)
+{
+    return (obj != NULL) ? obj->key : NULL;
+}
 
 /** @} */
