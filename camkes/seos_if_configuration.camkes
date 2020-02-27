@@ -8,8 +8,6 @@
 procedure configuration_server_interface {
     include "SeosError.h";
     include "seos_config_data_types.h";
-  
-    bool seos_configuration_IsUpAndRunning();
 
     seos_err_t seos_configuration_createHandle(SeosConfigLib_HandleKind handleKind, unsigned int id, out SeosConfigHandle handle);
 
