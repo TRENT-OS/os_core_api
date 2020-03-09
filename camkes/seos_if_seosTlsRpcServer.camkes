@@ -9,24 +9,18 @@ procedure seos_if_seosTlsRpcServer {
     include "SeosTlsApi_Impl.h";
 
     seos_err_t
-    handshake(
-        in SeosTlsRpcServer_Handle handle
-    );
+    handshake();
 
     seos_err_t
     write(
-        in SeosTlsRpcServer_Handle handle,
         in size_t dataSize
     );
 
     seos_err_t
     read(
-        in SeosTlsRpcServer_Handle handle,
         inout size_t dataSize
     );
 
     seos_err_t
-    reset(
-        in SeosTlsRpcServer_Handle handle
-    );
+    reset();
 };

@@ -154,10 +154,8 @@ typedef struct
     void* dataport;
 } SeosTlsRpc_Server_Config;
 
-typedef SeosTlsApi* SeosTlsRpcServer_Handle;
 typedef struct
 {
-    SeosTlsRpcServer_Handle handle;
     void* dataport;
 } SeosTlsRpc_Client_Config;
 
