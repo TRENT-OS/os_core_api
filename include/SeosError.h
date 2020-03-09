@@ -12,7 +12,7 @@ extern "C" {
 
 #include <assert.h>
 
-#define SEOS_ERROR_MIN -16
+#define SEOS_ERROR_MIN -18
 
 typedef enum
 {
@@ -30,7 +30,9 @@ typedef enum
     SEOS_ERROR_INVALID_HANDLE,
     SEOS_ERROR_INVALID_NAME,
     SEOS_ERROR_INVALID_PARAMETER,
+    SEOS_ERROR_INVALID_STATE,
     SEOS_ERROR_NOT_SUPPORTED,
+    SEOS_ERROR_NOT_IMPLEMENTED,
     SEOS_ERROR_GENERIC,
     SEOS_SUCCESS
 }
