@@ -5,8 +5,8 @@
  *
  */
 
-procedure seos_if_seosTlsRpcServer {
-    include "SeosTlsApi_Impl.h";
+procedure seos_if_tlsApi {
+    include "SeosTlsApi.h";
 
     seos_err_t
     handshake();
