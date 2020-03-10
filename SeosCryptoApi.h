@@ -40,7 +40,6 @@ typedef struct
         void* context;
     } server;
 } SeosCryptoApi;
-typedef SeosCryptoApi* SeosCryptoApi_Ptr;
 
 // Include all after definining the API+Impl above; also make sure that key and
 // digest are included first so they are defined for the other functions.
@@ -76,7 +75,6 @@ typedef struct
 typedef struct
 {
     void* dataPort;
-    SeosCryptoApi* api;
 } SeosCryptoApi_RpcClient_Config;
 
 typedef struct
@@ -146,7 +144,6 @@ typedef struct
  *          .free = free,
  *      },
  *      .impl.client.dataPort = clientDataport,
- *      .impl.client.api = serverApi
  *  };
  *  \endcode
  * 3. Run API instance as RPC server backend:
