@@ -5,9 +5,9 @@
  *
  */
 
-procedure seos_if_seosCryptoRpcServer {
+procedure seos_if_cryptoApi {
     include "SeosCryptoApi.h";
-    include "SeosCryptoRpcServer.h";
+    include "SeosCryptoRpc_Server.h";
 
     // ---------------------------------- RNG ----------------------------------
 
