@@ -125,7 +125,7 @@ typedef struct
         /**
          * Need an initialized crypto context for SEOS Crypto API
          */
-        SeosCryptoApi* context;
+        SeosCryptoApiH handle;
         /**
          * Here a certificate in PEM encoding (including headers) is passed to
          * the TLS API so it can be used to verify the root of the server's
