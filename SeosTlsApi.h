@@ -19,9 +19,15 @@
 #include <stdbool.h>
 
 /**
- * Maxmimum size of PEM-encoded CA cert we accept.
+ * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
+ * static buffer in the config struct and for now set such it may hold ONE large
+ * PEM-encoded certificate.
  */
 #define SeosTlsLib_SIZE_CA_CERT_MAX    3072
+/**
+ * Max values to enable static array allocation; we do not actually provide as
+ * many ciphersuites, yet.
+ */
 #define SeosTlsLib_MAX_CIPHERSUITES    8
 #define SeosTlsLib_MAX_DIGESTS         SeosTlsLib_MAX_CIPHERSUITES
 
@@ -38,7 +44,8 @@ typedef int (SeosTlsLib_SendFunc)(
     size_t               len);
 
 /**
- * Digest algorithms available
+ * Digest algorithms available; these need to match the values of the underlying
+ * TLS provider library
  */
 typedef enum
 {
@@ -47,7 +54,8 @@ typedef enum
 } SeosTlsLib_Digest;
 
 /**
- * Cipher suites available
+ * Cipher suites available; these need to match the values of the underlying
+ * TLS provider library
  */
 typedef enum
 {
@@ -58,16 +66,16 @@ typedef enum
 
 typedef enum
 {
-    SeosTlsLib_Flag_NONE          = 0x0000,
+    SeosTlsLib_Flag_NONE          = (1u << 0),
     /**
      *  Produce debug output from underlying protocol provider
      */
-    SeosTlsLib_Flag_DEBUG         = 0x0001,
+    SeosTlsLib_Flag_DEBUG         = (1u << 1),
     /**
      * Do not attempt to validate server certificate. This is dangerous,
      * so you better know what you are doing
      */
-    SeosTlsLib_Flag_NO_VERIFY     = 0x0002
+    SeosTlsLib_Flag_NO_VERIFY     = (1u << 2)
 } SeosTlsLib_Flag;
 
 /**
