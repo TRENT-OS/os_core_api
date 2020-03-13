@@ -24,12 +24,7 @@ typedef enum
 }
 SeosCryptoApi_Signature_Alg;
 
-typedef struct SeosCryptoLib_Signature SeosCryptoLib_Signature;
-typedef struct
-{
-    SeosCryptoLib_Signature* signature;
-    SeosCryptoApi_Impl impl;
-} SeosCryptoApi_Signature;
+typedef SeosCryptoApi_Proxy* SeosCryptoApi_SignatureH;
 
 /**
  * @brief Initialize a signature object
@@ -43,13 +38,13 @@ typedef struct
  * - RSA according to PKCS#1 v1.5
  * - RSA according to PKCS#1 v2.1
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to Signature object
- * @param algorithm (required) signature algorithm to use
- * @param digest (required) digest algorithm used for hashes processid with this
- * signature object
- * @param prvHandle (optional) key to use for private operations
- * @param pubHandle (optional) key to use for public operations
+ * @param hSig (required) pointer to handle of SEOS Crypto Signature object
+ * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hPrvKey (optional) handle of SEOS Crypto Key object to use as private key
+ * @param hPubKey (optional) handle of SEOS Crypto Key object to use as public key
+ * @param sigAlgorithm (required) signature algorithm to use
+ * @param digAlgorithm (required) digest algorithm used for hashes processed with
+ * this signature object (important for correct padding)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -60,18 +55,17 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Signature_init(
-    SeosCryptoApi*                    api,
-    SeosCryptoApi_Signature*          obj,
-    const SeosCryptoApi_Signature_Alg algorithm,
-    const SeosCryptoApi_Digest_Alg    digest,
-    const SeosCryptoApi_Key*          prvKey,
-    const SeosCryptoApi_Key*          pubKey);
+    SeosCryptoApi_SignatureH*         hSig,
+    const SeosCryptoApiH              hCrypto,
+    const SeosCryptoApi_KeyH          hPrvKey,
+    const SeosCryptoApi_KeyH          hPubKey,
+    const SeosCryptoApi_Signature_Alg sigAlgorithm,
+    const SeosCryptoApi_Digest_Alg    digAlgorithm);
 
 /**
  * @brief Finish a signature object
  *
- * @param obj (required) pointer to the Signatur object
- * @param sigHandle (required) signature handle
+ * @param hSig (required) handle of SEOS Crypto Signature object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -80,7 +74,7 @@ SeosCryptoApi_Signature_init(
  */
 seos_err_t
 SeosCryptoApi_Signature_free(
-    SeosCryptoApi_Signature* obj);
+    SeosCryptoApi_SignatureH hSig);
 
 /**
  * @brief Sign a hash value
@@ -89,7 +83,7 @@ SeosCryptoApi_Signature_free(
  * signature object; for this the \p prvHandle param must be set during signature
  * initialization.
  *
- * @param obj (required) pointer to the Signature object
+ * @param hSig (required) handle of SEOS Crypto Signature object
  * @param hash (required) hash value to sign
  * @param hashSize (required) size of hash
  * @param signature (required) buffer for resulting signature
@@ -109,7 +103,7 @@ SeosCryptoApi_Signature_free(
  */
 seos_err_t
 SeosCryptoApi_Signature_sign(
-    SeosCryptoApi_Signature* obj,
+    SeosCryptoApi_SignatureH hSig,
     const void*              hash,
     const size_t             hashSize,
     void*                    signature,
@@ -122,7 +116,7 @@ SeosCryptoApi_Signature_sign(
  * fixed size (16-32 bytes). For this operation to work, the  \p pubHandle
  * param must be set during signature initialization.
  *
- * @param obj (required) pointer to the Signature object
+ * @param hSig (required) handle of SEOS Crypto Signature object
  * @param hash (required) hash value to recompute signature for
  * @param hashSize (required) size of hash
  * @param signature (required) buffer for signature to verify
@@ -139,7 +133,7 @@ SeosCryptoApi_Signature_sign(
  */
 seos_err_t
 SeosCryptoApi_Signature_verify(
-    SeosCryptoApi_Signature* obj,
+    SeosCryptoApi_SignatureH hSig,
     const void*              hash,
     const size_t             hashSize,
     const void*              signature,

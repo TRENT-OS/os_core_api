@@ -67,16 +67,7 @@ typedef enum
 }
 SeosCryptoApi_Key_Type;
 
-typedef struct SeosCryptoLib_Key SeosCryptoLib_Key;
-typedef struct
-{
-    SeosCryptoLib_Key* key;
-    SeosCryptoApi_Impl impl;
-} SeosCryptoApi_Key;
-
-// Add this for keys that are coming from another API instance to make usage
-// more clear and clean.
-typedef SeosCryptoLib_Key* SeosCryptoApi_Key_RemotePtr;
+typedef SeosCryptoApi_Proxy* SeosCryptoApi_KeyH;
 
 typedef struct
 {
@@ -300,8 +291,8 @@ SeosCryptoApi_Key_Data;
  *  };
  *  \endcode
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to Key object
+ * @param hKey (required) pointer to handle of SEOS Crypto Key object
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param spec (required) specification of key to create
  *
  * @return an error code
@@ -316,8 +307,8 @@ SeosCryptoApi_Key_Data;
  */
 seos_err_t
 SeosCryptoApi_Key_generate(
-    SeosCryptoApi*                api,
-    SeosCryptoApi_Key*            obj,
+    SeosCryptoApi_KeyH*           hKey,
+    const SeosCryptoApiH          hCrypto,
     const SeosCryptoApi_Key_Spec* spec);
 
 /**
@@ -392,8 +383,8 @@ SeosCryptoApi_Key_generate(
  *  };
  *  \endcode
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to the Key object
+ * @param hKey (required) pointer to handle of SEOS Crypto Key object
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
@@ -406,8 +397,8 @@ SeosCryptoApi_Key_generate(
  */
 seos_err_t
 SeosCryptoApi_Key_import(
-    SeosCryptoApi*                api,
-    SeosCryptoApi_Key*            obj,
+    SeosCryptoApi_KeyH*           hKey,
+    const SeosCryptoApiH          hCrypto,
     const SeosCryptoApi_Key_Data* keyData);
 
 /**
@@ -417,27 +408,45 @@ SeosCryptoApi_Key_import(
  * an existing private key. In order to make a keypair, generate() and makePublic()
  * have to be called in sequence.
  *
- * A public key can be computed based on a private key \p prvKeyHandle of this type:
+ * A public key can be computed based on a private key \p hPrvKey of this type:
  * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key
  * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key
  * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
  *
- * @param obj (required) pointer to the Key object
- * @param prvObj (required) private Key object
+ * @param hPubKey (required) pointer to handle of SEOS Crypto Key object
+ * @param hCrypto (required) handle of SEOS Crypto API*
+ * @param hPrvKey (required) handle of SEOS Crypto Key object to make public key for
  * @param attribs (required) attributes to assign to public key
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p prvKeyHandle is not supported
+ * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p hPrvKey is not supported
  * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
  */
 seos_err_t
 SeosCryptoApi_Key_makePublic(
-    SeosCryptoApi_Key*               obj,
-    const SeosCryptoApi_Key*         prvObj,
+    SeosCryptoApi_KeyH*              hPubKey,
+    const SeosCryptoApiH             hCrypto,
+    const SeosCryptoApi_KeyH         hPrvKey,
     const SeosCryptoApi_Key_Attribs* attribs);
+
+/**
+ * @brief Finish a key object
+ *
+ * This function frees the memory associated with the key object and zeroizes
+ * any key material that was stored internally.
+ *
+ * @param hKey (required) handle of SEOS Crypto Key object
+ *
+ * @return an error code
+ * @retval SEOS_SUCCESS if operation succeeded
+ * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ */
+seos_err_t
+SeosCryptoApi_Key_free(
+    SeosCryptoApi_KeyH hKey);
 
 /**
  * @brief Export key data from key handle into buffer
@@ -446,7 +455,7 @@ SeosCryptoApi_Key_makePublic(
  * in the object indicated by \p keyHandle to a buffer. If a key is not exportable,
  * this function will fail.
  *
- * @param obj (required) pointer to the Key object
+ * @param hKey (required) handle of SEOS Crypto Key object
  * @param keyData (required) buffer for key data
  *
  * @return an error code
@@ -457,7 +466,7 @@ SeosCryptoApi_Key_makePublic(
  */
 seos_err_t
 SeosCryptoApi_Key_export(
-    const SeosCryptoApi_Key* obj,
+    const SeosCryptoApi_KeyH hKey,
     SeosCryptoApi_Key_Data*  keyData);
 
 /**
@@ -468,7 +477,7 @@ SeosCryptoApi_Key_export(
  * exportable flag is ignored here, as these are public parameters which may be
  * needed to generate more keys (e.g., in case of key exchange).
  *
- * @param obj (required) pointer to the Key object
+ * @param hKey (required) handle of SEOS Crypto Key object
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
  * written bytes if function succeeds (or the minimum size if it fails due to too
@@ -485,7 +494,7 @@ SeosCryptoApi_Key_export(
  */
 seos_err_t
 SeosCryptoApi_Key_getParams(
-    const SeosCryptoApi_Key* obj,
+    const SeosCryptoApi_KeyH hKey,
     void*                    param,
     size_t*                  paramSize);
 
@@ -494,7 +503,7 @@ SeosCryptoApi_Key_getParams(
  *
  * All keys have a set of attributes which can be extracted with this function.
  *
- * @param obj (required) pointer to the Key object
+ * @param hKey (required) handle of SEOS Crypto Key object
  * @param attribs (required) buffer for attributes
  *
  * @return an error code
@@ -503,7 +512,7 @@ SeosCryptoApi_Key_getParams(
  */
 seos_err_t
 SeosCryptoApi_Key_getAttribs(
-    const SeosCryptoApi_Key*   obj,
+    const SeosCryptoApi_KeyH   hKey,
     SeosCryptoApi_Key_Attribs* attribs);
 
 /**
@@ -513,7 +522,7 @@ SeosCryptoApi_Key_getAttribs(
  * e.g. use SECP256r1 curve or a fixed DH group. This function allows to read those
  * parameters, so they can be used with a PARAM spec to generate keys.
  *
- * @param api (required) pointer to the seos crypto context
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param name (required) name of the parameter set
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
@@ -532,63 +541,9 @@ SeosCryptoApi_Key_getAttribs(
  */
 seos_err_t
 SeosCryptoApi_Key_loadParams(
-    SeosCryptoApi*                api,
+    SeosCryptoApiH                hCrypto,
     const SeosCryptoApi_Key_Param name,
     void*                         param,
     size_t*                       paramSize);
-
-/**
- * @brief Finish a key object
- *
- * This function frees the memory associated with the key object and zeroizes
- * any key material that was stored internally.
- *
- * @param obj (required) pointer to the Key object
- *
- * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- */
-seos_err_t
-SeosCryptoApi_Key_free(
-    SeosCryptoApi_Key* obj);
-
-/**
- * @brief Migrate a key object from a remote API instance to our instance
- *
- * With the RPC functionality of the Crypto API it is possible to have an RPC
- * server with an instance of the LIB in one component and an RPC client in
- * another component that uses the same LIB.
- *
- * Now, if we are on the RPC client side and get a pointer to a Key object of the
- * LIB (which lives in the RPC server), we need to use this function to create a
- * Key object which can be used through the RPC client.
- *
- * The reason for this is that the API key object "knows" its API context and
- * contains a pointer to the LIB Key object (which holds the actual data). This
- * function sets the correct API context of a API key object (for the RPC client)
- * together with the pointer to the actual Key (on the RPC server).
- *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to the API Key object
- * @param ptr (required) pointer to the LIB Key object from the remote instance
- *
- * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- */
-seos_err_t
-SeosCryptoApi_Key_migrate(
-    SeosCryptoApi*                    api,
-    SeosCryptoApi_Key*                obj,
-    const SeosCryptoApi_Key_RemotePtr ptr);
-
-// Helper to get the RemotePtr from an API key object
-INLINE SeosCryptoApi_Key_RemotePtr
-SeosCryptoApi_Key_getPtr(
-    SeosCryptoApi_Key* obj)
-{
-    return (obj != NULL) ? obj->key : NULL;
-}
 
 /** @} */

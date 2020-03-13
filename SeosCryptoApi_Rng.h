@@ -34,7 +34,7 @@ typedef int (SeosCryptoApi_Rng_EntropyFunc)(
  * from the entropy source into the RNG state to enhance prediction resistance.
  * This behavior can be modified by passing respective \p flags.
  *
- * @param api (required) pointer to the seos crypto context
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param flags (optional) flags for RNG operation
  * @param buf (required) buffer for random bytes
  * @param bufSize (required) amount of random bytes requested
@@ -49,7 +49,7 @@ typedef int (SeosCryptoApi_Rng_EntropyFunc)(
  */
 seos_err_t
 SeosCryptoApi_Rng_getBytes(
-    SeosCryptoApi*               api,
+    SeosCryptoApiH               hCrypto,
     const SeosCryptoApi_Rng_Flag flags,
     void*                        buf,
     const size_t                 bufSize);
@@ -57,7 +57,7 @@ SeosCryptoApi_Rng_getBytes(
 /**
  * @brief Reseed the internal RNG
  *
- * @param api (required) pointer to the seos crypto context
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param seed (required) additional seed to feed into RNG state
  * @param seedSize (required) length of seed data
  *
@@ -70,7 +70,7 @@ SeosCryptoApi_Rng_getBytes(
  */
 seos_err_t
 SeosCryptoApi_Rng_reseed(
-    SeosCryptoApi* api,
+    SeosCryptoApiH hCrypto,
     const void*    seed,
     const size_t   seedSize);
 

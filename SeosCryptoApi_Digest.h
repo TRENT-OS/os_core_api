@@ -29,12 +29,7 @@ typedef enum
 }
 SeosCryptoApi_Digest_Alg;
 
-typedef struct SeosCryptoLib_Digest SeosCryptoLib_Digest;
-typedef struct
-{
-    SeosCryptoLib_Digest* digest;
-    SeosCryptoApi_Impl impl;
-} SeosCryptoApi_Digest;
+typedef SeosCryptoApi_Proxy* SeosCryptoApi_DigestH;
 
 /**
  * @brief Initialize a digest object
@@ -45,8 +40,8 @@ typedef struct
  * - MD5
  * - SHA256
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to new Digest object
+ * @param hDigest (required) pointer to handle of SEOS Crypto Digest object
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param algorithm (required) digest algorithm to use
  *
  * @return an error code
@@ -58,14 +53,14 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Digest_init(
-    SeosCryptoApi*                 api,
-    SeosCryptoApi_Digest*          obj,
+    SeosCryptoApi_DigestH*         hDigest,
+    const SeosCryptoApiH           hCrypto,
     const SeosCryptoApi_Digest_Alg algorithm);
 
 /**
  * @brief Finish a digest object
  *
- * @param obj (required) pointer to the Digest object
+ * @param hDigest (required) handle of SEOS Crypto Digest object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -73,13 +68,13 @@ SeosCryptoApi_Digest_init(
  */
 seos_err_t
 SeosCryptoApi_Digest_free(
-    SeosCryptoApi_Digest* obj);
+    SeosCryptoApi_DigestH hDigest);
 
 /**
  * @brief Clone a digest object
  *
- * @param dstObj (required) initialized Digest object used as target
- * @param srcObj (required) initialized Digest object used as source
+ * @param hDstDigest (required) handle of SEOS Crypto Digest object used as target
+ * @param hSrcDigest (required) handle of SEOS Crypto Digest object used as source
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -87,8 +82,8 @@ SeosCryptoApi_Digest_free(
  */
 seos_err_t
 SeosCryptoApi_Digest_clone(
-    SeosCryptoApi_Digest*       dstObj,
-    const SeosCryptoApi_Digest* srcObj);
+    SeosCryptoApi_DigestH       hDstDigest,
+    const SeosCryptoApi_DigestH hSrcDigest);
 
 /**
  * @brief Process block of data with digest algorithm
@@ -97,7 +92,7 @@ SeosCryptoApi_Digest_clone(
  *
  * This function can be called multiple times until the digest has been finalized.
  *
- * @param obj (required) pointer to the Digest object
+ * @param hDigest (required) handle of SEOS Crypto Digest object
  * @param data (required) data to process
  * @param dataSize (required) length of data
  *
@@ -111,7 +106,7 @@ SeosCryptoApi_Digest_clone(
  */
 seos_err_t
 SeosCryptoApi_Digest_process(
-    SeosCryptoApi_Digest* obj,
+    SeosCryptoApi_DigestH hDigest,
     const void*           data,
     const size_t          dataSize);
 
@@ -123,7 +118,7 @@ SeosCryptoApi_Digest_process(
  * This function will re-set the digest object so it can process new blocks of
  * data for a new hash.
  *
- * @param obj (required) pointer to the Digest object
+ * @param hDigest (required) handle of SEOS Crypto Digest object
  * @param digest (required) buffer to write digest to
  * @param digestSize (required) size of digest buffer, will be set to the amount
  * of bytes written to \p digest (or the minimum size if it fails due too small
@@ -141,7 +136,7 @@ SeosCryptoApi_Digest_process(
  */
 seos_err_t
 SeosCryptoApi_Digest_finalize(
-    SeosCryptoApi_Digest* obj,
+    SeosCryptoApi_DigestH hDigest,
     void*                 digest,
     size_t*               digestSize);
 

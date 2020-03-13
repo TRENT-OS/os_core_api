@@ -27,12 +27,7 @@ typedef enum
 }
 SeosCryptoApi_Mac_Alg;
 
-typedef struct SeosCryptoLib_Mac SeosCryptoLib_Mac;
-typedef struct
-{
-    SeosCryptoLib_Mac* mac;
-    SeosCryptoApi_Impl impl;
-} SeosCryptoApi_Mac;
+typedef SeosCryptoApi_Proxy* SeosCryptoApi_MacH;
 
 /**
  * @brief Initialize a message authentication code (MAC) object
@@ -43,8 +38,8 @@ typedef struct
  * - HMAC_MD5
  * - HMAC_SHA256
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to the MAC object
+ * @param hMac (required) pointer to handle of SEOS Crypto MAC object
+ * @param hCrypto (required) handle of SEOS Crypto API
  * @param algorithm (required) MAC algorithm to use
  *
  * @return an error code
@@ -56,14 +51,14 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Mac_init(
-    SeosCryptoApi*              api,
-    SeosCryptoApi_Mac*          obj,
+    SeosCryptoApi_MacH*         hMac,
+    const SeosCryptoApiH        hCrypto,
     const SeosCryptoApi_Mac_Alg algorithm);
 
 /**
  * @brief Finish a message authentication code (MAC) object
  *
- * @param obj (required) pointer to the MAC object
+ * @param hMac (required) handle of SEOS Crypto MAC object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -71,7 +66,7 @@ SeosCryptoApi_Mac_init(
  */
 seos_err_t
 SeosCryptoApi_Mac_free(
-    SeosCryptoApi_Mac* obj);
+    SeosCryptoApi_MacH hMac);
 
 /**
  * @brief Feed secret into message authentication code (MAC) algorithm
@@ -82,7 +77,7 @@ SeosCryptoApi_Mac_free(
  *
  * This function has to be called once at the beginning of each MAC computation.
  *
- * @param obj (required) pointer to the MAC object
+ * @param hMac (required) handle of SEOS Crypto MAC object
  * @param secret (required) secret to process
  * @param secretSize (required) length of data
  *
@@ -96,7 +91,7 @@ SeosCryptoApi_Mac_free(
  */
 seos_err_t
 SeosCryptoApi_Mac_start(
-    SeosCryptoApi_Mac* obj,
+    SeosCryptoApi_MacH hMac,
     const void*        secret,
     const size_t       secretSize);
 
@@ -108,7 +103,7 @@ SeosCryptoApi_Mac_start(
  * This function can be called multiple times after start and before finalizing
  * the MAC.
  *
- * @param obj (required) pointer to the MAC object
+ * @param hMac (required) handle of SEOS Crypto MAC object
  * @param data (required) data to process
  * @param dataSize (required) length of data
  *
@@ -122,7 +117,7 @@ SeosCryptoApi_Mac_start(
  */
 seos_err_t
 SeosCryptoApi_Mac_process(
-    SeosCryptoApi_Mac* obj,
+    SeosCryptoApi_MacH hMac,
     const void*        data,
     const size_t       dataSize);
 
@@ -134,7 +129,7 @@ SeosCryptoApi_Mac_process(
  *
  * This function will reset the MAC object, so it can compute a new MAC.
  *
- * @param obj (required) pointer to the MAC object
+ * @param hMac (required) handle of SEOS Crypto MAC object
  * @param mac (required) buffer to write MAC to
  * @param macSize (required) size of MAC buffer, will be set to the amount
  * of bytes written to \p mac (or the minimum size if it fails due too small
@@ -152,7 +147,7 @@ SeosCryptoApi_Mac_process(
  */
 seos_err_t
 SeosCryptoApi_Mac_finalize(
-    SeosCryptoApi_Mac* obj,
+    SeosCryptoApi_MacH hMac,
     void*              mac,
     size_t*            macSize);
 

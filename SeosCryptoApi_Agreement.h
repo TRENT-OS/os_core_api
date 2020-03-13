@@ -24,12 +24,7 @@ typedef enum
 }
 SeosCryptoApi_Agreement_Alg;
 
-typedef struct SeosCryptoLib_Agreement SeosCryptoLib_Agreement;
-typedef struct
-{
-    SeosCryptoLib_Agreement* agreement;
-    SeosCryptoApi_Impl impl;
-} SeosCryptoApi_Agreement;
+typedef SeosCryptoApi_Proxy* SeosCryptoApi_AgreementH;
 
 /**
  * @brief Initialize an agreement object
@@ -42,10 +37,11 @@ typedef struct
  * - DH
  * - ECDH
  *
- * @param api (required) pointer to the seos crypto context
- * @param obj (required) pointer to Agreement object
+ * @param hAgree (required) pointer to handle of SEOS Crypto Agreement object
+ * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hPrvKey (required) handle of SEOS Crypto Key object to use as our own
+ * private key
  * @param algorithm (required) key agreement algorithm to use
- * @param prvKey (required) handle of private key to use for key agreement
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -57,15 +53,15 @@ typedef struct
  */
 seos_err_t
 SeosCryptoApi_Agreement_init(
-    SeosCryptoApi*                    api,
-    SeosCryptoApi_Agreement*          obj,
-    const SeosCryptoApi_Agreement_Alg algorithm,
-    const SeosCryptoApi_Key*          prvKey);
+    SeosCryptoApi_AgreementH*         hAgree,
+    const SeosCryptoApiH              hCrypto,
+    const SeosCryptoApi_KeyH          hPrvKey,
+    const SeosCryptoApi_Agreement_Alg algorithm);
 
 /**
  * @brief Finish a agreement object
  *
- * @param obj (required) pointer to the Agreement object
+ * @param hAgree (required) handle of SEOS Crypto Agreement object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -73,7 +69,7 @@ SeosCryptoApi_Agreement_init(
  */
 seos_err_t
 SeosCryptoApi_Agreement_free(
-    SeosCryptoApi_Agreement* obj);
+    SeosCryptoApi_AgreementH hAgree);
 
 /**
  * @brief Agree on a shared value
@@ -86,8 +82,9 @@ SeosCryptoApi_Agreement_free(
  * chosen for DH. A final processing step should be applied to the agreed key in
  * order to produce a symmetric key of suitable size.
  *
- * @param obj (required) pointer to the Agreement object
- * @param pubKey (required) public key to use for key agreement
+ * @param hAgree (required) handle of SEOS Crypto Agreement object
+ * @param hPubKey (required) handle of SEOS Crypto Key object to use as the other
+ * side's public key
  * @param shared (required) buffer to hold shared secret
  * @param sharedSize (required) size of buffer, will be set to actual amount of
  * bytes written if function succeeds (or the minimum size if it fails due to too
@@ -105,8 +102,8 @@ SeosCryptoApi_Agreement_free(
  */
 seos_err_t
 SeosCryptoApi_Agreement_agree(
-    SeosCryptoApi_Agreement* obj,
-    const SeosCryptoApi_Key* pubKey,
+    SeosCryptoApi_AgreementH hAgree,
+    const SeosCryptoApi_KeyH hPubKey,
     void*                    shared,
     size_t*                  sharedSize);
 
