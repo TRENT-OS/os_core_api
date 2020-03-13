@@ -71,23 +71,23 @@ typedef struct
         SeosCryptoApi_Rng_EntropyFunc* entropy;
         void* context;
     } rng;
-} SeosCryptoApi_Lib_Config;
+} SeosCryptoLib_Config;
 
 typedef struct
 {
     void* dataPort;
-} SeosCryptoApi_RpcClient_Config;
+} SeosCryptoRpcClient_Config;
 
 typedef struct
 {
     void* dataPort;
-} SeosCryptoApi_RpcServer_Config;
+} SeosCryptoRpcServer_Config;
 
 typedef struct
 {
-    SeosCryptoApi_RpcClient_Config client;
-    SeosCryptoApi_Lib_Config lib;
-} SeosCryptoApi_Router_Config;
+    SeosCryptoRpcClient_Config client;
+    SeosCryptoLib_Config lib;
+} SeosCryptoRouter_Config;
 
 typedef struct
 {
@@ -95,11 +95,11 @@ typedef struct
     SeosCryptoApi_MemIf mem;
     union
     {
-        SeosCryptoApi_Lib_Config lib;
-        SeosCryptoApi_RpcClient_Config client;
-        SeosCryptoApi_Router_Config router;
+        SeosCryptoLib_Config lib;
+        SeosCryptoRpcClient_Config client;
+        SeosCryptoRouter_Config router;
     } impl;
-    SeosCryptoApi_RpcServer_Config server;
+    SeosCryptoRpcServer_Config server;
 } SeosCryptoApi_Config;
 
 /**
