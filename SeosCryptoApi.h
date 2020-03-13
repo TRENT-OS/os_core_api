@@ -18,10 +18,11 @@
 
 typedef enum
 {
-    SeosCryptoApi_Mode_LIBRARY = 0,
+    SeosCryptoApi_Mode_NONE = 0,
+    SeosCryptoApi_Mode_LIBRARY,
     SeosCryptoApi_Mode_RPC_CLIENT,
-    SeosCryptoApi_Mode_ROUTER,
     SeosCryptoApi_Mode_RPC_SERVER_WITH_LIBRARY,
+    SeosCryptoApi_Mode_ROUTER,
 } SeosCryptoApi_Mode;
 
 typedef struct SeosCryptoVtable SeosCryptoVtable;
