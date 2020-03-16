@@ -31,8 +31,6 @@ typedef enum
     SeosCryptoApi_Cipher_ALG_AES_CBC_DEC,
     SeosCryptoApi_Cipher_ALG_AES_GCM_ENC,
     SeosCryptoApi_Cipher_ALG_AES_GCM_DEC,
-    SeosCryptoApi_Cipher_ALG_RSA_PKCS1_ENC,
-    SeosCryptoApi_Cipher_ALG_RSA_PKCS1_DEC
 }
 SeosCryptoApi_Cipher_Alg;
 
