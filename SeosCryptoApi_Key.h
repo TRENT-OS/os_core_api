@@ -1,14 +1,15 @@
 /**
- * Copyright (C) 2019, Hensoldt Cyber GmbH
+ * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
  * @defgroup SeosCryptoApi SEOS Crypto API
  * @{
  *
  * @file SeosCryptoApi_Key.h
  *
- * @brief SEOS Crypto API library types, constants and enums for Key object
+ * @brief SEOS Crypto API library types, constants and enums for KEY object
  *
  */
+
 #pragma once
 
 #include "SeosError.h"
@@ -19,6 +20,9 @@
 
 #include "compiler.h"
 
+/**
+ * Maximum sizes supported for the respective key types.
+ */
 #define SeosCryptoApi_Key_SIZE_AES_MAX      32      ///< max 256 bit
 #define SeosCryptoApi_Key_SIZE_AES_MIN      16      ///< min 128 bit
 #define SeosCryptoApi_Key_SIZE_RSA_MAX      512     ///< max 4096 bit
@@ -39,36 +43,88 @@ typedef enum
     SeosCryptoApi_Key_PARAM_ECC_SECP256R1 = 3,
 } SeosCryptoApi_Key_Param;
 
+/**
+ * Type of key generation spec.
+ */
 typedef enum
 {
     SeosCryptoApi_Key_SPECTYPE_NONE = 0,
+    /**
+     * KeySpec defines the amount of desired bits for a newly generated key directly.
+     */
     SeosCryptoApi_Key_SPECTYPE_BITS,
+    /**
+     * KeySpec defines target params of newly generated keys, thus its size is
+     * defined by those parameters (e.g., in case of DH keys, the size of the
+     * underlying prime P).
+     */
     SeosCryptoApi_Key_SPECTYPE_PARAMS,
 } SeosCryptoApi_Key_SpecType;
 
+/**
+ * Special flags to use for KEY object.
+ */
 typedef enum
 {
-    SeosCryptoApi_Key_FLAG_NONE                = 0,
+    SeosCryptoApi_Key_FLAG_NONE = 0,
 }
 SeosCryptoApi_Key_Flag;
 
+/**
+ * Type of KEY object.
+ */
 typedef enum
 {
     SeosCryptoApi_Key_TYPE_NONE = 0,
+    /**
+     * Key for use with AES encryption/decryption; can be 128, 192, 256 bits.
+     */
     SeosCryptoApi_Key_TYPE_AES,
+    /**
+     * Key for use with RSA private operations (signature/decryption); can be
+     * 128-4096 bits.
+     */
     SeosCryptoApi_Key_TYPE_RSA_PRV,
+    /**
+     * Key for use with RSA public operations (verification/encryption); can be
+     * 128-4096 bits.
+     */
     SeosCryptoApi_Key_TYPE_RSA_PUB,
+    /**
+     * Key for use with DH private operations; can be 64-4096 bits.
+     */
     SeosCryptoApi_Key_TYPE_DH_PRV,
+    /**
+     * Key for use with DH public operations; can be 64-4096 bits.
+     */
     SeosCryptoApi_Key_TYPE_DH_PUB,
+    /**
+     * Key on SECP256r1 Elliptic Curve for private operations; can only be 256 bits.
+     */
     SeosCryptoApi_Key_TYPE_SECP256R1_PRV,
+    /**
+     * Key on SECP256r1 Elliptic Curve for public operations; can only be 256 bits.
+     */
     SeosCryptoApi_Key_TYPE_SECP256R1_PUB,
+    /**
+     * Key on generic Elliptic Curve for private operations; currently not used.
+     */
     SeosCryptoApi_Key_TYPE_ECC_PRV,
+    /**
+     * Key on generic Elliptic Curve for public operations; currently not used.
+     */
     SeosCryptoApi_Key_TYPE_ECC_PUB
 }
 SeosCryptoApi_Key_Type;
 
+/**
+ * Handle for SEOS Crypto API KEY objects.
+ */
 typedef SeosCryptoApi_Proxy* SeosCryptoApi_KeyH;
 
+/**
+ * Struct for an AES Key.
+ */
 typedef struct
 {
     uint8_t bytes[SeosCryptoApi_Key_SIZE_AES_MAX];
@@ -76,6 +132,9 @@ typedef struct
 }
 SeosCryptoApi_Key_Aes;
 
+/**
+ * Struct for RSA public key data.
+ */
 typedef struct
 {
     uint8_t nBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< public modulus n=p*q
@@ -85,6 +144,9 @@ typedef struct
 }
 SeosCryptoApi_Key_RsaRub;
 
+/**
+ * Struct for RSA private key data.
+ */
 typedef struct
 {
     uint8_t dBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< secret exp.
@@ -98,6 +160,9 @@ typedef struct
 }
 SeosCryptoApi_Key_RsaRrv;
 
+/**
+ * Struct for shared, generic ECC curve params in Weirstrass form.
+ */
 typedef struct
 {
     uint8_t aBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< A of Weierstrass curve
@@ -115,6 +180,9 @@ typedef struct
 }
 SeosCryptoApi_Key_EccParams;
 
+/**
+ * Struct for generic ECC public key data.
+ */
 typedef struct
 {
     SeosCryptoApi_Key_EccParams params; ///< params of curve: A, B, G, P, n=ord(G)
@@ -125,6 +193,9 @@ typedef struct
 }
 SeosCryptoApi_Key_EccPub;
 
+/**
+ * Struct for generic ECC private key data.
+ */
 typedef struct
 {
     SeosCryptoApi_Key_EccParams params; ///< params of curve: A, B, G, P, n=ord(G)
@@ -134,8 +205,8 @@ typedef struct
 SeosCryptoApi_Key_EccPrv;
 
 /**
- * Public key for NIST Secp256r1 curve; does not need to carry the params as the
- * key type already defines everything.
+ * Struct for SECP256r1 ECC public key data; does not need to carry the params
+ * of the curve, as the key type already defines everything.
  */
 typedef struct
 {
@@ -147,8 +218,8 @@ typedef struct
 SeosCryptoApi_Key_Secp256r1Pub;
 
 /**
- * Private key for NIST Secp256r1 curve; does not need to carry the params as the
- * key type already defines everything.
+ * Struct for SECP256r1 ECC private key data; does not need to carry the params
+ * of the curve, as the key type already defines everything.
  */
 typedef struct
 {
@@ -157,6 +228,9 @@ typedef struct
 }
 SeosCryptoApi_Key_Secp256r1Prv;
 
+/**
+ * Struct for shared DH parameters.
+ */
 typedef struct
 {
     uint8_t pBytes[SeosCryptoApi_Key_SIZE_DH_MAX]; ///< shared prime
@@ -166,6 +240,9 @@ typedef struct
 }
 SeosCryptoApi_Key_DhParams;
 
+/**
+ * Struct for DH public key data.
+ */
 typedef struct
 {
     SeosCryptoApi_Key_DhParams params; ///< shared params: generator G and prime P
@@ -174,6 +251,9 @@ typedef struct
 }
 SeosCryptoApi_Key_DhPub;
 
+/**
+ * Struct for DH private key data.
+ */
 typedef struct
 {
     SeosCryptoApi_Key_DhParams params; ///< shared params: generator G and prime P
@@ -182,12 +262,34 @@ typedef struct
 }
 SeosCryptoApi_Key_DhPrv;
 
+/**
+ * Struct for attributes associated with every key.
+ */
 typedef struct
 {
+    /**
+     * Flags set for this key.
+     */
     SeosCryptoApi_Key_Flag flags;
+    /**
+     * Keys can be EXPORTABLE or NOT_EXPORTABLE. This flag is evaluated in two
+     * places:
+     * - The RPC Server interface checks if a key can be exported, before passing
+     *   key material to the RPC client.
+     * - When a Crypto API instance is configured in ROUTER mode, this flag is
+     *   evaluated to determine whether a Key can be used locally or needs to be
+     *   handled by a RPC server instance (e.g., the CryptoServer).
+     */
     bool exportable;
 } SeosCryptoApi_Key_Attribs;
 
+/**
+ * Specification for the generation of new secret keys (e.g., AES keys or private
+ * keys of keypairs). The type determines, which of the fields of the union need
+ * to be set:
+ * - SPECTYPE_BITS:     params.bits
+ * - SPECTYPE_PARAMS:   params.ecc or params.dh (depends on key.type)
+ */
 typedef struct
 {
     SeosCryptoApi_Key_SpecType type;
@@ -205,6 +307,14 @@ typedef struct
 }
 SeosCryptoApi_Key_Spec;
 
+/**
+ * Specification of a key's raw data. Which fields of the union need to be set
+ * depends on the type:
+ * - TYPE_AES:      key.aes
+ * - TYPE_RSA_PUB:  key.rsa.pub
+ * - TYPE_RSA_PRV:  key.rsa.prv
+ * etc.
+ */
 typedef struct
 {
     SeosCryptoApi_Key_Type type;
@@ -237,20 +347,13 @@ typedef struct
 SeosCryptoApi_Key_Data;
 
 /**
- * @brief Generate symmetric/private key with internal RNG
+ * @brief Generate symmetric/private KEY with internal RNG.
  *
- * This function allocates a key and fills it with key material generated by the
- * internal RNG.
+ * This function allocates a KEY object and fills it with KEY material generated
+ * by the internal RNG of the Crypto API.
  *
  * This function takes a \p spec parameter, which defines what type of key is
  * generated and wich attributes the resulting key has.
- *
- * The following types of keys with the following key sizes can be generated
- * with this function:
- * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key (128-4096 bits)
- * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key (64-4096 bits)
- * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
- * - `SeosCryptoApi_Key_TYPE_AES`:            AES key (128, 192, 256 bits)
  *
  * Here are some example specs for typical keys:
  * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
@@ -291,19 +394,19 @@ SeosCryptoApi_Key_Data;
  *  };
  *  \endcode
  *
- * @param hKey (required) pointer to handle of SEOS Crypto Key object
+ * @param hKey (required) pointer to handle of SEOS Crypto KEY object
  * @param hCrypto (required) handle of SEOS Crypto API
  * @param spec (required) specification of key to create
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
- * includes giving invalid keysizes where these are fixed (e.g., 100 bits for AES)
+ *  includes giving invalid keysizes where these are fixed (e.g., 100 bits for AES)
  * @retval SEOS_ERROR_NOT_SUPPORTED if the spec type, the key type or the amount of
- * key bits given by the spec is in an unsupported range (e.g. DH key with 40 bits)
+ *  key bits given by the spec is in an unsupported range (e.g. DH key with 40 bits)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  * @retval SEOS_ERROR_ABORTED if an internal error occured during cryptographic
- * operations
+ *  operations
  */
 seos_err_t
 SeosCryptoApi_Key_generate(
@@ -312,20 +415,12 @@ SeosCryptoApi_Key_generate(
     const SeosCryptoApi_Key_Spec* spec);
 
 /**
- * @brief Import key data into key object from buffer
+ * @brief Import data into KEY object from buffer.
  *
- * This function allocates a key object and imports key material from a buffer.
+ * This function allocates a KEY object and imports KEY material from a buffer.
  *
  * During import, the sizes of the keys will be checked (e.g., based on the modulus
- * provided by RSA or based on the amounts of bytes passed for AES). The following
- * types and keysizes of the imported \p keyData are supported:
- * - `SeosCryptoApi_Key_TYPE_AES`:            AES key (128, 192, 256 bits)
- * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key (128 - 4096 bits)
- * - `SeosCryptoApi_Key_TYPE_RSA_PUB`:        RSA public key (128 - 4096 bits)
- * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key (64 - 4096 bits)
- * - `SeosCryptoApi_Key_TYPE_DH_PUB`:         DH public key (64 - 4096 bits)
- * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
- * - `SeosCryptoApi_Key_TYPE_SECP256r1_PUB`:  ECC public key for SECP256r1 curve
+ * provided by RSA or based on the amounts of bytes passed for AES).
  *
  * Here are some example key data configurations for typical types of keys:
  * 1. Define a 128-bit AES key that is exportable:
@@ -334,25 +429,11 @@ SeosCryptoApi_Key_generate(
  *  {
  *      .type = SeosCryptoApi_Key_TYPE_AES,
  *      .attribs.exportable = true,
- *      .data.aes = {
- *          .bytes  = "0123456789abcdef",
- *          .len    = 16
- *      }
- *  };
+ *      .data.aes.bytes  = "0123456789abcdef",
+ *      .data.aes.len    = 16
+  *  };
  *  \endcode
- * 2. Define a 256-bit AES key that is NOT exportable:
- *  \code{.c}
- *  static const SeosCryptoApi_Key_Data aes256Data =
- *  {
- *      .type = SeosCryptoApi_Key_TYPE_AES,
- *      .attribs.exportable = false,
- *      .data.aes = {
- *          .bytes  = "0123456789abcdef0123456789abcdef",
- *          .len    = 32
- *      }
- *  };
- *  \endcode
- * 3. Define a SECP256r1 private key that is NOT exportable (abbreviated):
+ * 2. Define a SECP256r1 private key that is NOT exportable (abbreviated):
  *  \code{.c}
  *  static const SeosCryptoApi_Key_Data secp256r1PrvData =
  *  {
@@ -364,7 +445,7 @@ SeosCryptoApi_Key_generate(
  *      }
  *  };
  *  \endcode
- * 4. Define 1024-bit RSA private key that is exportable (abbreviated):
+ * 3. Define 1024-bit RSA private key that is exportable (abbreviated):
  *  \code{.c}
  *  static const SeosCryptoApi_Key_Data rsa1024PrvData =
  *  {
@@ -383,16 +464,16 @@ SeosCryptoApi_Key_generate(
  *  };
  *  \endcode
  *
- * @param hKey (required) pointer to handle of SEOS Crypto Key object
+ * @param hKey (required) pointer to handle of SEOS Crypto KEY object
  * @param hCrypto (required) handle of SEOS Crypto API
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid;
- * this includes supplying \p keyData that has internal inconsistencies (e.g.
- * too long buffer lengths) or key size that do not match what is expected
- * for algorithms where it is discretely defined (e.g., 120 bit key for AES)
+ *  this includes supplying \p keyData that has internal inconsistencies (e.g.
+ *  too long buffer lengths) or key size that do not match what is expected
+ *  for algorithms where it is discretely defined (e.g., 120 bit key for AES)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
 seos_err_t
@@ -402,20 +483,15 @@ SeosCryptoApi_Key_import(
     const SeosCryptoApi_Key_Data* keyData);
 
 /**
- * @brief Make a public key from a private key
+ * @brief Make a public KEY from a private KEY object.
  *
- * This function allocates a new key object and computes a public key based on
- * an existing private key. In order to make a keypair, generate() and makePublic()
- * have to be called in sequence.
+ * This function allocates a new KEY object and computes a public key based on
+ * an existing private KEY object. In order to make a keypair, generate() and
+ * makePublic() have to be called in sequence.
  *
- * A public key can be computed based on a private key \p hPrvKey of this type:
- * - `SeosCryptoApi_Key_TYPE_RSA_PRV`:        RSA private key
- * - `SeosCryptoApi_Key_TYPE_DH_PRV`:         DH private key
- * - `SeosCryptoApi_Key_TYPE_SECP256R1_PRV`:  ECC private key for SECP256r1 curve
- *
- * @param hPubKey (required) pointer to handle of SEOS Crypto Key object
- * @param hCrypto (required) handle of SEOS Crypto API*
- * @param hPrvKey (required) handle of SEOS Crypto Key object to make public key for
+ * @param hPubKey (required) pointer to handle of SEOS Crypto KEY object
+ * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hPrvKey (required) handle of SEOS Crypto KEY object to make public key for
  * @param attribs (required) attributes to assign to public key
  *
  * @return an error code
@@ -433,12 +509,12 @@ SeosCryptoApi_Key_makePublic(
     const SeosCryptoApi_Key_Attribs* attribs);
 
 /**
- * @brief Finish a key object
+ * @brief Finish a KEY object.
  *
- * This function frees the memory associated with the key object and zeroizes
- * any key material that was stored internally.
+ * This function frees the memory associated with the KEY object and zeroizes
+ * any sensitive material that was stored internally.
  *
- * @param hKey (required) handle of SEOS Crypto Key object
+ * @param hKey (required) handle of SEOS Crypto KEY object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -449,20 +525,28 @@ SeosCryptoApi_Key_free(
     SeosCryptoApi_KeyH hKey);
 
 /**
- * @brief Export key data from key handle into buffer
+ * @brief Export data from KEY handle into buffer.
  *
- * If the key is exportable, this function will write the key material stored
- * in the object indicated by \p keyHandle to a buffer. If a key is not exportable,
- * this function will fail.
+ * If a KEY object is in the local address space (Crypto API used in LIB mode)
+ * or if it has the exportable attribute set, this function will export the
+ * associated key material into a buffer.
  *
- * @param hKey (required) handle of SEOS Crypto Key object
+ * If a KEY is not exportable AND held in a remote Crypto API instance (e.g., the
+ * CryptoServer) this function will fail.
+ *
+ * NOTE: It is intentional that a KEY obejct which is not exportable but used only
+ *       in a local library instance will be exported, IGNORING the exportable
+ *       attribute. The rationale behind this is that it resides in the callers
+ *       address space anyways so he might equally well read the data himself.
+ *
+ * @param hKey (required) handle of SEOS Crypto KEY object
  * @param keyData (required) buffer for key data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
- * set during creation of the key object
+ *  set during creation of the key object
  */
 seos_err_t
 SeosCryptoApi_Key_export(
@@ -470,27 +554,27 @@ SeosCryptoApi_Key_export(
     SeosCryptoApi_Key_Data*  keyData);
 
 /**
- * @brief Get shared parameters from key
+ * @brief Get shared parameters from KEY.
  *
  * Some key types have shared parameters, e.g., DHPrv and DHPub typically share
  * the prime P and base G. This function allows to read out these parameters. The
  * exportable flag is ignored here, as these are public parameters which may be
  * needed to generate more keys (e.g., in case of key exchange).
  *
- * @param hKey (required) handle of SEOS Crypto Key object
+ * @param hKey (required) handle of SEOS Crypto KEY object
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
- * written bytes if function succeeds (or the minimum size if it fails due to too
- * small buffer)
+ *  written bytes if function succeeds (or the minimum size if it fails due to too
+ *  small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_NOT_SUPPORTED if key has no exportable parameters
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
- * whole \p param
+ *  whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- * `SeosCryptoApi_SIZE_DATAPORT`
+ *  `SeosCryptoApi_SIZE_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_Key_getParams(
@@ -499,11 +583,12 @@ SeosCryptoApi_Key_getParams(
     size_t*                  paramSize);
 
 /**
- * @brief Get attributes from key
+ * @brief Get attributes from KEY object.
  *
- * All keys have a set of attributes which can be extracted with this function.
+ * All KEYs have a set of attributes which can be extracted with this function, e.g,
+ * to check if a KEY object can be exported.
  *
- * @param hKey (required) handle of SEOS Crypto Key object
+ * @param hKey (required) handle of SEOS Crypto KEY object
  * @param attribs (required) buffer for attributes
  *
  * @return an error code
@@ -516,7 +601,7 @@ SeosCryptoApi_Key_getAttribs(
     SeosCryptoApi_Key_Attribs* attribs);
 
 /**
- * @brief Load pre-defined parameters
+ * @brief Load pre-defined parameters.
  *
  * For some protocols, it is possible to agree on a set of pre-defined parameters,
  * e.g. use SECP256r1 curve or a fixed DH group. This function allows to read those
@@ -526,18 +611,17 @@ SeosCryptoApi_Key_getAttribs(
  * @param name (required) name of the parameter set
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
- * written bytes if function succeeds (or the minimum size if it fails due to too
- * small buffer)
+ *  written bytes if function succeeds (or the minimum size if it fails due to too
+ *  small buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter
- * set
+ * @retval SEOS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter set
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
- * whole \p param
+ *  whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- * `SeosCryptoApi_SIZE_DATAPORT`
+ *  `SeosCryptoApi_SIZE_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_Key_loadParams(

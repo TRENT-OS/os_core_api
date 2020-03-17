@@ -1,12 +1,12 @@
 /**
- * Copyright (C) 2019, Hensoldt Cyber GmbH
+ * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
  * @defgroup SeosCryptoApi SEOS Crypto API
  * @{
  *
  * @file SeosCryptoApi_Digest.h
  *
- * @brief SEOS Crypto API library types, constants and enums for Digest object
+ * @brief SEOS Crypto API library types, constants and enums for DIGEST object
  *
  */
 
@@ -14,7 +14,13 @@
 
 #include "SeosError.h"
 
+/**
+ * Length of MD5 hash in bytes.
+ */
 #define SeosCryptoApi_Digest_SIZE_MD5     16
+/**
+ * Length of SHA256 hash in bytes.
+ */
 #define SeosCryptoApi_Digest_SIZE_SHA256  32
 
 /**
@@ -24,32 +30,35 @@
 typedef enum
 {
     SeosCryptoApi_Digest_ALG_NONE       = 0,
+    /**
+     * Use MD5 hash.
+     */
     SeosCryptoApi_Digest_ALG_MD5        = 3,
+    /**
+     * Use SHA256 hash.
+     */
     SeosCryptoApi_Digest_ALG_SHA256     = 6
 }
 SeosCryptoApi_Digest_Alg;
 
+/**
+ * Handle for SEOS Crypto API DIGEST objects.
+ */
 typedef SeosCryptoApi_Proxy* SeosCryptoApi_DigestH;
 
 /**
- * @brief Initialize a digest object
+ * @brief Initialize a DIGEST object.
  *
- * This function allocates a digest object and initializes it.
- *
- * Currently supported algorithms are:
- * - MD5
- * - SHA256
- *
- * @param hDigest (required) pointer to handle of SEOS Crypto Digest object
+ * @param hDigest (required) pointer to handle of SEOS Crypto DIGEST object
  * @param hCrypto (required) handle of SEOS Crypto API
- * @param algorithm (required) digest algorithm to use
+ * @param algorithm (required) DIGEST algorithm to use
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if the internal state could not be initialized
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the digest failed
+ * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
  */
 seos_err_t
 SeosCryptoApi_Digest_init(
@@ -58,9 +67,9 @@ SeosCryptoApi_Digest_init(
     const SeosCryptoApi_Digest_Alg algorithm);
 
 /**
- * @brief Finish a digest object
+ * @brief Finish a DIGEST object.
  *
- * @param hDigest (required) handle of SEOS Crypto Digest object
+ * @param hDigest (required) handle of SEOS Crypto DIGEST object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -71,10 +80,13 @@ SeosCryptoApi_Digest_free(
     SeosCryptoApi_DigestH hDigest);
 
 /**
- * @brief Clone a digest object
+ * @brief Clone a DIGEST object.
  *
- * @param hDstDigest (required) handle of SEOS Crypto Digest object used as target
- * @param hSrcDigest (required) handle of SEOS Crypto Digest object used as source
+ * This function requires two initialized DIGEST objects; the internal state of
+ * \p hDstDigest will be set to the internal state of \p hSrcDigest.
+ *
+ * @param hDstDigest (required) handle of SEOS Crypto DIGEST object
+ * @param hSrcDigest (required) handle of SEOS Crypto DIGEST object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -86,21 +98,20 @@ SeosCryptoApi_Digest_clone(
     const SeosCryptoApi_DigestH hSrcDigest);
 
 /**
- * @brief Process block of data with digest algorithm
+ * @brief Process block of data.
  *
- * Feed blocks of data into the internal state of the digest.
+ * Feed blocks of data into the internal state of the DIGEST object. Typically,
+ * this function will be called multiple times until the DIGEST has been finalized.
  *
- * This function can be called multiple times until the digest has been finalized.
- *
- * @param hDigest (required) handle of SEOS Crypto Digest object
+ * @param hDigest (required) handle of SEOS Crypto DIGEST object
  * @param data (required) data to process
  * @param dataSize (required) length of data
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if digest was
- * was already finalized
+ * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
+ *  was already finalized
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  `SeosCryptoApi_SIZE_DATAPORT`
  */
@@ -111,28 +122,29 @@ SeosCryptoApi_Digest_process(
     const size_t          dataSize);
 
 /**
- * @brief Finish digest computation to produce digest
+ * @brief Finish computation to produce digest/hash value.
  *
- * Write the digest resulting from any preceding calls to process into a buffer.
+ * Write the digest/hash value resulting from any preceding calls to process into
+ * a buffer.
  *
- * This function will re-set the digest object so it can process new blocks of
- * data for a new hash.
+ * NOTE: This function will re-set the DIGEST object so it can be used to compute
+ *       a new digest value with the algorithm given during initialization.
  *
- * @param hDigest (required) handle of SEOS Crypto Digest object
- * @param digest (required) buffer to write digest to
- * @param digestSize (required) size of digest buffer, will be set to the amount
- * of bytes written to \p digest (or the minimum size if it fails due too small
- * buffer)
+ * @param hDigest (required) handle of SEOS Crypto DIGEST object
+ * @param digest (required) buffer to write digest/hash value to
+ * @param digestSize (required) size of buffer, will be set to the amount
+ *  of bytes written to \p digest (or the minimum size if it fails due too small
+ *  buffer)
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval SEOS_ERROR_ABORTED if the digest could not be produced or if no
- * blocks were processed before finalizing or if finalize was already called
+ *  blocks were processed before finalizing or if finalize was already called
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
- * resulting digest
+ *  resulting digest
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
- * `SeosCryptoApi_SIZE_DATAPORT`
+ *  `SeosCryptoApi_SIZE_DATAPORT`
  */
 seos_err_t
 SeosCryptoApi_Digest_finalize(
