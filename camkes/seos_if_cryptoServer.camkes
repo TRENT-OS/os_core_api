@@ -8,16 +8,29 @@
 procedure seos_if_cryptoServer {
     include "SeosCryptoApi.h";
 
+    //
+    // A little bit of code is needed on the side of the RPC client. In order for
+    // the client to have a clean CryptoServer_<func> interface, we implement this
+    // client code in the CryptoServer.h header which then calls the RPC-functions
+    // below.
+    //
+    // We name these RPC interface functions thus RPC_<func> so that CAmkES can
+    // generate CryptoServer_RPC_storeKey() and CryptoServer_RPC_loadKey() which
+    // are then used in the header code.
+    //
+    // NOTE: Do not copy this.
+    //
+
     seos_err_t
-    storeKey(
-        in string name,
-        in SeosCryptoApi_Key key
+    RPC_storeKey(
+        in SeosCryptoLib_Object ptr,
+        in string name
     );
 
     seos_err_t
-    loadKey(
+    RPC_loadKey(
+        out SeosCryptoLib_Object ptr,
         in seL4_Word ownerId,
-        in string name,
-        out SeosCryptoApi_Key_RemotePtr ptr
+        in string name
     );
 };
