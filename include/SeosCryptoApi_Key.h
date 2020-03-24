@@ -37,10 +37,10 @@
  */
 typedef enum
 {
-    SeosCryptoApi_Key_PARAM_NONE          = 0,
-    SeosCryptoApi_Key_PARAM_ECC_SECP192R1 = 1,
-    SeosCryptoApi_Key_PARAM_ECC_SECP224R1 = 2,
-    SeosCryptoApi_Key_PARAM_ECC_SECP256R1 = 3,
+    SeosCryptoApi_Key_PARAM_NONE = 0,
+    SeosCryptoApi_Key_PARAM_ECC_SECP192R1,
+    SeosCryptoApi_Key_PARAM_ECC_SECP224R1,
+    SeosCryptoApi_Key_PARAM_ECC_SECP256R1
 } SeosCryptoApi_Key_Param;
 
 /**
