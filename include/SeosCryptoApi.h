@@ -46,13 +46,15 @@ typedef void* SeosCryptoLib_Object;
 
 // Include all after definining the API handle above; also make sure that key and
 // digest are included first so they are defined for the other functions.
-#include "SeosCryptoApi_Key.h"
-#include "SeosCryptoApi_Digest.h"
-#include "SeosCryptoApi_Agreement.h"
-#include "SeosCryptoApi_Cipher.h"
-#include "SeosCryptoApi_Mac.h"
-#include "SeosCryptoApi_Signature.h"
-#include "SeosCryptoApi_Rng.h"
+//
+// NOTE: These should never be included directly.
+#include "crypto/SeosCryptoApi_Key.h"
+#include "crypto/SeosCryptoApi_Digest.h"
+#include "crypto/SeosCryptoApi_Agreement.h"
+#include "crypto/SeosCryptoApi_Cipher.h"
+#include "crypto/SeosCryptoApi_Mac.h"
+#include "crypto/SeosCryptoApi_Signature.h"
+#include "crypto/SeosCryptoApi_Rng.h"
 
 typedef void* (SeosCryptoApi_MallocFunc)(
     size_t size);
