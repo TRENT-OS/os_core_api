@@ -5,9 +5,9 @@
  *
  */
 
-procedure seos_if_cryptoApi {
-    include "SeosCryptoApi.h";
-    include "SeosCryptoRpc_Server.h";
+procedure if_OS_Crypto {
+    include "OS_Crypto.h";
+    include "OS_CryptoRpcServer.h";
 
     // ---------------------------------- RNG ----------------------------------
 
@@ -28,35 +28,35 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Mac_init
     (
-        inout SeosCryptoLib_Mac_Ptr pMacObj,
+        inout OS_CryptoLibMac_ptr pMacObj,
         in unsigned int algorithm
     );
     seos_err_t
     Mac_free
     (
-        in SeosCryptoLib_Mac_Ptr macObj
+        in OS_CryptoLibMac_ptr macObj
     );
     seos_err_t
     Mac_exists
     (
-        in SeosCryptoLib_Mac_CPtr macObj
+        in OS_CryptoLibMac_cptr macObj
     );
     seos_err_t
     Mac_start
     (
-        in SeosCryptoLib_Mac_Ptr macObj,
+        in OS_CryptoLibMac_ptr macObj,
         in size_t secretSize
     );
     seos_err_t
     Mac_process
     (
-        in SeosCryptoLib_Mac_Ptr macObj,
+        in OS_CryptoLibMac_ptr macObj,
         in size_t dataSize
     );
     seos_err_t
     Mac_finalize
     (
-        in SeosCryptoLib_Mac_Ptr macObj,
+        in OS_CryptoLibMac_ptr macObj,
         inout size_t macSize
     );
 
@@ -65,35 +65,35 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Digest_init
     (
-        inout SeosCryptoLib_Digest_Ptr pDigestObj,
+        inout OS_CryptoLibDigest_ptr pDigestObj,
         in unsigned int algorithm
     );
     seos_err_t
     Digest_exists
     (
-        in SeosCryptoLib_Digest_CPtr digestObj
+        in OS_CryptoLibDigest_cptr digestObj
     );
     seos_err_t
     Digest_free
     (
-        in SeosCryptoLib_Digest_Ptr digestObj
+        in OS_CryptoLibDigest_ptr digestObj
     );
     seos_err_t
     Digest_clone
     (
-        in SeosCryptoLib_Digest_Ptr dstDigObj,
-        in SeosCryptoLib_Digest_CPtr srcDigObj
+        in OS_CryptoLibDigest_ptr dstDigObj,
+        in OS_CryptoLibDigest_cptr srcDigObj
     );
     seos_err_t
     Digest_process
     (
-        in SeosCryptoLib_Digest_Ptr digestObj,
+        in OS_CryptoLibDigest_ptr digestObj,
         in size_t inLen
     );
     seos_err_t
     Digest_finalize
     (
-        in SeosCryptoLib_Digest_Ptr digestObj,
+        in OS_CryptoLibDigest_ptr digestObj,
         inout size_t digestSize
     );
 
@@ -102,50 +102,50 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Key_generate
     (
-        inout SeosCryptoLib_Key_Ptr pKeyObj
+        inout OS_CryptoLibKey_ptr pKeyObj
     );
     seos_err_t
     Key_makePublic
     (
-        inout SeosCryptoLib_Key_Ptr pPubKeyObj,
-        in SeosCryptoLib_Key_CPtr prvKeyObj
+        inout OS_CryptoLibKey_ptr pPubKeyObj,
+        in OS_CryptoLibKey_cptr prvKeyObj
     );
     seos_err_t
     Key_import
     (
-        inout SeosCryptoLib_Key_Ptr pKeyObj
+        inout OS_CryptoLibKey_ptr pKeyObj
     );
     seos_err_t
     Key_export
     (
-        in SeosCryptoLib_Key_CPtr keyObj
+        in OS_CryptoLibKey_cptr keyObj
     );
     seos_err_t
     Key_getParams
     (
-        in SeosCryptoLib_Key_CPtr keyObj,
+        in OS_CryptoLibKey_cptr keyObj,
         inout size_t paramSize
     );
     seos_err_t
     Key_getAttribs
     (
-        in SeosCryptoLib_Key_CPtr keyObj
+        in OS_CryptoLibKey_cptr keyObj
     );
     seos_err_t
     Key_loadParams
     (
-        in SeosCryptoApi_Key_Param name,
+        in OS_CryptoKey_Param_t name,
         inout size_t paramSize
     );
     seos_err_t
     Key_exists
     (
-        in SeosCryptoLib_Key_CPtr keyObj
+        in OS_CryptoLibKey_cptr keyObj
     );
     seos_err_t
     Key_free
     (
-        in SeosCryptoLib_Key_Ptr keyObj
+        in OS_CryptoLibKey_ptr keyObj
     );
 
     // ------------------------------- Signature -------------------------------
@@ -153,34 +153,34 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Signature_init
     (
-        inout SeosCryptoLib_Signature_Ptr pSigObj,
+        inout OS_CryptoLibSignature_ptr pSigObj,
         in unsigned int algorithm,
         in unsigned int digest,
-        in SeosCryptoLib_Key_CPtr prvObj,
-        in SeosCryptoLib_Key_CPtr pubObj
+        in OS_CryptoLibKey_cptr prvObj,
+        in OS_CryptoLibKey_cptr pubObj
     );
     seos_err_t
     Signature_verify (
-        in SeosCryptoLib_Signature_Ptr sigObj,
+        in OS_CryptoLibSignature_ptr sigObj,
         in size_t hashSize,
         in size_t signatureSize
     );
     seos_err_t
     Signature_sign
     (
-        in SeosCryptoLib_Signature_Ptr sigObj,
+        in OS_CryptoLibSignature_ptr sigObj,
         in size_t hashSize,
         inout size_t signatureSize
     );
     seos_err_t
     Signature_exists
     (
-        in SeosCryptoLib_Signature_CPtr sigObj
+        in OS_CryptoLibSignature_cptr sigObj
     );
     seos_err_t
     Signature_free
     (
-        in SeosCryptoLib_Signature_Ptr sigObj
+        in OS_CryptoLibSignature_ptr sigObj
     );
 
     // ----------------------------- Agreement ---------------------------------
@@ -188,26 +188,26 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Agreement_init
     (
-        inout SeosCryptoLib_Agreement_Ptr pAgrObj,
+        inout OS_CryptoLibAgreement_ptr pAgrObj,
         in unsigned int algorithm,
-        in SeosCryptoLib_Key_CPtr prvObj
+        in OS_CryptoLibKey_cptr prvObj
     );
     seos_err_t
     Agreement_agree
     (
-        in SeosCryptoLib_Agreement_Ptr agrObj,
-        in SeosCryptoLib_Key_CPtr pubObj,
+        in OS_CryptoLibAgreement_ptr agrObj,
+        in OS_CryptoLibKey_cptr pubObj,
         inout size_t sharedSize
     );
     seos_err_t
     Agreement_exists
     (
-        in SeosCryptoLib_Agreement_CPtr agrObj
+        in OS_CryptoLibAgreement_cptr agrObj
     );
     seos_err_t
     Agreement_free
     (
-        in SeosCryptoLib_Agreement_Ptr agrObj
+        in OS_CryptoLibAgreement_ptr agrObj
     );
 
     // -------------------------------- Cipher ---------------------------------
@@ -215,38 +215,38 @@ procedure seos_if_cryptoApi {
     seos_err_t
     Cipher_init
     (
-        inout SeosCryptoLib_Cipher_Ptr pCipherObj,
+        inout OS_CryptoLibCipher_ptr pCipherObj,
         in unsigned int algorithm,
-        in SeosCryptoLib_Key_CPtr keyObj,
+        in OS_CryptoLibKey_cptr keyObj,
         in size_t ivLen
     );
     seos_err_t
     Cipher_exists
     (
-        in SeosCryptoLib_Cipher_CPtr cipherObj
+        in OS_CryptoLibCipher_cptr cipherObj
     );
     seos_err_t
     Cipher_free
     (
-        in SeosCryptoLib_Cipher_Ptr cipherObj
+        in OS_CryptoLibCipher_ptr cipherObj
     );
     seos_err_t
     Cipher_process
     (
-        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        in OS_CryptoLibCipher_ptr cipherObj,
         in size_t inLen,
         inout size_t outSize
     );
     seos_err_t
     Cipher_start
     (
-        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        in OS_CryptoLibCipher_ptr cipherObj,
         in size_t len
     );
     seos_err_t
     Cipher_finalize
     (
-        in SeosCryptoLib_Cipher_Ptr cipherObj,
+        in OS_CryptoLibCipher_ptr cipherObj,
         inout size_t len
     );
 };
