@@ -5,8 +5,8 @@
  *
  */
 
-procedure seos_if_tlsApi {
-    include "SeosTlsApi.h";
+procedure if_OS_Tls {
+    include "OS_Tls.h";
 
     seos_err_t
     handshake();
