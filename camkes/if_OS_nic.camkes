@@ -6,7 +6,7 @@
  */
 
 
-procedure seos_if_nic {
+procedure if_OS_nic {
 
     include "SeosError.h";
 
