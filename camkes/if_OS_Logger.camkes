@@ -1,0 +1,28 @@
+/* Copyright (C) 2020, HENSOLDT Cyber GmbH */
+
+/**
+ * @file
+ * @brief    Interface to the log server.
+ *
+ */
+
+/** @hideinitializer */
+procedure if_OS_Logger {
+    include "stdint.h";
+
+    void    emit(void); ///< Called when new entry is available for processing.
+
+    /**
+     * @brief Interface to read server's log file.
+     *
+     * @retval -1    - if file does not exist.
+     * @retval false - if reading callback is NULL.
+     * @retval true  - if success.
+     */
+    int64_t read_log_file(
+        string filename,          ///< [in] Name of the file to read.
+        uint64_t offset,          ///< [in] Offset from which to read.
+        uint64_t len,             ///< [in] Desired length to read.
+        out int64_t log_file_size ///< [out] Size of the file read.
+    );
+};
