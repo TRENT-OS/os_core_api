@@ -51,12 +51,12 @@ typedef struct
 #if !defined(CUSTOM_OS_NETWORK_STACK_API_TYPES)
 
 // Protocol families.
-#define OS_AF_INET 2   // IP protocol family.
-#define OS_AF_INET6 10 // IP version 6.
+#define OS_AF_INET   2   // IP protocol family.
+#define OS_AF_INET6  10 // IP version 6.
 
 // Socket definition
 #define OS_SOCK_STREAM 2
-#define OS_SOCK_DGRAM 1
+#define OS_SOCK_DGRAM  1
 
 typedef void *OS_Network_Context_t;
 typedef unsigned OS_NetworkSocket_Handle_t;
@@ -82,9 +82,10 @@ typedef unsigned OS_NetworkServer_Handle_t;
  */
 
 seos_err_t
-OS_NetworkSocket_create(OS_Network_Context_t ctx,
-                        OS_Network_Socket_t *pClientStruct,
-                        OS_NetworkSocket_Handle_t *phandle);
+OS_NetworkSocket_create(
+    OS_Network_Context_t      ctx,
+    OS_Network_Socket_t       *pClientStruct,
+    OS_NetworkSocket_Handle_t *phandle);
 
 /**
  * @details %OS_NetworkServerSocket_create, Create a server socket, binds to a port and listen for incoming connections
@@ -105,9 +106,10 @@ OS_NetworkSocket_create(OS_Network_Context_t ctx,
  */
 
 seos_err_t
-OS_NetworkServerSocket_create(OS_Network_Context_t ctx,
-                              OS_NetworkServer_Socket_t *pServerStruct,
-                              OS_NetworkServer_Handle_t *pSrvHandle);
+OS_NetworkServerSocket_create(
+    OS_Network_Context_t      ctx,
+    OS_NetworkServer_Socket_t *pServerStruct,
+    OS_NetworkServer_Handle_t *pSrvHandle);
 /**
  * @details %OS_NetworkServerSocket_close, Must be called when the server app wants to close a comnection.
           No further socket communication is possible after closure.
@@ -118,7 +120,8 @@ OS_NetworkServerSocket_create(OS_Network_Context_t ctx,
  */
 
 seos_err_t
-OS_NetworkServerSocket_close(OS_NetworkServer_Handle_t srvHandle);
+OS_NetworkServerSocket_close(
+    OS_NetworkServer_Handle_t srvHandle);
 
 /**
  * @details %OS_NetworkSocket_close, Closes a network socket. Once the close is done no further socket communication is possible.
@@ -130,7 +133,8 @@ OS_NetworkServerSocket_close(OS_NetworkServer_Handle_t srvHandle);
  */
 
 seos_err_t
-OS_NetworkSocket_close(OS_NetworkSocket_Handle_t handle);
+OS_NetworkSocket_close(
+    OS_NetworkSocket_Handle_t handle);
 
 /**
  * @details %OS_NetworkSocket_write, Write to a network socket. Write data to a socket after connecting.
@@ -146,9 +150,10 @@ OS_NetworkSocket_close(OS_NetworkSocket_Handle_t handle);
  *
  */
 seos_err_t
-OS_NetworkSocket_write(OS_NetworkSocket_Handle_t handle,
-                       const void *buf,
-                       size_t *len);
+OS_NetworkSocket_write(
+    OS_NetworkSocket_Handle_t handle,
+    const void                *buf,
+    size_t                    *len);
 
 /**
  * @details %OS_NetworkServerSocket_accept, Accept incoming connections. This is useful when the Network stack is working as Server.
@@ -162,8 +167,9 @@ OS_NetworkSocket_write(OS_NetworkSocket_Handle_t handle,
  */
 
 seos_err_t
-OS_NetworkServerSocket_accept(OS_NetworkServer_Handle_t srvHandle,
-                              OS_NetworkSocket_Handle_t *phSocket);
+OS_NetworkServerSocket_accept(
+    OS_NetworkServer_Handle_t srvHandle,
+    OS_NetworkSocket_Handle_t *phSocket);
 
 /**
  * @details %OS_NetworkSocket_read, Read data from connected socket.
@@ -183,6 +189,7 @@ OS_NetworkServerSocket_accept(OS_NetworkServer_Handle_t srvHandle,
  */
 
 seos_err_t
-OS_NetworkSocket_read(OS_NetworkSocket_Handle_t handle,
-                      void *buf,
-                      size_t *len);
+OS_NetworkSocket_read(
+    OS_NetworkSocket_Handle_t handle,
+    void                      *buf,
+    size_t                    *len);
