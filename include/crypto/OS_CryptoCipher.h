@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi_Cipher.h
+ * @file OS_CryptoCipher.h
  *
- * @brief SEOS Crypto API library types, constants and enums for CIPHER object
+ * @brief OS Crypto API library types, constants and enums for CIPHER object
  *
  */
 
@@ -19,49 +19,48 @@
 /**
  * Sizes relevant for the respective operation modes.
  */
-#define SeosCryptoApi_Cipher_SIZE_AES_BLOCK         16
-#define SeosCryptoApi_Cipher_SIZE_AES_CBC_IV        16
-#define SeosCryptoApi_Cipher_SIZE_AES_GCM_IV        12
-#define SeosCryptoApi_Cipher_SIZE_AES_GCM_TAG_MIN   4
-#define SeosCryptoApi_Cipher_SIZE_AES_GCM_TAG_MAX   SeosCryptoApi_Cipher_SIZE_AES_BLOCK
+#define OS_CryptoCipher_SIZE_AES_BLOCK         16
+#define OS_CryptoCipher_SIZE_AES_CBC_IV        16
+#define OS_CryptoCipher_SIZE_AES_GCM_IV        12
+#define OS_CryptoCipher_SIZE_AES_GCM_TAG_MIN   4
+#define OS_CryptoCipher_SIZE_AES_GCM_TAG_MAX   OS_CryptoCipher_SIZE_AES_BLOCK
 
 /**
  * Type and mode of encryption algorithm to use for CIPHER object.
  */
 typedef enum
 {
-    SeosCryptoApi_Cipher_ALG_NONE = 0,
+    OS_CryptoCipher_ALG_NONE = 0,
     /**
      * Use AES in ECB mode for encryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_ECB_ENC,
+    OS_CryptoCipher_ALG_AES_ECB_ENC,
     /**
      * Use AES in ECB mode for decryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_ECB_DEC,
+    OS_CryptoCipher_ALG_AES_ECB_DEC,
     /**
      * Use AES in CBC mode for encryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_CBC_ENC,
+    OS_CryptoCipher_ALG_AES_CBC_ENC,
     /**
      * Use AES in CBC mode for decryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_CBC_DEC,
+    OS_CryptoCipher_ALG_AES_CBC_DEC,
     /**
      * Use AES in GCM mode for encryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_GCM_ENC,
+    OS_CryptoCipher_ALG_AES_GCM_ENC,
     /**
      * Use AES in GCM mode for decryption.
      */
-    SeosCryptoApi_Cipher_ALG_AES_GCM_DEC,
-}
-SeosCryptoApi_Cipher_Alg;
+    OS_CryptoCipher_ALG_AES_GCM_DEC,
+} OS_CryptoCipher_Alg_t;
 
 /**
- * Handle for SEOS Crypto API CIPHER objects.
+ * Handle for OS Crypto API CIPHER objects.
  */
-typedef SeosCryptoApi_Proxy* SeosCryptoApi_CipherH;
+typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
 
 /**
  * @brief Initialize a CIPHER object.
@@ -72,9 +71,9 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_CipherH;
  * - AES-GCM requires 12 bytes of IV
  * - AES-CBC requires 16 bytes of IV
  *
- * @param hCipher (required) pointer to handle of SEOS Crypto CIPHER object
- * @param hCrypto (required) handle of SEOS Crypto API
- * @param hKey (required) handle of SEOS Crypto Key object
+ * @param hCipher (required) pointer to handle of OS Crypto CIPHER object
+ * @param hCrypto (required) handle of OS Crypto API
+ * @param hKey (required) handle of OS Crypto Key object
  * @param algorithm (required) algorithm to use
  * @param iv (optional) initialization vector required for some ciphers
  * @param ivSize (optional) length of initialization vector
@@ -88,21 +87,21 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_CipherH;
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval SEOS_ERROR_ABORTED if setting the key internally failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the CIPHER failed or if
- * \p ivSize is greater than `SeosCryptoApi_SIZE_DATAPORT`
+ * \p ivSize is greater than `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Cipher_init(
-    SeosCryptoApi_CipherH*         hCipher,
-    const SeosCryptoApiH           hCrypto,
-    const SeosCryptoApi_KeyH       hKey,
-    const SeosCryptoApi_Cipher_Alg algorithm,
-    const void*                    iv,
-    const size_t                   ivSize);
+OS_CryptoCipher_init(
+    OS_CryptoCipher_Handle_t*   hCipher,
+    const OS_Crypto_Handle_t    hCrypto,
+    const OS_CryptoKey_Handle_t hKey,
+    const OS_CryptoCipher_Alg_t algorithm,
+    const void*                 iv,
+    const size_t                ivSize);
 
 /**
  * @brief Finish CIPHER object.
  *
- * @param hCipher (required) handle of SEOS Crypto CIPHER object
+ * @param hCipher (required) handle of OS Crypto CIPHER object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -110,8 +109,8 @@ SeosCryptoApi_Cipher_init(
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Cipher_free(
-    SeosCryptoApi_CipherH hCipher);
+OS_CryptoCipher_free(
+    OS_CryptoCipher_Handle_t hCipher);
 
 /**
  * @brief Process data blocks with the CIPHER object.
@@ -125,7 +124,7 @@ SeosCryptoApi_Cipher_free(
  * - AES-GCM can deal with non-aligned blocks, but only in the last call to
  *           this function.
  *
- * @param hCipher (required) handle of SEOS Crypto CIPHER object
+ * @param hCipher (required) handle of OS Crypto CIPHER object
  * @param input (required) input data
  * @param inputSize (required) length of input data
  * @param output (required) buffer for resulting output data
@@ -144,15 +143,15 @@ SeosCryptoApi_Cipher_free(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
  *  the full result in the \p output buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
- *  greater than `SeosCryptoApi_SIZE_DATAPORT`
+ *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Cipher_process(
-    SeosCryptoApi_CipherH hCipher,
-    const void*           input,
-    const size_t          inputSize,
-    void*                 output,
-    size_t*               outputSize);
+OS_CryptoCipher_process(
+    OS_CryptoCipher_Handle_t hCipher,
+    const void*              input,
+    const size_t             inputSize,
+    void*                    output,
+    size_t*                  outputSize);
 
 /**
  * @brief Start processing of data (only relevant for some algorithms).
@@ -161,7 +160,7 @@ SeosCryptoApi_Cipher_process(
  * AES-GCM, where besides encrypting data, additional data can be added for
  * authentication.
  *
- * @param hCipher (required) handle of SEOS Crypto CIPHER object
+ * @param hCipher (required) handle of OS Crypto CIPHER object
  * @param input (optional) input data
  * @param inputSize (optional) length of input data
  *
@@ -171,13 +170,13 @@ SeosCryptoApi_Cipher_process(
  * @retval SEOS_ERROR_ABORTED if CIPHER object does not require start, or if it
  *  was already started or if the internal cryptographic operation failed
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Cipher_start(
-    SeosCryptoApi_CipherH hCipher,
-    const void*           input,
-    const size_t          inputSize);
+OS_CryptoCipher_start(
+    OS_CryptoCipher_Handle_t hCipher,
+    const void*              input,
+    const size_t             inputSize);
 
 /**
  * @brief Finish processing of data (only relevant for some algorithms).
@@ -190,7 +189,7 @@ SeosCryptoApi_Cipher_start(
  * For GCM in encryption mode, the \p tagSize must be >= 4, as the resulting tag
  * can be shortened if desired.
  *
- * @param hCipher (required) handle of SEOS Crypto CIPHER object
+ * @param hCipher (required) handle of OS Crypto CIPHER object
  * @param tag (required) input/output buffer for final operation
  * @param tagSize (required) lenght of input/size of output buffer, will be set
  *  to actual amount of bytes written if function succeeds (or the minimum size
@@ -205,12 +204,12 @@ SeosCryptoApi_Cipher_start(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
  *  written to the \p tag buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Cipher_finalize(
-    SeosCryptoApi_CipherH hCipher,
-    void*                 tag,
-    size_t*               tagSize);
+OS_CryptoCipher_finalize(
+    OS_CryptoCipher_Handle_t hCipher,
+    void*                    tag,
+    size_t*                  tagSize);
 
 /** @} */

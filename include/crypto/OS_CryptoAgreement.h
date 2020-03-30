@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi_Agreement.h
+ * @file OS_CryptoAgreement.h
  *
- * @brief SEOS Crypto API library types, constants and enums for AGREEMENT object
+ * @brief OS Crypto API library types, constants and enums for AGREEMENT object
  *
  */
 
@@ -21,22 +21,21 @@
  */
 typedef enum
 {
-    SeosCryptoApi_Agreement_ALG_NONE = 0,
+    OS_CryptoAgreement_ALG_NONE = 0,
     /**
      * Use Diffie-Hellman(-Merkle) key exchange.
      */
-    SeosCryptoApi_Agreement_ALG_DH,
+    OS_CryptoAgreement_ALG_DH,
     /**
      * Use Elliptic Curve Diffie-Hellman(-Merkle) key exchange.
      */
-    SeosCryptoApi_Agreement_ALG_ECDH
-}
-SeosCryptoApi_Agreement_Alg;
+    OS_CryptoAgreement_ALG_ECDH
+} OS_CryptoAgreement_Alg_t;
 
 /**
- * Handle for SEOS Crypto API (key) AGREEMENT objects.
+ * Handle for OS Crypto API (key) AGREEMENT objects.
  */
-typedef SeosCryptoApi_Proxy* SeosCryptoApi_AgreementH;
+typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
 
 /**
  * @brief Initialize an AGREEMENT object.
@@ -45,9 +44,9 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_AgreementH;
  * key needs to be given, which will be used during the agreement phase to derive
  * a shared secret.
  *
- * @param hAgree (required) pointer to handle of SEOS Crypto AGREEMENT object
- * @param hCrypto (required) handle of SEOS Crypto API
- * @param hPrvKey (required) handle of SEOS Crypto Key object to use as our own
+ * @param hAgree (required) pointer to handle of OS Crypto AGREEMENT object
+ * @param hCrypto (required) handle of OS Crypto API
+ * @param hPrvKey (required) handle of OS Crypto Key object to use as our own
  *  private key
  * @param algorithm (required) key agreement algorithm to use
  *
@@ -60,24 +59,24 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_AgreementH;
  *  object failed
  */
 seos_err_t
-SeosCryptoApi_Agreement_init(
-    SeosCryptoApi_AgreementH*         hAgree,
-    const SeosCryptoApiH              hCrypto,
-    const SeosCryptoApi_KeyH          hPrvKey,
-    const SeosCryptoApi_Agreement_Alg algorithm);
+OS_CryptoAgreement_init(
+    OS_CryptoAgreement_Handle_t*   hAgree,
+    const OS_Crypto_Handle_t       hCrypto,
+    const OS_CryptoKey_Handle_t    hPrvKey,
+    const OS_CryptoAgreement_Alg_t algorithm);
 
 /**
  * @brief Finish an AGREEMENT object.
  *
- * @param hAgree (required) handle of SEOS Crypto AGREEMENT object
+ * @param hAgree (required) handle of OS Crypto AGREEMENT object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Agreement_free(
-    SeosCryptoApi_AgreementH hAgree);
+OS_CryptoAgreement_free(
+    OS_CryptoAgreement_Handle_t hAgree);
 
 /**
  * @brief Agree on a shared value.
@@ -90,8 +89,8 @@ SeosCryptoApi_Agreement_free(
  * chosen for DH. A final processing step should be applied to the agreed key in
  * order to produce a symmetric key of suitable size.
  *
- * @param hAgree (required) handle of SEOS Crypto AGREEMENT object
- * @param hPubKey (required) handle of SEOS Crypto Key object to use as the other
+ * @param hAgree (required) handle of OS Crypto AGREEMENT object
+ * @param hPubKey (required) handle of OS Crypto Key object to use as the other
  *  side's public key
  * @param shared (required) buffer to hold shared secret
  * @param sharedSize (required) size of buffer, will be set to actual amount of
@@ -106,13 +105,13 @@ SeosCryptoApi_Agreement_free(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
  *  the full result in the \p shared buffer
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Agreement_agree(
-    SeosCryptoApi_AgreementH hAgree,
-    const SeosCryptoApi_KeyH hPubKey,
-    void*                    shared,
-    size_t*                  sharedSize);
+OS_CryptoAgreement_agree(
+    OS_CryptoAgreement_Handle_t hAgree,
+    const OS_CryptoKey_Handle_t hPubKey,
+    void*                       shared,
+    size_t*                     sharedSize);
 
 /** @} */

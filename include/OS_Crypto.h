@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi.h
+ * @file OS_Crypto.h
  *
- * @brief SEOS Crypto API library
+ * @brief OS Crypto API library
  *
  */
 
@@ -18,47 +18,47 @@
  * Fixed size of dataport, will be replaced with a more generic and self-contained
  * solution in the future.
  */
-#define SeosCryptoApi_SIZE_DATAPORT PAGE_SIZE
+#define OS_Crypto_SIZE_DATAPORT PAGE_SIZE
 
 typedef enum
 {
-    SeosCryptoApi_Mode_NONE = 0,
-    SeosCryptoApi_Mode_LIBRARY,
-    SeosCryptoApi_Mode_RPC_CLIENT,
-    SeosCryptoApi_Mode_RPC_SERVER_WITH_LIBRARY,
-    SeosCryptoApi_Mode_ROUTER,
-} SeosCryptoApi_Mode;
+    OS_Crypto_MODE_NONE = 0,
+    OS_Crypto_MODE_LIBRARY,
+    OS_Crypto_MODE_RPC_CLIENT,
+    OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY,
+    OS_Crypto_MODE_ROUTER,
+} OS_Crypto_Mode_t;
 
-typedef struct SeosCryptoApi SeosCryptoApi;
+typedef struct OS_Crypto OS_Crypto_t;
 /**
  * Handle to an API context.
  */
-typedef SeosCryptoApi* SeosCryptoApiH;
+typedef OS_Crypto_t* OS_Crypto_Handle_t;
 /**
  * All underlying library objects are encapsulated via a proxy object, to which
  * ultimately all API object handles point.
  */
-typedef struct SeosCryptoApi_Proxy SeosCryptoApi_Proxy;
+typedef struct OS_Crypto_Object OS_Crypto_Object_t;
 /**
  *  Pointer to (MAC, Digest, etc.) objects managed by library.
  */
-typedef void* SeosCryptoLib_Object;
+typedef void* OS_CryptoLib_Object_ptr;
 
 // Include all after definining the API handle above; also make sure that key and
 // digest are included first so they are defined for the other functions.
 //
 // NOTE: These should never be included directly.
-#include "crypto/SeosCryptoApi_Key.h"
-#include "crypto/SeosCryptoApi_Digest.h"
-#include "crypto/SeosCryptoApi_Agreement.h"
-#include "crypto/SeosCryptoApi_Cipher.h"
-#include "crypto/SeosCryptoApi_Mac.h"
-#include "crypto/SeosCryptoApi_Signature.h"
-#include "crypto/SeosCryptoApi_Rng.h"
+#include "crypto/OS_CryptoKey.h"
+#include "crypto/OS_CryptoDigest.h"
+#include "crypto/OS_CryptoAgreement.h"
+#include "crypto/OS_CryptoCipher.h"
+#include "crypto/OS_CryptoMac.h"
+#include "crypto/OS_CryptoSignature.h"
+#include "crypto/OS_CryptoRng.h"
 
-typedef void* (SeosCryptoApi_MallocFunc)(
+typedef void* (OS_Crypto_Malloc_func)(
     size_t size);
-typedef void (SeosCryptoApi_FreeFunc)(
+typedef void (OS_Crypto_Free_func)(
     void* ptr);
 
 /**
@@ -66,10 +66,10 @@ typedef void (SeosCryptoApi_FreeFunc)(
  */
 typedef struct
 {
-    SeosCryptoApi_MallocFunc* malloc;
-    SeosCryptoApi_FreeFunc* free;
+    OS_Crypto_Malloc_func* malloc;
+    OS_Crypto_Free_func* free;
 }
-SeosCryptoApi_MemIf;
+OS_Crypto_Memory_t;
 
 /**
  * Configuration for underlying Crypto Library.
@@ -86,13 +86,13 @@ typedef struct
          * NOTE: Currently, the entropy callback will be called for every call
          *       (external and internal) to the RNG.
          */
-        SeosCryptoApi_Rng_EntropyFunc* entropy;
+        OS_CryptoRng_Entropy_func* entropy;
         /**
          * Context to pass to entropy callback.
          */
         void* context;
     } rng;
-} SeosCryptoLib_Config;
+} OS_CryptoLib_Config_t;
 
 /**
  * Configuration for Crypto API in RPC Client mode.
@@ -104,7 +104,7 @@ typedef struct
      * an API instance in RPC Server mode.
      */
     void* dataPort;
-} SeosCryptoRpcClient_Config;
+} OS_CryptoRpcClient_Config_t;
 
 /**
  * Configuration for Crypto API in RPC Server mode (RPC Server + Library).
@@ -116,7 +116,7 @@ typedef struct
      * an API instance in RPC Client mode.
      */
     void* dataPort;
-} SeosCryptoRpcServer_Config;
+} OS_CryptoRpcServer_Config_t;
 
 /**
  * Configuration for Crypto API in Router mode; since the router switches between
@@ -129,33 +129,33 @@ typedef struct
      * Configuration of locally used Library instance (used for keys that are
      * flagged as exportable).
      */
-    SeosCryptoRpcClient_Config client;
+    OS_CryptoRpcClient_Config_t client;
     /**
      * Configuration of remote RPC Server instance of the Crypto API.
      */
-    SeosCryptoLib_Config lib;
-} SeosCryptoRouter_Config;
+    OS_CryptoLib_Config_t lib;
+} OS_CryptoRouter_Config_t;
 
 /**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
- * -  SeosCryptoApi_Mode_LIBRARY:                   impl.lib
- * -  SeosCryptoApi_Mode_RPC_CLIENT:                impl.client
- * -  SeosCryptoApi_Mode_ROUTER:                    impl.router
- * -  SeosCryptoApi_Mode_RPC_SERVER_WITH_LIBRARY:   impl.lib AND server
+ * -  OS_Crypto_MODE_LIBRARY:                   impl.lib
+ * -  OS_Crypto_MODE_RPC_CLIENT:                impl.client
+ * -  OS_Crypto_MODE_ROUTER:                    impl.router
+ * -  OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY:   impl.lib AND server
  */
 typedef struct
 {
-    SeosCryptoApi_Mode mode;
-    SeosCryptoApi_MemIf mem;
+    OS_Crypto_Mode_t mode;
+    OS_Crypto_Memory_t mem;
     union
     {
-        SeosCryptoLib_Config lib;
-        SeosCryptoRpcClient_Config client;
-        SeosCryptoRouter_Config router;
+        OS_CryptoLib_Config_t lib;
+        OS_CryptoRpcClient_Config_t client;
+        OS_CryptoRouter_Config_t router;
     } impl;
-    SeosCryptoRpcServer_Config server;
-} SeosCryptoApi_Config;
+    OS_CryptoRpcServer_Config_t server;
+} OS_Crypto_Config_t;
 
 /**
  * @brief Initialize the Crypto API
@@ -176,12 +176,12 @@ typedef struct
  *                to a local instance of the library, or to a remote instance. The
  *                decision is made base on the "exportable" flag of cryptographic
  *                keys -- either when the key is created or when it is used.
-  *
+ *
  * Here are some example configurations for each of these modes:
  * 1. Run the API instance as local instance of the Crypto library:
  *  \code{.c}
- *  SeosCryptoApi_Config cfgLocal =  {
- *      .mode = SeosCryptoApi_Mode_LIBRARY,
+ *  OS_Crypto_Config_t cfgLocal =  {
+ *      .mode = OS_Crypto_MODE_LIBRARY,
  *      .mem = {
  *          .malloc = malloc,
  *          .free = free,
@@ -192,8 +192,8 @@ typedef struct
  * 2. Run the API instance as RPC client, which executes all Crypto functionality
  *    inside of an RPC server component:
  *  \code{.c}
- *  SeosCryptoApi_Config cfgRemote = {
- *      .mode = SeosCryptoApi_Mode_RPC_CLIENT,
+ *  OS_Crypto_Config_t cfgRemote = {
+ *      .mode = OS_Crypto_MODE_RPC_CLIENT,
  *      .mem = {
  *          .malloc = malloc,
  *          .free = free,
@@ -203,8 +203,8 @@ typedef struct
  *  \endcode
  * 3. Run API instance as RPC server backend:
  *  \code{.c}
- *  SeosCryptoApi_Config cfgServer = {
- *      .mode = SeosCryptoApi_Mode_RPC_SERVER_WITH_LIBRARY,
+ *  OS_Crypto_Config_t cfgServer = {
+ *      .mode = OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY,
  *      .mem = {
  *          .malloc = malloc,
  *          .free   = free,
@@ -215,8 +215,8 @@ typedef struct
  *  \endcode
  * 4. Run API instance in ROUTER mode:
  *  \code{.c}
- *  SeosCryptoApi_Config cfgRouter = {
- *      .mode = SeosCryptoApi_Mode_ROUTER,
+ *  OS_Crypto_Config_t cfgRouter = {
+ *      .mode = OS_Crypto_MODE_ROUTER,
  *      .mem = {
  *          .malloc = malloc,
  *          .free   = free,
@@ -230,7 +230,7 @@ typedef struct
  * with RPC functionality must set the dataport configuration according to those
  * addresses assigned by CAmKES.
  *
- * @param hCrypto (required) pointer to handle of SEOS Crypto API
+ * @param hCrypto (required) pointer to handle of OS Crypto API
  * @param cfg (required) pointer to configuration
  *
  * @return an error code
@@ -241,22 +241,22 @@ typedef struct
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the API object failed
  */
 seos_err_t
-SeosCryptoApi_init(
-    SeosCryptoApiH*             hCrypto,
-    const SeosCryptoApi_Config* cfg);
+OS_Crypto_init(
+    OS_Crypto_Handle_t*       hCrypto,
+    const OS_Crypto_Config_t* cfg);
 
 /**
  * @brief Free a context associated with the Crypto API
  *
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hCrypto (required) handle of OS Crypto API
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_free(
-    SeosCryptoApiH hCrypto);
+OS_Crypto_free(
+    OS_Crypto_Handle_t hCrypto);
 
 /**
  * @brief Get pointer to library object.
@@ -269,14 +269,14 @@ SeosCryptoApi_free(
  *       proxy objects point to the same library objects, which, in turn may lead
  *       to use-after-free and other issues!
  *
- * @param proxy (required) handle of SEOS Crypto Key object, e.g.,
- * SeosCryptoApi_MacH, SeosCryptoApi_DigestH, etc.
+ * @param proxy (required) handle of OS Crypto Key object, e.g.,
+ * OS_CryptoMac_Handle_t, OS_CryptoDigest_Handle_t, etc.
  *
  * @return pointer to object or NULL of \p proxy was NULL
  */
-SeosCryptoLib_Object*
-SeosCryptoApi_getObject(
-    const SeosCryptoApi_Proxy* proxy);
+OS_CryptoLib_Object_ptr*
+OS_Crypto_getObject(
+    const OS_Crypto_Object_t* proxy);
 
 /**
  * @brief Migrate a library object from a one API instance to another instance.
@@ -295,17 +295,17 @@ SeosCryptoApi_getObject(
  * together with the pointer to the actual Key (on the RPC server).
  *
  * NOTE: This function allocates a new object, which must be free'd with the
- *       appropriate function (e.g., if it is a SeosCryptoApi_KeyH, the corresponding
- *       SeosCryptoApi_Key_free() needs to be called).
+ *       appropriate function (e.g., if it is a OS_CryptoKey_Handle_t, the corresponding
+ *       OS_CryptoKey_free() needs to be called).
  *
  * NOTE: This function should only be used by an expert; underlying library objects
  *       should never be used directly, as this may create situations where multiple
  *       proxy objects point to the same library objects, which, in turn may lead
  *       to use-after-free and other issues!
  *
- * @param proxy (required) pointer to handle of SEOS Crypto object (e.g., can
- *  be a SeosCryptoApi_KeyH*)
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param proxy (required) pointer to handle of OS Crypto object (e.g., can
+ *  be a OS_CryptoKey_Handle_t*)
+ * @param hCrypto (required) handle of OS Crypto API
  * @param ptr (required) pointer to the library Key object from the some API instance
  *
  * @return an error code
@@ -313,20 +313,20 @@ SeosCryptoApi_getObject(
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_migrateObject(
-    SeosCryptoApi_Proxy**      proxy,
-    const SeosCryptoApiH       hCrypto,
-    const SeosCryptoLib_Object ptr);
+OS_Crypto_migrateObject(
+    OS_Crypto_Object_t**          proxy,
+    const OS_Crypto_Handle_t      hCrypto,
+    const OS_CryptoLib_Object_ptr ptr);
 
 /**
  * @brief Get mode of Crypto API instance.
  *
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hCrypto (required) handle of OS Crypto API
  *
- * @return Mode of API or SeosCryptoApi_Mode_NONE if \p hCrypto is NULL
+ * @return Mode of API or OS_Crypto_MODE_NONE if \p hCrypto is NULL
  */
-SeosCryptoApi_Mode
-SeosCryptoApi_getMode(
-    const SeosCryptoApiH hCrypto);
+OS_Crypto_Mode_t
+OS_Crypto_getMode(
+    const OS_Crypto_Handle_t hCrypto);
 
 /** @} */

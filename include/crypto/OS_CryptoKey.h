@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi_Key.h
+ * @file OS_CryptoKey.h
  *
- * @brief SEOS Crypto API library types, constants and enums for KEY object
+ * @brief OS Crypto API library types, constants and enums for KEY object
  *
  */
 
@@ -23,13 +23,13 @@
 /**
  * Maximum sizes supported for the respective key types.
  */
-#define SeosCryptoApi_Key_SIZE_AES_MAX      32      ///< max 256 bit
-#define SeosCryptoApi_Key_SIZE_AES_MIN      16      ///< min 128 bit
-#define SeosCryptoApi_Key_SIZE_RSA_MAX      512     ///< max 4096 bit
-#define SeosCryptoApi_Key_SIZE_RSA_MIN      16      ///< min 128 bit
-#define SeosCryptoApi_Key_SIZE_DH_MAX       512     ///< max 4096 bit
-#define SeosCryptoApi_Key_SIZE_DH_MIN       8       ///< min 64 bit
-#define SeosCryptoApi_Key_SIZE_ECC          32      ///< always 256 bit
+#define OS_CryptoKey_SIZE_AES_MAX      32      ///< max 256 bit
+#define OS_CryptoKey_SIZE_AES_MIN      16      ///< min 128 bit
+#define OS_CryptoKey_SIZE_RSA_MAX      512     ///< max 4096 bit
+#define OS_CryptoKey_SIZE_RSA_MIN      16      ///< min 128 bit
+#define OS_CryptoKey_SIZE_DH_MAX       512     ///< max 4096 bit
+#define OS_CryptoKey_SIZE_DH_MIN       8       ///< min 64 bit
+#define OS_CryptoKey_SIZE_ECC          32      ///< always 256 bit
 
 /**
  * These need to be set to these exact values to match values expected by the
@@ -37,172 +37,164 @@
  */
 typedef enum
 {
-    SeosCryptoApi_Key_PARAM_NONE = 0,
-    SeosCryptoApi_Key_PARAM_ECC_SECP192R1,
-    SeosCryptoApi_Key_PARAM_ECC_SECP224R1,
-    SeosCryptoApi_Key_PARAM_ECC_SECP256R1
-} SeosCryptoApi_Key_Param;
+    OS_CryptoKey_PARAM_NONE = 0,
+    OS_CryptoKey_PARAM_ECC_SECP192R1,
+    OS_CryptoKey_PARAM_ECC_SECP224R1,
+    OS_CryptoKey_PARAM_ECC_SECP256R1
+} OS_CryptoKey_Param_t;
 
 /**
  * Type of key generation spec.
  */
 typedef enum
 {
-    SeosCryptoApi_Key_SPECTYPE_NONE = 0,
+    OS_CryptoKey_SPECTYPE_NONE = 0,
     /**
      * KeySpec defines the amount of desired bits for a newly generated key directly.
      */
-    SeosCryptoApi_Key_SPECTYPE_BITS,
+    OS_CryptoKey_SPECTYPE_BITS,
     /**
      * KeySpec defines target params of newly generated keys, thus its size is
      * defined by those parameters (e.g., in case of DH keys, the size of the
      * underlying prime P).
      */
-    SeosCryptoApi_Key_SPECTYPE_PARAMS,
-} SeosCryptoApi_Key_SpecType;
+    OS_CryptoKey_SPECTYPE_PARAMS,
+} OS_CryptoKey_SpecType_t;
 
 /**
  * Special flags to use for KEY object.
  */
 typedef enum
 {
-    SeosCryptoApi_Key_FLAG_NONE = 0,
-}
-SeosCryptoApi_Key_Flag;
+    OS_CryptoKey_FLAG_NONE = 0,
+} OS_CryptoKey_Flag_t;
 
 /**
  * Type of KEY object.
  */
 typedef enum
 {
-    SeosCryptoApi_Key_TYPE_NONE = 0,
+    OS_CryptoKey_TYPE_NONE = 0,
     /**
      * Key for use with AES encryption/decryption; can be 128, 192, 256 bits.
      */
-    SeosCryptoApi_Key_TYPE_AES,
+    OS_CryptoKey_TYPE_AES,
     /**
      * Key for use with RSA private operations (signature/decryption); can be
      * 128-4096 bits.
      */
-    SeosCryptoApi_Key_TYPE_RSA_PRV,
+    OS_CryptoKey_TYPE_RSA_PRV,
     /**
      * Key for use with RSA public operations (verification/encryption); can be
      * 128-4096 bits.
      */
-    SeosCryptoApi_Key_TYPE_RSA_PUB,
+    OS_CryptoKey_TYPE_RSA_PUB,
     /**
      * Key for use with DH private operations; can be 64-4096 bits.
      */
-    SeosCryptoApi_Key_TYPE_DH_PRV,
+    OS_CryptoKey_TYPE_DH_PRV,
     /**
      * Key for use with DH public operations; can be 64-4096 bits.
      */
-    SeosCryptoApi_Key_TYPE_DH_PUB,
+    OS_CryptoKey_TYPE_DH_PUB,
     /**
      * Key on SECP256r1 Elliptic Curve for private operations; can only be 256 bits.
      */
-    SeosCryptoApi_Key_TYPE_SECP256R1_PRV,
+    OS_CryptoKey_TYPE_SECP256R1_PRV,
     /**
      * Key on SECP256r1 Elliptic Curve for public operations; can only be 256 bits.
      */
-    SeosCryptoApi_Key_TYPE_SECP256R1_PUB,
+    OS_CryptoKey_TYPE_SECP256R1_PUB,
     /**
      * Key on generic Elliptic Curve for private operations; currently not used.
      */
-    SeosCryptoApi_Key_TYPE_ECC_PRV,
+    OS_CryptoKey_TYPE_ECC_PRV,
     /**
      * Key on generic Elliptic Curve for public operations; currently not used.
      */
-    SeosCryptoApi_Key_TYPE_ECC_PUB
-}
-SeosCryptoApi_Key_Type;
+    OS_CryptoKey_TYPE_ECC_PUB
+} OS_CryptoKey_Type_t;
 
 /**
- * Handle for SEOS Crypto API KEY objects.
+ * Handle for OS Crypto API KEY objects.
  */
-typedef SeosCryptoApi_Proxy* SeosCryptoApi_KeyH;
+typedef OS_Crypto_Object_t* OS_CryptoKey_Handle_t;
 
 /**
  * Struct for an AES Key.
  */
 typedef struct
 {
-    uint8_t bytes[SeosCryptoApi_Key_SIZE_AES_MAX];
+    uint8_t bytes[OS_CryptoKey_SIZE_AES_MAX];
     uint32_t len;
-}
-SeosCryptoApi_Key_Aes;
+} OS_CryptoKey_Aes_t;
 
 /**
  * Struct for RSA public key data.
  */
 typedef struct
 {
-    uint8_t nBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< public modulus n=p*q
+    uint8_t nBytes[OS_CryptoKey_SIZE_RSA_MAX]; ///< public modulus n=p*q
     uint32_t nLen;
-    uint8_t eBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< public exponent
+    uint8_t eBytes[OS_CryptoKey_SIZE_RSA_MAX]; ///< public exponent
     uint32_t eLen;
-}
-SeosCryptoApi_Key_RsaRub;
+} OS_CryptoKey_RsaRub_t;
 
 /**
  * Struct for RSA private key data.
  */
 typedef struct
 {
-    uint8_t dBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< secret exp.
+    uint8_t dBytes[OS_CryptoKey_SIZE_RSA_MAX]; ///< secret exp.
     uint32_t dLen;
-    uint8_t eBytes[SeosCryptoApi_Key_SIZE_RSA_MAX]; ///< public exp.
+    uint8_t eBytes[OS_CryptoKey_SIZE_RSA_MAX]; ///< public exp.
     uint32_t eLen;
-    uint8_t pBytes[SeosCryptoApi_Key_SIZE_RSA_MAX / 2]; ///< prime factor of n
+    uint8_t pBytes[OS_CryptoKey_SIZE_RSA_MAX / 2]; ///< prime factor of n
     uint32_t pLen;
-    uint8_t qBytes[SeosCryptoApi_Key_SIZE_RSA_MAX / 2]; ///< prime factor of n
+    uint8_t qBytes[OS_CryptoKey_SIZE_RSA_MAX / 2]; ///< prime factor of n
     uint32_t qLen;
-}
-SeosCryptoApi_Key_RsaRrv;
+} OS_CryptoKey_RsaRrv_t;
 
 /**
  * Struct for shared, generic ECC curve params in Weirstrass form.
  */
 typedef struct
 {
-    uint8_t aBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< A of Weierstrass curve
+    uint8_t aBytes[OS_CryptoKey_SIZE_ECC]; ///< A of Weierstrass curve
     uint32_t aLen;
-    uint8_t bBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< B of Weierstrass curve
+    uint8_t bBytes[OS_CryptoKey_SIZE_ECC]; ///< B of Weierstrass curve
     uint32_t bLen;
-    uint8_t gxBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< coord x of basepoint G
+    uint8_t gxBytes[OS_CryptoKey_SIZE_ECC]; ///< coord x of basepoint G
     uint32_t gxLen;
-    uint8_t gyBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< coord y of basepoint G
+    uint8_t gyBytes[OS_CryptoKey_SIZE_ECC]; ///< coord y of basepoint G
     uint32_t gyLen;
-    uint8_t pBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< prime P of base field
+    uint8_t pBytes[OS_CryptoKey_SIZE_ECC]; ///< prime P of base field
     uint32_t pLen;
-    uint8_t nBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< order of G
+    uint8_t nBytes[OS_CryptoKey_SIZE_ECC]; ///< order of G
     uint32_t nLen;
-}
-SeosCryptoApi_Key_EccParams;
+} OS_CryptoKey_EccParams_t;
 
 /**
  * Struct for generic ECC public key data.
  */
 typedef struct
 {
-    SeosCryptoApi_Key_EccParams params; ///< params of curve: A, B, G, P, n=ord(G)
-    uint8_t qxBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< x of point Q=P*d
+    OS_CryptoKey_EccParams_t params; ///< params of curve: A, B, G, P, n=ord(G)
+    uint8_t qxBytes[OS_CryptoKey_SIZE_ECC]; ///< x of point Q=P*d
     uint32_t qxLen;
-    uint8_t qyBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< y of point Q=P*d
+    uint8_t qyBytes[OS_CryptoKey_SIZE_ECC]; ///< y of point Q=P*d
     uint32_t qyLen;
-}
-SeosCryptoApi_Key_EccPub;
+} OS_CryptoKey_EccPub_t;
 
 /**
  * Struct for generic ECC private key data.
  */
 typedef struct
 {
-    SeosCryptoApi_Key_EccParams params; ///< params of curve: A, B, G, P, n=ord(G)
-    uint8_t dBytes[SeosCryptoApi_Key_SIZE_ECC];       ///<  private scalar
+    OS_CryptoKey_EccParams_t params; ///< params of curve: A, B, G, P, n=ord(G)
+    uint8_t dBytes[OS_CryptoKey_SIZE_ECC];       ///<  private scalar
     uint32_t dLen;
-}
-SeosCryptoApi_Key_EccPrv;
+} OS_CryptoKey_EccPrv_t;
 
 /**
  * Struct for SECP256r1 ECC public key data; does not need to carry the params
@@ -210,12 +202,11 @@ SeosCryptoApi_Key_EccPrv;
  */
 typedef struct
 {
-    uint8_t qxBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< x of point Q=P*d
+    uint8_t qxBytes[OS_CryptoKey_SIZE_ECC]; ///< x of point Q=P*d
     uint32_t qxLen;
-    uint8_t qyBytes[SeosCryptoApi_Key_SIZE_ECC]; ///< y of point Q=P*d
+    uint8_t qyBytes[OS_CryptoKey_SIZE_ECC]; ///< y of point Q=P*d
     uint32_t qyLen;
-}
-SeosCryptoApi_Key_Secp256r1Pub;
+} OS_CryptoKey_Secp256r1Pub_t;
 
 /**
  * Struct for SECP256r1 ECC private key data; does not need to carry the params
@@ -223,44 +214,40 @@ SeosCryptoApi_Key_Secp256r1Pub;
  */
 typedef struct
 {
-    uint8_t dBytes[SeosCryptoApi_Key_SIZE_ECC]; ///<  private scalar
+    uint8_t dBytes[OS_CryptoKey_SIZE_ECC]; ///<  private scalar
     uint32_t dLen;
-}
-SeosCryptoApi_Key_Secp256r1Prv;
+} OS_CryptoKey_Secp256r1Prv_t;
 
 /**
  * Struct for shared DH parameters.
  */
 typedef struct
 {
-    uint8_t pBytes[SeosCryptoApi_Key_SIZE_DH_MAX]; ///< shared prime
+    uint8_t pBytes[OS_CryptoKey_SIZE_DH_MAX]; ///< shared prime
     uint32_t pLen;
-    uint8_t gBytes[SeosCryptoApi_Key_SIZE_DH_MAX]; ///< shared generator
+    uint8_t gBytes[OS_CryptoKey_SIZE_DH_MAX]; ///< shared generator
     uint32_t gLen;
-}
-SeosCryptoApi_Key_DhParams;
+} OS_CryptoKey_DhParams_t;
 
 /**
  * Struct for DH public key data.
  */
 typedef struct
 {
-    SeosCryptoApi_Key_DhParams params; ///< shared params: generator G and prime P
-    uint8_t gxBytes[SeosCryptoApi_Key_SIZE_DH_MAX]; ///< public key g^x mod p
+    OS_CryptoKey_DhParams_t params; ///< shared params: generator G and prime P
+    uint8_t gxBytes[OS_CryptoKey_SIZE_DH_MAX]; ///< public key g^x mod p
     uint32_t gxLen;
-}
-SeosCryptoApi_Key_DhPub;
+} OS_CryptoKey_DhPub_t;
 
 /**
  * Struct for DH private key data.
  */
 typedef struct
 {
-    SeosCryptoApi_Key_DhParams params; ///< shared params: generator G and prime P
-    uint8_t xBytes[SeosCryptoApi_Key_SIZE_DH_MAX]; ///< private exponent
+    OS_CryptoKey_DhParams_t params; ///< shared params: generator G and prime P
+    uint8_t xBytes[OS_CryptoKey_SIZE_DH_MAX]; ///< private exponent
     uint32_t xLen;
-}
-SeosCryptoApi_Key_DhPrv;
+} OS_CryptoKey_DhPrv_t;
 
 /**
  * Struct for attributes associated with every key.
@@ -270,7 +257,7 @@ typedef struct
     /**
      * Flags set for this key.
      */
-    SeosCryptoApi_Key_Flag flags;
+    OS_CryptoKey_Flag_t flags;
     /**
      * Keys can be EXPORTABLE or NOT_EXPORTABLE. This flag is evaluated in two
      * places:
@@ -281,7 +268,7 @@ typedef struct
      *   handled by a RPC server instance (e.g., the CryptoServer).
      */
     bool exportable;
-} SeosCryptoApi_Key_Attribs;
+} OS_CryptoKey_Attrib_t;
 
 /**
  * Specification for the generation of new secret keys (e.g., AES keys or private
@@ -292,20 +279,19 @@ typedef struct
  */
 typedef struct
 {
-    SeosCryptoApi_Key_SpecType type;
+    OS_CryptoKey_SpecType_t type;
     struct key
     {
-        SeosCryptoApi_Key_Type type;
-        SeosCryptoApi_Key_Attribs attribs;
+        OS_CryptoKey_Type_t type;
+        OS_CryptoKey_Attrib_t attribs;
         union
         {
             uint32_t bits;
-            SeosCryptoApi_Key_EccParams ecc;
-            SeosCryptoApi_Key_DhParams dh;
+            OS_CryptoKey_EccParams_t ecc;
+            OS_CryptoKey_DhParams_t dh;
         } params;
     } key;
-}
-SeosCryptoApi_Key_Spec;
+} OS_CryptoKey_Spec_t;
 
 /**
  * Specification of a key's raw data. Which fields of the union need to be set
@@ -317,34 +303,33 @@ SeosCryptoApi_Key_Spec;
  */
 typedef struct
 {
-    SeosCryptoApi_Key_Type type;
-    SeosCryptoApi_Key_Attribs attribs;
+    OS_CryptoKey_Type_t type;
+    OS_CryptoKey_Attrib_t attribs;
     union
     {
         union
         {
-            SeosCryptoApi_Key_EccPrv prv;
-            SeosCryptoApi_Key_EccPub pub;
+            OS_CryptoKey_EccPrv_t prv;
+            OS_CryptoKey_EccPub_t pub;
         } ecc;
         union
         {
-            SeosCryptoApi_Key_Secp256r1Prv prv;
-            SeosCryptoApi_Key_Secp256r1Pub pub;
+            OS_CryptoKey_Secp256r1Prv_t prv;
+            OS_CryptoKey_Secp256r1Pub_t pub;
         } secp256r1;
         union
         {
-            SeosCryptoApi_Key_DhPrv prv;
-            SeosCryptoApi_Key_DhPub pub;
+            OS_CryptoKey_DhPrv_t prv;
+            OS_CryptoKey_DhPub_t pub;
         } dh;
         union
         {
-            SeosCryptoApi_Key_RsaRrv prv;
-            SeosCryptoApi_Key_RsaRub pub;
+            OS_CryptoKey_RsaRrv_t prv;
+            OS_CryptoKey_RsaRub_t pub;
         } rsa;
-        SeosCryptoApi_Key_Aes aes;
+        OS_CryptoKey_Aes_t aes;
     } data;
-}
-SeosCryptoApi_Key_Data;
+} OS_CryptoKey_Data_t;
 
 /**
  * @brief Generate symmetric/private KEY with internal RNG.
@@ -359,10 +344,10 @@ SeosCryptoApi_Key_Data;
  * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
  *    value). Use a parameter spec which already provides the prime P and base G.
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Spec dh101pSpec = {
- *      .type = SeosCryptoApi_Key_SPECTYPE_PARAMS,
+ *  static const OS_CryptoKey_Spec_t dh101pSpec = {
+ *      .type = OS_CryptoKey_SPECTYPE_PARAMS,
  *      .key = {
- *          .type = SeosCryptoApi_Key_TYPE_DH_PRV,
+ *          .type = OS_CryptoKey_TYPE_DH_PRV,
  *          .params.dh = {
  *              .pBytes = {0x12, 0xdf, 0x4d, 0x76, ... 0x07},
  *              .pLen   = 13,
@@ -374,10 +359,10 @@ SeosCryptoApi_Key_Data;
  *  \endcode
  * 2. Create a 128 bit AES key and make it exportable, use a bit spec for that:
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Spec aes128Spec = {
- *      .type = SeosCryptoApi_Key_SPECTYPE_BITS,
+ *  static const OS_CryptoKey_Spec_t aes128Spec = {
+ *      .type = OS_CryptoKey_SPECTYPE_BITS,
  *      .key = {
- *          .type = SeosCryptoApi_Key_TYPE_AES,
+ *          .type = OS_CryptoKey_TYPE_AES,
  *          .attribs.exportable = true,
  *          .params.bits = 128
  *      }
@@ -385,17 +370,17 @@ SeosCryptoApi_Key_Data;
  *  \endcode
  * 3. Create 1024-bit RSA privkey, again using a bit spec:
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Spec rsa128Spec = {
- *     .type = SeosCryptoApi_Key_SPECTYPE_BITS,
+ *  static const OS_CryptoKey_Spec_t rsa128Spec = {
+ *     .type = OS_CryptoKey_SPECTYPE_BITS,
  *     .key = {
- *        .type = SeosCryptoApi_Key_TYPE_RSA_PRV,
+ *        .type = OS_CryptoKey_TYPE_RSA_PRV,
  *        .params.bits = 1024
  *      }
  *  };
  *  \endcode
  *
- * @param hKey (required) pointer to handle of SEOS Crypto KEY object
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hKey (required) pointer to handle of OS Crypto KEY object
+ * @param hCrypto (required) handle of OS Crypto API
  * @param spec (required) specification of key to create
  *
  * @return an error code
@@ -409,10 +394,10 @@ SeosCryptoApi_Key_Data;
  *  operations
  */
 seos_err_t
-SeosCryptoApi_Key_generate(
-    SeosCryptoApi_KeyH*           hKey,
-    const SeosCryptoApiH          hCrypto,
-    const SeosCryptoApi_Key_Spec* spec);
+OS_CryptoKey_generate(
+    OS_CryptoKey_Handle_t*     hKey,
+    const OS_Crypto_Handle_t   hCrypto,
+    const OS_CryptoKey_Spec_t* spec);
 
 /**
  * @brief Import data into KEY object from buffer.
@@ -425,19 +410,19 @@ SeosCryptoApi_Key_generate(
  * Here are some example key data configurations for typical types of keys:
  * 1. Define a 128-bit AES key that is exportable:
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Data aes128Data =
+ *  static const OS_CryptoKey_Data_t aes128Data =
  *  {
- *      .type = SeosCryptoApi_Key_TYPE_AES,
+ *      .type = OS_CryptoKey_TYPE_AES,
  *      .attribs.exportable = true,
  *      .data.aes.bytes  = "0123456789abcdef",
  *      .data.aes.len    = 16
-  *  };
+ *  };
  *  \endcode
  * 2. Define a SECP256r1 private key that is NOT exportable (abbreviated):
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Data secp256r1PrvData =
+ *  static const OS_CryptoKey_Data_t secp256r1PrvData =
  *  {
- *      .type = SeosCryptoApi_Key_TYPE_SECP256R1_PRV,
+ *      .type = OS_CryptoKey_TYPE_SECP256R1_PRV,
  *      .attribs.exportable = false,
  *      .data.secp256r1.prv = {
  *          .dBytes = {0xc6, 0xef, 0x9c, 0x5d, ... 0x20},
@@ -447,9 +432,9 @@ SeosCryptoApi_Key_generate(
  *  \endcode
  * 3. Define 1024-bit RSA private key that is exportable (abbreviated):
  *  \code{.c}
- *  static const SeosCryptoApi_Key_Data rsa1024PrvData =
+ *  static const OS_CryptoKey_Data_t rsa1024PrvData =
  *  {
- *      .type = SeosCryptoApi_Key_TYPE_RSA_PRV,
+ *      .type = OS_CryptoKey_TYPE_RSA_PRV,
  *      .attribs.exportable = true,
  *      .data.rsa.prv = {
  *          .dBytes = {0x35, 0xe7, 0x4c, 0x80, ... 0x99},
@@ -464,8 +449,8 @@ SeosCryptoApi_Key_generate(
  *  };
  *  \endcode
  *
- * @param hKey (required) pointer to handle of SEOS Crypto KEY object
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hKey (required) pointer to handle of OS Crypto KEY object
+ * @param hCrypto (required) handle of OS Crypto API
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
@@ -477,10 +462,10 @@ SeosCryptoApi_Key_generate(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
 seos_err_t
-SeosCryptoApi_Key_import(
-    SeosCryptoApi_KeyH*           hKey,
-    const SeosCryptoApiH          hCrypto,
-    const SeosCryptoApi_Key_Data* keyData);
+OS_CryptoKey_import(
+    OS_CryptoKey_Handle_t*     hKey,
+    const OS_Crypto_Handle_t   hCrypto,
+    const OS_CryptoKey_Data_t* keyData);
 
 /**
  * @brief Make a public KEY from a private KEY object.
@@ -489,9 +474,9 @@ SeosCryptoApi_Key_import(
  * an existing private KEY object. In order to make a keypair, generate() and
  * makePublic() have to be called in sequence.
  *
- * @param hPubKey (required) pointer to handle of SEOS Crypto KEY object
- * @param hCrypto (required) handle of SEOS Crypto API
- * @param hPrvKey (required) handle of SEOS Crypto KEY object to make public key for
+ * @param hPubKey (required) pointer to handle of OS Crypto KEY object
+ * @param hCrypto (required) handle of OS Crypto API
+ * @param hPrvKey (required) handle of OS Crypto KEY object to make public key for
  * @param attribs (required) attributes to assign to public key
  *
  * @return an error code
@@ -502,11 +487,11 @@ SeosCryptoApi_Key_import(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
  */
 seos_err_t
-SeosCryptoApi_Key_makePublic(
-    SeosCryptoApi_KeyH*              hPubKey,
-    const SeosCryptoApiH             hCrypto,
-    const SeosCryptoApi_KeyH         hPrvKey,
-    const SeosCryptoApi_Key_Attribs* attribs);
+OS_CryptoKey_makePublic(
+    OS_CryptoKey_Handle_t*       hPubKey,
+    const OS_Crypto_Handle_t     hCrypto,
+    const OS_CryptoKey_Handle_t  hPrvKey,
+    const OS_CryptoKey_Attrib_t* attribs);
 
 /**
  * @brief Finish a KEY object.
@@ -514,15 +499,15 @@ SeosCryptoApi_Key_makePublic(
  * This function frees the memory associated with the KEY object and zeroizes
  * any sensitive material that was stored internally.
  *
- * @param hKey (required) handle of SEOS Crypto KEY object
+ * @param hKey (required) handle of OS Crypto KEY object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Key_free(
-    SeosCryptoApi_KeyH hKey);
+OS_CryptoKey_free(
+    OS_CryptoKey_Handle_t hKey);
 
 /**
  * @brief Export data from KEY handle into buffer.
@@ -539,7 +524,7 @@ SeosCryptoApi_Key_free(
  *       attribute. The rationale behind this is that it resides in the callers
  *       address space anyways so he might equally well read the data himself.
  *
- * @param hKey (required) handle of SEOS Crypto KEY object
+ * @param hKey (required) handle of OS Crypto KEY object
  * @param keyData (required) buffer for key data
  *
  * @return an error code
@@ -549,9 +534,9 @@ SeosCryptoApi_Key_free(
  *  set during creation of the key object
  */
 seos_err_t
-SeosCryptoApi_Key_export(
-    const SeosCryptoApi_KeyH hKey,
-    SeosCryptoApi_Key_Data*  keyData);
+OS_CryptoKey_export(
+    const OS_CryptoKey_Handle_t hKey,
+    OS_CryptoKey_Data_t*        keyData);
 
 /**
  * @brief Get shared parameters from KEY.
@@ -561,7 +546,7 @@ SeosCryptoApi_Key_export(
  * exportable flag is ignored here, as these are public parameters which may be
  * needed to generate more keys (e.g., in case of key exchange).
  *
- * @param hKey (required) handle of SEOS Crypto KEY object
+ * @param hKey (required) handle of OS Crypto KEY object
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
  *  written bytes if function succeeds (or the minimum size if it fails due to too
@@ -574,13 +559,13 @@ SeosCryptoApi_Key_export(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Key_getParams(
-    const SeosCryptoApi_KeyH hKey,
-    void*                    param,
-    size_t*                  paramSize);
+OS_CryptoKey_getParams(
+    const OS_CryptoKey_Handle_t hKey,
+    void*                       param,
+    size_t*                     paramSize);
 
 /**
  * @brief Get attributes from KEY object.
@@ -588,7 +573,7 @@ SeosCryptoApi_Key_getParams(
  * All KEYs have a set of attributes which can be extracted with this function, e.g,
  * to check if a KEY object can be exported.
  *
- * @param hKey (required) handle of SEOS Crypto KEY object
+ * @param hKey (required) handle of OS Crypto KEY object
  * @param attribs (required) buffer for attributes
  *
  * @return an error code
@@ -596,9 +581,9 @@ SeosCryptoApi_Key_getParams(
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Key_getAttribs(
-    const SeosCryptoApi_KeyH   hKey,
-    SeosCryptoApi_Key_Attribs* attribs);
+OS_CryptoKey_getAttribs(
+    const OS_CryptoKey_Handle_t hKey,
+    OS_CryptoKey_Attrib_t*      attribs);
 
 /**
  * @brief Load pre-defined parameters.
@@ -607,7 +592,7 @@ SeosCryptoApi_Key_getAttribs(
  * e.g. use SECP256r1 curve or a fixed DH group. This function allows to read those
  * parameters, so they can be used with a PARAM spec to generate keys.
  *
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hCrypto (required) handle of OS Crypto API
  * @param name (required) name of the parameter set
  * @param param (required) buffer for key params
  * @param paramSize (required) buffer for key data, will be set to effectively
@@ -621,13 +606,13 @@ SeosCryptoApi_Key_getAttribs(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Key_loadParams(
-    SeosCryptoApiH                hCrypto,
-    const SeosCryptoApi_Key_Param name,
-    void*                         param,
-    size_t*                       paramSize);
+OS_CryptoKey_loadParams(
+    OS_Crypto_Handle_t         hCrypto,
+    const OS_CryptoKey_Param_t name,
+    void*                      param,
+    size_t*                    paramSize);
 
 /** @} */

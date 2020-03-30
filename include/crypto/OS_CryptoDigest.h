@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi_Digest.h
+ * @file OS_CryptoDigest.h
  *
- * @brief SEOS Crypto API library types, constants and enums for DIGEST object
+ * @brief OS Crypto API library types, constants and enums for DIGEST object
  *
  */
 
@@ -17,11 +17,11 @@
 /**
  * Length of MD5 hash in bytes.
  */
-#define SeosCryptoApi_Digest_SIZE_MD5     16
+#define OS_CryptoDigest_SIZE_MD5     16
 /**
  * Length of SHA256 hash in bytes.
  */
-#define SeosCryptoApi_Digest_SIZE_SHA256  32
+#define OS_CryptoDigest_SIZE_SHA256  32
 
 /**
  * These need to be set to these exact values to match values expected by the
@@ -29,28 +29,27 @@
  */
 typedef enum
 {
-    SeosCryptoApi_Digest_ALG_NONE       = 0,
+    OS_CryptoDigest_ALG_NONE       = 0,
     /**
      * Use MD5 hash.
      */
-    SeosCryptoApi_Digest_ALG_MD5        = 3,
+    OS_CryptoDigest_ALG_MD5        = 3,
     /**
      * Use SHA256 hash.
      */
-    SeosCryptoApi_Digest_ALG_SHA256     = 6
-}
-SeosCryptoApi_Digest_Alg;
+    OS_CryptoDigest_ALG_SHA256     = 6
+} OS_CryptoDigest_Alg_t;
 
 /**
- * Handle for SEOS Crypto API DIGEST objects.
+ * Handle for OS Crypto API DIGEST objects.
  */
-typedef SeosCryptoApi_Proxy* SeosCryptoApi_DigestH;
+typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
 
 /**
  * @brief Initialize a DIGEST object.
  *
- * @param hDigest (required) pointer to handle of SEOS Crypto DIGEST object
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hDigest (required) pointer to handle of OS Crypto DIGEST object
+ * @param hCrypto (required) handle of OS Crypto API
  * @param algorithm (required) DIGEST algorithm to use
  *
  * @return an error code
@@ -61,23 +60,23 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_DigestH;
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
  */
 seos_err_t
-SeosCryptoApi_Digest_init(
-    SeosCryptoApi_DigestH*         hDigest,
-    const SeosCryptoApiH           hCrypto,
-    const SeosCryptoApi_Digest_Alg algorithm);
+OS_CryptoDigest_init(
+    OS_CryptoDigest_Handle_t*   hDigest,
+    const OS_Crypto_Handle_t    hCrypto,
+    const OS_CryptoDigest_Alg_t algorithm);
 
 /**
  * @brief Finish a DIGEST object.
  *
- * @param hDigest (required) handle of SEOS Crypto DIGEST object
+ * @param hDigest (required) handle of OS Crypto DIGEST object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Digest_free(
-    SeosCryptoApi_DigestH hDigest);
+OS_CryptoDigest_free(
+    OS_CryptoDigest_Handle_t hDigest);
 
 /**
  * @brief Clone a DIGEST object.
@@ -85,17 +84,17 @@ SeosCryptoApi_Digest_free(
  * This function requires two initialized DIGEST objects; the internal state of
  * \p hDstDigest will be set to the internal state of \p hSrcDigest.
  *
- * @param hDstDigest (required) handle of SEOS Crypto DIGEST object
- * @param hSrcDigest (required) handle of SEOS Crypto DIGEST object
+ * @param hDstDigest (required) handle of OS Crypto DIGEST object
+ * @param hSrcDigest (required) handle of OS Crypto DIGEST object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Digest_clone(
-    SeosCryptoApi_DigestH       hDstDigest,
-    const SeosCryptoApi_DigestH hSrcDigest);
+OS_CryptoDigest_clone(
+    OS_CryptoDigest_Handle_t       hDstDigest,
+    const OS_CryptoDigest_Handle_t hSrcDigest);
 
 /**
  * @brief Process block of data.
@@ -103,7 +102,7 @@ SeosCryptoApi_Digest_clone(
  * Feed blocks of data into the internal state of the DIGEST object. Typically,
  * this function will be called multiple times until the DIGEST has been finalized.
  *
- * @param hDigest (required) handle of SEOS Crypto DIGEST object
+ * @param hDigest (required) handle of OS Crypto DIGEST object
  * @param data (required) data to process
  * @param dataSize (required) length of data
  *
@@ -113,13 +112,13 @@ SeosCryptoApi_Digest_clone(
  * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
  *  was already finalized
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Digest_process(
-    SeosCryptoApi_DigestH hDigest,
-    const void*           data,
-    const size_t          dataSize);
+OS_CryptoDigest_process(
+    OS_CryptoDigest_Handle_t hDigest,
+    const void*              data,
+    const size_t             dataSize);
 
 /**
  * @brief Finish computation to produce digest/hash value.
@@ -130,7 +129,7 @@ SeosCryptoApi_Digest_process(
  * NOTE: This function will re-set the DIGEST object so it can be used to compute
  *       a new digest value with the algorithm given during initialization.
  *
- * @param hDigest (required) handle of SEOS Crypto DIGEST object
+ * @param hDigest (required) handle of OS Crypto DIGEST object
  * @param digest (required) buffer to write digest/hash value to
  * @param digestSize (required) size of buffer, will be set to the amount
  *  of bytes written to \p digest (or the minimum size if it fails due too small
@@ -144,12 +143,12 @@ SeosCryptoApi_Digest_process(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
  *  resulting digest
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Digest_finalize(
-    SeosCryptoApi_DigestH hDigest,
-    void*                 digest,
-    size_t*               digestSize);
+OS_CryptoDigest_finalize(
+    OS_CryptoDigest_Handle_t hDigest,
+    void*                    digest,
+    size_t*                  digestSize);
 
 /** @} */

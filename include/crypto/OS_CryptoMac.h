@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosCryptoApi SEOS Crypto API
+ * @defgroup OS_Crypto OS Crypto API
  * @{
  *
- * @file SeosCryptoApi_Mac.h
+ * @file OS_CryptoMac.h
  *
- * @brief SEOS Crypto API library types, constants and enums for MAC object
+ * @brief OS Crypto API library types, constants and enums for MAC object
  *
  */
 
@@ -19,39 +19,38 @@
 /**
  * The output size of HMAC-MD5 in bytes.
  */
-#define SeosCryptoApi_Mac_SIZE_HMAC_MD5     16
+#define OS_CryptoMac_SIZE_HMAC_MD5     16
 /**
  * The output size of HMAC-SHA256 in bytes.
  */
-#define SeosCryptoApi_Mac_SIZE_HMAC_SHA256  32
+#define OS_CryptoMac_SIZE_HMAC_SHA256  32
 
 /**
  * Type of MAC algorithm to use.
  */
 typedef enum
 {
-    SeosCryptoApi_Mac_ALG_NONE = 0,
+    OS_CryptoMac_ALG_NONE = 0,
     /**
      * Use HMAC with MD5 as hash algorithm.
      */
-    SeosCryptoApi_Mac_ALG_HMAC_MD5,
+    OS_CryptoMac_ALG_HMAC_MD5,
     /**
      * Use HMAC with SHA256 as hash algorithm.
      */
-    SeosCryptoApi_Mac_ALG_HMAC_SHA256,
-}
-SeosCryptoApi_Mac_Alg;
+    OS_CryptoMac_ALG_HMAC_SHA256,
+} OS_CryptoMac_Alg_t;
 
 /**
- * Handle for SEOS Crypto API MAC objects.
+ * Handle for OS Crypto API MAC objects.
  */
-typedef SeosCryptoApi_Proxy* SeosCryptoApi_MacH;
+typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
 
 /**
  * @brief Initialize a message authentication code (MAC) object.
  *
- * @param hMac (required) pointer to handle of SEOS Crypto MAC object
- * @param hCrypto (required) handle of SEOS Crypto API
+ * @param hMac (required) pointer to handle of OS Crypto MAC object
+ * @param hCrypto (required) handle of OS Crypto API
  * @param algorithm (required) MAC algorithm to use
  *
  * @return an error code
@@ -62,23 +61,23 @@ typedef SeosCryptoApi_Proxy* SeosCryptoApi_MacH;
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the MAC object failed
  */
 seos_err_t
-SeosCryptoApi_Mac_init(
-    SeosCryptoApi_MacH*         hMac,
-    const SeosCryptoApiH        hCrypto,
-    const SeosCryptoApi_Mac_Alg algorithm);
+OS_CryptoMac_init(
+    OS_CryptoMac_Handle_t*   hMac,
+    const OS_Crypto_Handle_t hCrypto,
+    const OS_CryptoMac_Alg_t algorithm);
 
 /**
  * @brief Finish a message authentication code (MAC) object
  *
- * @param hMac (required) handle of SEOS Crypto MAC object
+ * @param hMac (required) handle of OS Crypto MAC object
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-SeosCryptoApi_Mac_free(
-    SeosCryptoApi_MacH hMac);
+OS_CryptoMac_free(
+    OS_CryptoMac_Handle_t hMac);
 
 /**
  * @brief Start MAC computation by feeding a secret into the MAC's state.
@@ -89,7 +88,7 @@ SeosCryptoApi_Mac_free(
  *
  * This function has to be called once at the beginning of each MAC computation.
  *
- * @param hMac (required) handle of SEOS Crypto MAC object
+ * @param hMac (required) handle of OS Crypto MAC object
  * @param secret (required) secret to process
  * @param secretSize (required) length of data
  *
@@ -99,13 +98,13 @@ SeosCryptoApi_Mac_free(
  * @retval SEOS_ERROR_ABORTED if processing of \p secret failed or if MAC was
  *  was already started
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p secretSize is greater than
- *   `SeosCryptoApi_SIZE_DATAPORT`
+ *   `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Mac_start(
-    SeosCryptoApi_MacH hMac,
-    const void*        secret,
-    const size_t       secretSize);
+OS_CryptoMac_start(
+    OS_CryptoMac_Handle_t hMac,
+    const void*           secret,
+    const size_t          secretSize);
 
 /**
  * @brief Feed block of data into MACs internal state.
@@ -113,7 +112,7 @@ SeosCryptoApi_Mac_start(
  * Feed blocks of data into the MAC algorithm. Typically, this function will be
  * called multiple times after start and before finalizing the MAC.
  *
- * @param hMac (required) handle of SEOS Crypto MAC object
+ * @param hMac (required) handle of OS Crypto MAC object
  * @param data (required) data to process
  * @param dataSize (required) length of data
  *
@@ -123,13 +122,13 @@ SeosCryptoApi_Mac_start(
  * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if MAC object
  *  was already finalized or not yet started
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *   `SeosCryptoApi_SIZE_DATAPORT`
+ *   `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Mac_process(
-    SeosCryptoApi_MacH hMac,
-    const void*        data,
-    const size_t       dataSize);
+OS_CryptoMac_process(
+    OS_CryptoMac_Handle_t hMac,
+    const void*           data,
+    const size_t          dataSize);
 
 /**
  * @brief Finish MAC computation to produce authentication code.
@@ -140,7 +139,7 @@ SeosCryptoApi_Mac_process(
  * NOTE: This function will re-set the MAC object, so it can compute a new MAC
  *       with the algorithm given during initialization.
  *
- * @param hMac (required) handle of SEOS Crypto MAC object
+ * @param hMac (required) handle of OS Crypto MAC object
  * @param auth (required) buffer to write authenticaion code to
  * @param authSize (required) size of buffer, will be set to the amount of bytes
  *  written to \p auth (or the minimum size if it fails due too small buffer)
@@ -153,12 +152,12 @@ SeosCryptoApi_Mac_process(
  * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p authSize is too small for the
  *  resulting MAC
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
- *  `SeosCryptoApi_SIZE_DATAPORT`
+ *  `OS_Crypto_SIZE_DATAPORT`
  */
 seos_err_t
-SeosCryptoApi_Mac_finalize(
-    SeosCryptoApi_MacH hMac,
-    void*              auth,
-    size_t*            authSize);
+OS_CryptoMac_finalize(
+    OS_CryptoMac_Handle_t hMac,
+    void*                 auth,
+    size_t*               authSize);
 
 /** @} */
