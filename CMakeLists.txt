@@ -8,7 +8,6 @@ target_include_directories(${PROJECT_NAME}
     INTERFACE
         .
         include
-        os_util
 )
 
 # if invoked from the SEOS sandbox, provide a documentation build target
