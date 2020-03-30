@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @defgroup SeosTlsApi SEOS TLS API
+ * @defgroup OS_Tls OS TLS API
  * @{
  *
- * @file SeosTlsApi.h
+ * @file OS_Tls.h
  *
- * @brief SEOS TLS API library
+ * @brief OS TLS API library
  *
  */
 
@@ -23,22 +23,22 @@
  * static buffer in the config struct and for now set such it may hold ONE large
  * PEM-encoded certificate.
  */
-#define SeosTlsLib_SIZE_CA_CERT_MAX    3072
+#define OS_TlsLib_SIZE_CA_CERT_MAX    3072
 /**
  * Max values to enable static array allocation; we do not actually provide as
  * many ciphersuites, yet.
  */
-#define SeosTlsLib_MAX_CIPHERSUITES    8
-#define SeosTlsLib_MAX_DIGESTS         SeosTlsLib_MAX_CIPHERSUITES
+#define OS_TlsLib_MAX_CIPHERSUITES    8
+#define OS_TlsLib_MAX_DIGESTS         OS_TlsLib_MAX_CIPHERSUITES
 
 /**
  * Functions for sending/receiving data on an open socket.
  */
-typedef int (SeosTlsLib_RecvFunc)(
+typedef int (OS_TlsLib_Recv_func)(
     void*          ctx,
     unsigned char* buf,
     size_t         len);
-typedef int (SeosTlsLib_SendFunc)(
+typedef int (OS_TlsLib_Send_func)(
     void*                ctx,
     const unsigned char* buf,
     size_t               len);
@@ -49,12 +49,12 @@ typedef int (SeosTlsLib_SendFunc)(
  */
 typedef enum
 {
-    SeosTlsLib_Digest_NONE     = 0x00,
+    OS_TlsLib_DIGEST_NONE     = 0x00,
     /**
      * Use SHA256 as hash algorithm.
      */
-    SeosTlsLib_Digest_SHA256   = 0x06,
-} SeosTlsLib_Digest;
+    OS_TlsLib_DIGEST_SHA256   = 0x06,
+} OS_TlsLib_Digest_t;
 
 /**
  * Cipher suites available; these need to match the values of the underlying
@@ -62,33 +62,33 @@ typedef enum
  */
 typedef enum
 {
-    SeosTlsLib_CipherSuite_NONE                              = 0x0000,
+    OS_TlsLib_CIPHERSUITE_NONE                              = 0x0000,
     /**
      * Use DHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    SeosTlsLib_CipherSuite_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
+    OS_TlsLib_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
     /**
      * Use ECDHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    SeosTlsLib_CipherSuite_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = 0xc02f
-} SeosTlsLib_CipherSuite;
+    OS_TlsLib_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = 0xc02f
+} OS_TlsLib_CipherSuite_t;
 
 /**
  * Flags for setting options in the TLS provider lib.
  */
 typedef enum
 {
-    SeosTlsLib_Flag_NONE          = (1u << 0),
+    OS_TlsLib_FLAG_NONE          = (1u << 0),
     /**
      *  Produce debug output from underlying protocol provider
      */
-    SeosTlsLib_Flag_DEBUG         = (1u << 1),
+    OS_TlsLib_FLAG_DEBUG         = (1u << 1),
     /**
      * Do not attempt to validate server certificate. This is dangerous,
      * so you better know what you are doing!
      */
-    SeosTlsLib_Flag_NO_VERIFY     = (1u << 2)
-} SeosTlsLib_Flag;
+    OS_TlsLib_FLAG_NO_VERIFY     = (1u << 2)
+} OS_TlsLib_Flag_t;
 
 /**
  * For legacy reasons it may be important to override the param/algorithm choices
@@ -102,7 +102,7 @@ typedef struct
      *
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
-    SeosTlsLib_Digest sessionDigests[SeosTlsLib_MAX_DIGESTS + 1];
+    OS_TlsLib_Digest_t sessionDigests[OS_TlsLib_MAX_DIGESTS + 1];
     /**
      * Amount of digests set in \p sessionDigests.
      */
@@ -113,7 +113,7 @@ typedef struct
      *
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
-    SeosTlsLib_Digest signatureDigests[SeosTlsLib_MAX_DIGESTS + 1];
+    OS_TlsLib_Digest_t signatureDigests[OS_TlsLib_MAX_DIGESTS + 1];
     /**
      * Amount of digests set in \p signatureDigests.
      */
@@ -126,7 +126,7 @@ typedef struct
      * Minimum bit length for DH-based operations.
      */
     size_t dhMinBits;
-} SeosTlsLib_Policy;
+} OS_TlsLib_Policy_t;
 
 /**
  * Configuration for the TLS provider library used by the TLS API layer.
@@ -139,8 +139,8 @@ typedef struct
          * Callbacks to use by the TLS library to send/recieve data for a socket
          * that is already CONNECTED.
          */
-        SeosTlsLib_RecvFunc* recv;
-        SeosTlsLib_SendFunc* send;
+        OS_TlsLib_Recv_func* recv;
+        OS_TlsLib_Send_func* send;
         /**
          * This is a parameter which is passed into every call to send/recv.
          * Typically it would be a socket handle or similar.
@@ -153,9 +153,9 @@ typedef struct
          * Policy can be NULL, then it is set automatically based on the ciphersuites
          * chosen by the user.
          */
-        SeosTlsLib_Policy* policy;
+        OS_TlsLib_Policy_t* policy;
         /**
-         * Need an initialized for SEOS Crypto API handle for cryptographic
+         * Need an initialized for OS Crypto API handle for cryptographic
          * operations.
          */
         SeosCryptoApiH handle;
@@ -164,7 +164,7 @@ typedef struct
          * the TLS API so it can be used to verify the root of the server's
          * certificate chain.
          */
-        char caCert[SeosTlsLib_SIZE_CA_CERT_MAX];
+        char caCert[OS_TlsLib_SIZE_CA_CERT_MAX];
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
          * given in the cipersuites will be ENFORCED for everything (incl. session hash,
@@ -174,45 +174,44 @@ typedef struct
          *
          * NOTE: We add +1 so the last element can be set to 0 internally.
          */
-        SeosTlsLib_CipherSuite cipherSuites[SeosTlsLib_MAX_CIPHERSUITES + 1];
+        OS_TlsLib_CipherSuite_t cipherSuites[OS_TlsLib_MAX_CIPHERSUITES + 1];
         /**
          * Amount of ciphersuites in \p cipherSuites.
          */
         size_t cipherSuitesLen;
     } crypto;
-    SeosTlsLib_Flag flags;
-} SeosTlsLib_Config;
-
+    OS_TlsLib_Flag_t flags;
+} OS_TlsLib_Config_t;
 
 /**
  * Mode the TLS API instance should be operated in.
  */
 typedef enum
 {
-    SeosTlsApi_Mode_NONE = 0,
+    OS_Tls_MODE_NONE = 0,
     /**
      * Use TLS module as library, all calls to the API will internally mapped to
      * be executed locally.
      */
-    SeosTlsApi_Mode_LIBRARY,
+    OS_Tls_MODE_LIBRARY,
     /**
      * Use as RPC Server; can only be accessed through an appropriately configured
      * RPC client instance of the TLS API.
      */
-    SeosTlsApi_Mode_RPC_SERVER,
+    OS_Tls_MODE_RPC_SERVER,
     /**
      * Forward all TLS API calls to a remote instance of the TLS API where the
      * TLS library is running in RPC Server mode. This allows for isolation of
      * the actual TLS protocol stack.
      */
-    SeosTlsApi_Mode_RPC_CLIENT
-} SeosTlsApi_Mode;
+    OS_Tls_MODE_RPC_CLIENT
+} OS_Tls_Mode_t;
 
-typedef struct SeosTlsApi SeosTlsApi;
+typedef struct OS_Tls OS_Tls_t;
 /**
  * Handle of the main TLS API context.
  */
-typedef SeosTlsApi* SeosTlsApiH;
+typedef OS_Tls_t* OS_Tls_Handle_t;
 
 /**
  * Configuration for TLS API in RPC Server mode.
@@ -222,12 +221,12 @@ typedef struct
     /**
      * Configuration of the local TLS library instance.
      */
-    SeosTlsLib_Config library;
+    OS_TlsLib_Config_t library;
     /**
      * Dataport to use for communication with the RPC Client.
      */
     void* dataport;
-} SeosTlsRpc_Server_Config;
+} OS_TlsRpcServer_Config_t;
 
 /**
  * Configuration for TLS API in RPC Client mode.
@@ -238,25 +237,25 @@ typedef struct
      * Dataport to use for communication with the RPC Server.
      */
     void* dataport;
-} SeosTlsRpc_Client_Config;
+} OS_TlsRpcClient_Config_t;
 
 /**
  * Configuration of the TLS API. The mode value defines which of the union fields
  * needs to be filled in:
- *   SeosTlsApi_Mode_LIBRARY:       config.library
- *   SeosTlsApi_Mode_CLIENT:        config.client
- *   SeosTlsApi_Mode_SERVER:        config.server
+ *   OS_Tls_MODE_LIBRARY:       config.library
+ *   OS_Tls_MODE_CLIENT:        config.client
+ *   OS_Tls_MODE_SERVER:        config.server
  */
 typedef struct
 {
-    SeosTlsApi_Mode mode;
+    OS_Tls_Mode_t mode;
     union
     {
-        SeosTlsLib_Config library;
-        SeosTlsRpc_Client_Config client;
-        SeosTlsRpc_Server_Config server;
+        OS_TlsLib_Config_t library;
+        OS_TlsRpcClient_Config_t client;
+        OS_TlsRpcServer_Config_t server;
     } config;
-} SeosTlsApi_Config;
+} OS_Tls_Config_t;
 
 /**
  * @brief Initialize TLS API.
@@ -274,9 +273,9 @@ typedef struct
  *                from the RPC client. Calling handshake()/read()/write() locally
  *                on an API instance in this configuration will not work.
  *
- * NOTE: The TLS API expects a pre-initialized SEOS Crypto API instance.
+ * NOTE: The TLS API expects a pre-initialized OS Crypto API instance.
  *
- * @param hTls (required) pointer to handle of the SEOS TLS API context
+ * @param hTls (required) pointer to handle of the OS TLS API context
  * @param cfg (required) configuration of TLS API
  *
  * @return an error code
@@ -287,9 +286,9 @@ typedef struct
  *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
 seos_err_t
-SeosTlsApi_init(
-    SeosTlsApiH*             hTls,
-    const SeosTlsApi_Config* cfg);
+OS_Tls_init(
+    OS_Tls_Handle_t*             hTls,
+    const OS_Tls_Config_t* cfg);
 
 /**
  * @brief Perform the TLS handshake.
@@ -305,7 +304,7 @@ SeosTlsApi_init(
  *       change the state of the socket explicitly, it will only call read()/write()
  *       for the transfer of protcol data.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -314,8 +313,8 @@ SeosTlsApi_init(
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not already established
  */
 seos_err_t
-SeosTlsApi_handshake(
-    SeosTlsApiH hTls);
+OS_Tls_handshake(
+    OS_Tls_Handle_t hTls);
 
 /**
  * @brief Write to TLS connection.
@@ -326,7 +325,7 @@ SeosTlsApi_handshake(
  * NOTE: Internally, it will use the callback provided via the config struct to
  *       write() data to the socket.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
  * @param dataSize (required) amount of bytes to write
  *
@@ -340,8 +339,8 @@ SeosTlsApi_handshake(
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 seos_err_t
-SeosTlsApi_write(
-    SeosTlsApiH  hTls,
+OS_Tls_write(
+    OS_Tls_Handle_t    hTls,
     const void*  data,
     const size_t dataSize);
 
@@ -355,7 +354,7 @@ SeosTlsApi_write(
  * NOTE: Internally, it will use the callback provided via the config struct to
  *       read() data from the socket.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
  * @param dataSize (required) amount of bytes requested, in case of success it
  * will be set to the amount of bytes effectively read (or zero if peer has closed
@@ -371,10 +370,10 @@ SeosTlsApi_write(
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 seos_err_t
-SeosTlsApi_read(
-    SeosTlsApiH hTls,
-    void*       data,
-    size_t*     dataSize);
+OS_Tls_read(
+    OS_Tls_Handle_t hTls,
+    void*     data,
+    size_t*   dataSize);
 
 /**
  * @brief Reset a TLS connection.
@@ -385,7 +384,7 @@ SeosTlsApi_read(
  * After a reset, provided that that the associated socket is still connected,
  * the TLS connection can be re-established with via the handshake() function.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -394,15 +393,15 @@ SeosTlsApi_read(
  * @retval SEOS_ERROR_ABORTED if the re-set failed
  */
 seos_err_t
-SeosTlsApi_reset(
-    SeosTlsApiH hTls);
+OS_Tls_reset(
+    OS_Tls_Handle_t hTls);
 
 /**
  * @brief Free a TLS object.
  *
  * Frees the memory allocted with a TLS object.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
@@ -410,18 +409,18 @@ SeosTlsApi_reset(
  *  NULL pointer, invalid sizes, etc.)
  */
 seos_err_t
-SeosTlsApi_free(
-    SeosTlsApiH hTls);
+OS_Tls_free(
+    OS_Tls_Handle_t hTls);
 
 /**
  * @brief Get mode of TLS API.
  *
- * @param hTls (required) handle of the SEOS TLS API context
+ * @param hTls (required) handle of the OS TLS API context
  *
  * @return mode the TLS API is used in
  */
-SeosTlsApi_Mode
-SeosTlsApi_getMode(
-    SeosTlsApiH hTls);
+OS_Tls_Mode_t
+OS_Tls_getMode(
+    OS_Tls_Handle_t hTls);
 
 /** @} */
