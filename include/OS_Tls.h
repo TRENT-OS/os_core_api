@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosCryptoApi.h"
+#include "OS_Crypto.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -158,7 +158,7 @@ typedef struct
          * Need an initialized for OS Crypto API handle for cryptographic
          * operations.
          */
-        SeosCryptoApiH handle;
+        OS_Crypto_Handle_t handle;
         /**
          * Here a certificate in PEM encoding (including headers) is passed to
          * the TLS API so it can be used to verify the root of the server's
