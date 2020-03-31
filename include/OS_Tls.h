@@ -287,7 +287,7 @@ typedef struct
  */
 seos_err_t
 OS_Tls_init(
-    OS_Tls_Handle_t*             hTls,
+    OS_Tls_Handle_t*       hTls,
     const OS_Tls_Config_t* cfg);
 
 /**
@@ -341,8 +341,8 @@ OS_Tls_handshake(
 seos_err_t
 OS_Tls_write(
     OS_Tls_Handle_t    hTls,
-    const void*  data,
-    const size_t dataSize);
+    const void*        data,
+    const size_t       dataSize);
 
 /**
  * @brief Read from a TLS connection.
@@ -372,8 +372,8 @@ OS_Tls_write(
 seos_err_t
 OS_Tls_read(
     OS_Tls_Handle_t hTls,
-    void*     data,
-    size_t*   dataSize);
+    void*           data,
+    size_t*         dataSize);
 
 /**
  * @brief Reset a TLS connection.
