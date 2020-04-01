@@ -21,11 +21,11 @@
  *              For logging operations SEOS libraries are needed. \n
  *
  *              <b> Creating filesystem interface file: </b> \n
- *              The names for the interface functions can be found in seos_fs_api.h. Make sure that the interface file includes the SEOS filesystem datatypes.
+ *              The names for the interface functions can be found in OS_FilesystemApi.h. Make sure that the interface file includes the SEOS filesystem datatypes.
  *              \code
  *                  procedure <INTERFACE_NAME> {
- *                      hPartition_t     partition_open(uint8_t drv_id);
- *                      seos_err_t partition_fs_create(hPartition_t handle,
+ *                      hPartition_t     OS_FilesystemApi_open(uint8_t drv_id);
+ *                      seos_err_t OS_FilesystemApi_create(hPartition_t handle,
  *                                                           uint8_t format_option,
  *                                                           uint64_t partition_size,
  *                                                           uint16_t sector_size,
@@ -34,17 +34,17 @@
  *                                                           uint16_t file_dir_entry_count,
  *                                                           uint32_t fs_header_sector_count,
  *                                                           int fs_format);
- *                      seos_err_t partition_fs_mount(hPartition_t handle);
- *                      seos_err_t partition_fs_unmount(hPartition_t handle);
- *                      seos_err_t partition_wipe(hPartition_t handle);
- *                      seos_err_t partition_close(hPartition_t handle);
+ *                      seos_err_t OS_FilesystemApi_mount(hPartition_t handle);
+ *                      seos_err_t OS_FilesystemApi_unmount(hPartition_t handle);
+ *                      seos_err_t OS_FilesystemApi_wipe(hPartition_t handle);
+ *                      seos_err_t OS_FilesystemApi_close(hPartition_t handle);
  *
- *                      hFile_t          file_open(hPartition_t handle, string name, int flag);
- *                      seos_err_t file_close(hFile_t handle);
- *                      seos_err_t file_read(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
- *                      seos_err_t file_write(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
- *                      seos_err_t file_delete(hPartition_t handle, string name);
- *                      int64_t          file_getSize(hPartition_t handle, string name);
+ *                      hFile_t          OS_FilesystemApi_openFile(hPartition_t handle, string name, int flag);
+ *                      seos_err_t OS_FilesystemApi_closeFile(hFile_t handle);
+ *                      seos_err_t OS_FilesystemApi_readFile(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
+ *                      seos_err_t OS_FilesystemApi_writeFile(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
+ *                      seos_err_t OS_FilesystemApi_deleteFile(hPartition_t handle, string name);
+ *                      int64_t          OS_FilesystemApi_getSizeOfFile(hPartition_t handle, string name);
  *                  };
  *              \endcode
  *
@@ -101,8 +101,8 @@
  *              \code
  *                  Property                      | Configuration define            | default value
  *                  ------------------------------|---------------------------------|---------------------
- *                  size of buffer dataport_ptr_t | DATABUFFER_SIZE                 | - empty - / not set
- *                  name of buffer dataport_ptr_t | GET_PROPERTY_FS_DATAPORT_BUFFER | - empty - / not set
+ *                  size of buffer dataport_ptr_t | OS_FS_DATABUFFER_SIZE                 | - empty - / not set
+ *                  name of buffer dataport_ptr_t | OS_FS_GET_PROPERTY_DATAPORT_BUFFER | - empty - / not set
  *              \endcode
  *
  *              This both property are necessary defines for connection between the several components.
@@ -146,8 +146,8 @@
  *              <b> How to use this library currently? </b> \n
  *              Includes \n
  *              \n
- *              In an application is required the header file: "seos_fs_api.h".
- *              The seos_fs_api.h provides filesystem datatypes (handle datatypes), includes configuration and API functions. \n
+ *              In an application is required the header file: "OS_FilesystemApi.h".
+ *              The OS_FilesystemApi.h provides filesystem datatypes (handle datatypes), includes configuration and API functions. \n
  *              \n
  *              Preperations \n
  *              \n
@@ -207,36 +207,36 @@
  *              \n
  *              First initialize the filesystem and open it. If initialization failed, open a partition is not possible.
  *              \code
- *                  #include "<PATH>/seos_fs_api.h"
+ *                  #include "<PATH>/OS_FilesystemApi.h"
  *
  *                  hPartition_t phandle;
  *
- *                  partition_init(pm_partition_data.partition_id, 0);
+ *                  OS_FilesystemApi_init(pm_partition_data.partition_id, 0);
  *
- *                  phandle = partition_open(pm_partition_data.partition_id);
+ *                  phandle = OS_FilesystemApi_open(pm_partition_data.partition_id);
  *              \endcode
  *
  *              Create a FAT image on disk or open an exists FAT image on partition. This function can be only done, if the partition was opened.
  *              \code
- *                  partition_fs_create(phandle, <FAT_TYPE>, <PARTITION_SIZE>, ...);
+ *                  OS_FilesystemApi_create(phandle, <FAT_TYPE>, <PARTITION_SIZE>, ...);
  *
  *                  // ... or ...
  *
- *                  partition_fs_mount(phandle);
+ *                  OS_FilesystemApi_mount(phandle);
  *              \endcode
  *
  *              After that it will be possible dealing with files. File operations are open, read, write, delete, get_size and close.
  *              A partition can be wiped with:
  *              \code
- *                  partition_wipe(phandle);
+ *                  OS_FilesystemApi_wipe(phandle);
  *              \endcode
  *
  *              Make sure that the partition is still open. If not it will get an error message.
  *              Before close a partition the filesystem must be unmount.
  *              \code
- *                  partition_fs_unmount(phandle);
+ *                  OS_FilesystemApi_unmount(phandle);
  *
- *                  partition_close(phandle);
+ *                  OS_FilesystemApi_close(phandle);
  *              \endcode
  *
  * @todo        Testing the filesystem -> what happens: \n
@@ -267,7 +267,7 @@
  *
  *              By using the component-based design (SEOS_FS_BUILD_AS_COMPONENT) the functions "file_read" and "file_write" are using
  *              CAmkES dataports and databuffer. \n
- *              CAmkES databuffer has in the current configuration DATABUFFER_SIZE bytes. This define must be set in the config file.
+ *              CAmkES databuffer has in the current configuration OS_FS_DATABUFFER_SIZE bytes. This define must be set in the config file.
  *              If this size is exceeded a corresponding error code will be returned.
  *              The cast from the passed databuffer to a CAmkES dataport is covered by her functions itself.
  *              This does not have to be done from outside.
@@ -290,13 +290,13 @@
     #include <camkes.h>
 
 
-    #ifndef DATABUFFER_SIZE
-        #error DATABUFFER_SIZE is not defined
+    #ifndef OS_FS_DATABUFFER_SIZE
+        #error OS_FS_DATABUFFER_SIZE is not defined
     #endif
 
 
-    #ifndef GET_PROPERTY_FS_DATAPORT_BUFFER
-        #error GET_PROPERTY_FS_DATAPORT_BUFFER is not defined
+    #ifndef OS_FS_GET_PROPERTY_DATAPORT_BUFFER
+        #error OS_FS_GET_PROPERTY_DATAPORT_BUFFER is not defined
     #endif
 
 
@@ -321,7 +321,7 @@
 
 //------------------------------------------------------------------------------
 static inline int
-is_valid_partition_handle(
+OS_FilesystemApi_validatePartitionHandle(
     hPartition_t phandle)
 {
 #if defined (SEOS_FS_BUILD_AS_LIB)
@@ -334,7 +334,7 @@ is_valid_partition_handle(
 
 //------------------------------------------------------------------------------
 static inline int
-is_valid_file_handle(
+OS_FilesystemApi_validateFileHandle(
     hFile_t fhandle)
 {
 #if defined (SEOS_FS_BUILD_AS_LIB)
@@ -350,7 +350,7 @@ is_valid_file_handle(
 /***********************/
 #if !defined(SEOS_FS_BUILD_AS_COMPONENT)
 /**
- * @details %partition_init defines the API interface name to initialize the filesystem core and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_init defines the API interface name to initialize the filesystem core and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function initialize file and partition handling by calling handle manager layer.
  *          The access function to partition for read and/or write can be set by open_flag argument. The following options are available:
@@ -373,7 +373,7 @@ is_valid_file_handle(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_init(
+OS_FilesystemApi_init(
     uint8_t drv_id,
     int open_flag)
 {
@@ -387,7 +387,7 @@ partition_init(
 
 
 /**
- * @details %partition_open defines the API interface name to open a partition and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_open defines the API interface name to open a partition and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function checks if a partition can be used, creates an partitions handle and open the partition.
  *          The return value is affected by the set build parameter.
@@ -405,7 +405,7 @@ partition_init(
  * @ingroup seos_fs_api
 */
 static inline hPartition_t
-partition_open(
+OS_FilesystemApi_open(
     uint8_t drv_id)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -419,7 +419,7 @@ partition_open(
 
 
 /**
- * @details %partition_fs_create defines the API interface name to create a filesystem and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_create defines the API interface name to create a filesystem and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function create a filesystem image header.
  *          Filesystem can be created as FAT12, FAT16 or FAT32 filesystem. It depends on format option
@@ -488,7 +488,7 @@ partition_open(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_fs_create(
+OS_FilesystemApi_create(
     hPartition_t handle,
     uint8_t format_option,
     uint64_t partition_size,
@@ -510,7 +510,7 @@ partition_fs_create(
 
 
 /**
- * @details %partition_fs_mount defines the API interface name to open a partition and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_mount defines the API interface name to open a partition and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function provides to mount a partition.
  *
@@ -532,7 +532,7 @@ partition_fs_create(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_fs_mount(
+OS_FilesystemApi_mount(
     hPartition_t handle)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -546,7 +546,7 @@ partition_fs_mount(
 
 
 /**
- * @details %partition_fs_unmount defines the API interface name to open a partition and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_unmount defines the API interface name to open a partition and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function provides to unmount a partition.
  *
@@ -565,7 +565,7 @@ partition_fs_mount(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_fs_unmount(
+OS_FilesystemApi_unmount(
     hPartition_t handle)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -579,7 +579,7 @@ partition_fs_unmount(
 
 
 /**
- * @details %partition_wipe defines the API interface name to wipe a partition and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_wipe defines the API interface name to wipe a partition and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function delete all data by writing 0 to all blocks.
  *          Formatting is not allowed if the partition has been configured with write protection.
@@ -601,7 +601,7 @@ partition_fs_unmount(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_wipe(
+OS_FilesystemApi_wipe(
     hPartition_t handle)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -615,7 +615,7 @@ partition_wipe(
 
 
 /**
- * @details %partition_close defines the API interface name to close a partition and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_close defines the API interface name to close a partition and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function deregistered internal objects and the partition will be closed. Implicit all open file handle handle will be closed.
  *          The return value is affected by the set build parameter.
@@ -637,7 +637,7 @@ partition_wipe(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-partition_close(
+OS_FilesystemApi_close(
     hPartition_t handle)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -654,7 +654,7 @@ partition_close(
 /* File functions */
 /******************/
 /**
- * @details %file_open defines the API interface name to open a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_openFile defines the API interface name to open a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function check the partition handle and open a file.\n
  *          \n
@@ -684,7 +684,7 @@ partition_close(
  * @ingroup seos_fs_api
 */
 static inline hFile_t
-file_open(
+OS_FilesystemApi_openFile(
     hPartition_t handle,
     const char *name,
     int flag)
@@ -700,7 +700,7 @@ file_open(
 
 
 /**
- * @details %file_close defines the API interface name to close a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_closeFile defines the API interface name to close a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function deregistered internal objects and the file closed.
  *
@@ -720,7 +720,7 @@ file_open(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-file_close(
+OS_FilesystemApi_closeFile(
     hFile_t handle)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -734,11 +734,11 @@ file_close(
 
 
 /**
- * @details %file_read defines the API interface name to read a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_readFile defines the API interface name to read a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function reads data from a file and copy it in given buffer.
  *          The buffer argument is a pointer, which is must be not NULL and is allocated from the caller function.
- *          If this library is build as component, the buffer is limited for DATABUFFER_SIZE bytes.
+ *          If this library is build as component, the buffer is limited for OS_FS_DATABUFFER_SIZE bytes.
  *          so the argument len is checked for this limitation size.
  *
  * @param   handle: file handle
@@ -761,7 +761,7 @@ file_close(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-file_read(
+OS_FilesystemApi_readFile(
     hFile_t handle,
     long offset,
     long len,
@@ -772,11 +772,11 @@ file_read(
     const void *buf = (void *)0;
 
     // checks databuffer length
-    if(DATABUFFER_SIZE < len)
+    if(OS_FS_DATABUFFER_SIZE < len)
         return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
 
     // Cast/Wrap pointer to dataport pointer
-    buffer_receive = dataport_wrap_ptr(GET_PROPERTY_FS_DATAPORT_BUFFER);
+    buffer_receive = dataport_wrap_ptr(OS_FS_GET_PROPERTY_DATAPORT_BUFFER);
 
     // Call filesystem API function to read from a file
     retval = api_fs_component_file_read(handle, offset, len, buffer_receive);
@@ -796,11 +796,11 @@ file_read(
 
 
 /**
- * @details %file_write defines the API interface name to write a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_writeFile defines the API interface name to write a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function writes data from a given buffer in a file.
  *          The buffer argument is a pointer, which is must be not NULL and is allocated from the caller function.
- *          If this library is build as component, the buffer is limited for DATABUFFER_SIZE bytes.
+ *          If this library is build as component, the buffer is limited for OS_FS_DATABUFFER_SIZE bytes.
  *          so the argument len is checked for this limitation size.
  *          Writing process is not allowed if the partition has been configured with write protection.
  *
@@ -825,7 +825,7 @@ file_read(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-file_write(
+OS_FilesystemApi_writeFile(
     hFile_t handle,
     long offset,
     long len,
@@ -833,14 +833,14 @@ file_write(
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     // checks databuffer length
-    if(DATABUFFER_SIZE < len)
+    if(OS_FS_DATABUFFER_SIZE < len)
         return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
 
     // copy data into databuffer
-    memcpy(GET_PROPERTY_FS_DATAPORT_BUFFER, buffer, (size_t)len);
+    memcpy(OS_FS_GET_PROPERTY_DATAPORT_BUFFER, buffer, (size_t)len);
 
     // Cast/Wrap pointer to dataport pointer
-    buffer_send = dataport_wrap_ptr(GET_PROPERTY_FS_DATAPORT_BUFFER);
+    buffer_send = dataport_wrap_ptr(OS_FS_GET_PROPERTY_DATAPORT_BUFFER);
 
     // Call filesystem API function to write into a file
     return api_fs_component_file_write(handle, offset, len, buffer_send);
@@ -853,7 +853,7 @@ file_write(
 
 
 /**
- * @details %file_delete defines the API interface name to delete a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_deleteFile defines the API interface name to delete a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function deletes a file.
  *          Delete process is not allowed if the partition has been configured with write protection.
@@ -874,7 +874,7 @@ file_write(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-file_delete(
+OS_FilesystemApi_deleteFile(
     hPartition_t handle,
     const char *name)
 {
@@ -889,7 +889,7 @@ file_delete(
 
 
 /**
- * @details %file_getSize defines the API interface name to get the size from a file and calls the underlying function from the filesystem library
+ * @details %OS_FilesystemApi_getSizeOfFile defines the API interface name to get the size from a file and calls the underlying function from the filesystem library
  *          according to the set build parameter.
  *          This function returns the size of a file.
  *
@@ -904,7 +904,7 @@ file_delete(
  * @ingroup seos_fs_api
 */
 static inline int64_t
-file_getSize(
+OS_FilesystemApi_getSizeOfFile(
     hPartition_t handle,
     const char *name)
 {
