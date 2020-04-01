@@ -16,7 +16,7 @@
 
 /* Print macro ---------------------------------------------------------------*/
 #if defined (Debug_Config_PRINT_TO_LOG_SERVER)
-#    include "Logger/OS_LoggerEmitter.h"
+#    include "Logger/Client/OS_LoggerEmitter.h"
 
 #   define Debug_PRINT__(LEVEL, ...)                \
     do                                              \
