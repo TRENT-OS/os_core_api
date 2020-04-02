@@ -12,7 +12,10 @@
 
 #pragma once
 
+#include "SeosError.h"
+
 #include <limits.h>
+#include <stddef.h>
 
 /**
  * Fixed size of dataport, will be replaced with a more generic and self-contained
