@@ -284,38 +284,38 @@
 #include "seos_fs_datatypes.h"
 
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
-    #include "seos_fs_conf.h"
-    #include <string.h>
+#include "seos_fs_conf.h"
+#include <string.h>
 
-    #include <camkes.h>
-
-
-    #ifndef OS_FS_DATABUFFER_SIZE
-        #error OS_FS_DATABUFFER_SIZE is not defined
-    #endif
+#include <camkes.h>
 
 
-    #ifndef OS_FS_GET_PROPERTY_DATAPORT_BUFFER
-        #error OS_FS_GET_PROPERTY_DATAPORT_BUFFER is not defined
-    #endif
+#ifndef OS_FS_DATABUFFER_SIZE
+#error OS_FS_DATABUFFER_SIZE is not defined
+#endif
 
 
-    /**
-     * @brief   buffer_send is a CAmkES data buffer for send data over component interface.
-     *
-     * @ingroup seos_fs_api
-    */
-    dataport_ptr_t buffer_send;
-    /**
-     * @brief   buffer_receive is a CAmkES data buffer for receive data from component interface.
-     *
-     * @ingroup seos_fs_api
-    */
-    dataport_ptr_t buffer_receive;
+#ifndef OS_FS_GET_PROPERTY_DATAPORT_BUFFER
+#error OS_FS_GET_PROPERTY_DATAPORT_BUFFER is not defined
+#endif
+
+
+/**
+ * @brief   buffer_send is a CAmkES data buffer for send data over component interface.
+ *
+ * @ingroup seos_fs_api
+*/
+dataport_ptr_t buffer_send;
+/**
+ * @brief   buffer_receive is a CAmkES data buffer for receive data from component interface.
+ *
+ * @ingroup seos_fs_api
+*/
+dataport_ptr_t buffer_receive;
 #elif defined (SEOS_FS_BUILD_AS_LIB)
-    #include "api_fs.h"                 // include path to fs-core must be set in cmakelists.txt
+#include "api_fs.h"                 // include path to fs-core must be set in cmakelists.txt
 #elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
-    #include "api_fs_resolve_layer.h"   // include path to fs-core must be set in cmakelists.txt
+#include "api_fs_resolve_layer.h"   // include path to fs-core must be set in cmakelists.txt
 #endif
 
 
@@ -500,11 +500,38 @@ OS_FilesystemApi_create(
     int fs_format)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
-    return api_fs_component_partition_fs_create(handle, format_option, partition_size, sector_size, cluster_size, offset_sectors_count, file_dir_entry_count, fs_header_sector_count, fs_format);
+    return api_fs_component_partition_fs_create(
+               handle,
+               format_option,
+               partition_size,
+               sector_size,
+               cluster_size,
+               offset_sectors_count,
+               file_dir_entry_count,
+               fs_header_sector_count,
+               fs_format);
 #elif defined (SEOS_FS_BUILD_AS_LIB)
-    return api_fs_partition_fs_create(&handle, format_option, partition_size, sector_size, cluster_size, offset_sectors_count, file_dir_entry_count, fs_header_sector_count, fs_format);
+    return api_fs_partition_fs_create(
+               &handle,
+               format_option,
+               partition_size,
+               sector_size,
+               cluster_size,
+               offset_sectors_count,
+               file_dir_entry_count,
+               fs_header_sector_count,
+               fs_format);
 #elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
-    return api_fs_resolve_layer_partition_fs_create(handle, format_option, partition_size, sector_size, cluster_size, offset_sectors_count, file_dir_entry_count, fs_header_sector_count, fs_format);
+    return api_fs_resolve_layer_partition_fs_create(
+               handle,
+               format_option,
+               partition_size,
+               sector_size,
+               cluster_size,
+               offset_sectors_count,
+               file_dir_entry_count,
+               fs_header_sector_count,
+               fs_format);
 #endif
 }
 
@@ -686,7 +713,7 @@ OS_FilesystemApi_close(
 static inline hFile_t
 OS_FilesystemApi_openFile(
     hPartition_t handle,
-    const char *name,
+    const char* name,
     int flag)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -765,15 +792,17 @@ OS_FilesystemApi_readFile(
     hFile_t handle,
     long offset,
     long len,
-    void *buffer)
+    void* buffer)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
-    seos_err_t retval = SEOS_SUCCESS;
-    const void *buf = (void *)0;
+    OS_Error_t retval = SEOS_SUCCESS;
+    const void* buf = (void*)0;
 
     // checks databuffer length
-    if(OS_FS_DATABUFFER_SIZE < len)
+    if (OS_FS_DATABUFFER_SIZE < len)
+    {
         return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
+    }
 
     // Cast/Wrap pointer to dataport pointer
     buffer_receive = dataport_wrap_ptr(OS_FS_GET_PROPERTY_DATAPORT_BUFFER);
@@ -829,12 +858,14 @@ OS_FilesystemApi_writeFile(
     hFile_t handle,
     long offset,
     long len,
-    void *buffer)
+    void* buffer)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     // checks databuffer length
-    if(OS_FS_DATABUFFER_SIZE < len)
+    if (OS_FS_DATABUFFER_SIZE < len)
+    {
         return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
+    }
 
     // copy data into databuffer
     memcpy(OS_FS_GET_PROPERTY_DATAPORT_BUFFER, buffer, (size_t)len);
@@ -876,7 +907,7 @@ OS_FilesystemApi_writeFile(
 static inline seos_err_t
 OS_FilesystemApi_deleteFile(
     hPartition_t handle,
-    const char *name)
+    const char* name)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_delete(handle, name);
@@ -906,7 +937,7 @@ OS_FilesystemApi_deleteFile(
 static inline int64_t
 OS_FilesystemApi_getSizeOfFile(
     hPartition_t handle,
-    const char *name)
+    const char* name)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_getSize(handle, name);

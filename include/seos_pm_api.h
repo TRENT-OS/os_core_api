@@ -215,39 +215,39 @@
 
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
 
-    #include "seos_pm_conf.h"
-    #include <string.h>
+#include "seos_pm_conf.h"
+#include <string.h>
 
-    #include <camkes.h>
-
-
-    #ifndef DATABUFFER_SIZE
-        #error DATABUFFER_SIZE is not defined
-    #endif
+#include <camkes.h>
 
 
-    #ifndef GET_PROPERTY_PM_DATAPORT_BUFFER
-        #error GET_PROPERTY_PM_DATAPORT_BUFFER is not defined
-    #endif
+#ifndef DATABUFFER_SIZE
+#error DATABUFFER_SIZE is not defined
+#endif
 
 
-    /**
-     * @brief   buffer_send is a CAmkES data buffer for send data over component interface.
-     *
-     * @ingroup seos_pm_api
-    */
-    dataport_ptr_t buffer_send;
+#ifndef GET_PROPERTY_PM_DATAPORT_BUFFER
+#error GET_PROPERTY_PM_DATAPORT_BUFFER is not defined
+#endif
 
-    /**
-     * @brief   buffer_receive is a CAmkES data buffer for receive data from component interface.
-     *
-     * @ingroup seos_pm_api
-    */
-    dataport_ptr_t buffer_receive;
+
+/**
+ * @brief   buffer_send is a CAmkES data buffer for send data over component interface.
+ *
+ * @ingroup seos_pm_api
+*/
+dataport_ptr_t buffer_send;
+
+/**
+ * @brief   buffer_receive is a CAmkES data buffer for receive data from component interface.
+ *
+ * @ingroup seos_pm_api
+*/
+dataport_ptr_t buffer_receive;
 
 #elif defined (SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
 
-    #include "api_pm.h"
+#include "api_pm.h"
 
 #endif
 
@@ -288,7 +288,7 @@
 */
 static __attribute__((unused)) seos_err_t
 partition_manager_init(
-    void *nvm_object)
+    void* nvm_object)
 {
     return api_pm_partition_manager_init(nvm_object);
 }
@@ -350,30 +350,38 @@ partition_manager_read(
     uint8_t partition_id,
     uint64_t offset,
     uint64_t len,
-    void *buffer)
+    void* buffer)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     seos_err_t retval = SEOS_SUCCESS;
-    const void *buf = (void *)0;
+    const void* buf = (void*)0;
     pm_partition_data_t pm_partition_data;
 
     // checks databuffer length
-    if(DATABUFFER_SIZE < len)
+    if (DATABUFFER_SIZE < len)
+    {
         return SEOS_ERROR_PM_DATABUFFER_OVERLOW;
+    }
 
     // Cast/Wrap pointer to dataport pointer
     buffer_receive = dataport_wrap_ptr(GET_PROPERTY_PM_DATAPORT_BUFFER);
 
     // Call partition manager API function
-    retval = api_pm_component_partition_manager_read(partition_id, offset, len, buffer_receive);
-    if(retval != SEOS_SUCCESS)
+    retval = api_pm_component_partition_manager_read(partition_id, offset, len,
+                                                     buffer_receive);
+    if (retval != SEOS_SUCCESS)
+    {
         return retval;
+    }
 
     buf = dataport_unwrap_ptr(buffer_receive);
 
-    retval = api_pm_component_partition_manager_get_info_partition(partition_id, &pm_partition_data);
-    if(retval != SEOS_SUCCESS)
+    retval = api_pm_component_partition_manager_get_info_partition(partition_id,
+             &pm_partition_data);
+    if (retval != SEOS_SUCCESS)
+    {
         return retval;
+    }
 
     // copy data from databuffer into buffer
     memcpy(buffer, buf, (len * (size_t)pm_partition_data.block_size));
@@ -414,28 +422,35 @@ partition_manager_write(
     uint8_t partition_id,
     uint64_t offset,
     uint64_t len,
-    const void *buffer)
+    const void* buffer)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     pm_partition_data_t pm_partition_data;
     seos_err_t retval = SEOS_SUCCESS;
 
     // checks databuffer length
-    if(DATABUFFER_SIZE < len)
+    if (DATABUFFER_SIZE < len)
+    {
         return SEOS_ERROR_PM_DATABUFFER_OVERLOW;
+    }
 
-    retval = api_pm_component_partition_manager_get_info_partition(partition_id, &pm_partition_data);
-    if(retval != SEOS_SUCCESS)
+    retval = api_pm_component_partition_manager_get_info_partition(partition_id,
+             &pm_partition_data);
+    if (retval != SEOS_SUCCESS)
+    {
         return retval;
+    }
 
     // copy data into databuffer
-    memcpy(GET_PROPERTY_PM_DATAPORT_BUFFER, buffer, (len * (size_t)pm_partition_data.block_size));
+    memcpy(GET_PROPERTY_PM_DATAPORT_BUFFER, buffer,
+           (len * (size_t)pm_partition_data.block_size));
 
     // Cast/Wrap pointer to dataport pointer
     buffer_send = dataport_wrap_ptr(GET_PROPERTY_PM_DATAPORT_BUFFER);
 
     // Call partition manager API function
-    return api_pm_component_partition_manager_write(partition_id, offset, len, buffer_send);
+    return api_pm_component_partition_manager_write(partition_id, offset, len,
+                                                    buffer_send);
 #elif defined (SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_write(partition_id, offset, len, buffer);
 #endif
@@ -485,7 +500,7 @@ partition_manager_close(
 */
 static __attribute__((unused)) seos_err_t
 partition_manager_get_info_disk(
-    pm_disk_data_t *info_disk)
+    pm_disk_data_t* info_disk)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_get_info_disk(info_disk);
@@ -515,11 +530,13 @@ partition_manager_get_info_disk(
 static __attribute__((unused)) seos_err_t
 partition_manager_get_info_partition(
     uint8_t partition_id,
-    pm_partition_data_t *info_partition)
+    pm_partition_data_t* info_partition)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
-    return api_pm_component_partition_manager_get_info_partition(partition_id, info_partition);
+    return api_pm_component_partition_manager_get_info_partition(partition_id,
+            info_partition);
 #elif defined (SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
-    return api_pm_partition_manager_get_info_partition(partition_id, info_partition);
+    return api_pm_partition_manager_get_info_partition(partition_id,
+                                                       info_partition);
 #endif
 }

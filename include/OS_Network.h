@@ -44,7 +44,7 @@ typedef struct
 {
     unsigned domain;  /**< domain is as of now AF_INET */
     unsigned type;    /**< type is as of now SOCK_STREAM */
-    const char *name; /**< name must be IP addr to connect to */
+    const char* name; /**< name must be IP addr to connect to */
     uint16_t port;    /**< port is for e.g. HTTP port 80 */
 } OS_Network_Socket_t;
 
@@ -58,7 +58,7 @@ typedef struct
 #define OS_SOCK_STREAM 2
 #define OS_SOCK_DGRAM  1
 
-typedef void *OS_Network_Context_t;
+typedef void* OS_Network_Context_t;
 typedef unsigned OS_NetworkSocket_Handle_t;
 typedef unsigned OS_NetworkServer_Handle_t;
 
@@ -84,8 +84,8 @@ typedef unsigned OS_NetworkServer_Handle_t;
 seos_err_t
 OS_NetworkSocket_create(
     OS_Network_Context_t      ctx,
-    OS_Network_Socket_t       *pClientStruct,
-    OS_NetworkSocket_Handle_t *phandle);
+    OS_Network_Socket_t*       pClientStruct,
+    OS_NetworkSocket_Handle_t* phandle);
 
 /**
  * @details %OS_NetworkServerSocket_create, Create a server socket, binds to a port and listen for incoming connections
@@ -108,8 +108,8 @@ OS_NetworkSocket_create(
 seos_err_t
 OS_NetworkServerSocket_create(
     OS_Network_Context_t      ctx,
-    OS_NetworkServer_Socket_t *pServerStruct,
-    OS_NetworkServer_Handle_t *pSrvHandle);
+    OS_NetworkServer_Socket_t* pServerStruct,
+    OS_NetworkServer_Handle_t* pSrvHandle);
 /**
  * @details %OS_NetworkServerSocket_close, Must be called when the server app wants to close a comnection.
           No further socket communication is possible after closure.
@@ -152,8 +152,8 @@ OS_NetworkSocket_close(
 seos_err_t
 OS_NetworkSocket_write(
     OS_NetworkSocket_Handle_t handle,
-    const void                *buf,
-    size_t                    *len);
+    const void*                buf,
+    size_t*                    len);
 
 /**
  * @details %OS_NetworkServerSocket_accept, Accept incoming connections. This is useful when the Network stack is working as Server.
@@ -169,7 +169,7 @@ OS_NetworkSocket_write(
 seos_err_t
 OS_NetworkServerSocket_accept(
     OS_NetworkServer_Handle_t srvHandle,
-    OS_NetworkSocket_Handle_t *phSocket);
+    OS_NetworkSocket_Handle_t* phSocket);
 
 /**
  * @details %OS_NetworkSocket_read, Read data from connected socket.
@@ -191,5 +191,5 @@ OS_NetworkServerSocket_accept(
 seos_err_t
 OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
-    void                      *buf,
-    size_t                    *len);
+    void*                      buf,
+    size_t*                    len);
