@@ -24,7 +24,7 @@ typedef enum
     // File System specific error codes
     SEOS_ERROR_FS_NO_FREE_HANDLE,                /**< failed cause no free handle */
     SEOS_ERROR_FS_DELETE_HANDLE,                 /**< failed due to delete handle */
-    SEOS_ERROR_FS_NO_DISK,                       /**< disk not exists */
+    SEOS_ERROR_FS_NO_DISK,                       /**< disk doesn't exist */
     SEOS_ERROR_FS_INIT,                          /**< failed to init */
     SEOS_ERROR_FS_REGISTER,                      /**< failed to register low level functions */
     SEOS_ERROR_FS_CREATE_FS,                     /**< failed to create filesystem */
@@ -47,7 +47,7 @@ typedef enum
     SEOS_ERROR_FS_INVALID_FILESYSTEM,            /**< no valid filesystem */
 
     // Partition Manager specific error codes
-    SEOS_ERROR_PM_PARTITION_ID,                  /**< wrong partition id or partition id don't exists */
+    SEOS_ERROR_PM_PARTITION_ID,                  /**< wrong partition id or partition id doesn't exist */
     SEOS_ERROR_PM_OPEN,                          /**< fail to open */
     SEOS_ERROR_PM_READ,                          /**< fail to read */
     SEOS_ERROR_PM_WRITE,                         /**< fail to write */

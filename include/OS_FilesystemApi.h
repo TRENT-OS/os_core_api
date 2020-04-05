@@ -1,276 +1,41 @@
-/*
-   * Provided SEOS filesystem.
-   *
-   * Translates SEOS filesystem library function with different prefixes, because of different usages, to API function name uniformly.
-   *
-   *  Copyright (C) 2019, Hensoldt Cyber GmbH
+/* Copyright (C) 2020, HENSOLDT Cyber GmbH */
+
+/**
+ * @file
+ * @brief TRENTOS-M filesystem.
+ *
+ * Translates SEOS filesystem library function with different prefixes, because
+ * of different usages, to API function names uniformly.
 */
 
 /**
- * @defgroup    seos_fs SEOS filesystem core
+ * @defgroup seos_fs TRENTOS-M filesystem core
  *
- * @brief       Provided SEOS filesystem.
- * @details     Include filesystem headers from SEOS filesystem core.\n
- *              The filesystem can be done in two different ways. Use as a library or use as a separate component.
- *              If decided for use the filesystem as a seperate component, note that a interface file and a CAmkES component file must created and configured.
- *              Additional must be create an entry for component in the CMakeLists.txt. \n
- *              \n
+ * @brief   TRENTOS-M filesystem core.
  *
- *              <b> Dependencies </b> \n
- *              The filesystem uses filesystem specific libraries. Furthermore it connects to the SEOS partition manager, which connects to a storage driver.
- *              For logging operations SEOS libraries are needed. \n
+ * @see Filesystem core README.md.
  *
- *              <b> Creating filesystem interface file: </b> \n
- *              The names for the interface functions can be found in OS_FilesystemApi.h. Make sure that the interface file includes the SEOS filesystem datatypes.
- *              \code
- *                  procedure <INTERFACE_NAME> {
- *                      hPartition_t     OS_FilesystemApi_open(uint8_t drv_id);
- *                      seos_err_t OS_FilesystemApi_create(hPartition_t handle,
- *                                                           uint8_t format_option,
- *                                                           uint64_t partition_size,
- *                                                           uint16_t sector_size,
- *                                                           uint32_t cluster_size,
- *                                                           uint16_t offset_sectors_count,
- *                                                           uint16_t file_dir_entry_count,
- *                                                           uint32_t fs_header_sector_count,
- *                                                           int fs_format);
- *                      seos_err_t OS_FilesystemApi_mount(hPartition_t handle);
- *                      seos_err_t OS_FilesystemApi_unmount(hPartition_t handle);
- *                      seos_err_t OS_FilesystemApi_wipe(hPartition_t handle);
- *                      seos_err_t OS_FilesystemApi_close(hPartition_t handle);
+ * @todo    Testing the filesystem -> what happens:
+ *          * When the filesystem is full.
+ *          * If a write operation was unsuccessful.
+ *          * If the filesystem is inconsistent.
  *
- *                      hFile_t          OS_FilesystemApi_openFile(hPartition_t handle, string name, int flag);
- *                      seos_err_t OS_FilesystemApi_closeFile(hFile_t handle);
- *                      seos_err_t OS_FilesystemApi_readFile(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
- *                      seos_err_t OS_FilesystemApi_writeFile(hFile_t handle, long offset, long len, in dataport_ptr_t buffer);
- *                      seos_err_t OS_FilesystemApi_deleteFile(hPartition_t handle, string name);
- *                      int64_t          OS_FilesystemApi_getSizeOfFile(hPartition_t handle, string name);
- *                  };
- *              \endcode
- *
- *              <b> CAmkES configuration file: </b> \n
- *              Do not touch the filesystem library implementation, so configure the prefix in CAmkES configuration file by providing filesystem interface "api_fs_component".
- *              \code
- *                  component <COMPONENT_NAME> {
- *                      provides <INTERFACE_NAME> api_fs_component;
- *                      # ...
- *                  }
- *              \endcode
- *
- *              <b> CMakeLists.txt file: </b> \n
- *              If use the filesystem as library, there exists two options for use the filesystem handles. \n
- *              It is distinguished in use in a complex struct or a integer value. \n
- *              No matter what system will have be created, for each build design exists his own define. In order to build one of the variants,
- *              the corresponding define must be specified in the CMakeLists.txt file. There is always only one define variable possible at the same time.
- *              \code
- *                  Define                            | Description
- *                  ----------------------------------|---------------------------------------------------------------------------
- *                  SEOS_FS_BUILD_AS_COMPONENT        | use the filesystem as component (handles are integer values)
- *                  SEOS_FS_BUILD_AS_LIB              | use the filesystem as library (handles are pointer to their structs)
- *                  SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE | use the filesystem as library (handles will be resolved to integer values)
- *              \endcode
- *
- *              The library is required to have a set include path variable to the base directories of the FS core and the filesystem library itself.
- *              The set includes in this library are always defined with:
- *              \code
- *                   #include "<FILE_NAME>"
- *              \endcode
- *
- *              <b> Configuration file: </b> \n
- *              Make a configuration file and set the required defines. To use a separate configuration file add a folder (like config) in your application, create a
- *              filesystem configuration file and set the define parameter "SEOS_FS_CONFIG_H_FILE" follow by the path.
- *              Furtgermore, will be checked the build paramters. Make sure that only one build define parameter is set at the same time.
- *              Otherwise it's get an error message. \n
- *              \n
- *              The filesystem can be influenced in creating in all of the following properties. \n
- *              If no set this parameters the default values will be used.
- *              \code
- *                  Property                       | Configuration define     | default value
- *                  -------------------------------|--------------------------|--------------------------------------
- *                  size of sector                 | SECTOR_SIZE              | 512 bytes
- *                  size of cluster                | CLUSTER_SIZE_FAT         | 512 bytes
- *                  reserved sectors count         | OFFSET_SECTORS_COUNT_FAT | 3 -> [min. 1 (FAT12/FAT16), 3(FAT32)]
- *                  count file/dir entries         | FILE_DIR_ENTRY_COUNT     | 16 entries (only FAT12/FAT16)
- *                  count header sectors           | FS_HEADER_SECTOR_COUNT   | 1 * 512 bytes
- *                  max. file handle per partition | FILE_HANDLE_COUNT        | 10
- *              \endcode
- *
- *              The include path for the util functions must be inside quotation marks. Don't forget to set the relative include path in the CMakeLists.txt inside
- *              the include field for this functionalities. \n
- *              If filesystem build as component, there are additional configuration parameters. So the filesystem implementation files needn't be touched.
- *              \code
- *                  Property                      | Configuration define            | default value
- *                  ------------------------------|---------------------------------|---------------------
- *                  size of buffer dataport_ptr_t | OS_FS_DATABUFFER_SIZE                 | - empty - / not set
- *                  name of buffer dataport_ptr_t | OS_FS_GET_PROPERTY_DATAPORT_BUFFER | - empty - / not set
- *              \endcode
- *
- *              This both property are necessary defines for connection between the several components.
- *              If there not set, by compiling throws compiler an error message. \n
- *              \n
- *              If setup FAT12 or FAT16 filesystem please note this:
- *              \code
- *                  OFFSET_SECTORS_COUNT_FAT = 0 -> if no filesystem info and backup filesystem header is configured
- *                  OFFSET_SECTORS_COUNT_FAT = 1 -> if filesystem info and backup filesystem header is configured
- *                                                  FF_FS_FSINFO can be set in conf.h
- *              \endcode
- *
- *              If setup FAT32 filesystem please note this:
- *              \code
- *                  OFFSET_SECTORS_COUNT_FAT = 0 -> if no filesystem info and backup filesystem header is configured
- *                                                  && FS_HEADER_SECTOR_COUNT = 1
- *
- *                  OFFSET_SECTORS_COUNT_FAT = 1 -> if no filesystem info and backup filesystem header is configured
- *                                                  && FS_HEADER_SECTOR_COUNT = 0
- *
- *                  OFFSET_SECTORS_COUNT_FAT = 3 -> if filesystem info and backup filesystem header is configured...
- *                                                  ...one filesystem header structure...
- *                                                  ...for each filesystem header, will be needed a filesystem info structure
- *                                                  (summarize: FAT-header + filesystem info structure + backup FAT-header + filesystem info structure)
- *                                                  FF_FS_FSINFO can be set in conf.h
- *
- *                  OFFSET_SECTORS_COUNT_FAT = 4 -> if filesystem info and backup filesystem header is configured
- *                                                  && FS_HEADER_SECTOR_COUNT = 0
- *                                                  FF_FS_FSINFO can be set in conf.h
- *              \endcode
- *
- *              <b> FAT filesystem options </b> \n
- *              The FAT filesystem library allows to use different FAT formats. There are various defines for this, which can be found in the file seos_api_datatypes.h.
- *              When creating a filesystem on a partition different defnies are available:
- *              \code
- *                  FS_TYPE_FAT12
- *                  FS_TYPE_FAT16
- *                  FS_TYPE_FAT32
- *              \endcode
- *
- *              <b> How to use this library currently? </b> \n
- *              Includes \n
- *              \n
- *              In an application is required the header file: "OS_FilesystemApi.h".
- *              The OS_FilesystemApi.h provides filesystem datatypes (handle datatypes), includes configuration and API functions. \n
- *              \n
- *              Preperations \n
- *              \n
- *              The filesystem library must be initialized before used for the first time.
- *              Dependency of the file system on the partition manager ensures that not only the file system itself but also the partition manager are initialized.
- *              If the filesystem library is implemented as an dedicated component, the initialization can be performed in the "\_\_init()" function.
- *              Create a file in the filesystem component and implement the "\_\_init()" function. The content in this function will be the same like the initialization
- *              in the application itself. \n
- *              \n
- *              Partition manager initialization \n
- *              \n
- *              The header files for the partition manager must be included "seos_pm.h".
- *              Due to the possibility of using the partition manager as a library or as a stand alone component, when using the parition manager as an dedicated
- *              component it is already executed in its "\_\_init()" function.
- *              The "partition_manager_init" function uses deep level read and write function with NVM-API. So create first an NVM object and passes to the "init" function.
- *              They are register and initialize the internal low-level disk functions and the filesystem structure object for each partition and for the partition manager.
- *              \code
- *                  #include "<PATH>/seos_pm.h"
- *
- *                  // create NVM object
- *                  // ...
- *
- *                  // call constructor from NVM
- *                  // ...
- *
- *                  // necessary if the partition manager is not used as a standalone component
- *                  partition_manager_init(<NVM_OBJECT>)
- *                  // ...
- *              \endcode
- *
- *              The number of hard disk partitions can be retrieved from the function "partition_manager_get_info_disk".
- *              From function "partition_manager_get_info_partition" can be taken the identifier of a partition.
- *              This is required for the registration of the internal filesystem functions. Look at the example code:
- *              \code
- *                  pm_disk_data_t pm_disk_data = NULL;
- *                  pm_partition_data_t pm_partition_data = NULL;
- *                  uint8_t partition_id = 2;
- *
- *                  // pm_disk_data_t contain information about the disk
- *                  // pm_disk_data_t::partition_count -> get a valid partition id
- *                  if( (pm_disk_data = partition_manager_get_info_disk()) == NULL){
- *                      // ...
- *                  }
- *
- *                  if(partition_id < 0 || partition_id > pm_disk_data->partition_count){
- *                      // ...
- *                  }
- *
- *                  // pm_partition_data_t contain information about the partition
- *                  // pm_partition_data_t::partition_size -> get the partition size
- *                  if( (pm_partition_data = partition_manager_get_info_partition(partition_id)) == NULL){
- *                      // ...
- *                  }
- *              \endcode
- *
- *              Filesystem initialization \n
- *              \n
- *              First initialize the filesystem and open it. If initialization failed, open a partition is not possible.
- *              \code
- *                  #include "<PATH>/OS_FilesystemApi.h"
- *
- *                  hPartition_t phandle;
- *
- *                  OS_FilesystemApi_init(pm_partition_data.partition_id, 0);
- *
- *                  phandle = OS_FilesystemApi_open(pm_partition_data.partition_id);
- *              \endcode
- *
- *              Create a FAT image on disk or open an exists FAT image on partition. This function can be only done, if the partition was opened.
- *              \code
- *                  OS_FilesystemApi_create(phandle, <FAT_TYPE>, <PARTITION_SIZE>, ...);
- *
- *                  // ... or ...
- *
- *                  OS_FilesystemApi_mount(phandle);
- *              \endcode
- *
- *              After that it will be possible dealing with files. File operations are open, read, write, delete, get_size and close.
- *              A partition can be wiped with:
- *              \code
- *                  OS_FilesystemApi_wipe(phandle);
- *              \endcode
- *
- *              Make sure that the partition is still open. If not it will get an error message.
- *              Before close a partition the filesystem must be unmount.
- *              \code
- *                  OS_FilesystemApi_unmount(phandle);
- *
- *                  OS_FilesystemApi_close(phandle);
- *              \endcode
- *
- * @todo        Testing the filesystem -> what happens: \n
- *                  - when the filesystem is full \n
- *                  - if a write operation was unsuccessful \n
- *                  - if the filesystem is inconsistent \n
- *              \n
- *              Parameter PARTITION_COUNT is temp. necessary, because the internal disk/partition objects will be created currently static.
- *              Since the parameter must be set from the outside, the configuration file is also necessary to use the library.
- *              The parameter PARTITION_COUNT is given the max. size of this array.
- *              Remove this parameter in all occured cases, when update the object creating dynamicly with "Bitmap".
+ * @todo    Parameter PARTITION_COUNT is temporarily necessary, because the
+ *          internal disk/partition objects will be currently created static.
+ *          Since the parameter must be set from the outside, the configuration
+ *          file is also necessary to use the library.
+ *          The parameter PARTITION_COUNT is given the max. size of this array.
+ *          Remove occurrences of this parameter, when the objects are created
+ *          dynamicly with a "Bitmap".
 */
 
 /**
- * @defgroup    seos_fs_api SEOS filesystem API translation layer
+ * @defgroup    seos_fs_api TRENTOS-M filesystem API translation layer
  *
- * @brief       Translates filesystem library function with different prefixes, because of different usages, to API function name uniformly.
- * @details     This layer implements filesystem API interface. There will be only translate the internaly filesystem library functions to
- *              the API interface names. Depend on the configured build paramters will be call his respective implemention function. \n
- *              There are three different ways to use this API interface:
- *              \code
- *                  Define                            | Description
- *                  ----------------------------------|---------------------------------------------------------------------------
- *                  SEOS_FS_BUILD_AS_COMPONENT        | use the filesystem as component (handles are integer values)
- *                  SEOS_FS_BUILD_AS_LIB              | use the filesystem as library (handles are pointer to their structs)
- *                  SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE | use the filesystem as library (handles will be resolved to integer values)
- *              \endcode
+ * @brief       Translates filesystem library function with different prefixes,
+ *              because of different usages, to API function name uniformly.
  *
- *              By using the component-based design (SEOS_FS_BUILD_AS_COMPONENT) the functions "file_read" and "file_write" are using
- *              CAmkES dataports and databuffer. \n
- *              CAmkES databuffer has in the current configuration OS_FS_DATABUFFER_SIZE bytes. This define must be set in the config file.
- *              If this size is exceeded a corresponding error code will be returned.
- *              The cast from the passed databuffer to a CAmkES dataport is covered by her functions itself.
- *              This does not have to be done from outside.
+ * @see Filesystem core README.md.
  *
  * @ingroup     seos_fs
 */
@@ -301,21 +66,23 @@
 
 
 /**
- * @brief   buffer_send is a CAmkES data buffer for send data over component interface.
+ * @brief   The CAmkES data buffer for sending data over the component's
+ *          interface.
  *
  * @ingroup seos_fs_api
 */
 dataport_ptr_t buffer_send;
 /**
- * @brief   buffer_receive is a CAmkES data buffer for receive data from component interface.
+ * @brief   The CAmkES data buffer for receiving data from the component's
+ *          interface.
  *
  * @ingroup seos_fs_api
 */
 dataport_ptr_t buffer_receive;
 #elif defined (SEOS_FS_BUILD_AS_LIB)
-#include "api_fs.h"                 // include path to fs-core must be set in cmakelists.txt
+#include "api_fs.h"
 #elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
-#include "api_fs_resolve_layer.h"   // include path to fs-core must be set in cmakelists.txt
+#include "api_fs_resolve_layer.h"
 #endif
 
 
@@ -350,32 +117,32 @@ OS_FilesystemApi_validateFileHandle(
 /***********************/
 #if !defined(SEOS_FS_BUILD_AS_COMPONENT)
 /**
- * @details %OS_FilesystemApi_init defines the API interface name to initialize the filesystem core and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function initialize file and partition handling by calling handle manager layer.
- *          The access function to partition for read and/or write can be set by open_flag argument. The following options are available:
- *          \code
- *              FS_PARTITION_MODE_R  - register only read low level partition function
- *              FS_PARTITION_MODE_RW - register read, write and format low level partition functions
- *          \endcode
+ * @brief Initializes file and partition handle by calling handle manager layer.
  *
- * @param   drv_id:     name of partition
- * @param   open_flag:  partition access function
+ * The access function to partition for read and/or write can be set by
+ * `open_flag` argument. The following options are available:
  *
- * @return  an error code
+ * * FS_PARTITION_MODE_R  - register only read low level partition function
+ * * FS_PARTITION_MODE_RW - register read, write and format low level partition
+ *                          functions.
  *
- * @retval  SEOS_SUCCESS                         if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER         if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_FS_NO_DISK                if partition not exists
- * @retval  SEOS_ERROR_FS_INIT                   if failed to init
- * @retval  SEOS_ERROR_FS_INVALID_PARTITION_MODE if partition access mode is invalid
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                         If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER         If any of the required
+ *                                               parameters is missing or wrong.
+ * @retval  SEOS_ERROR_FS_NO_DISK                If the partition doesn't exist.
+ * @retval  SEOS_ERROR_FS_INIT                   If failed to init.
+ * @retval  SEOS_ERROR_FS_INVALID_PARTITION_MODE If the partition's access mode
+ *                                               is invalid.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_init(
-    uint8_t drv_id,
-    int open_flag)
+    uint8_t drv_id, //!< [in] The partitions identifier.
+    int open_flag   //!< [in] The partition's access function.
+)
 {
 #if defined (SEOS_FS_BUILD_AS_LIB)
     return api_fs_partition_init(drv_id, open_flag);
@@ -385,28 +152,24 @@ OS_FilesystemApi_init(
 }
 #endif // SEOS_FS_BUILD_AS_COMPONENT
 
-
 /**
- * @details %OS_FilesystemApi_open defines the API interface name to open a partition and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function checks if a partition can be used, creates an partitions handle and open the partition.
- *          The return value is affected by the set build parameter.
+ * @brief Opens the partition.
  *
- * @param   drv_id: name of partition
+ * This function checks if the partition can be used, creates the partition's
+ * handle and opens the partition.
  *
- * @return  partition handle
+ * @note The allocation of space for this handle will be manage internally.
  *
- * @retval  pointer to struct if handle is valid and build parameter SEOS_FS_BUILD_AS_LIB is set
- * @retval  NULL pointer      if handle is invalid and build parameter SEOS_FS_BUILD_AS_LIB is set
- * @retval  >= 0              if handle is valid and build parameter SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE or SEOS_FS_BUILD_AS_COMPONENT is set
- * @retval    -1              if handle is invalid and build parameter SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE or SEOS_FS_BUILD_AS_COMPONENT is set
+ * @return  partition handle (pointer to the struct)
  *
+ * @retval  >= 0 If handle is valid.
+ * @retval  -1   If handle is invalid.
  *
  * @ingroup seos_fs_api
 */
 static inline hPartition_t
 OS_FilesystemApi_open(
-    uint8_t drv_id)
+    uint8_t drv_id /**< [in] The partition's identifier. */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_open(drv_id);
@@ -417,87 +180,83 @@ OS_FilesystemApi_open(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_create defines the API interface name to create a filesystem and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function create a filesystem image header.
- *          Filesystem can be created as FAT12, FAT16 or FAT32 filesystem. It depends on format option
- *          argument with following options:
- *          \code
- *              FS_TYPE_FAT12
- *              FS_TYPE_FAT16
- *              FS_TYPE_FAT32
- *          \endcode
+ * @brief Creates a filesystem image header.
  *
- *          FAT12, FAT16, and FAT32 variants of the FAT filesystems have clear limits based on the number of clusters
- *          and the number of sectors per cluster (1, 2, 4, ..., 128). For the typical value of 512 bytes per sector:
- *          \code
- *              FAT12 range   :      1 to 4.084 clusters       :   1 to        12 sectors per copy of FAT
- *              FAT16 range   :  4.085 to 65.524 clusters      :  16 to       256 sectors per copy of FAT
- *              FAT32 range   : 65.525 to 268.435.444 clusters : 512 to 2.097.152 sectors per copy of FAT
+ * Filesystem can be created as FAT12, FAT16 or FAT32 filesystem. It depends on
+ * the format argument. The following options are available:
  *
- *              FAT12 minimum :  1 sector per cluster ×      1 clusters = 512 bytes (0.5 KB)
- *              FAT16 minimum :  1 sector per cluster ×  4.085 clusters = 2.091.520 bytes (2.042.5 KB)
- *              FAT32 minimum :  1 sector per cluster × 65.525 clusters = 33.548.800 bytes (32.762.5 KB)
+ * * FS_TYPE_FAT12
+ * * FS_TYPE_FAT16
+ * * FS_TYPE_FAT32
  *
- *              FAT12 maximum : 64 sectors per cluster ×       4.084 clusters = 133.824.512 bytes (≈ 127 MB)
- *              FAT16 maximum : 64 sectors per cluster ×      65.524 clusters = 2.147.090.432 bytes (≈2.047 MB)
- *              FAT32 maximum :  8 sectors per cluster × 268.435.444 clusters = 1.099.511.578.624 bytes (≈1.024 GB)
- *              FAT32 maximum : 16 sectors per cluster × 268.173.557 clusters = 2.196.877.778.944 bytes (≈2.046 GB) ->bigger size
- *          \endcode
+ * FAT12, FAT16, and FAT32 variants of the FAT filesystems have clear limits
+ * based on the number of clusters and the number of sectors per cluster (1, 2,
+ * 4, ..., 128). For the typical value of 512 bytes per sector:
  *
- *          On creating the filesystem can be decided, if format the partition first or only be overwrite the partitions data.
- *          Set one of the following fag:
- *          \code
- *              FS_PARTITION_OVERWRITE_CREATE - the partition will not be format and only overwrite existing data on partition
- *              FS_PARTITION_FORMAT_CREATE    - the partition is formatted first and after then is created
- *          \endcode
+ * \code
+ * FAT12 range   :      1 to 4.084 clusters       :   1 to        12 sectors per copy of FAT
+ * FAT16 range   :  4.085 to 65.524 clusters      :  16 to       256 sectors per copy of FAT
+ * FAT32 range   : 65.525 to 268.435.444 clusters : 512 to 2.097.152 sectors per copy of FAT
  *
- *          If the fs_format parameters is 0, than will be used the default value.
- *          \code
- *              Property  | default value
- *              ----------|---------------------------
- *              fs_format | FS_PARTITION_FORMAT_CREATE
- *          \endcode
+ * FAT12 minimum :  1 sector per cluster ×      1 clusters = 512 bytes (0.5 KB)
+ * FAT16 minimum :  1 sector per cluster ×  4.085 clusters = 2.091.520 bytes (2.042.5 KB)
+ * FAT32 minimum :  1 sector per cluster × 65.525 clusters = 33.548.800 bytes (32.762.5 KB)
  *
- *          This function is not allowed if the partition has been configured with write protection.
+ * FAT12 maximum : 64 sectors per cluster ×       4.084 clusters = 133.824.512 bytes (≈ 127 MB)
+ * FAT16 maximum : 64 sectors per cluster ×      65.524 clusters = 2.147.090.432 bytes (≈2.047 MB)
+ * FAT32 maximum :  8 sectors per cluster × 268.435.444 clusters = 1.099.511.578.624 bytes (≈1.024 GB)
+ * FAT32 maximum : 16 sectors per cluster × 268.173.557 clusters = 2.196.877.778.944 bytes (≈2.046 GB) ->bigger size
+ * \endcode
  *
- * @param   handle:                 partition handle
- * @param   format_option:          format option
- * @param   partition_size:         size of partition
- * @param   sector_size:            size of sector
- * @param   cluster_size:           size of cluster
- * @param   offset_sectors_count:   reserved sectors count
- * @param   file_dir_entry_count:   count file/dir entries
- * @param   fs_header_sector_count: count header sectors
- * @param   fs_format:              format or overwriting partition
+ * On the creation of the filesystem, it can be decided, if partition is
+ * formatted firstly or only partitions data are overwritten.
  *
- * @return  an error code
+ * The following flags are available:
  *
- * @retval  SEOS_SUCCESS                   if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER   if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_FS_NO_DISK          if partition not exists
- * @retval  SEOS_ERROR_INVALID_HANDLE      if partition handle is not valid
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED if partition was opened in read-only mode
- * @retval  SEOS_ERROR_FS_FORMAT_FS        if partition can not be formated
- * @retval  SEOS_ERROR_FS_CREATE_FS        if fail to create filesystem
- * @retval  SEOS_ERROR_FS_OPEN             if partition is not open
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   if failed to resolve handle
+ * * FS_PARTITION_OVERWRITE_CREATE - The partition will not be formatted and
+ *                                   only partitions data are overwritten.
+ * * FS_PARTITION_FORMAT_CREATE    - The partition will be formatted first and
+ *                                   then created.
+ *
+ * If the fs_format parameters is 0, than will be used the default value.
+ *
+ * | Property  | The default value          |
+ * |-----------|----------------------------|
+ * | fs_format | FS_PARTITION_FORMAT_CREATE |
+ *
+ * @note    This function shall not be used, if the partition has been
+ *          configured with the write protection.
+ *
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                   If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
+ *                                         missing or wrong.
+ * @retval  SEOS_ERROR_FS_NO_DISK          If partition does not exist.
+ * @retval  SEOS_ERROR_INVALID_HANDLE      If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_OPERATION_DENIED If partition was opened in the
+ *                                         read-only mode.
+ * @retval  SEOS_ERROR_FS_FORMAT_FS        If partition can not be formatted.
+ * @retval  SEOS_ERROR_FS_CREATE_FS        If fail to create filesystem.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
+ * @retval  SEOS_ERROR_FS_OPEN             If partition is not open.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_create(
-    hPartition_t handle,
-    uint8_t format_option,
-    uint64_t partition_size,
-    uint16_t sector_size,
-    uint32_t cluster_size,
-    uint16_t offset_sectors_count,
-    uint16_t file_dir_entry_count,
-    uint32_t fs_header_sector_count,
-    int fs_format)
+    hPartition_t handle,     //!< [in] The partition handle (integer value).
+    uint8_t format_option,   //!< [in] The format option.
+    uint64_t partition_size, //!< [in] Size of the partition.
+    uint16_t sector_size,    //!< [in] Size of the sector.
+    uint32_t cluster_size,   //!< [in] Size of the cluster.
+
+    uint16_t offset_sectors_count,   //!< [in] Reserved sectors count.
+    uint16_t file_dir_entry_count,   //!< [in] File/dir entries count.
+    uint32_t fs_header_sector_count, //!< [in] Header sectors count.
+
+    int fs_format /**!< [in] Format or overwrite the partition. */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_create(
@@ -535,32 +294,29 @@ OS_FilesystemApi_create(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_mount defines the API interface name to open a partition and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function provides to mount a partition.
+ * @brief   Mounts the partition.
  *
- * @param   handle: partition handle
+ * @param   handle: partition handle (pointer to the struct)
  *
- * @return  an error code
+ * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                      if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER      if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_FS_NO_DISK             if partition not exists
- * @retval  SEOS_ERROR_FS_PARTITION_NOT_READY if partition is not ready for use
- * @retval  SEOS_ERROR_FS_PARTITION_READ      if disk read operation has an error
- * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  if no filesystem
- * @retval  SEOS_ERROR_INVALID_HANDLE         if partition handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE           if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_MOUNT               if fail to mount a partition
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      if failed to resolve handle
+ * @retval  SEOS_SUCCESS                      If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters
+ *                                            is missing or wrong.
+ * @retval  SEOS_ERROR_FS_NO_DISK             If partition doesn't exist.
+ * @retval  SEOS_ERROR_FS_PARTITION_NOT_READY If partition is not ready for use.
+ * @retval  SEOS_ERROR_FS_PARTITION_READ      If disk read operation has an
+ *                                            error.
+ * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If no filesystem.
+ * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_MOUNT               If fail to mount a partition.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_mount(
-    hPartition_t handle)
+    hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_mount(handle);
@@ -571,29 +327,24 @@ OS_FilesystemApi_mount(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_unmount defines the API interface name to open a partition and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function provides to unmount a partition.
+ * @brief Unmounts the partition.
  *
- * @param   handle: partition handle
+ * @return  An error code.
  *
- * @return  an error code
- *
- * @retval  SEOS_SUCCESS                 if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE    if partition handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE      if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_NO_DISK        if partition not exists
- * @retval  SEOS_ERROR_FS_UNMOUNT        if fail to unmount a partition
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE if failed to resolve handle
+ * @retval  SEOS_SUCCESS                 If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
+ *                                       missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE    If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_NO_DISK        If partition does not exist.
+ * @retval  SEOS_ERROR_FS_UNMOUNT        If failed to unmount a partition.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE If failed to resolve handle.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_unmount(
-    hPartition_t handle)
+    hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_unmount(handle);
@@ -604,32 +355,33 @@ OS_FilesystemApi_unmount(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_wipe defines the API interface name to wipe a partition and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function delete all data by writing 0 to all blocks.
- *          Formatting is not allowed if the partition has been configured with write protection.
+ * @brief   Wipes the partition.
  *
- * @param   handle: partition handle
+ * This function deletes all data by writing 0 to all blocks.
  *
- * @return  an error code
+ * @note    Formatting is not allowed if the partition has been configured with
+ *          the write protection.
  *
- * @retval  SEOS_SUCCESS                   if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER   if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE      if partition handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE        if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_NO_DISK          if partition not exists
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED if partition was opened in read-only mode
- * @retval  SEOS_ERROR_FS_FORMAT_FS        if partition can not be formated
- * @retval  SEOS_ERROR_FS_OPEN             if partition is not open
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   if failed to resolve handle
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                   If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
+ *                                         missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE      If the partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_NO_DISK          If the partition doesn't exist.
+ * @retval  SEOS_ERROR_FS_OPERATION_DENIED If the partition was opened in
+ *                                         read-only mode.
+ * @retval  SEOS_ERROR_FS_FORMAT_FS        If the partition can not be
+ *                                         formatted.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
+ * @retval  SEOS_ERROR_FS_OPEN             If partition is not open.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_wipe(
-    hPartition_t handle)
+    hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_wipe(handle);
@@ -640,32 +392,31 @@ OS_FilesystemApi_wipe(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_close defines the API interface name to close a partition and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function deregistered internal objects and the partition will be closed. Implicit all open file handle handle will be closed.
- *          The return value is affected by the set build parameter.
+ * @brief Closes the partition.
  *
- * @param   handle: partition handle
+ * This function deregisteres internal objects and closes the given partition.
  *
- * @return  an error code
+ * Implicitly all open file handles will be closed.
  *
- * @retval  SEOS_SUCCESS                 if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE    if partition handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE      if fail to resolve internal structure
- * @retval  SEOS_ERROR_FS_NO_DISK        if partition not exists
- * @retval  SEOS_ERROR_FS_UNMOUNT        if partition can not be unmount
- * @retval  SEOS_ERROR_FS_CLOSE          if partition can not be closed
- * @retval  SEOS_ERROR_FS_DELETE_HANDLE  if internal handle structure can not be deleted
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE if failed to resolve handle
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                 If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
+ *                                       missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE    If the partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_NO_DISK        If the partition does doesn't exist.
+ * @retval  SEOS_ERROR_FS_UNMOUNT        If the partition can not be unmounted.
+ * @retval  SEOS_ERROR_FS_CLOSE          If the partition can not be closed.
+ * @retval  SEOS_ERROR_FS_DELETE_HANDLE  If internal handle structure can not be
+ *                                       deleted.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_close(
-    hPartition_t handle)
+    hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_close(handle);
@@ -681,40 +432,39 @@ OS_FilesystemApi_close(
 /* File functions */
 /******************/
 /**
- * @details %OS_FilesystemApi_openFile defines the API interface name to open a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function check the partition handle and open a file.\n
- *          \n
- *          When opening a file, information can be provided on how to open the file - e.g. read, write, create, aso.
- *          A file can be opened with different flags:
- *          \code
- *              FA_READ          - only read
- *              FA_WRITE         - only write
- *              FA_OPEN_EXISTING - open, yust if file exists
- *              FA_CREATE_NEW    - create a file
- *              FA_CREATE_ALWAYS - create a file, is a file exists it will be overwrite
- *              FA_OPEN_ALWAYS   - only open
- *              FA_OPEN_APPEND   - open in append mode
- *          \endcode
+ * @brief Opens a file.
  *
- * @param   handle: partition handle
- * @param   name:   name of a file
- * @param   flag:   instruction for file opening
+ * This function check the partition handle and opens the file.
  *
- * @return  file handle
+ * When opening a file, information can be provided on how to open the file -
+ * e.g. read, write, create, aso.
  *
- * @retval  pointer to struct if handle is valid and build parameter SEOS_FS_BUILD_AS_LIB is set
- * @retval  NULL pointer      if handle is invalid and build parameter SEOS_FS_BUILD_AS_LIB is set
- * @retval  >= 0              if handle is valid and build parameter SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE or SEOS_FS_BUILD_AS_COMPONENT is set
- * @retval    -1              if handle is invalid and build parameter SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE or SEOS_FS_BUILD_AS_COMPONENT is set
+ * A file can be opened with different flags:
+ *
+ * * FA_READ          - Read only.
+ * * FA_WRITE         - Write only.
+ * * FA_OPEN_EXISTING - Opens only if file exists.
+ * * FA_CREATE_NEW    - Creates a file.
+ * * FA_CREATE_ALWAYS - Creates a file, if a file exists it will be overwrite.
+ * * FA_OPEN_ALWAYS   - Opens only.
+ * * FA_OPEN_APPEND   - Opens in the append mode.
+ *
+ * This function needs a valid partition handle and returns a file handle as
+ * a pointer to the struct.
+ *
+ * @return  The file handle.
+ *
+ * @retval Pointer to the struct if handle is valid
+ * @retval NULL pointer if handle is invalid
  *
  * @ingroup seos_fs_api
 */
 static inline hFile_t
 OS_FilesystemApi_openFile(
-    hPartition_t handle,
-    const char* name,
-    int flag)
+    hPartition_t handle, //!< [in] Partition handle (integer value).
+    const char*  name,   //!< [in] Name of a file.
+    int          flag    //!< [in] Instruction for file opening.
+)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_open(handle, name, flag);
@@ -725,30 +475,34 @@ OS_FilesystemApi_openFile(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_closeFile defines the API interface name to close a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function deregistered internal objects and the file closed.
+ * @brief Closes the file.
  *
- * @param   handle: file handle
+ * This function deregisters internal objects and closes the file.
+ * It needs a valid file handle and returns a SEOS error code.
  *
- * @return  an error code
+ * The deallocation of file handle pointer will be handle internally.
+ * The handle object is set to NULL in this function and the extern object
+ * points to NULL.
  *
- * @retval  SEOS_SUCCESS                 if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE    if file handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE      if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_DELETE_HANDLE  if internal handle structure can not be deleted
- * @retval  SEOS_ERROR_FS_NO_DISK        if partition not exists
- * @retval  SEOS_ERROR_FS_LIB            if library throws an error
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE if failed to resolve handle
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                 If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
+ *                                       missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE    If file handle is not valid.
+ * @retval  SEOS_ERROR_FS_STRUCTURE      If the internal structure can not be
+ *                                       resolved.
+ * @retval  SEOS_ERROR_FS_DELETE_HANDLE  If the internal handle structure can
+ *                                       not be deleted.
+ * @retval  SEOS_ERROR_FS_NO_DISK        If partition does doesn't exist.
+ * @retval  SEOS_ERROR_FS_LIB            If library throws an error.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_closeFile(
-    hFile_t handle)
+    hFile_t handle /**! file handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_close(handle);
@@ -759,40 +513,40 @@ OS_FilesystemApi_closeFile(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_readFile defines the API interface name to read a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function reads data from a file and copy it in given buffer.
- *          The buffer argument is a pointer, which is must be not NULL and is allocated from the caller function.
- *          If this library is build as component, the buffer is limited for OS_FS_DATABUFFER_SIZE bytes.
- *          so the argument len is checked for this limitation size.
+ * @brief Reads the file.
  *
- * @param   handle: file handle
- * @param   offset: offset when reading a file
- * @param   len:    count bytes to read
- * @param   buffer: read content into buffer
+ * This function reads data from the file and copies it into the given buffer.
  *
- * @return  an error code
+ * The buffer argument is a pointer, which shall not be NULL and is allocated
+ * from the caller function.
  *
- * @retval  SEOS_SUCCESS                     if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER     if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE        if file handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE          if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_NO_DISK            if partition not exists
- * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND     if file was not found on partition
- * @retval  SEOS_ERROR_FS_LIB                if library throws an error
- * @retval  SEOS_ERROR_FS_DATABUFFER_OVERLOW if databuffer is too small
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE     if failed to resolve handle
+ * @note It needs a valid file handle and returns a SEOS error code.
+ *
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                      If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters
+ *                                            is missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE         If the file handle is not valid.
+ * @retval  SEOS_ERROR_FS_STRUCTURE           If the internal structure can not
+ *                                            be resolved.
+ * @retval  SEOS_ERROR_FS_NO_DISK             If partition does doesn't exist.
+ * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND      If the file was not found on the
+ *                                            partition.
+ * @retval  SEOS_ERROR_FS_LIB                 If the library throws an error.
+ * @retval  SEOS_ERROR_FS_DATABUFFER_OVERFLOW If the databuffer is too small.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_readFile(
-    hFile_t handle,
-    long offset,
-    long len,
-    void* buffer)
+    hFile_t handle, //!< [in]  The file handle (integer value).
+    long offset,    //!< [in]  The offset when reading the file.
+    long len,       //!< [in]  The bytes count to read.
+    void* buffer    //!< [out] Reads content into this buffer.
+)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     OS_Error_t retval = SEOS_SUCCESS;
@@ -823,42 +577,44 @@ OS_FilesystemApi_readFile(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_writeFile defines the API interface name to write a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function writes data from a given buffer in a file.
- *          The buffer argument is a pointer, which is must be not NULL and is allocated from the caller function.
- *          If this library is build as component, the buffer is limited for OS_FS_DATABUFFER_SIZE bytes.
- *          so the argument len is checked for this limitation size.
- *          Writing process is not allowed if the partition has been configured with write protection.
+ * @brief Writes to the file.
  *
- * @param   handle: file handle
- * @param   offset: offset when writing a file
- * @param   len:    count bytes to write
- * @param   buffer: write content into buffer
+ * This function writes data from a given buffer to the file.
  *
- * @return  an error code
+ * The buffer argument is a pointer, which shall not be NULL and is allocated
+ * from the caller function.
  *
- * @retval  SEOS_SUCCESS                     if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER     if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE        if file handle is not valid
- * @retval  SEOS_ERROR_FS_STRUCTURE          if internal structure can not resolve
- * @retval  SEOS_ERROR_FS_NO_DISK            if partition not exists
- * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND     if file was not found on partition
- * @retval  SEOS_ERROR_FS_LIB                if library throws an error
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED   if partition was opened in read-only mode
- * @retval  SEOS_ERROR_FS_DATABUFFER_OVERLOW if databuffer is too small
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE     if failed to resolve handle
+ * It needs a valid file handle and returns a TRENTOS-M error code.
+ *
+ * Writing process is not allowed if the partition has been configured with the
+ * write protection.
+ *
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                     If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER     If any of the required parameters
+ *                                           is missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE        If the file handle is not valid.
+ * @retval  SEOS_ERROR_FS_STRUCTURE          If the internal structure can not
+ *                                           resolve.
+ * @retval  SEOS_ERROR_FS_NO_DISK            If the partition doesn't exist.
+ * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND     If the file was not found on
+ *                                           partition.
+ * @retval  SEOS_ERROR_FS_OPERATION_DENIED   If the partition was opened in the
+ *                                           read-only mode.
+ * @retval  SEOS_ERROR_FS_DATABUFFER_OVERLOW If databuffer is too small.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE     If failed to resolve handle.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_writeFile(
-    hFile_t handle,
-    long offset,
-    long len,
-    void* buffer)
+    hFile_t handle, //!< [in] The file handle (integer value).
+    long offset,    //!< [in] The offset when writing a file.
+    long len,       //!< [in] The bytes count to write.
+    void* buffer    //!< [in] Writes content from this buffer.
+)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     // checks databuffer length
@@ -882,32 +638,34 @@ OS_FilesystemApi_writeFile(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_deleteFile defines the API interface name to delete a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function deletes a file.
- *          Delete process is not allowed if the partition has been configured with write protection.
+ * @brief Deletes the file.
  *
- * @param   handle: partition handle
- * @param   name:   name of a file
+ * This function needs a valid partition handle and returns a TRENTOS-M error
+ * code.
  *
- * @return  an error code
+ * Delete process is not allowed if the partition has been configured with the
+ * write protection.
  *
- * @retval  SEOS_SUCCESS                   if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER   if any of the required parameters is missing or wrong
- * @retval  SEOS_ERROR_INVALID_HANDLE      if partition handle is not valid
- * @retval  SEOS_ERROR_FS_NO_DISK          if partition not exists
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED if partition was opened in read-only mode
- * @retval  SEOS_ERROR_FS_LIB              if library throws an error
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   if failed to resolve handle
+ * @return  An error code.
+ *
+ * @retval  SEOS_SUCCESS                   If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
+ *                                         missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE      If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_NO_DISK          If partition doesn't exist.
+ * @retval  SEOS_ERROR_FS_OPERATION_DENIED If partition was opened in read-only
+ *                                         mode.
+ * @retval  SEOS_ERROR_FS_LIB              If library throws an error.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
 OS_FilesystemApi_deleteFile(
-    hPartition_t handle,
-    const char* name)
+    hPartition_t handle, //!< [in] The partition handle (integer value).
+    const char* name     //!< [in] The name of the file.
+)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_delete(handle, name);
@@ -918,26 +676,23 @@ OS_FilesystemApi_deleteFile(
 #endif
 }
 
-
 /**
- * @details %OS_FilesystemApi_getSizeOfFile defines the API interface name to get the size from a file and calls the underlying function from the filesystem library
- *          according to the set build parameter.
- *          This function returns the size of a file.
+ * @brief Gets the file's size.
  *
- * @param   handle: partition handle
- * @param   name:   name of a file
+ * This function needs a valid partition handle and returns the file size.
  *
- * @return  size of a file
+ * @return Size of the file.
  *
- * @retval  size if file is exists and get the size from file
- * @retval  -1   if an error has occurred
+ * @retval  size - File's size if file exists.
+ * @retval  -1   - If an error occurred.
  *
  * @ingroup seos_fs_api
 */
 static inline int64_t
 OS_FilesystemApi_getSizeOfFile(
-    hPartition_t handle,
-    const char* name)
+    hPartition_t handle, //!< [in] The partition handle (integer value).
+    const char* name     //!< [in] The name of the file.
+)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_getSize(handle, name);
