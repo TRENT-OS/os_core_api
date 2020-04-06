@@ -88,7 +88,7 @@ dataport_ptr_t buffer_receive;
 
 //------------------------------------------------------------------------------
 static inline int
-OS_FilesystemApi_validatePartitionHandle(
+OS_Filesystem_validatePartitionHandle(
     hPartition_t phandle)
 {
 #if defined (SEOS_FS_BUILD_AS_LIB)
@@ -101,7 +101,7 @@ OS_FilesystemApi_validatePartitionHandle(
 
 //------------------------------------------------------------------------------
 static inline int
-OS_FilesystemApi_validateFileHandle(
+OS_Filesystem_validateFileHandle(
     hFile_t fhandle)
 {
 #if defined (SEOS_FS_BUILD_AS_LIB)
@@ -139,7 +139,7 @@ OS_FilesystemApi_validateFileHandle(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_init(
+OS_Filesystem_init(
     uint8_t drv_id, //!< [in] The partitions identifier.
     int open_flag   //!< [in] The partition's access function.
 )
@@ -168,7 +168,7 @@ OS_FilesystemApi_init(
  * @ingroup seos_fs_api
 */
 static inline hPartition_t
-OS_FilesystemApi_open(
+OS_Filesystem_open(
     uint8_t drv_id /**< [in] The partition's identifier. */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -245,7 +245,7 @@ OS_FilesystemApi_open(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_create(
+OS_Filesystem_create(
     hPartition_t handle,     //!< [in] The partition handle (integer value).
     uint8_t format_option,   //!< [in] The format option.
     uint64_t partition_size, //!< [in] Size of the partition.
@@ -315,7 +315,7 @@ OS_FilesystemApi_create(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_mount(
+OS_Filesystem_mount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -343,7 +343,7 @@ OS_FilesystemApi_mount(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_unmount(
+OS_Filesystem_unmount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -380,7 +380,7 @@ OS_FilesystemApi_unmount(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_wipe(
+OS_Filesystem_wipe(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -415,7 +415,7 @@ OS_FilesystemApi_wipe(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_close(
+OS_Filesystem_close(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -460,7 +460,7 @@ OS_FilesystemApi_close(
  * @ingroup seos_fs_api
 */
 static inline hFile_t
-OS_FilesystemApi_openFile(
+OS_Filesystem_openFile(
     hPartition_t handle, //!< [in] Partition handle (integer value).
     const char*  name,   //!< [in] Name of a file.
     int          flag    //!< [in] Instruction for file opening.
@@ -501,7 +501,7 @@ OS_FilesystemApi_openFile(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_closeFile(
+OS_Filesystem_closeFile(
     hFile_t handle /**! file handle (integer value) */)
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
@@ -541,7 +541,7 @@ OS_FilesystemApi_closeFile(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_readFile(
+OS_Filesystem_readFile(
     hFile_t handle, //!< [in]  The file handle (integer value).
     long offset,    //!< [in]  The offset when reading the file.
     long len,       //!< [in]  The bytes count to read.
@@ -609,7 +609,7 @@ OS_FilesystemApi_readFile(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_writeFile(
+OS_Filesystem_writeFile(
     hFile_t handle, //!< [in] The file handle (integer value).
     long offset,    //!< [in] The offset when writing a file.
     long len,       //!< [in] The bytes count to write.
@@ -662,7 +662,7 @@ OS_FilesystemApi_writeFile(
  * @ingroup seos_fs_api
 */
 static inline seos_err_t
-OS_FilesystemApi_deleteFile(
+OS_Filesystem_deleteFile(
     hPartition_t handle, //!< [in] The partition handle (integer value).
     const char* name     //!< [in] The name of the file.
 )
@@ -689,7 +689,7 @@ OS_FilesystemApi_deleteFile(
  * @ingroup seos_fs_api
 */
 static inline int64_t
-OS_FilesystemApi_getSizeOfFile(
+OS_Filesystem_getSizeOfFile(
     hPartition_t handle, //!< [in] The partition handle (integer value).
     const char* name     //!< [in] The name of the file.
 )

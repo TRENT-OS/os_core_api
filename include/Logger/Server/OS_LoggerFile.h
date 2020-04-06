@@ -20,7 +20,7 @@
  *              underlying file system.
  *
  *              So, this layer has an dependency to the filesystem backend and
- *              includes the "OS_FilesystemApi.h" header file.
+ *              includes the "OS_Filesystem.h" header file.
  *              \n \n
  *              As an interface layer provides this layer functions to create
  *              and read log files on filesystem.
@@ -28,7 +28,7 @@
  * @ingroup     OS_LoggerServer
 */
 #include "Logger/Common/OS_LoggerSymbols.h"
-#include "OS_FilesystemApi.h"
+#include "OS_Filesystem.h"
 #include <stdint.h>
 #include <stdbool.h>
 
