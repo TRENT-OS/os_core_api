@@ -1,0 +1,78 @@
+/*
+   *  CAmkES file for filesystem as a component.
+   *
+   *  Copyright (C) 2019, Hensoldt Cyber GmbH
+*/
+
+
+procedure if_OS_Filesystem {
+
+    include "SeosError.h";
+    include "seos_fs_datatypes.h";
+
+    hPartition_t
+    OS_FilesystemApi_open(
+        uint8_t drv_id);
+
+    seos_err_t
+    OS_FilesystemApi_create(
+        hPartition_t handle,
+        uint8_t      format_option,
+        uint64_t     partition_size,
+        uint16_t     sector_size,
+        uint32_t     cluster_size,
+        uint16_t     offset_sectors_count,
+        uint16_t     file_dir_entry_count,
+        uint32_t     fs_header_sector_count,
+        int          fs_format);
+
+    seos_err_t
+    OS_FilesystemApi_mount(
+        hPartition_t handle);
+
+    seos_err_t
+    OS_FilesystemApi_wipe(
+        hPartition_t handle);
+
+    seos_err_t
+    OS_FilesystemApi_unmount(
+        hPartition_t handle);
+
+    seos_err_t
+    OS_FilesystemApi_close(
+        hPartition_t handle);
+
+    hFile_t
+    OS_FilesystemApi_openFile(
+        hPartition_t handle,
+        string       name,
+        int          flag);
+
+    seos_err_t
+    OS_FilesystemApi_closeFile(
+        hFile_t handle);
+
+    seos_err_t
+    OS_FilesystemApi_readFile(
+           hFile_t        handle,
+           long           offset,
+           long           len,
+        in dataport_ptr_t buffer);
+
+    seos_err_t
+    OS_FilesystemApi_writeFile(
+           hFile_t        handle,
+           long           offset,
+           long           len,
+        in dataport_ptr_t buffer);
+
+    seos_err_t
+    OS_FilesystemApi_deleteFile(
+        hPartition_t handle,
+        string       name);
+
+    int64_t
+    OS_FilesystemApi_getSizeOfFile(
+        hPartition_t handle,
+        string       name);
+};
