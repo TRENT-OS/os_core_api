@@ -45,7 +45,7 @@ typedef struct OS_Crypto_Object OS_Crypto_Object_t;
 /**
  *  Pointer to (MAC, Digest, etc.) objects managed by library.
  */
-typedef void* OS_CryptoLib_Object_ptr;
+typedef void* CryptoLib_Object_ptr;
 
 // Include all after definining the API handle above; also make sure that key and
 // digest are included first so they are defined for the other functions.
@@ -95,7 +95,7 @@ typedef struct
          */
         void* context;
     } rng;
-} OS_CryptoLib_Config_t;
+} CryptoLib_Config_t;
 
 /**
  * Configuration for Crypto API in RPC Client mode.
@@ -107,7 +107,7 @@ typedef struct
      * an API instance in RPC Server mode.
      */
     void* dataPort;
-} OS_CryptoRpcClient_Config_t;
+} CryptoLibClient_Config_t;
 
 /**
  * Configuration for Crypto API in RPC Server mode (RPC Server + Library).
@@ -119,7 +119,7 @@ typedef struct
      * an API instance in RPC Client mode.
      */
     void* dataPort;
-} OS_CryptoRpcServer_Config_t;
+} CryptoLibServer_Config_t;
 
 /**
  * Configuration for Crypto API in Router mode; since the router switches between
@@ -132,12 +132,12 @@ typedef struct
      * Configuration of locally used Library instance (used for keys that are
      * flagged as exportable).
      */
-    OS_CryptoRpcClient_Config_t client;
+    CryptoLibClient_Config_t client;
     /**
      * Configuration of remote RPC Server instance of the Crypto API.
      */
-    OS_CryptoLib_Config_t lib;
-} OS_CryptoRouter_Config_t;
+    CryptoLib_Config_t lib;
+} CryptoLibRouter_Config_t;
 
 /**
  * The Crypto API main configuration struct; first the mode needs to be set to
@@ -153,11 +153,11 @@ typedef struct
     OS_Crypto_Memory_t mem;
     union
     {
-        OS_CryptoLib_Config_t lib;
-        OS_CryptoRpcClient_Config_t client;
-        OS_CryptoRouter_Config_t router;
+        CryptoLib_Config_t lib;
+        CryptoLibClient_Config_t client;
+        CryptoLibRouter_Config_t router;
     } impl;
-    OS_CryptoRpcServer_Config_t server;
+    CryptoLibServer_Config_t server;
 } OS_Crypto_Config_t;
 
 /**
@@ -277,7 +277,7 @@ OS_Crypto_free(
  *
  * @return pointer to object or NULL of \p proxy was NULL
  */
-OS_CryptoLib_Object_ptr*
+CryptoLib_Object_ptr*
 OS_Crypto_getObject(
     const OS_Crypto_Object_t* proxy);
 
@@ -317,9 +317,9 @@ OS_Crypto_getObject(
  */
 seos_err_t
 OS_Crypto_migrateObject(
-    OS_Crypto_Object_t**          proxy,
-    const OS_Crypto_Handle_t      hCrypto,
-    const OS_CryptoLib_Object_ptr ptr);
+    OS_Crypto_Object_t**       proxy,
+    const OS_Crypto_Handle_t   hCrypto,
+    const CryptoLib_Object_ptr ptr);
 
 /**
  * @brief Get mode of Crypto API instance.
