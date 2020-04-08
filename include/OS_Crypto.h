@@ -23,13 +23,42 @@
  */
 #define OS_Crypto_SIZE_DATAPORT PAGE_SIZE
 
+/**
+ * The Crypto API can be instantiated in different modes, which basically determine
+ * if a local or a remote instance of the underlying crypto library is used.
+ */
 typedef enum
 {
     OS_Crypto_MODE_NONE = 0,
-    OS_Crypto_MODE_LIBRARY,
-    OS_Crypto_MODE_RPC_CLIENT,
-    OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY,
-    OS_Crypto_MODE_ROUTER,
+    /**
+     * In this mode, the Crypto API uses only a library instance so all functions
+     * called through the API are executed in the context of the calling component.
+     */
+    OS_Crypto_MODE_LIBRARY_ONLY,
+    /**
+     * In this mode, the Crypto API uses only a RPC client instance so all functions
+     * called through the API are forwarded to the RPC server and executed in
+     * the context of this component.
+     */
+    OS_Crypto_MODE_CLIENT_ONLY,
+    /**
+     * In this mode, the Crypto API has a library and a RPC client instance and
+     * transparently switches between the local and remote instance:
+     * - Crypto objects that use no keys are always executed in the local library.
+     * - Key objects are allocated and handled in the local or remote library,
+     *   depending on their "exportable" attribute.
+     * - Crypto objects that use a key are allocated and handled wherever the
+     *   associated key resides.
+     */
+    OS_Crypto_MODE_CLIENT,
+    /**
+     * In this mode, the Crypto API has a library and a RPC server instance. The
+     * server instance is accessed through an internal CAmkES interface by a
+     * Crypto API RPC client.
+     * All direct calls to a Crypto API instance configured such are processed
+     * by the local library.
+     */
+    OS_Crypto_MODE_SERVER,
 } OS_Crypto_Mode_t;
 
 typedef struct OS_Crypto OS_Crypto_t;
@@ -124,10 +153,10 @@ typedef struct
 /**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
- * -  OS_Crypto_MODE_LIBRARY:                   library
- * -  OS_Crypto_MODE_RPC_CLIENT:                rpc.client
- * -  OS_Crypto_MODE_ROUTER:                    library AND rpc.client
- * -  OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY:   library AND rpc.server
+ * -  OS_Crypto_MODE_LIBRARY_ONLY:      library
+ * -  OS_Crypto_MODE_CLIENT_ONLY:       rpc.client
+ * -  OS_Crypto_MODE_CLIENT:            library AND rpc.client
+ * -  OS_Crypto_MODE_SERVER:            library AND rpc.server
  */
 typedef struct
 {
@@ -147,72 +176,60 @@ typedef struct
  * This function allocates a Crypto API object and sets up Crypto API functionality
  * according to the configuration.
  *
- * The API can be operated in four modes:
- * - Library:     Cryptographic library functionality can be used directly through
- *                calls to the API.
- * - RPC Client:  Calls to API functions are relayed to the RPC server, where they
- *                are executed by an implementation in the context of that component.
- * - RPC Server:  The API instance acts as RPC server for processing Crypto API
- *                calls. Such an API instance can be used in the component instantiating
- *                it as if it where a library; the remote side has to go through
- *                a Crypto API instance configured as RPC Client.
- * - Router:      In this mode, the Crypto API instance will "route" calls either
- *                to a local instance of the library, or to a remote instance. The
- *                decision is made base on the "exportable" flag of cryptographic
- *                keys -- either when the key is created or when it is used.
+ * Here are some example configurations for each of the modes the API can be
+ * used in:
  *
- * Here are some example configurations for each of these modes:
- * 1. Run the API instance as local instance of the Crypto library:
- *  \code{.c}
- *  OS_Crypto_Config_t cfgLocal =  {
- *      .mode = OS_Crypto_MODE_LIBRARY,
- *      .mem = {
- *          .malloc = malloc,
- *          .free = free,
- *      },
- *      .library.rng.entropy = entropy_func,
- *  };
- *  \endcode
- * 2. Run the API instance as RPC client, which executes all Crypto functionality
- *    inside of an RPC server component:
- *  \code{.c}
- *  OS_Crypto_Config_t cfgRemote = {
- *      .mode = OS_Crypto_MODE_RPC_CLIENT,
- *      .mem = {
- *          .malloc = malloc,
- *          .free = free,
- *      },
- *      .rpc.client.dataPort = clientDataport
- *  };
- *  \endcode
- * 3. Run API instance as RPC server backend:
- *  \code{.c}
- *  OS_Crypto_Config_t cfgServer = {
- *      .mode = OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY,
- *      .mem = {
- *          .malloc = malloc,
- *          .free   = free,
- *      },
- *      .library.rng.entropy = entropy_func,
- *      .rpc.server.dataPort = serverDataport
- *  };
- *  \endcode
- * 4. Run API instance in ROUTER mode:
- *  \code{.c}
- *  OS_Crypto_Config_t cfgRouter = {
- *      .mode = OS_Crypto_MODE_ROUTER,
- *      .mem = {
- *          .malloc = malloc,
- *          .free   = free,
- *      },
- *      .library.rng.entropy = entropy_func,
- *      .rpc.client.dataPort = clientDataport
- *  };
- *  \endcode
+ * 1. Run the API instance as local library:
+ *    \code{.c}
+ *    OS_Crypto_Config_t cfgLocal =  {
+ *        .mode = OS_Crypto_MODE_LIBRARY_ONLY,
+ *        .mem = {
+ *            .malloc = malloc,
+ *            .free = free,
+ *        },
+ *        .library.rng.entropy = entropy_func,
+ *    };
+ *    \endcode
+ * 2. Run the API instance as remote library:
+ *    \code{.c}
+ *    OS_Crypto_Config_t cfgRemote = {
+ *        .mode = OS_Crypto_MODE_CLIENT_ONLY,
+ *        .mem = {
+ *            .malloc = malloc,
+ *            .free = free,
+ *        },
+ *        .rpc.client.dataPort = clientDataport
+ *    };
+ *    \endcode
+ * 3. Run API instance as RPC server backend with local library:
+ *    \code{.c}
+ *    OS_Crypto_Config_t cfgServer = {
+ *        .mode = OS_Crypto_MODE_SERVER,
+ *        .mem = {
+ *            .malloc = malloc,
+ *            .free   = free,
+ *        },
+ *        .library.rng.entropy = entropy_func,
+ *        .rpc.server.dataPort = serverDataport
+ *    };
+ *    \endcode
+ * 4. Run API instance as RPC client with local library and seamless switch
+ *    between the two:
+ *    \code{.c}
+ *    OS_Crypto_Config_t cfgClient = {
+ *        .mode = OS_Crypto_MODE_CLIENT,
+ *        .mem = {
+ *            .malloc = malloc,
+ *            .free   = free,
+ *        },
+ *        .library.rng.entropy = entropy_func,
+ *        .rpc.client.dataPort = clientDataport
+ *    };
+ *    \endcode
  *
  * All API configurations must pass function pointers to malloc/free, those involved
  * with RPC functionality must set the dataport configuration according to those
- * addresses assigned by CAmKES.
+ * addresses assigned by CAmkES.
  *
  * @param hCrypto (required) pointer to handle of OS Crypto API
  * @param cfg (required) pointer to configuration
