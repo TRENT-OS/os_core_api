@@ -43,6 +43,7 @@
 
 #pragma once
 
+#include "SeosError.h"
 #include <stddef.h>
 
 #include "seos_fs_conf.h"
