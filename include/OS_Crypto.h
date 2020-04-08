@@ -122,42 +122,23 @@ typedef struct
 } CryptoLibServer_Config_t;
 
 /**
- * Configuration for Crypto API in Router mode; since the router switches between
- * the local librara and a remote instance seamlessly, it needs a configuration
- * for both.
- */
-typedef struct
-{
-    /**
-     * Configuration of locally used Library instance (used for keys that are
-     * flagged as exportable).
-     */
-    CryptoLibClient_Config_t client;
-    /**
-     * Configuration of remote RPC Server instance of the Crypto API.
-     */
-    CryptoLib_Config_t lib;
-} CryptoLibRouter_Config_t;
-
-/**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
- * -  OS_Crypto_MODE_LIBRARY:                   impl.lib
- * -  OS_Crypto_MODE_RPC_CLIENT:                impl.client
- * -  OS_Crypto_MODE_ROUTER:                    impl.router
- * -  OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY:   impl.lib AND server
+ * -  OS_Crypto_MODE_LIBRARY:                   library
+ * -  OS_Crypto_MODE_RPC_CLIENT:                rpc.client
+ * -  OS_Crypto_MODE_ROUTER:                    library AND rpc.client
+ * -  OS_Crypto_MODE_RPC_SERVER_WITH_LIBRARY:   library AND rpc.server
  */
 typedef struct
 {
     OS_Crypto_Mode_t mode;
     OS_Crypto_Memory_t mem;
+    CryptoLib_Config_t library;
     union
     {
-        CryptoLib_Config_t lib;
+        CryptoLibServer_Config_t server;
         CryptoLibClient_Config_t client;
-        CryptoLibRouter_Config_t router;
-    } impl;
-    CryptoLibServer_Config_t server;
+    } rpc;
 } OS_Crypto_Config_t;
 
 /**
@@ -189,7 +170,7 @@ typedef struct
  *          .malloc = malloc,
  *          .free = free,
  *      },
- *      .impl.lib.rng.entropy = entropy_func,
+ *      .library.rng.entropy = entropy_func,
  *  };
  *  \endcode
  * 2. Run the API instance as RPC client, which executes all Crypto functionality
@@ -201,7 +182,7 @@ typedef struct
  *          .malloc = malloc,
  *          .free = free,
  *      },
- *      .impl.client.dataPort = clientDataport
+ *      .rpc.client.dataPort = clientDataport
  *  };
  *  \endcode
  * 3. Run API instance as RPC server backend:
@@ -212,8 +193,8 @@ typedef struct
  *          .malloc = malloc,
  *          .free   = free,
  *      },
- *      .impl.lib.rng.entropy = entropy_func,
- *      .server.dataPort = serverDataport
+ *      .library.rng.entropy = entropy_func,
+ *      .rpc.server.dataPort = serverDataport
  *  };
  *  \endcode
  * 4. Run API instance in ROUTER mode:
@@ -224,8 +205,8 @@ typedef struct
  *          .malloc = malloc,
  *          .free   = free,
  *      },
- *      .impl.lib.rng.entropy = entropy_func,
- *      .impl.client.dataPort = clientDataport
+ *      .library.rng.entropy = entropy_func,
+ *      .rpc.client.dataPort = clientDataport
  *  };
  *  \endcode
  *
