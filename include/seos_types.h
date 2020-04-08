@@ -1,5 +1,5 @@
 /*
- *  SEOS Chanmux helper definitions
+ *  SEOS type definitions
  *
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
  */
