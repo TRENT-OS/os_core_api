@@ -23,22 +23,22 @@
  * static buffer in the config struct and for now set such it may hold ONE large
  * PEM-encoded certificate.
  */
-#define OS_TlsLib_SIZE_CA_CERT_MAX    3072
+#define OS_Tls_SIZE_CA_CERT_MAX    3072
 /**
  * Max values to enable static array allocation; we do not actually provide as
  * many ciphersuites, yet.
  */
-#define OS_TlsLib_MAX_CIPHERSUITES    8
-#define OS_TlsLib_MAX_DIGESTS         OS_TlsLib_MAX_CIPHERSUITES
+#define OS_Tls_MAX_CIPHERSUITES    8
+#define OS_Tls_MAX_DIGESTS         OS_Tls_MAX_CIPHERSUITES
 
 /**
  * Functions for sending/receiving data on an open socket.
  */
-typedef int (OS_TlsLib_Recv_func)(
+typedef int (OS_Tls_Recv_func)(
     void*          ctx,
     unsigned char* buf,
     size_t         len);
-typedef int (OS_TlsLib_Send_func)(
+typedef int (OS_Tls_Send_func)(
     void*                ctx,
     const unsigned char* buf,
     size_t               len);
@@ -49,12 +49,12 @@ typedef int (OS_TlsLib_Send_func)(
  */
 typedef enum
 {
-    OS_TlsLib_DIGEST_NONE     = 0x00,
+    OS_Tls_DIGEST_NONE     = 0x00,
     /**
      * Use SHA256 as hash algorithm.
      */
-    OS_TlsLib_DIGEST_SHA256   = 0x06,
-} OS_TlsLib_Digest_t;
+    OS_Tls_DIGEST_SHA256   = 0x06,
+} OS_Tls_Digest_t;
 
 /**
  * Cipher suites available; these need to match the values of the underlying
@@ -62,33 +62,33 @@ typedef enum
  */
 typedef enum
 {
-    OS_TlsLib_CIPHERSUITE_NONE                              = 0x0000,
+    OS_Tls_CIPHERSUITE_NONE                              = 0x0000,
     /**
      * Use DHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    OS_TlsLib_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
+    OS_Tls_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
     /**
      * Use ECDHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    OS_TlsLib_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = 0xc02f
-} OS_TlsLib_CipherSuite_t;
+    OS_Tls_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = 0xc02f
+} OS_Tls_CipherSuite_t;
 
 /**
  * Flags for setting options in the TLS provider lib.
  */
 typedef enum
 {
-    OS_TlsLib_FLAG_NONE          = (1u << 0),
+    OS_Tls_FLAG_NONE          = (1u << 0),
     /**
      *  Produce debug output from underlying protocol provider
      */
-    OS_TlsLib_FLAG_DEBUG         = (1u << 1),
+    OS_Tls_FLAG_DEBUG         = (1u << 1),
     /**
      * Do not attempt to validate server certificate. This is dangerous,
      * so you better know what you are doing!
      */
-    OS_TlsLib_FLAG_NO_VERIFY     = (1u << 2)
-} OS_TlsLib_Flag_t;
+    OS_Tls_FLAG_NO_VERIFY     = (1u << 2)
+} OS_Tls_Flag_t;
 
 /**
  * For legacy reasons it may be important to override the param/algorithm choices
@@ -102,7 +102,7 @@ typedef struct
      *
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
-    OS_TlsLib_Digest_t sessionDigests[OS_TlsLib_MAX_DIGESTS + 1];
+    OS_Tls_Digest_t sessionDigests[OS_Tls_MAX_DIGESTS + 1];
     /**
      * Amount of digests set in \p sessionDigests.
      */
@@ -113,7 +113,7 @@ typedef struct
      *
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
-    OS_TlsLib_Digest_t signatureDigests[OS_TlsLib_MAX_DIGESTS + 1];
+    OS_Tls_Digest_t signatureDigests[OS_Tls_MAX_DIGESTS + 1];
     /**
      * Amount of digests set in \p signatureDigests.
      */
@@ -126,7 +126,7 @@ typedef struct
      * Minimum bit length for DH-based operations.
      */
     size_t dhMinBits;
-} OS_TlsLib_Policy_t;
+} OS_Tls_Policy_t;
 
 /**
  * Configuration for the TLS provider library used by the TLS API layer.
@@ -139,8 +139,8 @@ typedef struct
          * Callbacks to use by the TLS library to send/recieve data for a socket
          * that is already CONNECTED.
          */
-        OS_TlsLib_Recv_func* recv;
-        OS_TlsLib_Send_func* send;
+        OS_Tls_Recv_func* recv;
+        OS_Tls_Send_func* send;
         /**
          * This is a parameter which is passed into every call to send/recv.
          * Typically it would be a socket handle or similar.
@@ -153,7 +153,7 @@ typedef struct
          * Policy can be NULL, then it is set automatically based on the ciphersuites
          * chosen by the user.
          */
-        OS_TlsLib_Policy_t* policy;
+        OS_Tls_Policy_t* policy;
         /**
          * Need an initialized for OS Crypto API handle for cryptographic
          * operations.
@@ -164,7 +164,7 @@ typedef struct
          * the TLS API so it can be used to verify the root of the server's
          * certificate chain.
          */
-        char caCert[OS_TlsLib_SIZE_CA_CERT_MAX];
+        char caCert[OS_Tls_SIZE_CA_CERT_MAX];
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
          * given in the cipersuites will be ENFORCED for everything (incl. session hash,
@@ -174,14 +174,14 @@ typedef struct
          *
          * NOTE: We add +1 so the last element can be set to 0 internally.
          */
-        OS_TlsLib_CipherSuite_t cipherSuites[OS_TlsLib_MAX_CIPHERSUITES + 1];
+        OS_Tls_CipherSuite_t cipherSuites[OS_Tls_MAX_CIPHERSUITES + 1];
         /**
          * Amount of ciphersuites in \p cipherSuites.
          */
         size_t cipherSuitesLen;
     } crypto;
-    OS_TlsLib_Flag_t flags;
-} OS_TlsLib_Config_t;
+    OS_Tls_Flag_t flags;
+} TlsLib_Config_t;
 
 /**
  * Mode the TLS API instance should be operated in.
@@ -195,16 +195,16 @@ typedef enum
      */
     OS_Tls_MODE_LIBRARY,
     /**
-     * Use as RPC Server; can only be accessed through an appropriately configured
-     * RPC client instance of the TLS API.
-     */
-    OS_Tls_MODE_RPC_SERVER,
-    /**
      * Forward all TLS API calls to a remote instance of the TLS API where the
      * TLS library is running in RPC Server mode. This allows for isolation of
      * the actual TLS protocol stack.
      */
-    OS_Tls_MODE_RPC_CLIENT
+    OS_Tls_MODE_CLIENT,
+    /**
+     * Use as RPC Server; can only be accessed through an appropriately configured
+     * RPC client instance of the TLS API.
+     */
+    OS_Tls_MODE_SERVER
 } OS_Tls_Mode_t;
 
 typedef struct OS_Tls OS_Tls_t;
@@ -221,12 +221,12 @@ typedef struct
     /**
      * Configuration of the local TLS library instance.
      */
-    OS_TlsLib_Config_t library;
+    TlsLib_Config_t library;
     /**
      * Dataport to use for communication with the RPC Client.
      */
     void* dataport;
-} OS_TlsRpcServer_Config_t;
+} TlsLibServer_Config_t;
 
 /**
  * Configuration for TLS API in RPC Client mode.
@@ -237,7 +237,7 @@ typedef struct
      * Dataport to use for communication with the RPC Server.
      */
     void* dataport;
-} OS_TlsRpcClient_Config_t;
+} TlsLibClient_Config_t;
 
 /**
  * Configuration of the TLS API. The mode value defines which of the union fields
@@ -251,9 +251,9 @@ typedef struct
     OS_Tls_Mode_t mode;
     union
     {
-        OS_TlsLib_Config_t library;
-        OS_TlsRpcClient_Config_t client;
-        OS_TlsRpcServer_Config_t server;
+        TlsLib_Config_t library;
+        TlsLibClient_Config_t client;
+        TlsLibServer_Config_t server;
     } config;
 } OS_Tls_Config_t;
 
@@ -262,16 +262,6 @@ typedef struct
  *
  * Set up the TLS API by providing a \p cfg parameter which holds the APIs
  * configuration.
- *
- * The TLS API can be configured to operate in three modes:
- * - Library:     Here all calls to handshake/read/write will be executed within the
- *                component of the caller.
- * - RPC Client:  Here, an RPC client is configured which passes all calls to
- *                handshake()/read()/write() to an RPC server that resides in a
- *                different component.
- * - RPC server:  This is the "other half" of the RPC system, which takes calls
- *                from the RPC client. Calling handshake()/read()/write() locally
- *                on an API instance in this configuration will not work.
  *
  * NOTE: The TLS API expects a pre-initialized OS Crypto API instance.
  *
@@ -340,9 +330,9 @@ OS_Tls_handshake(
  */
 seos_err_t
 OS_Tls_write(
-    OS_Tls_Handle_t    hTls,
-    const void*        data,
-    const size_t       dataSize);
+    OS_Tls_Handle_t hTls,
+    const void*     data,
+    const size_t    dataSize);
 
 /**
  * @brief Read from a TLS connection.
