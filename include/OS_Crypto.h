@@ -276,7 +276,7 @@ OS_Crypto_free(
  * @return pointer to object or NULL of \p proxy was NULL
  */
 CryptoLib_Object_ptr*
-OS_Crypto_getObject(
+OS_Crypto_getLibObject(
     const OS_Crypto_Object_t* proxy);
 
 /**
@@ -307,17 +307,20 @@ OS_Crypto_getObject(
  * @param proxy (required) pointer to handle of OS Crypto object (e.g., can
  *  be a OS_CryptoKey_Handle_t*)
  * @param hCrypto (required) handle of OS Crypto API
- * @param ptr (required) pointer to the library Key object from the some API instance
+ * @param ptr (required) pointer to the library object from some API instance
+ * @param local (required) indicate if the library obect belongs to a local or
+ *  remote instance of the crypto library
  *
  * @return an error code
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 seos_err_t
-OS_Crypto_migrateObject(
+OS_Crypto_migrateLibObject(
     OS_Crypto_Object_t**       proxy,
-    const OS_Crypto_Handle_t   hCrypto,
-    const CryptoLib_Object_ptr ptr);
+    const OS_Crypto_Handle_t   self,
+    const CryptoLib_Object_ptr ptr,
+    const bool                 local);
 
 /**
  * @brief Get mode of Crypto API instance.
