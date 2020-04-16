@@ -19,29 +19,31 @@
 #include <stdbool.h>
 
 /**
- * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
- * static buffer in the config struct and for now set such it may hold ONE large
- * PEM-encoded certificate.
+ * Mode the TLS API instance should be operated in.
  */
-#define OS_Tls_SIZE_CA_CERT_MAX    3072
-/**
- * Max values to enable static array allocation; we do not actually provide as
- * many ciphersuites, yet.
- */
-#define OS_Tls_MAX_CIPHERSUITES    8
-#define OS_Tls_MAX_DIGESTS         OS_Tls_MAX_CIPHERSUITES
+typedef enum
+{
+    OS_Tls_MODE_NONE = 0,
 
-/**
- * Functions for sending/receiving data on an open socket.
- */
-typedef int (OS_Tls_Recv_func)(
-    void*          ctx,
-    unsigned char* buf,
-    size_t         len);
-typedef int (OS_Tls_Send_func)(
-    void*                ctx,
-    const unsigned char* buf,
-    size_t               len);
+    /**
+     * Use TLS module as library, all calls to the API will internally mapped to
+     * be executed locally.
+     */
+    OS_Tls_MODE_LIBRARY,
+
+    /**
+     * Forward all TLS API calls to a remote instance of the TLS API where the
+     * TLS library is running in RPC Server mode. This allows for isolation of
+     * the actual TLS protocol stack.
+     */
+    OS_Tls_MODE_CLIENT,
+
+    /**
+     * Use as RPC Server; can only be accessed through an appropriately configured
+     * RPC client instance of the TLS API.
+     */
+    OS_Tls_MODE_SERVER
+} OS_Tls_Mode_t;
 
 /**
  * Digest algorithms available; these need to match the values of the underlying
@@ -50,6 +52,7 @@ typedef int (OS_Tls_Send_func)(
 typedef enum
 {
     OS_Tls_DIGEST_NONE     = 0x00,
+
     /**
      * Use SHA256 as hash algorithm.
      */
@@ -63,10 +66,12 @@ typedef enum
 typedef enum
 {
     OS_Tls_CIPHERSUITE_NONE                              = 0x0000,
+
     /**
      * Use DHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
     OS_Tls_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
+
     /**
      * Use ECDHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
@@ -79,16 +84,31 @@ typedef enum
 typedef enum
 {
     OS_Tls_FLAG_NONE          = (1u << 0),
+
     /**
      *  Produce debug output from underlying protocol provider
      */
     OS_Tls_FLAG_DEBUG         = (1u << 1),
+
     /**
      * Do not attempt to validate server certificate. This is dangerous,
      * so you better know what you are doing!
      */
     OS_Tls_FLAG_NO_VERIFY     = (1u << 2)
 } OS_Tls_Flag_t;
+
+/**
+ * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
+ * static buffer in the config struct and for now set such it may hold ONE large
+ * PEM-encoded certificate.
+ */
+#define OS_Tls_SIZE_CA_CERT_MAX    3072
+/**
+ * Max values to enable static array allocation; we do not actually provide as
+ * many ciphersuites, yet.
+ */
+#define OS_Tls_MAX_CIPHERSUITES    8
+#define OS_Tls_MAX_DIGESTS         OS_Tls_MAX_CIPHERSUITES
 
 /**
  * For legacy reasons it may be important to override the param/algorithm choices
@@ -127,6 +147,18 @@ typedef struct
      */
     size_t dhMinBits;
 } OS_Tls_Policy_t;
+
+/**
+ * Functions for sending/receiving data on an open socket.
+ */
+typedef int (OS_Tls_Recv_func)(
+    void*          ctx,
+    unsigned char* buf,
+    size_t         len);
+typedef int (OS_Tls_Send_func)(
+    void*                ctx,
+    const unsigned char* buf,
+    size_t               len);
 
 /**
  * Configuration for the TLS provider library used by the TLS API layer.
@@ -182,30 +214,6 @@ typedef struct
     } crypto;
     OS_Tls_Flag_t flags;
 } TlsLib_Config_t;
-
-/**
- * Mode the TLS API instance should be operated in.
- */
-typedef enum
-{
-    OS_Tls_MODE_NONE = 0,
-    /**
-     * Use TLS module as library, all calls to the API will internally mapped to
-     * be executed locally.
-     */
-    OS_Tls_MODE_LIBRARY,
-    /**
-     * Forward all TLS API calls to a remote instance of the TLS API where the
-     * TLS library is running in RPC Server mode. This allows for isolation of
-     * the actual TLS protocol stack.
-     */
-    OS_Tls_MODE_CLIENT,
-    /**
-     * Use as RPC Server; can only be accessed through an appropriately configured
-     * RPC client instance of the TLS API.
-     */
-    OS_Tls_MODE_SERVER
-} OS_Tls_Mode_t;
 
 typedef struct OS_Tls OS_Tls_t;
 /**

@@ -18,29 +18,26 @@
 #include <stddef.h>
 
 /**
- * Fixed size of dataport, will be replaced with a more generic and self-contained
- * solution in the future.
- */
-#define OS_Crypto_SIZE_DATAPORT PAGE_SIZE
-
-/**
  * The Crypto API can be instantiated in different modes, which basically determine
  * if a local or a remote instance of the underlying crypto library is used.
  */
 typedef enum
 {
     OS_Crypto_MODE_NONE = 0,
+
     /**
      * In this mode, the Crypto API uses only a library instance so all functions
      * called through the API are executed in the context of the calling component.
      */
     OS_Crypto_MODE_LIBRARY_ONLY,
+
     /**
      * In this mode, the Crypto API uses only a RPC client instance so all functions
      * called through the API are forwarded to the RPC server and executed in
      * the context of this component.
      */
     OS_Crypto_MODE_CLIENT_ONLY,
+
     /**
      * In this mode, the Crypto API has a library and a RPC client instance and
      * transparently switches between the local and remote instance:
@@ -51,6 +48,7 @@ typedef enum
      *   associated key resides.
      */
     OS_Crypto_MODE_CLIENT,
+
     /**
      * In this mode, the Crypto API has a library and a RPC server instance. The
      * server instance is accessed through an internal CAmkES interface by a
@@ -125,6 +123,12 @@ typedef struct
         void* context;
     } rng;
 } CryptoLib_Config_t;
+
+/**
+ * Fixed size of dataport, will be replaced with a more generic and self-contained
+ * solution in the future.
+ */
+#define OS_Crypto_SIZE_DATAPORT PAGE_SIZE
 
 /**
  * Configuration for Crypto API in RPC Client mode.
