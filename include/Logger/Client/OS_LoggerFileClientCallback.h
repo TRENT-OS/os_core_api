@@ -33,7 +33,10 @@
  * @param   len:            length of buffer
  * @param   log_file_size:  size of log file in bytes
  *
- * @return  count read bytes
+ * @return  The number of bytes read.
+ *
+ * @retval -1 - if the error occurred.
+ * @retval  N - if success.
  *
  * @ingroup OS_LoggerFileClient
 */

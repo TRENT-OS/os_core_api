@@ -15,9 +15,10 @@ procedure if_OS_Logger {
     /**
      * @brief Interface to read server's log file.
      *
-     * @retval -1    - if file does not exist.
-     * @retval false - if reading callback is NULL.
-     * @retval true  - if success.
+     * @return  The number of bytes read.
+     *
+     * @retval -1 - if the error occurred.
+     * @retval  N - if success.
      */
     int64_t read_log_file(
         string filename,          ///< [in] Name of the file to read.
