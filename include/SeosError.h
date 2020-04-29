@@ -19,7 +19,7 @@ extern "C" {
 */
 typedef enum
 {
-    _SEOS_ERROR_MIN = -58,
+    _SEOS_ERROR_MIN = -59,
 
     // File System specific error codes
     SEOS_ERROR_FS_NO_FREE_HANDLE,                /**< failed cause no free handle */
@@ -48,6 +48,7 @@ typedef enum
 
     // Partition Manager specific error codes
     SEOS_ERROR_PM_PARTITION_ID,                  /**< wrong partition id or partition id doesn't exist */
+    SEOS_ERROR_PM_INIT,                          /**< fail to init */
     SEOS_ERROR_PM_OPEN,                          /**< fail to open */
     SEOS_ERROR_PM_READ,                          /**< fail to read */
     SEOS_ERROR_PM_WRITE,                         /**< fail to write */
