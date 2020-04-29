@@ -183,10 +183,6 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgLocal =  {
  *        .mode = OS_Crypto_MODE_LIBRARY_ONLY,
- *        .mem = {
- *            .malloc = malloc,
- *            .free = free,
- *        },
  *        .library.rng.entropy = entropy_func,
  *    };
  *    \endcode
@@ -194,10 +190,6 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgRemote = {
  *        .mode = OS_Crypto_MODE_CLIENT_ONLY,
- *        .mem = {
- *            .malloc = malloc,
- *            .free = free,
- *        },
  *        .rpc.client.dataPort = clientDataport
  *    };
  *    \endcode
@@ -205,10 +197,6 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgServer = {
  *        .mode = OS_Crypto_MODE_SERVER,
- *        .mem = {
- *            .malloc = malloc,
- *            .free   = free,
- *        },
  *        .library.rng.entropy = entropy_func,
  *        .rpc.server.dataPort = serverDataport
  *    };
@@ -218,10 +206,6 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgClient = {
  *        .mode = OS_Crypto_MODE_CLIENT,
- *        .mem = {
- *            .malloc = malloc,
- *            .free   = free,
- *        },
  *        .library.rng.entropy = entropy_func,
  *        .rpc.client.dataPort = clientDataport
  *    };
