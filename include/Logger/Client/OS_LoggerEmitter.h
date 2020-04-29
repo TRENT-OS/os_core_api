@@ -39,12 +39,11 @@
  * @ingroup     OS_LoggerClient
 */
 #include "Logger/Common/OS_LoggerFilter.h"
-#include "Logger/Client/OS_LoggerEmitterCallback.h"
+#include "seos_types.h"
 
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
-
 
 /**
  * @details OS_LoggerEmitter_Handle_t defines the class datatype.
@@ -66,10 +65,6 @@ typedef struct OS_LoggerEmitter_Handle OS_LoggerEmitter_Handle_t;
  *          All layer functions are interchangeable due to their special
  *          implementation.
  *
- * @param   buffer:             data buffer
- * @param   log_filter:         layer for log filter
- * @param   callback_vtable:    layer for callback vtable
- *
  * @return  pointer to OS_LoggerEmitter_Handle_t object
  *
  * @retval  not NULL, if all allright
@@ -79,10 +74,9 @@ typedef struct OS_LoggerEmitter_Handle OS_LoggerEmitter_Handle_t;
 */
 OS_LoggerEmitter_Handle_t*
 OS_LoggerEmitter_getInstance(
-    void* buffer,
-    OS_LoggerFilter_Handle_t* log_filter,
-    OS_LoggerEmitterCallback_Handle_t* callback_vtable);
-
+    void* buffer,                         //!< The logging data exchange buffer.
+    OS_LoggerFilter_Handle_t* log_filter, //!< The client's logging filter.
+    event_notify_func_t emit);            //!< The logging emit callback.
 
 /**
  * @details %OS_LoggerEmitter_dtor is the destructor.
@@ -91,7 +85,6 @@ OS_LoggerEmitter_getInstance(
 */
 void
 OS_LoggerEmitter_dtor(void);
-
 
 /**
  * @details %OS_LoggerEmitter_log provides the client log action.
@@ -115,4 +108,3 @@ OS_LoggerEmitter_dtor(void);
 */
 bool
 OS_LoggerEmitter_log(uint8_t log_level, const char* format, ...);
-
