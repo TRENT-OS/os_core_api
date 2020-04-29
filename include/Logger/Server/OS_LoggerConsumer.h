@@ -122,7 +122,6 @@ typedef struct
 {
     OS_LoggerConsumer_dtor_t         dtor;
     OS_LoggerConsumer_process_t      process;
-    OS_LoggerConsumer_emit_t         emit;
     OS_LoggerConsumer_getTimestamp_t get_timestamp;
 } OS_LoggerConsumer_vtable_t;
 

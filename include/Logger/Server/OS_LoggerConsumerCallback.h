@@ -64,7 +64,6 @@ typedef uint64_t
 */
 typedef struct
 {
-    OS_LoggerConsumerCallback_emit_t         server_emit;
     OS_LoggerConsumerCallback_getSenderId_t  get_sender_id;
     OS_LoggerConsumerCallback_getTimestamp_t get_timestamp;
 } OS_LoggerConsumerCallback_t;
@@ -74,7 +73,6 @@ typedef struct
  * @details %OS_LoggerConsumer_dtor is the constructor.
  *
  * @param   self:           pointer to the class
- * @param   server_emit:    function pointer to emit callback function
  * @param   get_sender_id:  function pointer to get sender id callback function
  * @param   get_timestamp:  function pointer to get timestamp callback function
  *
@@ -88,7 +86,6 @@ typedef struct
 bool
 OS_LoggerConsumerCallback_ctor(
     OS_LoggerConsumerCallback_t*             self,
-    OS_LoggerConsumerCallback_emit_t         server_emit,
     OS_LoggerConsumerCallback_getSenderId_t  get_sender_id,
     OS_LoggerConsumerCallback_getTimestamp_t get_timestamp);
 

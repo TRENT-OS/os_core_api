@@ -14,10 +14,7 @@
  *              append in a logger chain.
  *              This layer provides functions to append or remove consumer log
  *              objects into or from this consumer chain.
- *              \n
- *              The poll process is started with the poll function. At this
- *              point, all objects in the consumer chain must be attached.
- *              \n \n
+ *
  *              Using the "get sender id" function, a log consumer, i.e. a log
  *              client, can be clearly identified when a log message arrives.
  *              This implementation works as a singleton. That means that only
@@ -92,16 +89,6 @@ typedef OS_LoggerConsumer_Handle_t*
 
 
 /**
- * @details OS_LoggerConsumerChain_poll_t defines the interface for function
- *          pointer to start the poll process.
- *
- * @ingroup OS_LoggerConsumerChain
-*/
-typedef void
-(*OS_LoggerConsumerChain_poll_t)(void);
-
-
-/**
  * @details OS_LoggerConsumerChain_vtable_t contain the member functions to his
  *          class.
  *
@@ -113,7 +100,6 @@ typedef struct
     OS_LoggerConsumerChain_append_t    append;
     OS_LoggerConsumerChain_remove_t    remove;
     OS_LoggerConsumerChain_getSender_t get_sender;
-    OS_LoggerConsumerChain_poll_t      poll;
 } OS_LoggerConsumerChain_vtable_t;
 
 
@@ -220,13 +206,3 @@ OS_LoggerConsumerChain_remove(OS_LoggerConsumer_Handle_t* consumer);
 */
 OS_LoggerConsumer_Handle_t*
 OS_LoggerConsumerChain_getSender(void);
-
-
-/**
- * @details %OS_LoggerConsumerChain_poll provides to start the poll process.
- *
- * @ingroup OS_LoggerConsumerChain
-*/
-void
-OS_LoggerConsumerChain_poll(void);
-
