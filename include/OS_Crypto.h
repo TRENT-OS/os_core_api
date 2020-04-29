@@ -86,20 +86,16 @@ typedef void* CryptoLib_Object_ptr;
 #include "crypto/OS_CryptoSignature.h"
 #include "crypto/OS_CryptoRng.h"
 
-typedef void* (OS_Crypto_Malloc_func)(
-    size_t size);
-typedef void (OS_Crypto_Free_func)(
-    void* ptr);
-
 /**
- * User of API can provide custom allocator/free functionality.
+ * User of API can provide custom allocator functionality.
  */
+typedef void* (OS_Crypto_Calloc_func)(size_t n, size_t size);
+typedef void (OS_Crypto_Free_func)(void* ptr);
 typedef struct
 {
-    OS_Crypto_Malloc_func* malloc;
+    OS_Crypto_Calloc_func* calloc;
     OS_Crypto_Free_func* free;
-}
-OS_Crypto_Memory_t;
+} OS_Crypto_Memory_t;
 
 /**
  * Configuration for underlying Crypto Library.
