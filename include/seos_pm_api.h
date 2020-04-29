@@ -128,6 +128,7 @@ partition_manager_init(
  * @retval  SEOS_ERROR_PM_PARTITION_ID    If wrong partition id or partition id
  *                                        doesn't exist.
  * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
+ * @retval  SEOS_ERROR_PM_INIT            If the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_OPEN            If no open operation has been done.
  *
  * @ingroup seos_pm_api
@@ -175,6 +176,7 @@ partition_manager_open(
  * @retval  SEOS_ERROR_PM_PARTITION_ID      if wrong partition id or partition
  *                                          id doesn't exist
  * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT   if invalid object internally
+ * @retval  SEOS_ERROR_PM_INIT              if the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_OFFSET            if offset is out of range
  * @retval  SEOS_ERROR_PM_READ              if no read operation has been done
  *
@@ -252,6 +254,7 @@ partition_manager_read(
  * @retval  SEOS_ERROR_PM_PARTITION_ID      If wrong partition id or partition
  *                                          id doesn't exist.
  * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT   If invalid object internally.
+ * @retval  SEOS_ERROR_PM_INIT              If the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_OFFSET            If offset is out of range.
  * @retval  SEOS_ERROR_PM_WRITE             If no write operation has been done.
  *
@@ -310,6 +313,7 @@ partition_manager_write(
  * @retval  SEOS_ERROR_PM_PARTITION_ID    If the wrong partition id or the
  *                                        partition id doesn't exist.
  * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
+ * @retval  SEOS_ERROR_PM_INIT            If the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_CLOSE           If no close operation has been done.
  *
  * @ingroup seos_pm_api
@@ -337,6 +341,7 @@ partition_manager_close(
  *
  * @retval  SEOS_SUCCESS                 If all right.
  * @retval  SEOS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
+ * @retval  SEOS_ERROR_PM_INIT           If the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_GET_STRUCT     If failed to get a structure.
  *
  * @ingroup seos_pm_api
@@ -366,6 +371,7 @@ partition_manager_get_info_disk(
  * @retval  SEOS_ERROR_PM_PARTITION_ID   If the wrong partition id or the
  *                                       partition id doesn't exist.
  * @retval  SEOS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
+ * @retval  SEOS_ERROR_PM_INIT           If the partition manager is uninitialized.
  * @retval  SEOS_ERROR_PM_GET_STRUCT     If failed to get a struct.
  *
  * @ingroup seos_pm_api
