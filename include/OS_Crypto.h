@@ -161,7 +161,7 @@ typedef struct
 typedef struct
 {
     OS_Crypto_Mode_t mode;
-    OS_Crypto_Memory_t mem;
+    OS_Crypto_Memory_t memory;
     CryptoLib_Config_t library;
     union
     {
