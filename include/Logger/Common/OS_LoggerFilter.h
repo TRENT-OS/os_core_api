@@ -104,14 +104,9 @@ struct OS_LoggerFilter_Handle
  * @param   self:       pointer to the class
  * @param   log_level:  log level id
  *
- * @return  an status code
- *
- * @retval  true  - if allright
- * @retval  false - if an error has occurred
- *
  * @ingroup OS_LoggerFilter
 */
-bool
+void
 OS_LoggerFilter_ctor(OS_LoggerFilter_Handle_t* self, uint8_t log_level);
 
 
