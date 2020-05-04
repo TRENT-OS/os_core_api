@@ -16,6 +16,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -112,11 +113,11 @@ typedef void*
  * @param   current:    pointer to the list object
  * @param   new_node:   pointer to the list object
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerListT
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerListT_insert_t)(
     OS_LoggerNodeT_Handle_t* current,
     OS_LoggerNodeT_Handle_t* new_Node);
@@ -128,11 +129,11 @@ typedef bool
  *
  * @param   current:    pointer to the list object
  *
- * @return  a status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerListT
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerListT_delete_t)(OS_LoggerNodeT_Handle_t* current);
 
 
@@ -227,14 +228,9 @@ struct OS_LoggerNodeT_Handle
  *
  * @param   self:   pointer to the class
  *
- * @return  an status code
- *
- * @retval  true,  if all allright
- *          false, if pointer is NULL
- *
  * @ingroup OS_LoggerListT
 */
-bool
+void
 OS_LoggerListT_ctor(OS_LoggerListT_t_Handle_t* self);
 
 

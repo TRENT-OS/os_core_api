@@ -38,6 +38,7 @@
  *
  * @ingroup     OS_LoggerClient
 */
+#include "SeosError.h"
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "seos_types.h"
 
@@ -99,12 +100,16 @@ OS_LoggerEmitter_dtor(void);
  * @param   format:     log message
  * @param   ...:        optional parameters for log message
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_HANDLE    - OS_LoggerEmitter_getInstance was not
+ *                                         called.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - Given format is null or incorrect.
+ * @retval  SEOS_ERROR_GENERIC           - String encoding error occurred.
+ * @retval  SEOS_ERROR_BUFFER_TOO_SMALL  - Destination log buffer too small.
+ * @retval  SEOS_SUCCESS                 - Entry logged or filtered out.
  *
  * @ingroup OS_LoggerEmitter
 */
-bool
+seos_err_t
 OS_LoggerEmitter_log(uint8_t log_level, const char* format, ...);

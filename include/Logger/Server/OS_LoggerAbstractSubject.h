@@ -37,6 +37,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Server/OS_LoggerAbstractObserver.h"
 #include <stdbool.h>
 
@@ -68,11 +69,11 @@ typedef void
  * @param   self:       pointer to the class
  * @param   observer:   pointer to a observer object
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerAbstractSubject_attach_t)(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);
@@ -85,11 +86,11 @@ typedef bool
  * @param   self:       pointer to the class
  * @param   observer:   pointer to a observer object
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerAbstractSubject_detach_t)(
     OS_LoggerAbstractSubject_Handle_t*  self,
     OS_LoggerAbstractObserver_Handle_t* observer);
@@ -159,13 +160,14 @@ OS_LoggerAbstractSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
  * @param   self:       pointer to the class
  * @param   observer:   pointer to a observer object
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  depends on the implementation of the print function
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
-bool
+seos_err_t
 OS_LoggerAbstractSubject_attach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);
@@ -178,13 +180,14 @@ OS_LoggerAbstractSubject_attach(
  * @param   self:       pointer to the class
  * @param   observer:   pointer to a observer object
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  depends on the implementation of the print function
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
-bool
+seos_err_t
 OS_LoggerAbstractSubject_detach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);

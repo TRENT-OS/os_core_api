@@ -34,6 +34,7 @@
  *
  * @ingroup     OS_LoggerAbstractSubject
 */
+#include "SeosError.h"
 #include "Logger/Server/OS_LoggerAbstractSubject.h"
 #include <stdbool.h>
 
@@ -68,14 +69,9 @@ typedef struct
  *
  * @param   self:   pointer to the class
  *
- * @return  an status code
- *
- * @retval  true,  if all allright
- *          false, if pointer is NULL
- *
  * @ingroup OS_LoggerSubject
 */
-bool
+void
 OS_LoggerSubject_ctor(OS_LoggerSubject_Handle_t* self);
 
 
@@ -97,14 +93,15 @@ OS_LoggerSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
  * @param   self:       pointer to the class
  * @param   observer:   pointer to concrete observer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if pointer is NULL
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
+ * @retval  SEOS_ERROR_OPERATION_DENIED  - Observer was not attached.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerSubject
 */
-bool
+seos_err_t
 OS_LoggerSubject_attach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);
@@ -117,14 +114,15 @@ OS_LoggerSubject_attach(
  * @param   self:       pointer to the class
  * @param   observer:   pointer to concrete observer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if pointer is NULL
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
+ * @retval  SEOS_ERROR_OPERATION_DENIED  - Observer was not detach.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerSubject
 */
-bool
+seos_err_t
 OS_LoggerSubject_detach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);

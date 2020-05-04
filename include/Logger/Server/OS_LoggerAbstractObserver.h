@@ -81,6 +81,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include <stdbool.h>
 
 
@@ -112,11 +113,11 @@ typedef void
  * @param   self:   pointer to the class
  * @param   data:   user data
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerAbstractObserver
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerAbstractObserver_update_t)(
     OS_LoggerAbstractObserver_Handle_t* self,
     void* data);
@@ -165,14 +166,11 @@ OS_LoggerAbstractObserver_dtor(OS_LoggerAbstractObserver_Handle_t* self);
  * @param   self:   pointer to the class
  * @param   data:   user data
  *
- * @return  an status code
- *
- * @retval  depends on the implementation of the print function
+ * @return  An error code which is implementation specific.
  *
  * @ingroup OS_LoggerAbstractObserver
 */
-bool
+seos_err_t
 OS_LoggerAbstractObserver_update(
     OS_LoggerAbstractObserver_Handle_t* self,
     void* data);
-

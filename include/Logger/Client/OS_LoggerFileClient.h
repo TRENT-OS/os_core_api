@@ -22,6 +22,7 @@
  *
  * @ingroup     OS_LoggerClient
 */
+#include "SeosError.h"
 #include "Logger/Client/OS_LoggerFileClientCallback.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -63,11 +64,11 @@ typedef void
  * @param   offset:     offset in log file
  * @param   len:        length of buffer
  *
- * @return  an error code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerFileClient
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerFileClient_read_t)(
     OS_LoggerFileClient_Handle_t* self,
     const char* filename,
@@ -112,14 +113,14 @@ struct OS_LoggerFileClient_Handle
  * @param   dest_buf:                   pointer to destination data buffer
  * @param   log_file_client_callback:   layer for callback vtable
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the input parameters is null.
+ * @retval  SEOS_SUCCESS                 - Initialization was successful.
  *
  * @ingroup OS_LoggerFileClient
 */
-bool
+seos_err_t
 OS_LoggerFileClient_ctor(
     OS_LoggerFileClient_Handle_t* self,
     void* src_buf,
@@ -150,17 +151,17 @@ OS_LoggerFileClient_dtor(OS_LoggerFileClient_Handle_t* self);
  *                      called. This size is particularly important because the
  *                      max. buffer size of camkes is 4096 bytes.
  *
- * @return  an error code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval SEOS_ERROR_INVALID_PARAMETER - Filename is a NULL pointer.
+ * @retval SEOS_ERROR_INVALID_HANDLE    - Read callback is NULL.
+ * @retval SEOS_SUCCESS                 - Read was successful.
  *
  * @ingroup OS_LoggerFileClient
 */
-bool
+seos_err_t
 OS_LoggerFileClient_read(
     OS_LoggerFileClient_Handle_t* self,
     const char* filename,
     uint64_t offset,
     uint64_t len);
-

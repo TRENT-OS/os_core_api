@@ -21,6 +21,7 @@
  *
  * @ingroup     OS_LoggerServer, OS_LoggerClient
 */
+#include "SeosError.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -58,11 +59,11 @@ typedef void
  * @param   date:   string from the macro "__DATE"
  * @param   time:   string from the macro "__TIME"
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerTimestamp_create_t)(const char* date, const char* time);
 
 
@@ -74,11 +75,11 @@ typedef bool
  * @param   hours:      offset in hours for time shift
  * @param   tm:         destination struct to save the converted time
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerTimestamp_getTime_t)(
     OS_LoggerTimestamp_Handle_t* t_stamp,
     uint8_t hours,
@@ -93,11 +94,11 @@ typedef bool
  * @param   tm:         source time
  * @param   t_stamp:    destination struct to save the timestamp
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerTimestamp_getTimestamp_t)(
     OS_LoggerTime_Handle_t* tm,
     OS_LoggerTimestamp_Handle_t* t_stamp);
@@ -184,14 +185,15 @@ OS_LoggerTimestamp_dtor(void);
  * @param   date:   string from the macro "__DATE"
  * @param   time:   string from the macro "__TIME"
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */
-bool
+seos_err_t
 OS_LoggerTimestamp_create(const char* date, const char* time);
 
 
@@ -203,14 +205,15 @@ OS_LoggerTimestamp_create(const char* date, const char* time);
  * @param   hours:      offset in hours for time shift
  * @param   tm:         destination struct to save the converted time
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer or `hours` is too large.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */
-bool
+seos_err_t
 OS_LoggerTimestamp_getTime(
     OS_LoggerTimestamp_Handle_t* t_stamp,
     uint8_t hours,
@@ -224,15 +227,15 @@ OS_LoggerTimestamp_getTime(
  * @param   tm:         source time
  * @param   t_stamp:    destination struct to save the timestamp
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */
-bool
+seos_err_t
 OS_LoggerTimestamp_getTimestamp(
     OS_LoggerTime_Handle_t* tm,
     OS_LoggerTimestamp_Handle_t* t_stamp);
-

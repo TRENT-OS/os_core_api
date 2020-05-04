@@ -21,6 +21,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Common/OS_LoggerDataBuffer.h"
 #include <stdbool.h>
 #include <string.h>
@@ -56,11 +57,11 @@ typedef void
  * @param   self:       pointer to the class
  * @param   log_info:   pointer to the class OS_LoggerDataBuffer_info
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerAbstractFormat_convert)(
     OS_LoggerAbstractFormat_Handle_t* self,
     OS_LoggerDataBuffer_info* log_info);
@@ -121,13 +122,15 @@ FormatT_dtor(OS_LoggerAbstractFormat_Handle_t* self);
  * @param   self:       pointer to the class
  * @param   log_info:   pointer to the class OS_LoggerDataBuffer_info
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  depends on the implementation of the convert function
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
-bool
+seos_err_t
 FormatT_convert(
     OS_LoggerAbstractFormat_Handle_t* self,
     OS_LoggerDataBuffer_info* log_info);

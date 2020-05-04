@@ -15,6 +15,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "Logger/Server/OS_LoggerTimestamp.h"
 #include <stdint.h>
@@ -108,14 +109,15 @@ OS_LoggerDataBuffer_setLogMessage(void* buf, const char* msg);
  * @param   buf:            data buffer
  * @param   log_databuffer: pointer to internal data buffer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
-bool
+seos_err_t
 OS_LoggerDataBuffer_getServerLogLevel(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -128,14 +130,15 @@ OS_LoggerDataBuffer_getServerLogLevel(
  * @param   buf:            data buffer
  * @param   log_databuffer: pointer to internal data buffer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
-bool
+seos_err_t
 OS_LoggerDataBuffer_getClientLogLevel(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -148,14 +151,15 @@ OS_LoggerDataBuffer_getClientLogLevel(
  * @param   buf:            data buffer
  * @param   log_databuffer: pointer to internal data buffer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
-bool
+seos_err_t
 OS_LoggerDataBuffer_getLogMessage(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -174,14 +178,15 @@ OS_LoggerDataBuffer_getLogMessage(
  * @param   buf:            data buffer
  * @param   log_databuffer: pointer to internal data buffer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
-bool
+seos_err_t
 OS_LoggerDataBuffer_getInfo(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -192,13 +197,13 @@ OS_LoggerDataBuffer_getInfo(
  *
  * @param   buf:            data buffer
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
-bool
+seos_err_t
 OS_LoggerDataBuffer_clear(void* buf);
-

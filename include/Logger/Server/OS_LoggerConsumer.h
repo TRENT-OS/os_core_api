@@ -45,6 +45,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "Logger/Server/OS_LoggerConsumerCallback.h"
 #include "Logger/Server/OS_LoggerSubject.h"
@@ -78,11 +79,9 @@ typedef void
  *
  * @param   self:   pointer to the class
  *
- * @return  an error code
- *
  * @ingroup OS_LoggerConsumer
 */
-typedef bool
+typedef void
 (*OS_LoggerConsumer_process_t)(OS_LoggerConsumer_Handle_t* self);
 
 
@@ -164,14 +163,15 @@ struct OS_LoggerConsumer_Handle
  * @param   id:                 log consumer id
  * @param   name:               name (optional)
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                         pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumer
 */
-bool
+seos_err_t
 OS_LoggerConsumer_ctor(
     OS_LoggerConsumer_Handle_t* self,
     void* buffer,
@@ -192,4 +192,3 @@ OS_LoggerConsumer_ctor(
 */
 void
 OS_LoggerConsumer_dtor(OS_LoggerConsumer_Handle_t* self);
-

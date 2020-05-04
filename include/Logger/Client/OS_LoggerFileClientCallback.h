@@ -20,6 +20,7 @@
  *
  * @ingroup     OS_LoggerFileClient
 */
+#include "SeosError.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -65,14 +66,14 @@ typedef struct
  * @param   self:           pointer to the class
  * @param   read_log_file:  function pointer to read log file function
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval SEOS_ERROR_INVALID_PARAMETER - Read Callback is NULL.
+ * @retval SEOS_SUCCESS                 - Initialization was successful.
  *
  * @ingroup OS_LoggerFileClient
 */
-bool
+seos_err_t
 OS_LoggerFileClientCallback_ctor(
     OS_LoggerFileClientCallback_Handle_t* self,
     OS_LoggerFileClientCallback_read_t read_log_file);

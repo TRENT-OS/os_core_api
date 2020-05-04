@@ -66,14 +66,9 @@ typedef struct
  *
  * @param   self:   pointer to the class
  *
- * @return  an status code
- *
- * @retval  true,  if all allright
- *          false, if pointer is NULL
- *
  * @ingroup OS_LoggerFormat
 */
-bool
+void
 OS_LoggerFormat_ctor(OS_LoggerFormat_Handle_t* self);
 
 /**

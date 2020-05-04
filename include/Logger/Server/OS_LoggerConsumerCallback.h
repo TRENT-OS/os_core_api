@@ -18,6 +18,7 @@
  *
  * @ingroup     OS_LoggerConsumer
 */
+#include "SeosError.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -76,14 +77,15 @@ typedef struct
  * @param   get_sender_id:  function pointer to get sender id callback function
  * @param   get_timestamp:  function pointer to get timestamp callback function
  *
- * @return  a status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - get_sender_id is a NULL pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerConsumerCallback
 */
-bool
+seos_err_t
 OS_LoggerConsumerCallback_ctor(
     OS_LoggerConsumerCallback_t*             self,
     OS_LoggerConsumerCallback_getSenderId_t  get_sender_id,

@@ -24,6 +24,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Server/OS_LoggerConsumer.h"
 #include "Logger/Server/OS_LoggerListT.h"
 #include <stdbool.h>
@@ -53,11 +54,11 @@ typedef void
  *
  * @param   consumer:   pointer to consumer log object
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerConsumerChain
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerConsumerChain_append_t)(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -67,11 +68,11 @@ typedef bool
  *
  * @param   consumer:   pointer to consumer log object
  *
- * @return  an status code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerConsumerChain
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerConsumerChain_remove_t)(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -165,14 +166,14 @@ OS_LoggerConsumerChain_dtor(void);
  *
  * @param   consumer:   pointer to consumer log object
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumerChain
 */
-bool
+seos_err_t
 OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -182,14 +183,14 @@ OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
  *
  * @param   consumer:   pointer to consumer log object
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- *          false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumerChain
 */
-bool
+seos_err_t
 OS_LoggerConsumerChain_remove(OS_LoggerConsumer_Handle_t* consumer);
 
 

@@ -27,6 +27,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#include "SeosError.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "OS_Filesystem.h"
 #include <stdint.h>
@@ -59,11 +60,11 @@ typedef void
  *
  * @param   self:   pointer to the class
  *
- * @return  an error code
+ * @return  An error code.
  *
  * @ingroup OS_LoggerFile
 */
-typedef bool
+typedef seos_err_t
 (*OS_LoggerFile_create_t)(OS_LoggerFile_Handle_t* self);
 
 
@@ -160,14 +161,14 @@ struct OS_LoggerFile_Handle
  * @param   drv_id:     partition id
  * @param   filename:   name of log file
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_PARAMETER - filename is NULL or too long.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerFile
 */
-bool
+seos_err_t
 OS_LoggerFile_ctor(
     OS_LoggerFile_Handle_t* self,
     uint8_t drv_id,
@@ -190,12 +191,13 @@ OS_LoggerFile_dtor(OS_LoggerFile_Handle_t* self);
  *
  * @param   self:   pointer to the class
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  true,  if all allright
- * @retval  false, if an error has been occurred
+ * @retval  SEOS_ERROR_INVALID_HANDLE - Opened partition or file handle is
+ *                                      invalid.
+ * @retval  SEOS_SUCCESS              - Operation was successful.
  *
  * @ingroup OS_LoggerFile
 */
-bool
+seos_err_t
 OS_LoggerFile_create(OS_LoggerFile_Handle_t* self);
