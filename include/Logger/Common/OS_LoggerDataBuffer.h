@@ -55,14 +55,9 @@ typedef struct
  * @param   buf:                data buffer
  * @param   log_level_server:   server log level
  *
- * @return  an status code
- *
- * @retval  >= 0, the total number of characters written
- * @retval    -1, if an error has been occurred
- *
  * @ingroup OS_LoggerDataBuffer
 */
-int
+void
 OS_LoggerDataBuffer_setServerLogLevel(void* buf, uint8_t log_level_server);
 
 
@@ -73,14 +68,9 @@ OS_LoggerDataBuffer_setServerLogLevel(void* buf, uint8_t log_level_server);
  * @param   buf:                data buffer
  * @param   log_level_client:   client log level
  *
- * @return  an status code
- *
- * @retval  >= 0, the total number of characters written
- * @retval    -1, if an error has been occurred
- *
  * @ingroup OS_LoggerDataBuffer
 */
-int
+void
 OS_LoggerDataBuffer_setClientLogLevel(void* buf, uint8_t log_level_client);
 
 
@@ -91,14 +81,18 @@ OS_LoggerDataBuffer_setClientLogLevel(void* buf, uint8_t log_level_client);
  * @param   buf:    data buffer
  * @param   msg:    log message
  *
- * @return  an status code
+ * @return  An error code.
  *
- * @retval  >= 0, the total number of characters written
- * @retval    -1, if an error has been occurred
+ * @retval  SEOS_ERROR_BUFFER_TOO_SMALL  - Target buffer is too small.
+ * @retval  SEOS_ERROR_GENERIC           - An encoding error (for string and
+ *                                         character conversion specifiers)
+ *                                         occurred.
+ * @retval  SEOS_SUCCESS                 - Operation was successful.
+ *
  *
  * @ingroup OS_LoggerDataBuffer
 */
-int
+seos_err_t
 OS_LoggerDataBuffer_setLogMessage(void* buf, const char* msg);
 
 
