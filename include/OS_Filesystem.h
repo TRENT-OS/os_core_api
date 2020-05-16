@@ -230,17 +230,19 @@ OS_Filesystem_open(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                   If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
- *                                         missing or wrong.
- * @retval  SEOS_ERROR_FS_NO_DISK          If partition does not exist.
- * @retval  SEOS_ERROR_INVALID_HANDLE      If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED If partition was opened in the
- *                                         read-only mode.
- * @retval  SEOS_ERROR_FS_FORMAT_FS        If partition can not be formatted.
- * @retval  SEOS_ERROR_FS_CREATE_FS        If fail to create filesystem.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
- * @retval  SEOS_ERROR_FS_OPEN             If partition is not open.
+ * @retval  SEOS_SUCCESS                      If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters is
+ *                                            missing or wrong.
+ * @retval  SEOS_ERROR_FS_NO_DISK             If partition does not exist.
+ * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_OPERATION_DENIED    If partition was opened in the
+ *                                            read-only mode.
+ * @retval  SEOS_ERROR_FS_FORMAT_FS           If partition can not be formatted.
+ * @retval  SEOS_ERROR_FS_CREATE_FS           If fail to create filesystem.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
+ * @retval  SEOS_ERROR_FS_OPEN                If partition is not open.
+ * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
+ *                                            unsupported.
  *
  * @ingroup seos_fs_api
 */
@@ -308,7 +310,8 @@ OS_Filesystem_create(
  * @retval  SEOS_ERROR_FS_PARTITION_NOT_READY If partition is not ready for use.
  * @retval  SEOS_ERROR_FS_PARTITION_READ      If disk read operation has an
  *                                            error.
- * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If no filesystem.
+ * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If no valid supported filesystem
+ *                                            is recognized.
  * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
  * @retval  SEOS_ERROR_FS_MOUNT               If fail to mount a partition.
  *
@@ -332,13 +335,15 @@ OS_Filesystem_mount(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                 If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
- *                                       missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE    If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_NO_DISK        If partition does not exist.
- * @retval  SEOS_ERROR_FS_UNMOUNT        If failed to unmount a partition.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE If failed to resolve handle.
+ * @retval  SEOS_SUCCESS                      If all right.
+ * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters is
+ *                                            missing or wrong.
+ * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  SEOS_ERROR_FS_NO_DISK             If partition does not exist.
+ * @retval  SEOS_ERROR_FS_UNMOUNT             If failed to unmount a partition.
+ * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
+ * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
+ *                                            unsupported.
  *
  * @ingroup seos_fs_api
 */
