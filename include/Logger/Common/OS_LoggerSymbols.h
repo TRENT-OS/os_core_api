@@ -43,8 +43,27 @@
                                             - (OS_Logger_LOG_LEVEL_LENGTH \
                                                 + OS_Logger_LOG_LEVEL_LENGTH))
 
-#define OS_Logger_ID_AND_NAME_LENGTH        20
-#define OS_Logger_ID_LENGTH                 6
+/**
+ * @brief   Length of the string containing name and the id of the log client.
+ *
+ *          Size of it has been chosen arbitrary so that there is enough place
+ *          for the id in the decimal format, and a descriptive name.
+ *
+ *          Size is fixed so that the fields of the log entries are nicely
+ *          aligned.
+ *
+ *          If changed make sure there is enough place for both the name and id.
+ */
+#define OS_Logger_ID_AND_NAME_LENGTH        24
+
+/**
+ * @brief   Length of the string containing id of the log client.
+ *
+ *          The 32bit integer consists at max of 10 digits when displayed in
+ *          decimal.
+ */
+#define OS_Logger_ID_LENGTH                 10
+
 #define OS_Logger_NAME_LENGTH               (OS_Logger_ID_AND_NAME_LENGTH \
                                             - OS_Logger_ID_LENGTH)
 

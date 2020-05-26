@@ -22,7 +22,7 @@
  * @ingroup     OS_LoggerServer
 */
 #include "OS_Error.h"
-#include "Logger/Common/OS_LoggerDataBuffer.h"
+#include "Logger/Common/OS_LoggerEntry.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -48,14 +48,10 @@ typedef void
 
 
 /**
- * @details OS_LoggerAbstractFormat_convert defines the interface for functions
- *          pointer to the convert function.
+ * @brief   Defines the interface for functions pointer to the convert function.
  *
  *          The data of log level id, log level string and the log message are
  *          converted into a defined format.
- *
- * @param   self:       pointer to the class
- * @param   log_info:   pointer to the class OS_LoggerDataBuffer_info
  *
  * @return  An error code.
  *
@@ -63,9 +59,12 @@ typedef void
 */
 typedef OS_Error_t
 (*OS_LoggerAbstractFormat_convert)(
-    OS_LoggerAbstractFormat_Handle_t* self,
-    OS_LoggerDataBuffer_info* log_info);
-
+    OS_LoggerAbstractFormat_Handle_t* self, /*!< [out] Result of the conversion
+                                                       will be stored in the
+                                                       underlying buffer */
+    OS_LoggerEntry_t const* const     entry /*!< [in]  Log entry to be converted
+                                                       to the given format. */
+);
 
 /**
  * @details OS_LoggerAbstractFormat_print defines the interface for functions
@@ -117,23 +116,24 @@ void
 FormatT_dtor(OS_LoggerAbstractFormat_Handle_t* self);
 
 /**
- * @details %FormatT_convert is an abstract function for the convert function.
- *
- * @param   self:       pointer to the class
- * @param   log_info:   pointer to the class OS_LoggerDataBuffer_info
+ * @brief   Calls `convert` function implementation.
  *
  * @return  An error code.
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- * @retval  other                      - Implementation specific.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 OS_Error_t
 FormatT_convert(
-    OS_LoggerAbstractFormat_Handle_t* self,
-    OS_LoggerDataBuffer_info* log_info);
+    OS_LoggerAbstractFormat_Handle_t* self, /*!< [out] Result of the conversion
+                                                       will be stored in the
+                                                       underlying buffer */
+    OS_LoggerEntry_t const* const     entry /*!< [in]  Log entry to be converted
+                                                       to the given format. */
+);
 
 /**
  * @details %FormatT_print is an abstract function for the print function.

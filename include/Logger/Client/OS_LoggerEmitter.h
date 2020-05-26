@@ -96,14 +96,14 @@ OS_LoggerEmitter_dtor(void);
  *          The function has variable parameters so that a log message can be
  *          called up as usual with the syntax of the printf function.
  *
- * @param   log_level:  client log level id
+ * @param   logLevel:  client log level id
  * @param   format:     log message
  * @param   ...:        optional parameters for log message
  *
  * @return  An error code.
  *
  * @retval  OS_ERROR_INVALID_HANDLE    - OS_LoggerEmitter_getInstance was not
- *                                       called.
+ *                                         called.
  * @retval  OS_ERROR_INVALID_PARAMETER - Given format is null or incorrect.
  * @retval  OS_ERROR_GENERIC           - String encoding error occurred.
  * @retval  OS_ERROR_BUFFER_TOO_SMALL  - Destination log buffer too small.

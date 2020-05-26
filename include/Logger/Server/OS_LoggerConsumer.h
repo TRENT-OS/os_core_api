@@ -49,7 +49,7 @@
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "Logger/Server/OS_LoggerConsumerCallback.h"
 #include "Logger/Server/OS_LoggerSubject.h"
-#include "Logger/Common/OS_LoggerDataBuffer.h"
+#include "Logger/Common/OS_LoggerEntry.h"
 #include "Logger/Server/OS_LoggerListT.h"
 
 
@@ -133,9 +133,7 @@ typedef struct
 struct OS_LoggerConsumer_Handle
 {
     OS_LoggerNodeT_Handle_t           node;
-    void*                             buf;
-    uint32_t                          id;
-    OS_LoggerDataBuffer_info          log_info;
+    OS_LoggerEntry_t*                 entry;
     OS_LoggerFilter_Handle_t*         log_filter;
     OS_LoggerSubject_Handle_t*        log_subject;
     void*                             log_file;

@@ -56,6 +56,7 @@ typedef struct
     char
     buffer[OS_Logger_FORMAT_BUFFER_SIZE]; /**< buffer for log format message */
 
+    // TODO is location of this a bug? Should it not be on the top?
     const OS_LoggerAbstractFormat_vtable_t*
     vtable;                     /**< pointer to parent vtable */
 } OS_LoggerFormat_Handle_t;
