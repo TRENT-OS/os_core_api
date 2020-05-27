@@ -59,7 +59,6 @@
 typedef struct
 {
     OS_LoggerNodeT_Handle_t   node;       //!< node interface
-    OS_LoggerListT_t_Handle_t listT;      //!< helper functions for nodes
     OS_LoggerFormat_Handle_t* log_format; //!< layer for log format
 
     const OS_LoggerAbstractOutput_vtable_t* vtable; //!< pointer to vtable

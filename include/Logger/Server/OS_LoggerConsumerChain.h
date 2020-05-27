@@ -111,7 +111,6 @@ typedef struct
 */
 struct OS_LoggerConsumerChain_Handle
 {
-    OS_LoggerListT_t_Handle_t              listT;
     OS_LoggerConsumerChain_node_t          node;
     const OS_LoggerConsumerChain_vtable_t* vtable;
 };
