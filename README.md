@@ -1,4 +1,4 @@
-# SEOS Core API
+# OS Core API
 
 ## Dependencies
 

@@ -1,5 +1,5 @@
 /*
- *  SEOS Ethernet definitions
+ *  OS Ethernet definitions
  *
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
  */

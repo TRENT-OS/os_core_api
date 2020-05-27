@@ -20,7 +20,7 @@
 
 #pragma once
 
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
 
 #include "seos_pm_conf.h"
 #include <string.h>
@@ -51,7 +51,7 @@ dataport_ptr_t buffer_send;
  */
 dataport_ptr_t buffer_receive;
 
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
 
 #include "api_pm.h"
 
@@ -63,7 +63,7 @@ dataport_ptr_t buffer_receive;
 #include "seos_pm_conf.h"
 #include "seos_pm_datatypes.h"
 
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
 /**
  * @brief Defines the API interface name to initialize partition manager.
  *
@@ -117,7 +117,7 @@ partition_manager_init(
 {
     return api_pm_partition_manager_init(nvm_object);
 }
-#endif // SEOS_PARTITION_MANAGER_BUILD_AS_LIB
+#endif // OS_PARTITION_MANAGER_BUILD_AS_LIB
 
 /**
  * @brief Opens a physical partition.
@@ -139,9 +139,9 @@ OS_Error_t
 partition_manager_open(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_open(partition_id);
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_open(partition_id);
 #endif
 }
@@ -191,7 +191,7 @@ partition_manager_read(
     uint64_t len,           /**< [in]  Bytes count to read. */
     void* buffer            /**< [out] Reads content into this buffer. */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     OS_Error_t retval = OS_SUCCESS;
     const void* buf = (void*)0;
     pm_partition_data_t pm_partition_data;
@@ -226,7 +226,7 @@ partition_manager_read(
     memcpy(buffer, buf, (len * (size_t)pm_partition_data.block_size));
 
     return retval;
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_read(partition_id, offset, len, buffer);
 #endif
 }
@@ -269,7 +269,7 @@ partition_manager_write(
     uint64_t len,           /**< [in]  Bytes count to write. */
     const void* buffer      /**< [in]  Writes content from this buffer. */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     pm_partition_data_t pm_partition_data;
     OS_Error_t retval = OS_SUCCESS;
 
@@ -296,7 +296,7 @@ partition_manager_write(
     // Call partition manager API function
     return api_pm_component_partition_manager_write(partition_id, offset, len,
                                                     buffer_send);
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_write(partition_id, offset, len, buffer);
 #endif
 }
@@ -324,9 +324,9 @@ OS_Error_t
 partition_manager_close(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_close(partition_id);
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_close(partition_id);
 #endif
 }
@@ -352,9 +352,9 @@ OS_Error_t
 partition_manager_get_info_disk(
     pm_disk_data_t* info_disk /**< [out] Disk data (pointer to the struct). */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_get_info_disk(info_disk);
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_get_info_disk(info_disk);
 #endif
 }
@@ -384,10 +384,10 @@ partition_manager_get_info_partition(
     pm_partition_data_t* info_partition /**< [out] Partition's data (pointer to
                                                    the struct) */)
 {
-#if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
+#if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_get_info_partition(partition_id,
             info_partition);
-#elif defined(SEOS_PARTITION_MANAGER_BUILD_AS_LIB)
+#elif defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
     return api_pm_partition_manager_get_info_partition(partition_id,
                                                        info_partition);
 #endif

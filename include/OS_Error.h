@@ -13,7 +13,7 @@ extern "C" {
 #include <assert.h>
 
 /**
- * @brief   SEOS error codes
+ * @brief   OS error codes
  *
  * @ingroup seos_error
 */

@@ -1,5 +1,5 @@
 /*
- *  SEOS Network Stack interface to driver
+ *  OS Network Stack interface to driver
  *
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
  */

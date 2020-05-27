@@ -1,4 +1,4 @@
-# SEOS Core API
+# OS Core API
 
 project(seos_core_api C)
 
@@ -9,7 +9,7 @@ target_include_directories(${PROJECT_NAME}
         include
 )
 
-# if invoked from the SEOS sandbox, provide a documentation build target
+# if invoked from the OS sandbox, provide a documentation build target
 if (COMMAND seos_create_doxygen_target)
 
     # there are no pre or post steps

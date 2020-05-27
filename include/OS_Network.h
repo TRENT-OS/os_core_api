@@ -40,12 +40,12 @@
  *          \endcode
  *
  *          <b> CMakeLists.txt file: </b> \n
- *          The component must be build with either of the 2 "SEOS_NWSTACK_AS_" defines.
+ *          The component must be build with either of the 2 "OS_NWSTACK_AS_" defines.
  *          \code
  *              Define                            | Description
  *              ----------------------------------|---------------------------------------------------------------------------
- *               SEOS_NWSTACK_AS_CLIENT           | use the Network stack as client (connect to remote host)
- *               SEOS_NWSTACK_AS_SERVER           | use the Network stack as server (accept connection from remote host)
+ *               OS_NWSTACK_AS_CLIENT             | use the Network stack as client (connect to remote host)
+ *               OS_NWSTACK_AS_SERVER             | use the Network stack as server (accept connection from remote host)
  *               OS_NETWORK_STACK_USE_CONFIGSERVER| use configuration server to configure IP addresses
  *          \endcode
  *

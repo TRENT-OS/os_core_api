@@ -4,7 +4,7 @@
  * @file
  * @brief TRENTOS-M filesystem.
  *
- * Translates SEOS filesystem library function with different prefixes, because
+ * Translates OS filesystem library function with different prefixes, because
  * of different usages, to API function names uniformly.
 */
 
@@ -49,7 +49,7 @@
 #include "seos_fs_conf.h"
 #include "seos_fs_datatypes.h"
 
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
 #include "seos_fs_conf.h"
 #include <string.h>
 
@@ -80,9 +80,9 @@ dataport_ptr_t buffer_send;
  * @ingroup seos_fs_api
 */
 dataport_ptr_t buffer_receive;
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
 #include "api_fs.h"
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
 #include "api_fs_resolve_layer.h"
 #endif
 
@@ -92,7 +92,7 @@ static inline int
 OS_Filesystem_validatePartitionHandle(
     hPartition_t phandle)
 {
-#if defined (SEOS_FS_BUILD_AS_LIB)
+#if defined (OS_FS_BUILD_AS_LIB)
     return (NULL != phandle);
 #else
     return (phandle >= 0);
@@ -105,7 +105,7 @@ static inline int
 OS_Filesystem_validateFileHandle(
     hFile_t fhandle)
 {
-#if defined (SEOS_FS_BUILD_AS_LIB)
+#if defined (OS_FS_BUILD_AS_LIB)
     return (NULL != fhandle);
 #else
     return (fhandle >= 0);
@@ -116,7 +116,7 @@ OS_Filesystem_validateFileHandle(
 /***********************/
 /* Partition functions */
 /***********************/
-#if !defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if !defined(OS_FS_BUILD_AS_COMPONENT)
 /**
  * @brief Initializes file and partition handle by calling handle manager layer.
  *
@@ -145,13 +145,13 @@ OS_Filesystem_init(
     int open_flag   //!< [in] The partition's access function.
 )
 {
-#if defined (SEOS_FS_BUILD_AS_LIB)
+#if defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_init(drv_id, open_flag);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_init(drv_id, open_flag);
 #endif
 }
-#endif // SEOS_FS_BUILD_AS_COMPONENT
+#endif // OS_FS_BUILD_AS_COMPONENT
 
 /**
  * @brief Opens the partition.
@@ -172,11 +172,11 @@ static inline hPartition_t
 OS_Filesystem_open(
     uint8_t drv_id /**< [in] The partition's identifier. */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_open(drv_id);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_open(drv_id);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_open(drv_id);
 #endif
 }
@@ -261,7 +261,7 @@ OS_Filesystem_create(
 
     int fs_format /**!< [in] Format or overwrite the partition. */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_create(
                handle,
                format_option,
@@ -272,7 +272,7 @@ OS_Filesystem_create(
                file_dir_entry_count,
                fs_header_sector_count,
                fs_format);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_fs_create(
                &handle,
                format_option,
@@ -283,7 +283,7 @@ OS_Filesystem_create(
                file_dir_entry_count,
                fs_header_sector_count,
                fs_format);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_fs_create(
                handle,
                format_option,
@@ -322,11 +322,11 @@ static inline OS_Error_t
 OS_Filesystem_mount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_mount(handle);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_fs_mount(&handle);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_fs_mount(handle);
 #endif
 }
@@ -352,11 +352,11 @@ static inline OS_Error_t
 OS_Filesystem_unmount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_fs_unmount(handle);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_fs_unmount(&handle);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_fs_unmount(handle);
 #endif
 }
@@ -389,11 +389,11 @@ static inline OS_Error_t
 OS_Filesystem_wipe(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_wipe(handle);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_wipe(&handle);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_wipe(handle);
 #endif
 }
@@ -424,11 +424,11 @@ static inline OS_Error_t
 OS_Filesystem_close(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_partition_close(handle);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_partition_close(&handle);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_partition_close(handle);
 #endif
 }
@@ -472,11 +472,11 @@ OS_Filesystem_openFile(
     int          flag    //!< [in] Instruction for file opening.
 )
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_open(handle, name, flag);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_open(&handle, name, flag);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_open(handle, name, flag);
 #endif
 }
@@ -485,7 +485,7 @@ OS_Filesystem_openFile(
  * @brief Closes the file.
  *
  * This function deregisters internal objects and closes the file.
- * It needs a valid file handle and returns a SEOS error code.
+ * It needs a valid file handle and returns a OS error code.
  *
  * The deallocation of file handle pointer will be handle internally.
  * The handle object is set to NULL in this function and the extern object
@@ -510,11 +510,11 @@ static inline OS_Error_t
 OS_Filesystem_closeFile(
     hFile_t handle /**! file handle (integer value) */)
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_close(handle);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_close(&handle);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_close(handle);
 #endif
 }
@@ -527,7 +527,7 @@ OS_Filesystem_closeFile(
  * The buffer argument is a pointer, which shall not be NULL and is allocated
  * from the caller function.
  *
- * @note It needs a valid file handle and returns a SEOS error code.
+ * @note It needs a valid file handle and returns a OS error code.
  *
  * @return  An error code.
  *
@@ -554,7 +554,7 @@ OS_Filesystem_readFile(
     void* buffer    //!< [out] Reads content into this buffer.
 )
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     OS_Error_t retval = OS_SUCCESS;
     const void* buf = (void*)0;
 
@@ -576,9 +576,9 @@ OS_Filesystem_readFile(
     memcpy(buffer, buf, (size_t)len);
 
     return retval;
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_read(&handle, offset, len, buffer);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_read(handle, offset, len, buffer);
 #endif
 }
@@ -622,7 +622,7 @@ OS_Filesystem_writeFile(
     void* buffer    //!< [in] Writes content from this buffer.
 )
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     // checks databuffer length
     if (OS_FS_DATABUFFER_SIZE < len)
     {
@@ -637,9 +637,9 @@ OS_Filesystem_writeFile(
 
     // Call filesystem API function to write into a file
     return api_fs_component_file_write(handle, offset, len, buffer_send);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_write(&handle, offset, len, buffer);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_write(handle, offset, len, buffer);
 #endif
 }
@@ -673,11 +673,11 @@ OS_Filesystem_deleteFile(
     const char* name     //!< [in] The name of the file.
 )
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_delete(handle, name);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_delete(&handle, name);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_delete(handle, name);
 #endif
 }
@@ -700,11 +700,11 @@ OS_Filesystem_getSizeOfFile(
     const char* name     //!< [in] The name of the file.
 )
 {
-#if defined(SEOS_FS_BUILD_AS_COMPONENT)
+#if defined(OS_FS_BUILD_AS_COMPONENT)
     return api_fs_component_file_getSize(handle, name);
-#elif defined (SEOS_FS_BUILD_AS_LIB)
+#elif defined (OS_FS_BUILD_AS_LIB)
     return api_fs_file_getSize(&handle, name);
-#elif defined(SEOS_FS_BUILD_AS_LIB_BASIC_HANDLE)
+#elif defined(OS_FS_BUILD_AS_LIB_BASIC_HANDLE)
     return api_fs_resolve_layer_file_getSize(handle, name);
 #endif
 }
