@@ -60,19 +60,6 @@
 */
 typedef struct OS_LoggerConsumer_Handle OS_LoggerConsumer_Handle_t;
 
-
-/**
- * @details OS_LoggerConsumer_dtor_t defines the interface for the function
- *          pointer to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerConsumer
-*/
-typedef void
-(*OS_LoggerConsumer_dtor_t)(OS_LoggerConsumer_Handle_t* self);
-
-
 /**
  * @details OS_LoggerConsumer_process_t defines the interface for function
  *          pointer to process the logging call.
@@ -119,7 +106,6 @@ typedef uint64_t
 */
 typedef struct
 {
-    OS_LoggerConsumer_dtor_t         dtor;
     OS_LoggerConsumer_process_t      process;
     OS_LoggerConsumer_getTimestamp_t get_timestamp;
 } OS_LoggerConsumer_vtable_t;
@@ -143,7 +129,7 @@ struct OS_LoggerConsumer_Handle
 
 
 /**
- * @details %OS_LoggerConsumer_dtor is the constructor.
+ * @details %OS_LoggerConsumer_ctor is the constructor.
  *          \n
  *          The parameters "log_filter", "log_file" and "name" are optional.
  *          "log_file" can be NULL, if no log file is needed.
@@ -179,14 +165,3 @@ OS_LoggerConsumer_ctor(
     void* log_file,
     uint32_t id,
     const char* name);
-
-
-/**
- * @details %OS_LoggerConsumer_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerConsumer
-*/
-void
-OS_LoggerConsumer_dtor(OS_LoggerConsumer_Handle_t* self);

@@ -73,16 +73,6 @@ void
 OS_LoggerFormat_ctor(OS_LoggerFormat_Handle_t* self);
 
 /**
- * @details %OS_LoggerFormat_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFormat
-*/
-void
-OS_LoggerFormat_dtor(OS_LoggerAbstractFormat_Handle_t* self);
-
-/**
  * @brief Prints data in the given format.
  * @param self:   pointer to the class
  */

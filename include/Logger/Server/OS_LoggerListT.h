@@ -34,19 +34,6 @@ typedef struct OS_LoggerListT_Handle OS_LoggerListT_t_Handle_t;
 */
 typedef struct OS_LoggerNodeT_Handle OS_LoggerNodeT_Handle_t;
 
-
-/**
- * @details OS_LoggerListT_dtor_t defines the interface for the function pointer
- *          to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerListT
-*/
-typedef void
-(*OS_LoggerListT_dtor_t)(OS_LoggerListT_t_Handle_t* self);
-
-
 /**
  * @details OS_LoggerListT_hasPrev_t defines the interface for the function
  *          pointer to check if the list has the previous object.
@@ -186,7 +173,6 @@ typedef bool
 */
 typedef struct
 {
-    OS_LoggerListT_dtor_t     dtor;
     OS_LoggerListT_hasPrev_t  has_prev;
     OS_LoggerListT_hasNext_t  has_next;
     OS_LoggerListT_getPrev_t  get_prev;
@@ -232,14 +218,3 @@ struct OS_LoggerNodeT_Handle
 */
 void
 OS_LoggerListT_ctor(OS_LoggerListT_t_Handle_t* self);
-
-
-/**
- * @details %OS_LoggerListT_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerListT
-*/
-void
-OS_LoggerListT_dtor(OS_LoggerListT_t_Handle_t* self);

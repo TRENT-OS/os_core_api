@@ -41,17 +41,6 @@ typedef struct OS_LoggerTimestamp_Handle OS_LoggerTimestamp_Handle_t;
 */
 typedef struct OS_LoggerTime_Handle OS_LoggerTime_Handle_t;
 
-
-/**
- * @details OS_LoggerTimestamp_dtor_t defines the interface for function pointer
- *          to destructor.
- *
- * @ingroup OS_LoggerTimestamp
-*/
-typedef void
-(*OS_LoggerTimestamp_dtor_t)(void);
-
-
 /**
  * @details OS_LoggerTimestamp_create_t defines the interface for functions
  *          pointer to create a timestamp.
@@ -129,7 +118,6 @@ struct OS_LoggerTime_Handle
 */
 typedef struct
 {
-    OS_LoggerTimestamp_dtor_t            dtor;
     OS_LoggerTimestamp_create_t          create_timestamp;
     OS_LoggerTimestamp_getTime_t         get_time;
     OS_LoggerTimestamp_getTimestamp_t    get_timestamp;
@@ -167,16 +155,6 @@ struct OS_LoggerTimestamp_Handle
 */
 OS_LoggerTimestamp_Handle_t*
 OS_LoggerTimestamp_getInstance(void);
-
-
-/**
- * @details %OS_LoggerTimestamp_dtor is the destructor.
- *
- * @ingroup OS_LoggerTimestamp
-*/
-void
-OS_LoggerTimestamp_dtor(void);
-
 
 /**
  * @details %OS_LoggerTimestamp_create create a timestamp from the given

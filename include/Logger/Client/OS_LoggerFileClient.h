@@ -35,19 +35,6 @@
 */
 typedef struct OS_LoggerFileClient_Handle OS_LoggerFileClient_Handle_t;
 
-
-/**
- * @details OS_LoggerFileClient_dtor_t defines the interface for function
- *          pointer to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFileClient
-*/
-typedef void
-(*OS_LoggerFileClient_dtor_t)(OS_LoggerFileClient_Handle_t* self);
-
-
 /**
  * @details OS_LoggerFileClient_read_t defines the interface for function
  *          pointer to read a log file from log server.
@@ -84,7 +71,6 @@ typedef OS_Error_t
 */
 typedef struct
 {
-    OS_LoggerFileClient_dtor_t dtor;
     OS_LoggerFileClient_read_t read_log_file;
 } OS_LoggerFileClient_vtable_t;
 
@@ -126,18 +112,6 @@ OS_LoggerFileClient_ctor(
     void* src_buf,
     void* dest_buf,
     OS_LoggerFileClientCallback_Handle_t* log_file_client_callback);
-
-
-/**
- * @details %OS_LoggerFileClient_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFileClient
-*/
-void
-OS_LoggerFileClient_dtor(OS_LoggerFileClient_Handle_t* self);
-
 
 /**
  * @details %OS_LoggerFileClient_read provides to read a log file from log

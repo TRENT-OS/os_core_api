@@ -49,19 +49,6 @@
 typedef
 struct OS_LoggerAbstractSubject_Handle OS_LoggerAbstractSubject_Handle_t;
 
-
-/**
- * @details OS_LoggerAbstractSubject_dtor_t defines the interface for function
- *          pointer to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractSubject
-*/
-typedef void
-(*OS_LoggerAbstractSubject_dtor_t)(OS_LoggerAbstractSubject_Handle_t* self);
-
-
 /**
  * @details OS_LoggerAbstractSubject_attach_t defines the interface for function
  *          pointer to register observer object to a subject.
@@ -119,8 +106,6 @@ typedef void
 */
 typedef struct
 {
-    OS_LoggerAbstractSubject_dtor_t
-    dtor;   /**< function pointer to the desctructor */
     OS_LoggerAbstractSubject_attach_t
     attach; /**< function pointer to the attach function */
     OS_LoggerAbstractSubject_detach_t
@@ -140,18 +125,6 @@ struct OS_LoggerAbstractSubject_Handle
 {
     const OS_LoggerAbstractSubject_vtable_t* vtable; /**< vtable */
 };
-
-
-/**
- * @details %OS_LoggerAbstractSubject_dtor is an abstract function for the
- *          destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractSubject
-*/
-void
-OS_LoggerAbstractSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
 
 /**
  * @details %OS_LoggerAbstractSubject_attach is an abstract function to register

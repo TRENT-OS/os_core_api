@@ -34,19 +34,6 @@
 */
 typedef struct OS_LoggerAbstractFormat_Handle OS_LoggerAbstractFormat_Handle_t;
 
-
-/**
- * @details OS_LoggerAbstractFormat_dtor defines the interface for function
- *          pointer to the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
-*/
-typedef void
-(*OS_LoggerAbstractFormat_dtor)(OS_LoggerAbstractFormat_Handle_t* self);
-
-
 /**
  * @brief   Defines the interface for functions pointer to the convert function.
  *
@@ -88,7 +75,6 @@ typedef void
 */
 typedef struct
 {
-    OS_LoggerAbstractFormat_dtor    dtor;
     OS_LoggerAbstractFormat_convert convert;
     OS_LoggerAbstractFormat_print   print;
 } OS_LoggerAbstractFormat_vtable_t;
@@ -103,17 +89,6 @@ struct OS_LoggerAbstractFormat_Handle
 {
     const OS_LoggerAbstractFormat_vtable_t* vtable; /**< vtable */
 };
-
-
-/**
- * @details %FormatT_dtor is an abstract function for the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
-*/
-void
-FormatT_dtor(OS_LoggerAbstractFormat_Handle_t* self);
 
 /**
  * @brief   Calls `convert` function implementation.

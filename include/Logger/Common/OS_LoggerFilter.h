@@ -43,19 +43,6 @@
 */
 typedef struct OS_LoggerFilter_Handle OS_LoggerFilter_Handle_t;
 
-
-/**
- * @details OS_LoggerFilter_dtor_t defines the interface for function pointer to
- *          destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFilter
-*/
-typedef void
-(*OS_LoggerFilter_dtor_t)(OS_LoggerFilter_Handle_t* self);
-
-
 /**
  * @details OS_LoggerFilter_isFilteredOut_t defines the interface for function
  *          pointer to filter logs by log level id.
@@ -81,7 +68,6 @@ typedef bool
 */
 typedef struct
 {
-    OS_LoggerFilter_dtor_t          dtor;
     OS_LoggerFilter_isFilteredOut_t isFilteredOut;
 } OS_LoggerFilter_vtable_t;
 
@@ -108,15 +94,3 @@ struct OS_LoggerFilter_Handle
 */
 void
 OS_LoggerFilter_ctor(OS_LoggerFilter_Handle_t* self, uint8_t log_level);
-
-
-/**
- * @details %OS_LoggerFilter_dtor is the destructor.
- *
- * @param   self:       pointer to the class
- *
- * @ingroup OS_LoggerFilter
-*/
-void
-OS_LoggerFilter_dtor(OS_LoggerFilter_Handle_t* self);
-

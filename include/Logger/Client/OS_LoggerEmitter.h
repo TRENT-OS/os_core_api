@@ -80,14 +80,6 @@ OS_LoggerEmitter_getInstance(
     event_notify_func_t emit);            //!< The logging emit callback.
 
 /**
- * @details %OS_LoggerEmitter_dtor is the destructor.
- *
- * @ingroup OS_LoggerEmitter
-*/
-void
-OS_LoggerEmitter_dtor(void);
-
-/**
  * @details %OS_LoggerEmitter_log provides the client log action.
  *
  *          This function is called by the debug log interface function

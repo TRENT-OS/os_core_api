@@ -44,15 +44,3 @@ OS_Error_t
 OS_LoggerOutputFileSystem_ctor(
     OS_LoggerOutput_Handle_t* self,
     OS_LoggerFormat_Handle_t* log_format);
-
-
-/**
- * @details %OS_LoggerOutputFileSystem_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerOutputFileSystem
-*/
-void
-OS_LoggerOutputFileSystem_dtor(OS_LoggerAbstractOutput_Handle_t* self);
-

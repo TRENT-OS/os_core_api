@@ -94,18 +94,6 @@ typedef
 struct OS_LoggerAbstractObserver_Handle OS_LoggerAbstractObserver_Handle_t;
 
 /**
- * @details OS_LoggerAbstractObserver_dtor_t defines the interface for function
- *          pointer to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractObserver
-*/
-typedef void
-(*OS_LoggerAbstractObserver_dtor_t)(OS_LoggerAbstractObserver_Handle_t* self);
-
-
-/**
  * @details OS_LoggerAbstractObserver_update_t defines the interface for
  *          function pointer to notify the specific observer in the form of a
  *          parameter of the update operation.
@@ -131,7 +119,6 @@ typedef OS_Error_t
 */
 typedef struct
 {
-    OS_LoggerAbstractObserver_dtor_t   dtor;   //!< Function ptr to destructor
     OS_LoggerAbstractObserver_update_t update; //!< Function ptr to update
 }
 OS_LoggerAbstractObserver_vtable_t;
@@ -146,18 +133,6 @@ struct OS_LoggerAbstractObserver_Handle
 {
     const OS_LoggerAbstractObserver_vtable_t* vtable; //!< vtable
 };
-
-
-/**
- * @details %OS_LoggerAbstractObserver_dtor is an abstract function for the
- *          destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractObserver
-*/
-void
-OS_LoggerAbstractObserver_dtor(OS_LoggerAbstractObserver_Handle_t* self);
 
 /**
  * @details %OS_LoggerAbstractObserver_update is an abstract function for the

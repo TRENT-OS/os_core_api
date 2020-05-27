@@ -45,18 +45,6 @@
 */
 typedef struct OS_LoggerAbstractOutput_Handle OS_LoggerAbstractOutput_Handle_t;
 
-
-/**
- * @details OS_LoggerAbstractOutput_dtor_t defines the interface for function
- *          pointer to destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractOutput
-*/
-typedef void
-(*OS_LoggerAbstractOutput_dtor_t)(OS_LoggerAbstractOutput_Handle_t* self);
-
 /**
  * @details OS_LoggerAbstractOutput_print_t defines the interface for function
  *          pointer to print the log format to an defined backend.
@@ -85,8 +73,7 @@ typedef OS_Error_t
 typedef struct
 {
     OS_LoggerAbstractObserver_vtable_t parent; //!< parent vtable
-    OS_LoggerAbstractOutput_dtor_t   dtor;   //!< function ptr to desctructor
-    OS_LoggerAbstractOutput_print_t  print;  //!< function ptr to print
+    OS_LoggerAbstractOutput_print_t    print;  //!< function ptr to print
 }
 OS_LoggerAbstractOutput_vtable_t;
 
@@ -100,19 +87,6 @@ struct OS_LoggerAbstractOutput_Handle
 {
     const OS_LoggerAbstractOutput_vtable_t* vtable;
 };
-
-
-/**
- * @details %OS_LoggerAbstractOutput_dtor is an abstract function for the
- *          destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractOutput
-*/
-void
-OS_LoggerAbstractOutput_dtor(OS_LoggerAbstractOutput_Handle_t* self);
-
 
 /**
  * @details %OS_LoggerAbstractOutput_print is an abstract function for the print

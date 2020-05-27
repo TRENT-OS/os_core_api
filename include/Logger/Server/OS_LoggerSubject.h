@@ -74,18 +74,6 @@ typedef struct
 void
 OS_LoggerSubject_ctor(OS_LoggerSubject_Handle_t* self);
 
-
-/**
- * @details %OS_LoggerSubject_ctor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerSubject
-*/
-void
-OS_LoggerSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
-
-
 /**
  * @details %OS_LoggerSubject_attach is for registrade a concrete observer
  *          object to a subject.

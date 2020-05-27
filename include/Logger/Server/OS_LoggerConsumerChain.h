@@ -37,17 +37,6 @@
 */
 typedef struct OS_LoggerConsumerChain_Handle OS_LoggerConsumerChain_Handle_t;
 
-
-/**
- * @details OS_LoggerConsumerChain_dtor_t defines the interface for function
- *          pointer to the destructor.
- *
- * @ingroup OS_LoggerConsumerChain
-*/
-typedef void
-(*OS_LoggerConsumerChain_dtor_t)(void);
-
-
 /**
  * @details OS_LoggerConsumerChain_append_t defines the interface for function
  *          pointer to append a consumer log object.
@@ -97,7 +86,6 @@ typedef OS_LoggerConsumer_Handle_t*
 */
 typedef struct
 {
-    OS_LoggerConsumerChain_dtor_t      dtor;
     OS_LoggerConsumerChain_append_t    append;
     OS_LoggerConsumerChain_remove_t    remove;
     OS_LoggerConsumerChain_getSender_t get_sender;
@@ -149,16 +137,6 @@ struct OS_LoggerConsumerChain_Handle
 */
 OS_LoggerConsumerChain_Handle_t*
 OS_LoggerConsumerChain_getInstance(void);
-
-
-/**
- * @details %OS_LoggerConsumerChain_dtor is the destructor.
- *
- * @ingroup OS_LoggerConsumerChain
-*/
-void
-OS_LoggerConsumerChain_dtor(void);
-
 
 /**
  * @details %OS_LoggerConsumerChain_append provides to append a consumer log

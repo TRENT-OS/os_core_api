@@ -71,7 +71,7 @@ typedef struct
 
 
 /**
- * @details %OS_LoggerConsumer_dtor is the constructor.
+ * @details %OS_LoggerConsumer_ctor is the constructor.
  *
  * @param   self:           pointer to the class
  * @param   get_sender_id:  function pointer to get sender id callback function
@@ -90,14 +90,3 @@ OS_LoggerConsumerCallback_ctor(
     OS_LoggerConsumerCallback_t*             self,
     OS_LoggerConsumerCallback_getSenderId_t  get_sender_id,
     OS_LoggerConsumerCallback_getTimestamp_t get_timestamp);
-
-
-/**
- * @details %OS_LoggerConsumerCallback_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerConsumerCallback
-*/
-void
-OS_LoggerConsumerCallback_dtor(OS_LoggerConsumerCallback_t* self);

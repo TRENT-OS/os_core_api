@@ -77,15 +77,3 @@ OS_Error_t
 OS_LoggerFileClientCallback_ctor(
     OS_LoggerFileClientCallback_Handle_t* self,
     OS_LoggerFileClientCallback_read_t read_log_file);
-
-
-/**
- * @details %OS_LoggerFileClientCallback_dtor is the destructor.
- *
- * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFileClient
-*/
-void
-OS_LoggerFileClientCallback_dtor(OS_LoggerFileClientCallback_Handle_t* self);
-
