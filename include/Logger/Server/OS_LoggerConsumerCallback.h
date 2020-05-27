@@ -79,9 +79,9 @@ typedef struct
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - get_sender_id is a NULL pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
- * @retval  other                        - Implementation specific.
+ * @retval  OS_ERROR_INVALID_PARAMETER - get_sender_id is a NULL pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
+ * @retval  other                      - Implementation specific.
  *
  * @ingroup OS_LoggerConsumerCallback
 */

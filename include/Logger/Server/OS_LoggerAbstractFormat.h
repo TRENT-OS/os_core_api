@@ -124,9 +124,9 @@ FormatT_dtor(OS_LoggerAbstractFormat_Handle_t* self);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
- * @retval  other                        - Implementation specific.
+ * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
+ * @retval  other                      - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */

@@ -79,14 +79,14 @@ typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
  * @param ivSize (optional) length of initialization vector
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  *  this includes if an iv is given for an algorithm that does not require an IV
  *  or if \p iv is NOT set for an algorithm that does require an IV; also includes
  *  mismatching IV sizes or passing a key that is not matching the algorithm
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_ABORTED if setting the key internally failed
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the CIPHER failed or if
+ * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
+ * @retval OS_ERROR_ABORTED if setting the key internally failed
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the CIPHER failed or if
  * \p ivSize is greater than `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -104,9 +104,9 @@ OS_CryptoCipher_init(
  * @param hCipher (required) handle of OS Crypto CIPHER object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_HANDLE if the object handle is invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoCipher_free(
@@ -133,16 +133,16 @@ OS_CryptoCipher_free(
  *  fails)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  *  this includes passing \p inputSize that is not aligned with the underlying
  *  blocksize
- * @retval SEOS_ERROR_ABORTED if the cryptographic operation failed or if process
+ * @retval OS_ERROR_ABORTED if the cryptographic operation failed or if process
  *  was called without calling start (e.g., for GCM mode) or if process is called
  *  after the CIPHER was already finalized
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
  *  the full result in the \p output buffer
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -165,11 +165,11 @@ OS_CryptoCipher_process(
  * @param inputSize (optional) length of input data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if CIPHER object does not require start, or if it
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if CIPHER object does not require start, or if it
  *  was already started or if the internal cryptographic operation failed
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -196,14 +196,14 @@ OS_CryptoCipher_start(
  *  fails)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if CIPHER does not require finalize, or if CIPHER
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if CIPHER does not require finalize, or if CIPHER
  *  was already finalized or if it was not started and did not process any data yet
  *  or if underlying operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
  *  written to the \p tag buffer
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

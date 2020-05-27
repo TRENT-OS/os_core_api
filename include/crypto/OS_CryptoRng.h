@@ -47,11 +47,11 @@ typedef int (OS_CryptoRng_Entropy_func)(
  * @param bufSize (required) amount of random bytes requested
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
- * @retval SEOS_ERROR_ABORTED if the internal RNG had a failure
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p flags are not supported by RNG
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
+ * @retval OS_ERROR_ABORTED if the internal RNG had a failure
+ * @retval OS_ERROR_NOT_SUPPORTED if \p flags are not supported by RNG
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -73,10 +73,10 @@ OS_CryptoRng_getBytes(
  * @param seedSize (required) length of seed data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
- * @retval SEOS_ERROR_ABORTED if the RNG had a failure
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
+ * @retval OS_ERROR_ABORTED if the RNG had a failure
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

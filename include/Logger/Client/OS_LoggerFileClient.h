@@ -115,8 +115,8 @@ struct OS_LoggerFileClient_Handle
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the input parameters is null.
- * @retval  SEOS_SUCCESS                 - Initialization was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the input parameters is null.
+ * @retval  OS_SUCCESS                 - Initialization was successful.
  *
  * @ingroup OS_LoggerFileClient
 */
@@ -153,9 +153,9 @@ OS_LoggerFileClient_dtor(OS_LoggerFileClient_Handle_t* self);
  *
  * @return  An error code.
  *
- * @retval SEOS_ERROR_INVALID_PARAMETER - Filename is a NULL pointer.
- * @retval SEOS_ERROR_INVALID_HANDLE    - Read callback is NULL.
- * @retval SEOS_SUCCESS                 - Read was successful.
+ * @retval OS_ERROR_INVALID_PARAMETER - Filename is a NULL pointer.
+ * @retval OS_ERROR_INVALID_HANDLE    - Read callback is NULL.
+ * @retval OS_SUCCESS                 - Read was successful.
  *
  * @ingroup OS_LoggerFileClient
 */

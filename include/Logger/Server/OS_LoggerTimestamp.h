@@ -187,9 +187,9 @@ OS_LoggerTimestamp_dtor(void);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */
@@ -207,9 +207,9 @@ OS_LoggerTimestamp_create(const char* date, const char* time);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer or `hours` is too large.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer or `hours` is too large.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */
@@ -229,9 +229,9 @@ OS_LoggerTimestamp_getTime(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerTimestamp
 */

@@ -51,11 +51,11 @@ typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
  * @param algorithm (required) key agreement algorithm to use
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  *  this includes provding the wrong type of key (e.g. AES key for DH algorithm)
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the underlying
+ * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the underlying
  *  object failed
  */
 OS_Error_t
@@ -71,8 +71,8 @@ OS_CryptoAgreement_init(
  * @param hAgree (required) handle of OS Crypto AGREEMENT object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoAgreement_free(
@@ -98,13 +98,13 @@ OS_CryptoAgreement_free(
  *  small buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  *  this includes passing the wrong type of key
- * @retval SEOS_ERROR_ABORTED if the underlying AGREEMENT operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
+ * @retval OS_ERROR_ABORTED if the underlying AGREEMENT operation failed
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
  *  the full result in the \p shared buffer
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

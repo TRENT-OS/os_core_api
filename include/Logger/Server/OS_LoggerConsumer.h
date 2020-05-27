@@ -165,9 +165,9 @@ struct OS_LoggerConsumer_Handle
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumer
 */

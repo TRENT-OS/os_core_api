@@ -129,13 +129,13 @@ OS_Filesystem_validateFileHandle(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                         If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER         If any of the required
- *                                               parameters is missing or wrong.
- * @retval  SEOS_ERROR_FS_NO_DISK                If the partition doesn't exist.
- * @retval  SEOS_ERROR_FS_INIT                   If failed to init.
- * @retval  SEOS_ERROR_FS_INVALID_PARTITION_MODE If the partition's access mode
- *                                               is invalid.
+ * @retval  OS_SUCCESS                         If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER         If any of the required
+ *                                             parameters is missing or wrong.
+ * @retval  OS_ERROR_FS_NO_DISK                If the partition doesn't exist.
+ * @retval  OS_ERROR_FS_INIT                   If failed to init.
+ * @retval  OS_ERROR_FS_INVALID_PARTITION_MODE If the partition's access mode
+ *                                             is invalid.
  *
  * @ingroup seos_fs_api
 */
@@ -231,19 +231,19 @@ OS_Filesystem_open(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                      If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters is
- *                                            missing or wrong.
- * @retval  SEOS_ERROR_FS_NO_DISK             If partition does not exist.
- * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED    If partition was opened in the
- *                                            read-only mode.
- * @retval  SEOS_ERROR_FS_FORMAT_FS           If partition can not be formatted.
- * @retval  SEOS_ERROR_FS_CREATE_FS           If fail to create filesystem.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
- * @retval  SEOS_ERROR_FS_OPEN                If partition is not open.
- * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
- *                                            unsupported.
+ * @retval  OS_SUCCESS                      If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER      If any of the required parameters is
+ *                                          missing or wrong.
+ * @retval  OS_ERROR_FS_NO_DISK             If partition does not exist.
+ * @retval  OS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  OS_ERROR_FS_OPERATION_DENIED    If partition was opened in the
+ *                                          read-only mode.
+ * @retval  OS_ERROR_FS_FORMAT_FS           If partition can not be formatted.
+ * @retval  OS_ERROR_FS_CREATE_FS           If fail to create filesystem.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
+ * @retval  OS_ERROR_FS_OPEN                If partition is not open.
+ * @retval  OS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
+ *                                          unsupported.
  *
  * @ingroup seos_fs_api
 */
@@ -304,17 +304,17 @@ OS_Filesystem_create(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                      If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters
- *                                            is missing or wrong.
- * @retval  SEOS_ERROR_FS_NO_DISK             If partition doesn't exist.
- * @retval  SEOS_ERROR_FS_PARTITION_NOT_READY If partition is not ready for use.
- * @retval  SEOS_ERROR_FS_PARTITION_READ      If disk read operation has an
- *                                            error.
- * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If no valid supported filesystem
- *                                            is recognized.
- * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_MOUNT               If fail to mount a partition.
+ * @retval  OS_SUCCESS                      If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER      If any of the required parameters
+ *                                          is missing or wrong.
+ * @retval  OS_ERROR_FS_NO_DISK             If partition doesn't exist.
+ * @retval  OS_ERROR_FS_PARTITION_NOT_READY If partition is not ready for use.
+ * @retval  OS_ERROR_FS_PARTITION_READ      If disk read operation has an
+ *                                          error.
+ * @retval  OS_ERROR_FS_INVALID_FILESYSTEM  If no valid supported filesystem
+ *                                          is recognized.
+ * @retval  OS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  OS_ERROR_FS_MOUNT               If fail to mount a partition.
  *
  * @ingroup seos_fs_api
 */
@@ -336,15 +336,15 @@ OS_Filesystem_mount(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                      If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters is
- *                                            missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE         If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_NO_DISK             If partition does not exist.
- * @retval  SEOS_ERROR_FS_UNMOUNT             If failed to unmount a partition.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
- * @retval  SEOS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
- *                                            unsupported.
+ * @retval  OS_SUCCESS                      If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER      If any of the required parameters is
+ *                                          missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE         If partition handle is not valid.
+ * @retval  OS_ERROR_FS_NO_DISK             If partition does not exist.
+ * @retval  OS_ERROR_FS_UNMOUNT             If failed to unmount a partition.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve handle.
+ * @retval  OS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
+ *                                          unsupported.
  *
  * @ingroup seos_fs_api
 */
@@ -371,17 +371,17 @@ OS_Filesystem_unmount(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                   If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
- *                                         missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE      If the partition handle is not valid.
- * @retval  SEOS_ERROR_FS_NO_DISK          If the partition doesn't exist.
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED If the partition was opened in
- *                                         read-only mode.
- * @retval  SEOS_ERROR_FS_FORMAT_FS        If the partition can not be
- *                                         formatted.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
- * @retval  SEOS_ERROR_FS_OPEN             If partition is not open.
+ * @retval  OS_SUCCESS                   If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER   If any of the required parameters is
+ *                                       missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE      If the partition handle is not valid.
+ * @retval  OS_ERROR_FS_NO_DISK          If the partition doesn't exist.
+ * @retval  OS_ERROR_FS_OPERATION_DENIED If the partition was opened in
+ *                                       read-only mode.
+ * @retval  OS_ERROR_FS_FORMAT_FS        If the partition can not be
+ *                                       formatted.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
+ * @retval  OS_ERROR_FS_OPEN             If partition is not open.
  *
  * @ingroup seos_fs_api
 */
@@ -407,16 +407,16 @@ OS_Filesystem_wipe(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                 If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
- *                                       missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE    If the partition handle is not valid.
- * @retval  SEOS_ERROR_FS_NO_DISK        If the partition does doesn't exist.
- * @retval  SEOS_ERROR_FS_UNMOUNT        If the partition can not be unmounted.
- * @retval  SEOS_ERROR_FS_CLOSE          If the partition can not be closed.
- * @retval  SEOS_ERROR_FS_DELETE_HANDLE  If internal handle structure can not be
- *                                       deleted.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE If failed to resolve the handle.
+ * @retval  OS_SUCCESS                 If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER If any of the required parameters is
+ *                                     missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE    If the partition handle is not valid.
+ * @retval  OS_ERROR_FS_NO_DISK        If the partition does doesn't exist.
+ * @retval  OS_ERROR_FS_UNMOUNT        If the partition can not be unmounted.
+ * @retval  OS_ERROR_FS_CLOSE          If the partition can not be closed.
+ * @retval  OS_ERROR_FS_DELETE_HANDLE  If internal handle structure can not be
+ *                                     deleted.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */
@@ -493,16 +493,16 @@ OS_Filesystem_openFile(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                 If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER If any of the required parameters is
- *                                       missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE    If file handle is not valid.
- * @retval  SEOS_ERROR_FS_STRUCTURE      If the internal structure can not be
- *                                       resolved.
- * @retval  SEOS_ERROR_FS_DELETE_HANDLE  If the internal handle structure can
- *                                       not be deleted.
- * @retval  SEOS_ERROR_FS_NO_DISK        If partition does doesn't exist.
- * @retval  SEOS_ERROR_FS_LIB            If library throws an error.
+ * @retval  OS_SUCCESS                 If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER If any of the required parameters is
+ *                                     missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE    If file handle is not valid.
+ * @retval  OS_ERROR_FS_STRUCTURE      If the internal structure can not be
+ *                                     resolved.
+ * @retval  OS_ERROR_FS_DELETE_HANDLE  If the internal handle structure can
+ *                                     not be deleted.
+ * @retval  OS_ERROR_FS_NO_DISK        If partition does doesn't exist.
+ * @retval  OS_ERROR_FS_LIB            If library throws an error.
  *
  * @ingroup seos_fs_api
 */
@@ -531,18 +531,18 @@ OS_Filesystem_closeFile(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                      If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER      If any of the required parameters
- *                                            is missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE         If the file handle is not valid.
- * @retval  SEOS_ERROR_FS_STRUCTURE           If the internal structure can not
- *                                            be resolved.
- * @retval  SEOS_ERROR_FS_NO_DISK             If partition does doesn't exist.
- * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND      If the file was not found on the
- *                                            partition.
- * @retval  SEOS_ERROR_FS_LIB                 If the library throws an error.
- * @retval  SEOS_ERROR_FS_DATABUFFER_OVERFLOW If the databuffer is too small.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve the handle.
+ * @retval  OS_SUCCESS                      If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER      If any of the required parameters
+ *                                          is missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE         If the file handle is not valid.
+ * @retval  OS_ERROR_FS_STRUCTURE           If the internal structure can not
+ *                                          be resolved.
+ * @retval  OS_ERROR_FS_NO_DISK             If partition does doesn't exist.
+ * @retval  OS_ERROR_FS_FILE_NOT_FOUND      If the file was not found on the
+ *                                          partition.
+ * @retval  OS_ERROR_FS_LIB                 If the library throws an error.
+ * @retval  OS_ERROR_FS_DATABUFFER_OVERFLOW If the databuffer is too small.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */
@@ -555,13 +555,13 @@ OS_Filesystem_readFile(
 )
 {
 #if defined(SEOS_FS_BUILD_AS_COMPONENT)
-    OS_Error_t retval = SEOS_SUCCESS;
+    OS_Error_t retval = OS_SUCCESS;
     const void* buf = (void*)0;
 
     // checks databuffer length
     if (OS_FS_DATABUFFER_SIZE < len)
     {
-        return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
+        return OS_ERROR_FS_DATABUFFER_OVERLOW;
     }
 
     // Cast/Wrap pointer to dataport pointer
@@ -598,19 +598,19 @@ OS_Filesystem_readFile(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                     If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER     If any of the required parameters
- *                                           is missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE        If the file handle is not valid.
- * @retval  SEOS_ERROR_FS_STRUCTURE          If the internal structure can not
- *                                           resolve.
- * @retval  SEOS_ERROR_FS_NO_DISK            If the partition doesn't exist.
- * @retval  SEOS_ERROR_FS_FILE_NOT_FOUND     If the file was not found on
- *                                           partition.
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED   If the partition was opened in the
- *                                           read-only mode.
- * @retval  SEOS_ERROR_FS_DATABUFFER_OVERLOW If databuffer is too small.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE     If failed to resolve handle.
+ * @retval  OS_SUCCESS                     If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER     If any of the required parameters
+ *                                         is missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE        If the file handle is not valid.
+ * @retval  OS_ERROR_FS_STRUCTURE          If the internal structure can not
+ *                                         resolve.
+ * @retval  OS_ERROR_FS_NO_DISK            If the partition doesn't exist.
+ * @retval  OS_ERROR_FS_FILE_NOT_FOUND     If the file was not found on
+ *                                         partition.
+ * @retval  OS_ERROR_FS_OPERATION_DENIED   If the partition was opened in the
+ *                                         read-only mode.
+ * @retval  OS_ERROR_FS_DATABUFFER_OVERLOW If databuffer is too small.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE     If failed to resolve handle.
  *
  * @ingroup seos_fs_api
 */
@@ -626,7 +626,7 @@ OS_Filesystem_writeFile(
     // checks databuffer length
     if (OS_FS_DATABUFFER_SIZE < len)
     {
-        return SEOS_ERROR_FS_DATABUFFER_OVERLOW;
+        return OS_ERROR_FS_DATABUFFER_OVERLOW;
     }
 
     // copy data into databuffer
@@ -655,15 +655,15 @@ OS_Filesystem_writeFile(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                   If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER   If any of the required parameters is
- *                                         missing or wrong.
- * @retval  SEOS_ERROR_INVALID_HANDLE      If partition handle is not valid.
- * @retval  SEOS_ERROR_FS_NO_DISK          If partition doesn't exist.
- * @retval  SEOS_ERROR_FS_OPERATION_DENIED If partition was opened in read-only
- *                                         mode.
- * @retval  SEOS_ERROR_FS_LIB              If library throws an error.
- * @retval  SEOS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve the handle.
+ * @retval  OS_SUCCESS                   If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER   If any of the required parameters is
+ *                                       missing or wrong.
+ * @retval  OS_ERROR_INVALID_HANDLE      If partition handle is not valid.
+ * @retval  OS_ERROR_FS_NO_DISK          If partition doesn't exist.
+ * @retval  OS_ERROR_FS_OPERATION_DENIED If partition was opened in read-only
+ *                                       mode.
+ * @retval  OS_ERROR_FS_LIB              If library throws an error.
+ * @retval  OS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve the handle.
  *
  * @ingroup seos_fs_api
 */

@@ -54,11 +54,11 @@ typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
  * @param algorithm (required) MAC algorithm to use
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if the internal state could not be initialized
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the MAC object failed
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if the internal state could not be initialized
+ * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the MAC object failed
  */
 OS_Error_t
 OS_CryptoMac_init(
@@ -72,8 +72,8 @@ OS_CryptoMac_init(
  * @param hMac (required) handle of OS Crypto MAC object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoMac_free(
@@ -93,11 +93,11 @@ OS_CryptoMac_free(
  * @param secretSize (required) length of data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if processing of \p secret failed or if MAC was
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if processing of \p secret failed or if MAC was
  *  was already started
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p secretSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p secretSize is greater than
  *   `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -117,11 +117,11 @@ OS_CryptoMac_start(
  * @param dataSize (required) length of data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if MAC object
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if processing of \p data failed or if MAC object
  *  was already finalized or not yet started
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *   `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -145,13 +145,13 @@ OS_CryptoMac_process(
  *  written to \p auth (or the minimum size if it fails due too small buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if \p auth could not be produced or if no
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if \p auth could not be produced or if no
  *  blocks were processed before finalizing or if finalize was already called
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p authSize is too small for the
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p authSize is too small for the
  *  resulting MAC
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

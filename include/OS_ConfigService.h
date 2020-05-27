@@ -38,8 +38,8 @@ OS_ConfigService_getInstances(void);
  * @param handle handle to the ConfigService library instance.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid id, etc.)
  */
 OS_Error_t
@@ -56,8 +56,8 @@ OS_ConfigService_createHandle(
  * @param enumerator pointer to a DomainEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid id, etc.)
  */
 OS_Error_t
@@ -72,8 +72,8 @@ OS_ConfigService_domainEnumeratorInit(
  * @param enumerator pointer to a DomainEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -88,8 +88,8 @@ OS_ConfigService_domainEnumeratorClose(
  * @param enumerator pointer to a DomainEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -104,8 +104,8 @@ OS_ConfigService_domainEnumeratorReset(
  * @param enumerator pointer to a DomainEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -122,8 +122,8 @@ OS_ConfigService_domainEnumeratorIncrement(
  * @param domain pointer to a Domain object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -141,8 +141,8 @@ OS_ConfigService_domainEnumeratorGetElement(
  * @param enumerator pointer to a ParameterEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.), if no parameter is set for the given domain or if an
  *  error occurred during data retrieval
  */
@@ -159,8 +159,8 @@ OS_ConfigService_parameterEnumeratorInit(
  * @param enumerator pointer to a ParameterEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -175,8 +175,8 @@ OS_ConfigService_parameterEnumeratorClose(
  * @param enumerator pointer to a ParameterEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -191,8 +191,8 @@ OS_ConfigService_parameterEnumeratorReset(
  * @param enumerator pointer to a ParameterEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if no
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if no
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -209,10 +209,10 @@ OS_ConfigService_parameterEnumeratorIncrement(
  * @param parameter pointer to a Parameter object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if no element is found for the given
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if no element is found for the given
  * ParameterEnumerator or if an error occurred during data retrieval
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -242,10 +242,10 @@ OS_ConfigService_domainGetName(
  * @param parameterEnumerator pointer to a ParameterEnumerator object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if no parameter is set for the given domain or if
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if no parameter is set for the given domain or if
  * an error occurred during data retrieval
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -264,10 +264,10 @@ OS_ConfigService_domainCreateParameterEnumerator(
  * @param parameter pointer to a Parameter object.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if parameter could not be found or is not set for
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if parameter could not be found or is not set for
  * the given domain or if an error occurred during data retrieval
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -319,11 +319,11 @@ OS_ConfigService_parameterGetSize(
  * @param bytesCopied pointer to place the extracted value length into.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the passed buffer is too small for the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the passed buffer is too small for the
  * parameter size or an error occurred during data retrieval and no bytes were
  * copied to the buffer.
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -342,8 +342,8 @@ OS_ConfigService_parameterGetValue(
  * @param value pointer to a uint32 variable to copy the value into.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -360,8 +360,8 @@ OS_ConfigService_parameterGetValueAsU32(
  * @param value pointer to a uint64 variable to copy the value into.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -379,11 +379,11 @@ OS_ConfigService_parameterGetValueAsU64(
  * @param bufferLength length of the buffer.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the passed buffer is too small for the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the passed buffer is too small for the
  * parameter size or an error occurred during data retrieval and no bytes were
  * copied to the buffer.
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -402,11 +402,11 @@ OS_ConfigService_parameterGetValueAsString(
  * @param bufferLength length of the buffer.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the passed buffer is too small for the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the passed buffer is too small for the
  * parameter size or an error occurred during data retrieval and no bytes were
  * copied to the buffer.
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -429,12 +429,12 @@ OS_ConfigService_parameterGetValueAsBlob(
  * @param bytesCopied pointer to place the extracted value length into.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the passed buffer is too small for the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the passed buffer is too small for the
  * parameter size, the passed parameter type does not match the type in the
  * backend or an error occurred during data retrieval and no bytes were
  * copied to the buffer.
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -457,12 +457,12 @@ OS_ConfigService_parameterGetValueFromDomainName(
  * @param bufferLength length of the buffer.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the value to write is larger than the space
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the value to write is larger than the space
  * reserved for the parameter to write to in the backend or no writing rights are
  * set for the parameter or no element could be retrieved to write to for the
  * passed ParameterEnumerator or an error occurred during the write process
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -481,12 +481,12 @@ OS_ConfigService_parameterSetValue(
  * @param value value that should be set for the parameter.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the value to write is larger than the space
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the value to write is larger than the space
  * reserved for the parameter to write to in the backend or no writing rights are
  * set for the parameter or no element could be retrieved to write to for the
  * passed ParameterEnumerator or an error occurred during the write process
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -503,12 +503,12 @@ OS_ConfigService_parameterSetValueAsU32(
  * @param value value that should be set for the parameter.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the value to write is larger than the space
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the value to write is larger than the space
  * reserved for the parameter to write to in the backend or no writing rights are
  * set for the parameter or no element could be retrieved to write to for the
  * passed ParameterEnumerator or an error occurred during the write process
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -527,12 +527,12 @@ OS_ConfigService_parameterSetValueAsU64(
  * @param bufferLength length of the buffer.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the value to write is larger than the space
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the value to write is larger than the space
  * reserved for the parameter to write to in the backend or no writing rights are
  * set for the parameter or no element could be retrieved to write to for the
  * passed ParameterEnumerator or an error occurred during the write process
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t
@@ -553,12 +553,12 @@ OS_ConfigService_parameterSetValueAsString(
  * @param bufferLength length of the buffer.
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_GENERIC if the value to write is larger than the space
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_GENERIC if the value to write is larger than the space
  * reserved for the parameter to write to in the backend or no writing rights are
  * set for the parameter or no element could be retrieved to write to for the
  * passed ParameterEnumerator or an error occurred during the write process
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
 OS_Error_t

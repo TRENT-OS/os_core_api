@@ -277,10 +277,10 @@ typedef struct
  * @param cfg (required) configuration of TLS API
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval SEOS_ERROR_NOT_SUPPORTED if any of the choices in \p policy are at this
+ * @retval OS_ERROR_NOT_SUPPORTED if any of the choices in \p policy are at this
  *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
 OS_Error_t
@@ -305,10 +305,10 @@ OS_Tls_init(
  * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not already established
+ * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not already established
  */
 OS_Error_t
 OS_Tls_handshake(
@@ -328,13 +328,13 @@ OS_Tls_handshake(
  * @param dataSize (required) amount of bytes to write
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval SEOS_ERROR_ABORTED if the write failed
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
+ * @retval OS_ERROR_ABORTED if the write failed
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
- * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 OS_Error_t
 OS_Tls_write(
@@ -359,13 +359,13 @@ OS_Tls_write(
  * the connection)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval SEOS_ERROR_ABORTED if the read failed
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
+ * @retval OS_ERROR_ABORTED if the read failed
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
- * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 OS_Error_t
 OS_Tls_read(
@@ -385,10 +385,10 @@ OS_Tls_read(
  * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval SEOS_ERROR_ABORTED if the re-set failed
+ * @retval OS_ERROR_ABORTED if the re-set failed
  */
 OS_Error_t
 OS_Tls_reset(
@@ -402,8 +402,8 @@ OS_Tls_reset(
  * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
  */
 OS_Error_t

@@ -163,8 +163,8 @@ struct OS_LoggerFile_Handle
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - filename is NULL or too long.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - filename is NULL or too long.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerFile
 */
@@ -193,9 +193,9 @@ OS_LoggerFile_dtor(OS_LoggerFile_Handle_t* self);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_HANDLE - Opened partition or file handle is
- *                                      invalid.
- * @retval  SEOS_SUCCESS              - Operation was successful.
+ * @retval  OS_ERROR_INVALID_HANDLE - Opened partition or file handle is
+ *                                    invalid.
+ * @retval  OS_SUCCESS              - Operation was successful.
  *
  * @ingroup OS_LoggerFile
 */

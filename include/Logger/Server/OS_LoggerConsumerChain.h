@@ -168,8 +168,8 @@ OS_LoggerConsumerChain_dtor(void);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumerChain
 */
@@ -185,8 +185,8 @@ OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerConsumerChain
 */

@@ -219,11 +219,11 @@ typedef struct
  * @param cfg (required) pointer to configuration
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if the internal state could not be initialized
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p cfg is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the API object failed
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if the internal state could not be initialized
+ * @retval OS_ERROR_NOT_SUPPORTED if \p cfg is not supported
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the API object failed
  */
 OS_Error_t
 OS_Crypto_init(
@@ -236,8 +236,8 @@ OS_Crypto_init(
  * @param hCrypto (required) handle of OS Crypto API
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_Crypto_free(
@@ -296,8 +296,8 @@ OS_Crypto_getLibObject(
  *  remote instance of the crypto library
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_Crypto_migrateLibObject(

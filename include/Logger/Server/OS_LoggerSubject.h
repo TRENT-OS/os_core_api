@@ -95,9 +95,9 @@ OS_LoggerSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
- * @retval  SEOS_ERROR_OPERATION_DENIED  - Observer was not attached.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
+ * @retval  OS_ERROR_OPERATION_DENIED  - Observer was not attached.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerSubject
 */
@@ -116,9 +116,9 @@ OS_LoggerSubject_attach(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
- * @retval  SEOS_ERROR_OPERATION_DENIED  - Observer was not detach.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
+ * @retval  OS_ERROR_OPERATION_DENIED  - Observer was not detach.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerSubject
 */

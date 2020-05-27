@@ -384,13 +384,13 @@ typedef struct
  * @param spec (required) specification of key to create
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
  *  includes giving invalid keysizes where these are fixed (e.g., 100 bits for AES)
- * @retval SEOS_ERROR_NOT_SUPPORTED if the spec type, the key type or the amount of
+ * @retval OS_ERROR_NOT_SUPPORTED if the spec type, the key type or the amount of
  *  key bits given by the spec is in an unsupported range (e.g. DH key with 40 bits)
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
- * @retval SEOS_ERROR_ABORTED if an internal error occured during cryptographic
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
+ * @retval OS_ERROR_ABORTED if an internal error occured during cryptographic
  *  operations
  */
 OS_Error_t
@@ -454,12 +454,12 @@ OS_CryptoKey_generate(
  * @param keyData (required) buffer for key material to import
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid;
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid;
  *  this includes supplying \p keyData that has internal inconsistencies (e.g.
  *  too long buffer lengths) or key size that do not match what is expected
  *  for algorithms where it is discretely defined (e.g., 120 bit key for AES)
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
 OS_Error_t
 OS_CryptoKey_import(
@@ -480,11 +480,11 @@ OS_CryptoKey_import(
  * @param attribs (required) attributes to assign to public key
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if the type of \p hPrvKey is not supported
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_NOT_SUPPORTED if the type of \p hPrvKey is not supported
  * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
  */
 OS_Error_t
 OS_CryptoKey_makePublic(
@@ -502,8 +502,8 @@ OS_CryptoKey_makePublic(
  * @param hKey (required) handle of OS Crypto KEY object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoKey_free(
@@ -528,9 +528,9 @@ OS_CryptoKey_free(
  * @param keyData (required) buffer for key data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
  *  set during creation of the key object
  */
 OS_Error_t
@@ -553,12 +553,12 @@ OS_CryptoKey_export(
  *  small buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if key has no exportable parameters
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_NOT_SUPPORTED if key has no exportable parameters
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -577,8 +577,8 @@ OS_CryptoKey_getParams(
  * @param attribs (required) buffer for attributes
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoKey_getAttribs(
@@ -600,12 +600,12 @@ OS_CryptoKey_getAttribs(
  *  small buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter set
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter set
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

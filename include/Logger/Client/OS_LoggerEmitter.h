@@ -102,12 +102,12 @@ OS_LoggerEmitter_dtor(void);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_HANDLE    - OS_LoggerEmitter_getInstance was not
- *                                         called.
- * @retval  SEOS_ERROR_INVALID_PARAMETER - Given format is null or incorrect.
- * @retval  SEOS_ERROR_GENERIC           - String encoding error occurred.
- * @retval  SEOS_ERROR_BUFFER_TOO_SMALL  - Destination log buffer too small.
- * @retval  SEOS_SUCCESS                 - Entry logged or filtered out.
+ * @retval  OS_ERROR_INVALID_HANDLE    - OS_LoggerEmitter_getInstance was not
+ *                                       called.
+ * @retval  OS_ERROR_INVALID_PARAMETER - Given format is null or incorrect.
+ * @retval  OS_ERROR_GENERIC           - String encoding error occurred.
+ * @retval  OS_ERROR_BUFFER_TOO_SMALL  - Destination log buffer too small.
+ * @retval  OS_SUCCESS                 - Entry logged or filtered out.
  *
  * @ingroup OS_LoggerEmitter
 */

@@ -68,8 +68,8 @@ typedef struct
  *
  * @return  An error code.
  *
- * @retval SEOS_ERROR_INVALID_PARAMETER - Read Callback is NULL.
- * @retval SEOS_SUCCESS                 - Initialization was successful.
+ * @retval OS_ERROR_INVALID_PARAMETER - Read Callback is NULL.
+ * @retval OS_SUCCESS                 - Initialization was successful.
  *
  * @ingroup OS_LoggerFileClient
 */

@@ -53,11 +53,11 @@ typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
  * @param algorithm (required) DIGEST algorithm to use
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if the internal state could not be initialized
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if the internal state could not be initialized
+ * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
  */
 OS_Error_t
 OS_CryptoDigest_init(
@@ -71,8 +71,8 @@ OS_CryptoDigest_init(
  * @param hDigest (required) handle of OS Crypto DIGEST object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoDigest_free(
@@ -88,8 +88,8 @@ OS_CryptoDigest_free(
  * @param hSrcDigest (required) handle of OS Crypto DIGEST object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoDigest_clone(
@@ -107,11 +107,11 @@ OS_CryptoDigest_clone(
  * @param dataSize (required) length of data
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
  *  was already finalized
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -136,13 +136,13 @@ OS_CryptoDigest_process(
  *  buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if the digest could not be produced or if no
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if the digest could not be produced or if no
  *  blocks were processed before finalizing or if finalize was already called
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
  *  resulting digest
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

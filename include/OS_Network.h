@@ -119,7 +119,7 @@ typedef unsigned OS_NetworkServer_Handle_t;
  *
  * @param[out] phandle: Handle to the created socket.
  *
- * @return  SEOS_SUCCESS or SEOS_ERROR
+ * @return  OS_SUCCESS or OS_ERROR
  */
 
 OS_Error_t
@@ -140,7 +140,7 @@ OS_NetworkSocket_create(
  *
  * @param[out] pSrvHandle: Handle to the created socket.
  *
- * @return  SEOS_SUCCESS or SEOS_ERROR
+ * @return  OS_SUCCESS or OS_ERROR
  */
 
 OS_Error_t
@@ -155,7 +155,7 @@ OS_NetworkServerSocket_create(
  * @param[in] srvHandle: Handle to the server socket we want
  * to close.
  *
- * @return  SEOS_SUCCESS or SEOS_ERROR
+ * @return  OS_SUCCESS or OS_ERROR
  */
 
 OS_Error_t
@@ -168,7 +168,7 @@ OS_NetworkServerSocket_close(
  *
  * @param[in] handle: Handle to the socket we want to close.
  *
- * @return SEOS_SUCCESS or SEOS_ERROR
+ * @return OS_SUCCESS or OS_ERROR
  *
  */
 
@@ -185,7 +185,7 @@ OS_NetworkSocket_close(
  *
  * @param[in] len: Length of data to be written.
  *
- * @return Actual Number of Bytes written or SEOS_ERROR
+ * @return Actual Number of Bytes written or OS_ERROR
  *
  */
 OS_Error_t
@@ -203,7 +203,7 @@ OS_NetworkSocket_write(
  * needed for further communication with the connecting host. All subsequent
  * read/write commands in this conversation need this handle.
  *
- * @return SEOS_SUCCESS or SEOS_ERROR
+ * @return OS_SUCCESS or OS_ERROR
  */
 
 OS_Error_t
@@ -222,10 +222,10 @@ OS_NetworkServerSocket_accept(
  *
  * @return OS_Error_t, following combinations with value of len
 
- * SEOS_ERROR_CONNECTION_CLOSED and length = 0, connection closed\n
- * SEOS_ERROR_GENERIC  error during read\n
- * SEOS_SUCCESS and len = 0, nothing read, connection still established\n
- * SEOS_SUCCESS and len > 0, data read, connection still established\n
+ * OS_ERROR_CONNECTION_CLOSED and length = 0, connection closed\n
+ * OS_ERROR_GENERIC  error during read\n
+ * OS_SUCCESS and len = 0, nothing read, connection still established\n
+ * OS_SUCCESS and len > 0, data read, connection still established\n
  */
 
 OS_Error_t

@@ -162,8 +162,8 @@ OS_LoggerAbstractSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
- * @retval  other                        - Implementation specific.
+ * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  other                      - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
@@ -182,8 +182,8 @@ OS_LoggerAbstractSubject_attach(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
- * @retval  other                        - Implementation specific.
+ * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
+ * @retval  other                      - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */

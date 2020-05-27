@@ -84,28 +84,28 @@ dataport_ptr_t buffer_receive;
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                           If all right.
- * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT          If invalid object internally.
- * @retval  SEOS_ERROR_PM_NO_PARTITIONS            If no partition exists.
- * @retval  SEOS_ERROR_PM_BLOCK_SIZE               If block size is undefined.
- * @retval  SEOS_ERROR_PM_REGISTER_INTERNAL_OBJECT If failed to register the
- *                                                 internal object.
+ * @retval  OS_SUCCESS                           If all right.
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT          If invalid object internally.
+ * @retval  OS_ERROR_PM_NO_PARTITIONS            If no partition exists.
+ * @retval  OS_ERROR_PM_BLOCK_SIZE               If block size is undefined.
+ * @retval  OS_ERROR_PM_REGISTER_INTERNAL_OBJECT If failed to register the
+ *                                               internal object.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER           If argument is missing or
- *                                                 wrong value.
- * @retval  SEOS_ERROR_PM_DISK_SIZE                If real disk size is smaller
- *                                                 than the configured.
- * @retval  SEOS_ERROR_PM_POINTER_POS              If the pointer position of
- *                                                 the start and the end
- *                                                 pointers do not match the
- *                                                 size of the partition.
+ * @retval  OS_ERROR_INVALID_PARAMETER           If argument is missing or
+ *                                               wrong value.
+ * @retval  OS_ERROR_PM_DISK_SIZE                If real disk size is smaller
+ *                                               than the configured.
+ * @retval  OS_ERROR_PM_POINTER_POS              If the pointer position of
+ *                                               the start and the end
+ *                                               pointers do not match the
+ *                                               size of the partition.
  *
- * @retval  SEOS_ERROR_PM_POINTER_START_POS        If the wrong pointer to the
- *                                                 start position is given.
- * @retval  SEOS_ERROR_PM_POINTER_END_POS          If the wrong pointer to the
- *                                                 end position is given.
- * @retval  SEOS_ERROR_PM_PARTITION_ID             If the partition id is wrong
- *                                                 or partition id doesn't exist.
+ * @retval  OS_ERROR_PM_POINTER_START_POS        If the wrong pointer to the
+ *                                               start position is given.
+ * @retval  OS_ERROR_PM_POINTER_END_POS          If the wrong pointer to the
+ *                                               end position is given.
+ * @retval  OS_ERROR_PM_PARTITION_ID             If the partition id is wrong
+ *                                               or partition id doesn't exist.
  *
  * @ingroup seos_pm_api
  */
@@ -124,12 +124,12 @@ partition_manager_init(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                  If all right.
- * @retval  SEOS_ERROR_PM_PARTITION_ID    If wrong partition id or partition id
- *                                        doesn't exist.
- * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
- * @retval  SEOS_ERROR_PM_INIT            If the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_OPEN            If no open operation has been done.
+ * @retval  OS_SUCCESS                  If all right.
+ * @retval  OS_ERROR_PM_PARTITION_ID    If wrong partition id or partition id
+ *                                      doesn't exist.
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
+ * @retval  OS_ERROR_PM_INIT            If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_OPEN            If no open operation has been done.
  *
  * @ingroup seos_pm_api
  */
@@ -170,15 +170,15 @@ partition_manager_open(
  *
  * @return  an error code
  *
- * @retval  SEOS_SUCCESS                    if all right
- * @retval  SEOS_ERROR_INVALID_PARAMETER    if argument is missing or wrong
- *                                          value
- * @retval  SEOS_ERROR_PM_PARTITION_ID      if wrong partition id or partition
- *                                          id doesn't exist
- * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT   if invalid object internally
- * @retval  SEOS_ERROR_PM_INIT              if the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_OFFSET            if offset is out of range
- * @retval  SEOS_ERROR_PM_READ              if no read operation has been done
+ * @retval  OS_SUCCESS                    if all right
+ * @retval  OS_ERROR_INVALID_PARAMETER    if argument is missing or wrong
+ *                                        value
+ * @retval  OS_ERROR_PM_PARTITION_ID      if wrong partition id or partition
+ *                                        id doesn't exist
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT   if invalid object internally
+ * @retval  OS_ERROR_PM_INIT              if the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_OFFSET            if offset is out of range
+ * @retval  OS_ERROR_PM_READ              if no read operation has been done
  *
  * @ingroup seos_pm_api
  */
@@ -192,14 +192,14 @@ partition_manager_read(
     void* buffer            /**< [out] Reads content into this buffer. */)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
-    OS_Error_t retval = SEOS_SUCCESS;
+    OS_Error_t retval = OS_SUCCESS;
     const void* buf = (void*)0;
     pm_partition_data_t pm_partition_data;
 
     // checks databuffer length
     if (DATABUFFER_SIZE < len)
     {
-        return SEOS_ERROR_PM_DATABUFFER_OVERLOW;
+        return OS_ERROR_PM_DATABUFFER_OVERLOW;
     }
 
     // Cast/Wrap pointer to dataport pointer
@@ -208,7 +208,7 @@ partition_manager_read(
     // Call partition manager API function
     retval = api_pm_component_partition_manager_read(partition_id, offset, len,
                                                      buffer_receive);
-    if (retval != SEOS_SUCCESS)
+    if (retval != OS_SUCCESS)
     {
         return retval;
     }
@@ -217,7 +217,7 @@ partition_manager_read(
 
     retval = api_pm_component_partition_manager_get_info_partition(
                  partition_id, &pm_partition_data);
-    if (retval != SEOS_SUCCESS)
+    if (retval != OS_SUCCESS)
     {
         return retval;
     }
@@ -248,15 +248,15 @@ partition_manager_read(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                    If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER    If argument is missing or wrong
- *                                          value is given.
- * @retval  SEOS_ERROR_PM_PARTITION_ID      If wrong partition id or partition
- *                                          id doesn't exist.
- * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT   If invalid object internally.
- * @retval  SEOS_ERROR_PM_INIT              If the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_OFFSET            If offset is out of range.
- * @retval  SEOS_ERROR_PM_WRITE             If no write operation has been done.
+ * @retval  OS_SUCCESS                    If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER    If argument is missing or wrong
+ *                                        value is given.
+ * @retval  OS_ERROR_PM_PARTITION_ID      If wrong partition id or partition
+ *                                        id doesn't exist.
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT   If invalid object internally.
+ * @retval  OS_ERROR_PM_INIT              If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_OFFSET            If offset is out of range.
+ * @retval  OS_ERROR_PM_WRITE             If no write operation has been done.
  *
  * @ingroup seos_pm_api
  */
@@ -271,17 +271,17 @@ partition_manager_write(
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     pm_partition_data_t pm_partition_data;
-    OS_Error_t retval = SEOS_SUCCESS;
+    OS_Error_t retval = OS_SUCCESS;
 
     // checks databuffer length
     if (DATABUFFER_SIZE < len)
     {
-        return SEOS_ERROR_PM_DATABUFFER_OVERLOW;
+        return OS_ERROR_PM_DATABUFFER_OVERLOW;
     }
 
     retval = api_pm_component_partition_manager_get_info_partition(
                  partition_id, &pm_partition_data);
-    if (retval != SEOS_SUCCESS)
+    if (retval != OS_SUCCESS)
     {
         return retval;
     }
@@ -309,12 +309,12 @@ partition_manager_write(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                  If all right
- * @retval  SEOS_ERROR_PM_PARTITION_ID    If the wrong partition id or the
- *                                        partition id doesn't exist.
- * @retval  SEOS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
- * @retval  SEOS_ERROR_PM_INIT            If the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_CLOSE           If no close operation has been done.
+ * @retval  OS_SUCCESS                  If all right
+ * @retval  OS_ERROR_PM_PARTITION_ID    If the wrong partition id or the
+ *                                      partition id doesn't exist.
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT If invalid object internally.
+ * @retval  OS_ERROR_PM_INIT            If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_CLOSE           If no close operation has been done.
  *
  * @ingroup seos_pm_api
  */
@@ -339,10 +339,10 @@ partition_manager_close(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                 If all right.
- * @retval  SEOS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
- * @retval  SEOS_ERROR_PM_INIT           If the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_GET_STRUCT     If failed to get a structure.
+ * @retval  OS_SUCCESS                 If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
+ * @retval  OS_ERROR_PM_INIT           If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_GET_STRUCT     If failed to get a structure.
  *
  * @ingroup seos_pm_api
  */
@@ -367,12 +367,12 @@ partition_manager_get_info_disk(
  *
  * @return  An error code.
  *
- * @retval  SEOS_SUCCESS                 If all right.
- * @retval  SEOS_ERROR_PM_PARTITION_ID   If the wrong partition id or the
- *                                       partition id doesn't exist.
- * @retval  SEOS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
- * @retval  SEOS_ERROR_PM_INIT           If the partition manager is uninitialized.
- * @retval  SEOS_ERROR_PM_GET_STRUCT     If failed to get a struct.
+ * @retval  OS_SUCCESS                 If all right.
+ * @retval  OS_ERROR_PM_PARTITION_ID   If the wrong partition id or the
+ *                                     partition id doesn't exist.
+ * @retval  OS_ERROR_INVALID_PARAMETER If argument is missing or wrong value.
+ * @retval  OS_ERROR_PM_INIT           If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_GET_STRUCT     If failed to get a struct.
  *
  * @ingroup seos_pm_api
  */

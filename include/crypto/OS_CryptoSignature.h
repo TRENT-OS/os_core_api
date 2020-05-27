@@ -56,11 +56,11 @@ typedef OS_Crypto_Object_t* OS_CryptoSignature_Handle_t;
  *  this SIGNATURE object (important for correct padding)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
  *  includes passing the wrong types of key
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the digest failed
- * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the digest failed
+ * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  */
 OS_Error_t
 OS_CryptoSignature_init(
@@ -77,9 +77,9 @@ OS_CryptoSignature_init(
  * @param hSig (required) handle of OS Crypto SIGNATURE object
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_HANDLE if the object handle is invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
 OS_CryptoSignature_free(
@@ -101,13 +101,13 @@ OS_CryptoSignature_free(
  *  if it fails due to too small buffer)
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if no private key was set during initialization or
  *  if the cryptographic operation failed
- * @retval SEOS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
+ * @retval OS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
  *  the resulting \p signature
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t
@@ -132,12 +132,12 @@ OS_CryptoSignature_sign(
  * @param signatureSize (required) size of signature in buffer
  *
  * @return an error code
- * @retval SEOS_SUCCESS if operation succeeded
- * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
  *  this includes passing a \p signatureSize that is unexpected (due to the key)
- * @retval SEOS_ERROR_ABORTED if no private key was set during initialization or
+ * @retval OS_ERROR_ABORTED if no private key was set during initialization or
  *  if the cryptographic operation failed (i.e., the signature was invalid)
- * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
 OS_Error_t

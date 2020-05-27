@@ -83,11 +83,11 @@ OS_LoggerDataBuffer_setClientLogLevel(void* buf, uint8_t log_level_client);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_BUFFER_TOO_SMALL  - Target buffer is too small.
- * @retval  SEOS_ERROR_GENERIC           - An encoding error (for string and
- *                                         character conversion specifiers)
- *                                         occurred.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_BUFFER_TOO_SMALL  - Target buffer is too small.
+ * @retval  OS_ERROR_GENERIC           - An encoding error (for string and
+ *                                       character conversion specifiers)
+ *                                       occurred.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  *
  * @ingroup OS_LoggerDataBuffer
@@ -105,9 +105,9 @@ OS_LoggerDataBuffer_setLogMessage(void* buf, const char* msg);
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
@@ -126,9 +126,9 @@ OS_LoggerDataBuffer_getServerLogLevel(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
@@ -147,9 +147,9 @@ OS_LoggerDataBuffer_getClientLogLevel(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
@@ -174,9 +174,9 @@ OS_LoggerDataBuffer_getLogMessage(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
@@ -193,9 +193,9 @@ OS_LoggerDataBuffer_getInfo(
  *
  * @return  An error code.
  *
- * @retval  SEOS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
- *                                         pointer.
- * @retval  SEOS_SUCCESS                 - Operation was successful.
+ * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
+ *                                       pointer.
+ * @retval  OS_SUCCESS                 - Operation was successful.
  *
  * @ingroup OS_LoggerDataBuffer
 */
