@@ -27,7 +27,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "OS_Filesystem.h"
 #include <stdint.h>
@@ -64,7 +64,7 @@ typedef void
  *
  * @ingroup OS_LoggerFile
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerFile_create_t)(OS_LoggerFile_Handle_t* self);
 
 
@@ -168,7 +168,7 @@ struct OS_LoggerFile_Handle
  *
  * @ingroup OS_LoggerFile
 */
-seos_err_t
+OS_Error_t
 OS_LoggerFile_ctor(
     OS_LoggerFile_Handle_t* self,
     uint8_t drv_id,
@@ -199,5 +199,5 @@ OS_LoggerFile_dtor(OS_LoggerFile_Handle_t* self);
  *
  * @ingroup OS_LoggerFile
 */
-seos_err_t
+OS_Error_t
 OS_LoggerFile_create(OS_LoggerFile_Handle_t* self);

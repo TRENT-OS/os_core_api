@@ -13,7 +13,7 @@
 #pragma once
 
 /* Includes ------------------------------------------------------------------*/
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include "OS_ConfigServiceDataTypes.h"
 #include "OS_ConfigServiceInstanceStore.h"
@@ -42,7 +42,7 @@ OS_ConfigService_getInstances(void);
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid id, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_createHandle(
     OS_ConfigServiceHandle_HandleKind_t handleKind,
     unsigned int id,
@@ -60,7 +60,7 @@ OS_ConfigService_createHandle(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid id, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainEnumeratorInit(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t* enumerator);
@@ -76,7 +76,7 @@ OS_ConfigService_domainEnumeratorInit(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainEnumeratorClose(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t* enumerator);
@@ -92,7 +92,7 @@ OS_ConfigService_domainEnumeratorClose(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainEnumeratorReset(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t* enumerator);
@@ -108,7 +108,7 @@ OS_ConfigService_domainEnumeratorReset(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainEnumeratorIncrement(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t* enumerator);
@@ -126,7 +126,7 @@ OS_ConfigService_domainEnumeratorIncrement(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainEnumeratorGetElement(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t const* enumerator,
@@ -146,7 +146,7 @@ OS_ConfigService_domainEnumeratorGetElement(
  *  NULL pointer, etc.), if no parameter is set for the given domain or if an
  *  error occurred during data retrieval
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterEnumeratorInit(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainEnumerator_t const* domainEnumerator,
@@ -163,7 +163,7 @@ OS_ConfigService_parameterEnumeratorInit(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterEnumeratorClose(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t* enumerator);
@@ -179,7 +179,7 @@ OS_ConfigService_parameterEnumeratorClose(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterEnumeratorReset(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t* enumerator);
@@ -195,7 +195,7 @@ OS_ConfigService_parameterEnumeratorReset(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterEnumeratorIncrement(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t* enumerator);
@@ -215,7 +215,7 @@ OS_ConfigService_parameterEnumeratorIncrement(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterEnumeratorGetElement(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,
@@ -248,7 +248,7 @@ OS_ConfigService_domainGetName(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainCreateParameterEnumerator(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Domain_t const* domain,
@@ -270,7 +270,7 @@ OS_ConfigService_domainCreateParameterEnumerator(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_domainGetElement(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Domain_t const* domain,
@@ -326,7 +326,7 @@ OS_ConfigService_parameterGetSize(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValue(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Parameter_t const* parameter,
@@ -346,7 +346,7 @@ OS_ConfigService_parameterGetValue(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValueAsU32(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Parameter_t const* parameter,
@@ -364,7 +364,7 @@ OS_ConfigService_parameterGetValueAsU32(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValueAsU64(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Parameter_t const* parameter,
@@ -386,7 +386,7 @@ OS_ConfigService_parameterGetValueAsU64(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValueAsString(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Parameter_t const* parameter,
@@ -409,7 +409,7 @@ OS_ConfigService_parameterGetValueAsString(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValueAsBlob(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_Parameter_t const* parameter,
@@ -437,7 +437,7 @@ OS_ConfigService_parameterGetValueAsBlob(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterGetValueFromDomainName(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_DomainName_t const* domainName,
@@ -465,7 +465,7 @@ OS_ConfigService_parameterGetValueFromDomainName(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterSetValue(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,
@@ -489,7 +489,7 @@ OS_ConfigService_parameterSetValue(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterSetValueAsU32(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,
@@ -511,7 +511,7 @@ OS_ConfigService_parameterSetValueAsU32(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterSetValueAsU64(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,
@@ -535,7 +535,7 @@ OS_ConfigService_parameterSetValueAsU64(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterSetValueAsString(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,
@@ -561,7 +561,7 @@ OS_ConfigService_parameterSetValueAsString(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_ConfigService_parameterSetValueAsBlob(
     OS_ConfigServiceHandle_t handle,
     OS_ConfigServiceLibTypes_ParameterEnumerator_t const* enumerator,

@@ -6,53 +6,53 @@
  */
 procedure if_OS_socket {
 
-    include "SeosError.h";
+    include "OS_Error.h";
 
-    seos_err_t
+    OS_Error_t
     socket_create(
         in     unsigned  domain,
         in     unsigned  type,
         inout  unsigned  pHandle
     );
 
-    seos_err_t
+    OS_Error_t
     socket_close(
         in     unsigned  handle
     );
 
-    seos_err_t
+    OS_Error_t
     socket_write(
         in     unsigned  handle,
         inout  size_t    pLen
     );
 
-    seos_err_t
+    OS_Error_t
     socket_read(
         in     unsigned  handle,
         inout  size_t    pLen
     );
 
-    seos_err_t
+    OS_Error_t
     socket_connect(
         in     unsigned  handle,
         in     string    serverName,
         in     uint16_t  port
     );
 
-    seos_err_t
+    OS_Error_t
     socket_accept(
         in     unsigned  handle,
         inout  unsigned  pHandleClient,
         in     uint16_t  port
     );
 
-    seos_err_t
+    OS_Error_t
     socket_listen(
         in     unsigned  handle,
         in     unsigned  backlog
     );
 
-    seos_err_t
+    OS_Error_t
     socket_bind(
         in     unsigned  handle,
         in     uint16_t  port

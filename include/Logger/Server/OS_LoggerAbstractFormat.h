@@ -21,7 +21,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Common/OS_LoggerDataBuffer.h"
 #include <stdbool.h>
 #include <string.h>
@@ -61,7 +61,7 @@ typedef void
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerAbstractFormat_convert)(
     OS_LoggerAbstractFormat_Handle_t* self,
     OS_LoggerDataBuffer_info* log_info);
@@ -130,7 +130,7 @@ FormatT_dtor(OS_LoggerAbstractFormat_Handle_t* self);
  *
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
-seos_err_t
+OS_Error_t
 FormatT_convert(
     OS_LoggerAbstractFormat_Handle_t* self,
     OS_LoggerDataBuffer_info* log_info);

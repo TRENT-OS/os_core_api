@@ -43,7 +43,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 #include <stddef.h>
 
 #include "seos_fs_conf.h"
@@ -139,7 +139,7 @@ OS_Filesystem_validateFileHandle(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_init(
     uint8_t drv_id, //!< [in] The partitions identifier.
     int open_flag   //!< [in] The partition's access function.
@@ -247,7 +247,7 @@ OS_Filesystem_open(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_create(
     hPartition_t handle,     //!< [in] The partition handle (integer value).
     uint8_t format_option,   //!< [in] The format option.
@@ -318,7 +318,7 @@ OS_Filesystem_create(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_mount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
@@ -348,7 +348,7 @@ OS_Filesystem_mount(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_unmount(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
@@ -385,7 +385,7 @@ OS_Filesystem_unmount(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_wipe(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
@@ -420,7 +420,7 @@ OS_Filesystem_wipe(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_close(
     hPartition_t handle /**!< [in] Partition handle (integer value) */)
 {
@@ -506,7 +506,7 @@ OS_Filesystem_openFile(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_closeFile(
     hFile_t handle /**! file handle (integer value) */)
 {
@@ -546,7 +546,7 @@ OS_Filesystem_closeFile(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_readFile(
     hFile_t handle, //!< [in]  The file handle (integer value).
     long offset,    //!< [in]  The offset when reading the file.
@@ -614,7 +614,7 @@ OS_Filesystem_readFile(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_writeFile(
     hFile_t handle, //!< [in] The file handle (integer value).
     long offset,    //!< [in] The offset when writing a file.
@@ -667,7 +667,7 @@ OS_Filesystem_writeFile(
  *
  * @ingroup seos_fs_api
 */
-static inline seos_err_t
+static inline OS_Error_t
 OS_Filesystem_deleteFile(
     hPartition_t handle, //!< [in] The partition handle (integer value).
     const char* name     //!< [in] The name of the file.

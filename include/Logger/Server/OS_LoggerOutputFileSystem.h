@@ -40,7 +40,7 @@
  *
  * @ingroup OS_LoggerOutputFileSystem
 */
-seos_err_t
+OS_Error_t
 OS_LoggerOutputFileSystem_ctor(
     OS_LoggerOutput_Handle_t* self,
     OS_LoggerFormat_Handle_t* log_format);

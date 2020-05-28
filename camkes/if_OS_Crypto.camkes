@@ -11,13 +11,13 @@ procedure if_OS_Crypto {
 
     // ---------------------------------- RNG ----------------------------------
 
-    seos_err_t
+    OS_Error_t
     Rng_getBytes
     (
         in unsigned int flags,
         in size_t bufSize
     );
-    seos_err_t
+    OS_Error_t
     Rng_reseed
     (
         in size_t seedLen
@@ -25,30 +25,30 @@ procedure if_OS_Crypto {
 
     // ---------------------------------- MAC ----------------------------------
 
-    seos_err_t
+    OS_Error_t
     Mac_init
     (
         inout CryptoLibMac_ptr pMacObj,
         in unsigned int algorithm
     );
-    seos_err_t
+    OS_Error_t
     Mac_free
     (
         in CryptoLibMac_ptr macObj
     );
-    seos_err_t
+    OS_Error_t
     Mac_start
     (
         in CryptoLibMac_ptr macObj,
         in size_t secretSize
     );
-    seos_err_t
+    OS_Error_t
     Mac_process
     (
         in CryptoLibMac_ptr macObj,
         in size_t dataSize
     );
-    seos_err_t
+    OS_Error_t
     Mac_finalize
     (
         in CryptoLibMac_ptr macObj,
@@ -57,30 +57,30 @@ procedure if_OS_Crypto {
 
     // -------------------------------- Digest ---------------------------------
 
-    seos_err_t
+    OS_Error_t
     Digest_init
     (
         inout CryptoLibDigest_ptr pDigestObj,
         in unsigned int algorithm
     );
-    seos_err_t
+    OS_Error_t
     Digest_free
     (
         in CryptoLibDigest_ptr digestObj
     );
-    seos_err_t
+    OS_Error_t
     Digest_clone
     (
         in CryptoLibDigest_ptr dstDigObj,
         in CryptoLibDigest_cptr srcDigObj
     );
-    seos_err_t
+    OS_Error_t
     Digest_process
     (
         in CryptoLibDigest_ptr digestObj,
         in size_t inLen
     );
-    seos_err_t
+    OS_Error_t
     Digest_finalize
     (
         in CryptoLibDigest_ptr digestObj,
@@ -89,45 +89,45 @@ procedure if_OS_Crypto {
 
     // --------------------------------- Key -----------------------------------
 
-    seos_err_t
+    OS_Error_t
     Key_generate
     (
         inout CryptoLibKey_ptr pKeyObj
     );
-    seos_err_t
+    OS_Error_t
     Key_makePublic
     (
         inout CryptoLibKey_ptr pPubKeyObj,
         in CryptoLibKey_cptr prvKeyObj
     );
-    seos_err_t
+    OS_Error_t
     Key_import
     (
         inout CryptoLibKey_ptr pKeyObj
     );
-    seos_err_t
+    OS_Error_t
     Key_export
     (
         in CryptoLibKey_cptr keyObj
     );
-    seos_err_t
+    OS_Error_t
     Key_getParams
     (
         in CryptoLibKey_cptr keyObj,
         inout size_t paramSize
     );
-    seos_err_t
+    OS_Error_t
     Key_getAttribs
     (
         in CryptoLibKey_cptr keyObj
     );
-    seos_err_t
+    OS_Error_t
     Key_loadParams
     (
         in OS_CryptoKey_Param_t name,
         inout size_t paramSize
     );
-    seos_err_t
+    OS_Error_t
     Key_free
     (
         in CryptoLibKey_ptr keyObj
@@ -135,7 +135,7 @@ procedure if_OS_Crypto {
 
     // ------------------------------- Signature -------------------------------
 
-    seos_err_t
+    OS_Error_t
     Signature_init
     (
         inout CryptoLibSignature_ptr pSigObj,
@@ -144,20 +144,20 @@ procedure if_OS_Crypto {
         in unsigned int algorithm,
         in unsigned int digest
     );
-    seos_err_t
+    OS_Error_t
     Signature_verify (
         in CryptoLibSignature_ptr sigObj,
         in size_t hashSize,
         in size_t signatureSize
     );
-    seos_err_t
+    OS_Error_t
     Signature_sign
     (
         in CryptoLibSignature_ptr sigObj,
         in size_t hashSize,
         inout size_t signatureSize
     );
-    seos_err_t
+    OS_Error_t
     Signature_free
     (
         in CryptoLibSignature_ptr sigObj
@@ -165,21 +165,21 @@ procedure if_OS_Crypto {
 
     // ----------------------------- Agreement ---------------------------------
 
-    seos_err_t
+    OS_Error_t
     Agreement_init
     (
         inout CryptoLibAgreement_ptr pAgrObj,
         in CryptoLibKey_cptr prvObj,
         in unsigned int algorithm,
     );
-    seos_err_t
+    OS_Error_t
     Agreement_agree
     (
         in CryptoLibAgreement_ptr agrObj,
         in CryptoLibKey_cptr pubObj,
         inout size_t sharedSize
     );
-    seos_err_t
+    OS_Error_t
     Agreement_free
     (
         in CryptoLibAgreement_ptr agrObj
@@ -187,7 +187,7 @@ procedure if_OS_Crypto {
 
     // -------------------------------- Cipher ---------------------------------
 
-    seos_err_t
+    OS_Error_t
     Cipher_init
     (
         inout CryptoLibCipher_ptr pCipherObj,
@@ -195,25 +195,25 @@ procedure if_OS_Crypto {
         in unsigned int algorithm,
         in size_t ivLen
     );
-    seos_err_t
+    OS_Error_t
     Cipher_free
     (
         in CryptoLibCipher_ptr cipherObj
     );
-    seos_err_t
+    OS_Error_t
     Cipher_process
     (
         in CryptoLibCipher_ptr cipherObj,
         in size_t inLen,
         inout size_t outSize
     );
-    seos_err_t
+    OS_Error_t
     Cipher_start
     (
         in CryptoLibCipher_ptr cipherObj,
         in size_t len
     );
-    seos_err_t
+    OS_Error_t
     Cipher_finalize
     (
         in CryptoLibCipher_ptr cipherObj,

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <limits.h>
 #include <stddef.h>
@@ -225,7 +225,7 @@ typedef struct
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p cfg is not supported
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the API object failed
  */
-seos_err_t
+OS_Error_t
 OS_Crypto_init(
     OS_Crypto_Handle_t*       hCrypto,
     const OS_Crypto_Config_t* cfg);
@@ -239,7 +239,7 @@ OS_Crypto_init(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_Crypto_free(
     OS_Crypto_Handle_t hCrypto);
 
@@ -299,7 +299,7 @@ OS_Crypto_getLibObject(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_Crypto_migrateLibObject(
     OS_Crypto_Object_t**       proxy,
     const OS_Crypto_Handle_t   self,

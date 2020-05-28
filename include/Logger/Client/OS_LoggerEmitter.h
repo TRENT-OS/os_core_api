@@ -38,9 +38,9 @@
  *
  * @ingroup     OS_LoggerClient
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Common/OS_LoggerFilter.h"
-#include "seos_types.h"
+#include "OS_Types.h"
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -111,5 +111,5 @@ OS_LoggerEmitter_dtor(void);
  *
  * @ingroup OS_LoggerEmitter
 */
-seos_err_t
+OS_Error_t
 OS_LoggerEmitter_log(uint8_t log_level, const char* format, ...);

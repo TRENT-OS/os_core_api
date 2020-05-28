@@ -22,7 +22,7 @@
  *
  * @ingroup     OS_LoggerOutput
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Server/OS_LoggerOutput.h"
 
 
@@ -39,7 +39,7 @@
  *
  * @ingroup OS_LoggerOutputConsole
 */
-seos_err_t
+OS_Error_t
 OS_LoggerOutputConsole_ctor(
     OS_LoggerOutput_Handle_t* self,
     OS_LoggerFormat_Handle_t* log_format);

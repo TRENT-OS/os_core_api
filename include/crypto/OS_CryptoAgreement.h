@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stddef.h>
 
@@ -58,7 +58,7 @@ typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the underlying
  *  object failed
  */
-seos_err_t
+OS_Error_t
 OS_CryptoAgreement_init(
     OS_CryptoAgreement_Handle_t*   hAgree,
     const OS_Crypto_Handle_t       hCrypto,
@@ -74,7 +74,7 @@ OS_CryptoAgreement_init(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoAgreement_free(
     OS_CryptoAgreement_Handle_t hAgree);
 
@@ -107,7 +107,7 @@ OS_CryptoAgreement_free(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoAgreement_agree(
     OS_CryptoAgreement_Handle_t hAgree,
     const OS_CryptoKey_Handle_t hPubKey,

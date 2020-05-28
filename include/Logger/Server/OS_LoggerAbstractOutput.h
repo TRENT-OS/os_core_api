@@ -31,7 +31,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Server/OS_LoggerAbstractObserver.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include <stdbool.h>
@@ -68,7 +68,7 @@ typedef void
  *
  * @ingroup OS_LoggerAbstractOutput
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerAbstractOutput_print_t)(
     OS_LoggerAbstractOutput_Handle_t* self,
     void* data);
@@ -125,7 +125,7 @@ OS_LoggerAbstractOutput_dtor(OS_LoggerAbstractOutput_Handle_t* self);
  *
  * @ingroup OS_LoggerAbstractOutput
 */
-seos_err_t
+OS_Error_t
 OS_LoggerAbstractOutput_print(
     OS_LoggerAbstractOutput_Handle_t* self,
     void* data);

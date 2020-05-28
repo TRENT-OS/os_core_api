@@ -60,7 +60,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 #include <stdint.h>
 
 /**
@@ -122,7 +122,7 @@ typedef unsigned OS_NetworkServer_Handle_t;
  * @return  SEOS_SUCCESS or SEOS_ERROR
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkSocket_create(
     OS_Network_Context_t       ctx,
     OS_Network_Socket_t*       pClientStruct,
@@ -143,7 +143,7 @@ OS_NetworkSocket_create(
  * @return  SEOS_SUCCESS or SEOS_ERROR
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkServerSocket_create(
     OS_Network_Context_t       ctx,
     OS_NetworkServer_Socket_t* pServerStruct,
@@ -158,7 +158,7 @@ OS_NetworkServerSocket_create(
  * @return  SEOS_SUCCESS or SEOS_ERROR
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkServerSocket_close(
     OS_NetworkServer_Handle_t srvHandle);
 
@@ -172,7 +172,7 @@ OS_NetworkServerSocket_close(
  *
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkSocket_close(
     OS_NetworkSocket_Handle_t handle);
 
@@ -188,7 +188,7 @@ OS_NetworkSocket_close(
  * @return Actual Number of Bytes written or SEOS_ERROR
  *
  */
-seos_err_t
+OS_Error_t
 OS_NetworkSocket_write(
     OS_NetworkSocket_Handle_t handle,
     const void*               buf,
@@ -206,7 +206,7 @@ OS_NetworkSocket_write(
  * @return SEOS_SUCCESS or SEOS_ERROR
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkServerSocket_accept(
     OS_NetworkServer_Handle_t  srvHandle,
     OS_NetworkSocket_Handle_t* phSocket);
@@ -220,7 +220,7 @@ OS_NetworkServerSocket_accept(
  *
  * @param[in,out] len: Indicates how much data to read. After read it indicates how much was actually read
  *
- * @return seos_err_t, following combinations with value of len
+ * @return OS_Error_t, following combinations with value of len
 
  * SEOS_ERROR_CONNECTION_CLOSED and length = 0, connection closed\n
  * SEOS_ERROR_GENERIC  error during read\n
@@ -228,7 +228,7 @@ OS_NetworkServerSocket_accept(
  * SEOS_SUCCESS and len > 0, data read, connection still established\n
  */
 
-seos_err_t
+OS_Error_t
 OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,

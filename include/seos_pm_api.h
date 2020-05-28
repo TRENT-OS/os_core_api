@@ -57,7 +57,7 @@ dataport_ptr_t buffer_receive;
 
 #endif
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 // Include path to partition_manager must be set in CMakeLists.txt
 #include "seos_pm_conf.h"
@@ -111,7 +111,7 @@ dataport_ptr_t buffer_receive;
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_init(
     void* nvm_object /**< [in,out] The NVM object. */)
 {
@@ -135,7 +135,7 @@ partition_manager_init(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_open(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
@@ -184,7 +184,7 @@ partition_manager_open(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_read(
     uint8_t partition_id,   /**< [in]  Partition's Identifier. */
     uint64_t offset,        /**< [in]  Offset when reading from partition. */
@@ -192,7 +192,7 @@ partition_manager_read(
     void* buffer            /**< [out] Reads content into this buffer. */)
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
-    seos_err_t retval = SEOS_SUCCESS;
+    OS_Error_t retval = SEOS_SUCCESS;
     const void* buf = (void*)0;
     pm_partition_data_t pm_partition_data;
 
@@ -262,7 +262,7 @@ partition_manager_read(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_write(
     uint8_t partition_id,   /**< [in]  Partition's identifier. */
     uint64_t offset,        /**< [in]  Offset when writing to the partition. */
@@ -271,7 +271,7 @@ partition_manager_write(
 {
 #if defined(SEOS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     pm_partition_data_t pm_partition_data;
-    seos_err_t retval = SEOS_SUCCESS;
+    OS_Error_t retval = SEOS_SUCCESS;
 
     // checks databuffer length
     if (DATABUFFER_SIZE < len)
@@ -320,7 +320,7 @@ partition_manager_write(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_close(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
@@ -348,7 +348,7 @@ partition_manager_close(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_get_info_disk(
     pm_disk_data_t* info_disk /**< [out] Disk data (pointer to the struct). */)
 {
@@ -378,7 +378,7 @@ partition_manager_get_info_disk(
  */
 static
 __attribute__((unused))
-seos_err_t
+OS_Error_t
 partition_manager_get_info_partition(
     uint8_t partition_id,               /**< [in]  Partition's identifier. */
     pm_partition_data_t* info_partition /**< [out] Partition's data (pointer to

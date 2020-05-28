@@ -8,19 +8,19 @@
 procedure if_OS_Tls {
     include "OS_Tls.h";
 
-    seos_err_t
+    OS_Error_t
     handshake();
 
-    seos_err_t
+    OS_Error_t
     write(
         in size_t dataSize
     );
 
-    seos_err_t
+    OS_Error_t
     read(
         inout size_t dataSize
     );
 
-    seos_err_t
+    OS_Error_t
     reset();
 };

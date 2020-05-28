@@ -45,7 +45,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "Logger/Server/OS_LoggerConsumerCallback.h"
 #include "Logger/Server/OS_LoggerSubject.h"
@@ -171,7 +171,7 @@ struct OS_LoggerConsumer_Handle
  *
  * @ingroup OS_LoggerConsumer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerConsumer_ctor(
     OS_LoggerConsumer_Handle_t* self,
     void* buffer,

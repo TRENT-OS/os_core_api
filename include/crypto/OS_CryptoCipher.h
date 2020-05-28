@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stddef.h>
 
@@ -89,7 +89,7 @@ typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the CIPHER failed or if
  * \p ivSize is greater than `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoCipher_init(
     OS_CryptoCipher_Handle_t*   hCipher,
     const OS_Crypto_Handle_t    hCrypto,
@@ -108,7 +108,7 @@ OS_CryptoCipher_init(
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoCipher_free(
     OS_CryptoCipher_Handle_t hCipher);
 
@@ -145,7 +145,7 @@ OS_CryptoCipher_free(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoCipher_process(
     OS_CryptoCipher_Handle_t hCipher,
     const void*              input,
@@ -172,7 +172,7 @@ OS_CryptoCipher_process(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoCipher_start(
     OS_CryptoCipher_Handle_t hCipher,
     const void*              input,
@@ -206,7 +206,7 @@ OS_CryptoCipher_start(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoCipher_finalize(
     OS_CryptoCipher_Handle_t hCipher,
     void*                    tag,

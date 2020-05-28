@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stddef.h>
 
@@ -54,7 +54,7 @@ typedef int (OS_CryptoRng_Entropy_func)(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoRng_getBytes(
     OS_Crypto_Handle_t        hCrypto,
     const OS_CryptoRng_Flag_t flags,
@@ -79,7 +79,7 @@ OS_CryptoRng_getBytes(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoRng_reseed(
     OS_Crypto_Handle_t hCrypto,
     const void*        seed,

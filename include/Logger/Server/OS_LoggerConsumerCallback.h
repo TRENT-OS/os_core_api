@@ -18,7 +18,7 @@
  *
  * @ingroup     OS_LoggerConsumer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -85,7 +85,7 @@ typedef struct
  *
  * @ingroup OS_LoggerConsumerCallback
 */
-seos_err_t
+OS_Error_t
 OS_LoggerConsumerCallback_ctor(
     OS_LoggerConsumerCallback_t*             self,
     OS_LoggerConsumerCallback_getSenderId_t  get_sender_id,

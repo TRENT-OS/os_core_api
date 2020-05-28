@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stddef.h>
 
@@ -60,7 +60,7 @@ typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the MAC object failed
  */
-seos_err_t
+OS_Error_t
 OS_CryptoMac_init(
     OS_CryptoMac_Handle_t*   hMac,
     const OS_Crypto_Handle_t hCrypto,
@@ -75,7 +75,7 @@ OS_CryptoMac_init(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoMac_free(
     OS_CryptoMac_Handle_t hMac);
 
@@ -100,7 +100,7 @@ OS_CryptoMac_free(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p secretSize is greater than
  *   `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoMac_start(
     OS_CryptoMac_Handle_t hMac,
     const void*           secret,
@@ -124,7 +124,7 @@ OS_CryptoMac_start(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *   `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoMac_process(
     OS_CryptoMac_Handle_t hMac,
     const void*           data,
@@ -154,7 +154,7 @@ OS_CryptoMac_process(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoMac_finalize(
     OS_CryptoMac_Handle_t hMac,
     void*                 auth,

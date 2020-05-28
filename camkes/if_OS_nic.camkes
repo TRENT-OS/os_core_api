@@ -8,14 +8,14 @@
 
 procedure if_OS_nic {
 
-    include "SeosError.h";
+    include "OS_Error.h";
 
-    seos_err_t
+    OS_Error_t
     tx_data(
         inout  size_t  len
     );
 
-    seos_err_t
+    OS_Error_t
     get_mac(void);
 
 };

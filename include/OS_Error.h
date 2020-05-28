@@ -1,5 +1,5 @@
 /*
- *  SEOS return codes
+ *  OS return codes
  *
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
  */
@@ -88,7 +88,7 @@ typedef enum
     SEOS_ERROR_GENERIC,                          /**< general error, not further details available */
     SEOS_SUCCESS                                 /**< operation successful */
 }
-seos_err_t;
+OS_Error_t;
 
 static_assert(SEOS_SUCCESS == 0, "SEOS_SUCCESS_MUST BE 0");
 

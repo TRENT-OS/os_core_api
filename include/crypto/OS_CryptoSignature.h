@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stddef.h>
 
@@ -62,7 +62,7 @@ typedef OS_Crypto_Object_t* OS_CryptoSignature_Handle_t;
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the digest failed
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  */
-seos_err_t
+OS_Error_t
 OS_CryptoSignature_init(
     OS_CryptoSignature_Handle_t*   hSig,
     const OS_Crypto_Handle_t       hCrypto,
@@ -81,7 +81,7 @@ OS_CryptoSignature_init(
  * @retval SEOS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoSignature_free(
     OS_CryptoSignature_Handle_t hSig);
 
@@ -110,7 +110,7 @@ OS_CryptoSignature_free(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoSignature_sign(
     OS_CryptoSignature_Handle_t hSig,
     const void*                 hash,
@@ -140,7 +140,7 @@ OS_CryptoSignature_sign(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
  *  greater than `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoSignature_verify(
     OS_CryptoSignature_Handle_t hSig,
     const void*                 hash,

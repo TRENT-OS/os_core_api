@@ -16,7 +16,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -117,7 +117,7 @@ typedef void*
  *
  * @ingroup OS_LoggerListT
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerListT_insert_t)(
     OS_LoggerNodeT_Handle_t* current,
     OS_LoggerNodeT_Handle_t* new_Node);
@@ -133,7 +133,7 @@ typedef seos_err_t
  *
  * @ingroup OS_LoggerListT
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerListT_delete_t)(OS_LoggerNodeT_Handle_t* current);
 
 

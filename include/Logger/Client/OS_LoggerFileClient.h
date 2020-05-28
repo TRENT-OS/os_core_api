@@ -22,7 +22,7 @@
  *
  * @ingroup     OS_LoggerClient
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Client/OS_LoggerFileClientCallback.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -68,7 +68,7 @@ typedef void
  *
  * @ingroup OS_LoggerFileClient
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerFileClient_read_t)(
     OS_LoggerFileClient_Handle_t* self,
     const char* filename,
@@ -120,7 +120,7 @@ struct OS_LoggerFileClient_Handle
  *
  * @ingroup OS_LoggerFileClient
 */
-seos_err_t
+OS_Error_t
 OS_LoggerFileClient_ctor(
     OS_LoggerFileClient_Handle_t* self,
     void* src_buf,
@@ -159,7 +159,7 @@ OS_LoggerFileClient_dtor(OS_LoggerFileClient_Handle_t* self);
  *
  * @ingroup OS_LoggerFileClient
 */
-seos_err_t
+OS_Error_t
 OS_LoggerFileClient_read(
     OS_LoggerFileClient_Handle_t* self,
     const char* filename,

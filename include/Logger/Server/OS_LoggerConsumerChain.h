@@ -24,7 +24,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Server/OS_LoggerConsumer.h"
 #include "Logger/Server/OS_LoggerListT.h"
 #include <stdbool.h>
@@ -58,7 +58,7 @@ typedef void
  *
  * @ingroup OS_LoggerConsumerChain
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerConsumerChain_append_t)(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -72,7 +72,7 @@ typedef seos_err_t
  *
  * @ingroup OS_LoggerConsumerChain
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerConsumerChain_remove_t)(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -173,7 +173,7 @@ OS_LoggerConsumerChain_dtor(void);
  *
  * @ingroup OS_LoggerConsumerChain
 */
-seos_err_t
+OS_Error_t
 OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
 
 
@@ -190,7 +190,7 @@ OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
  *
  * @ingroup OS_LoggerConsumerChain
 */
-seos_err_t
+OS_Error_t
 OS_LoggerConsumerChain_remove(OS_LoggerConsumer_Handle_t* consumer);
 
 

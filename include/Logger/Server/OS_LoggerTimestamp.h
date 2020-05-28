@@ -21,7 +21,7 @@
  *
  * @ingroup     OS_LoggerServer, OS_LoggerClient
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -63,7 +63,7 @@ typedef void
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerTimestamp_create_t)(const char* date, const char* time);
 
 
@@ -79,7 +79,7 @@ typedef seos_err_t
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerTimestamp_getTime_t)(
     OS_LoggerTimestamp_Handle_t* t_stamp,
     uint8_t hours,
@@ -98,7 +98,7 @@ typedef seos_err_t
  *
  * @ingroup OS_LoggerTimestamp
 */
-typedef seos_err_t
+typedef OS_Error_t
 (*OS_LoggerTimestamp_getTimestamp_t)(
     OS_LoggerTime_Handle_t* tm,
     OS_LoggerTimestamp_Handle_t* t_stamp);
@@ -193,7 +193,7 @@ OS_LoggerTimestamp_dtor(void);
  *
  * @ingroup OS_LoggerTimestamp
 */
-seos_err_t
+OS_Error_t
 OS_LoggerTimestamp_create(const char* date, const char* time);
 
 
@@ -213,7 +213,7 @@ OS_LoggerTimestamp_create(const char* date, const char* time);
  *
  * @ingroup OS_LoggerTimestamp
 */
-seos_err_t
+OS_Error_t
 OS_LoggerTimestamp_getTime(
     OS_LoggerTimestamp_Handle_t* t_stamp,
     uint8_t hours,
@@ -235,7 +235,7 @@ OS_LoggerTimestamp_getTime(
  *
  * @ingroup OS_LoggerTimestamp
 */
-seos_err_t
+OS_Error_t
 OS_LoggerTimestamp_getTimestamp(
     OS_LoggerTime_Handle_t* tm,
     OS_LoggerTimestamp_Handle_t* t_stamp);

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -393,7 +393,7 @@ typedef struct
  * @retval SEOS_ERROR_ABORTED if an internal error occured during cryptographic
  *  operations
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_generate(
     OS_CryptoKey_Handle_t*     hKey,
     const OS_Crypto_Handle_t   hCrypto,
@@ -461,7 +461,7 @@ OS_CryptoKey_generate(
  *  for algorithms where it is discretely defined (e.g., 120 bit key for AES)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_import(
     OS_CryptoKey_Handle_t*     hKey,
     const OS_Crypto_Handle_t   hCrypto,
@@ -486,7 +486,7 @@ OS_CryptoKey_import(
  * \p bits is in an invalid range for those algorithms which accept a range (e.g. DH)
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of any of the keys failed
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_makePublic(
     OS_CryptoKey_Handle_t*       hPubKey,
     const OS_Crypto_Handle_t     hCrypto,
@@ -505,7 +505,7 @@ OS_CryptoKey_makePublic(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_free(
     OS_CryptoKey_Handle_t hKey);
 
@@ -533,7 +533,7 @@ OS_CryptoKey_free(
  * @retval SEOS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
  *  set during creation of the key object
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_export(
     const OS_CryptoKey_Handle_t hKey,
     OS_CryptoKey_Data_t*        keyData);
@@ -561,7 +561,7 @@ OS_CryptoKey_export(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_getParams(
     const OS_CryptoKey_Handle_t hKey,
     void*                       param,
@@ -580,7 +580,7 @@ OS_CryptoKey_getParams(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_getAttribs(
     const OS_CryptoKey_Handle_t hKey,
     OS_CryptoKey_Attrib_t*      attribs);
@@ -608,7 +608,7 @@ OS_CryptoKey_getAttribs(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoKey_loadParams(
     OS_Crypto_Handle_t         hCrypto,
     const OS_CryptoKey_Param_t name,

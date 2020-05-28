@@ -283,7 +283,7 @@ typedef struct
  * @retval SEOS_ERROR_NOT_SUPPORTED if any of the choices in \p policy are at this
  *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
-seos_err_t
+OS_Error_t
 OS_Tls_init(
     OS_Tls_Handle_t*       hTls,
     const OS_Tls_Config_t* cfg);
@@ -310,7 +310,7 @@ OS_Tls_init(
  *  NULL pointer, invalid sizes, etc.)
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not already established
  */
-seos_err_t
+OS_Error_t
 OS_Tls_handshake(
     OS_Tls_Handle_t hTls);
 
@@ -336,7 +336,7 @@ OS_Tls_handshake(
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
-seos_err_t
+OS_Error_t
 OS_Tls_write(
     OS_Tls_Handle_t hTls,
     const void*     data,
@@ -367,7 +367,7 @@ OS_Tls_write(
  *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
  * @retval SEOS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
-seos_err_t
+OS_Error_t
 OS_Tls_read(
     OS_Tls_Handle_t hTls,
     void*           data,
@@ -390,7 +390,7 @@ OS_Tls_read(
  *  NULL pointer, invalid sizes, etc.)
  * @retval SEOS_ERROR_ABORTED if the re-set failed
  */
-seos_err_t
+OS_Error_t
 OS_Tls_reset(
     OS_Tls_Handle_t hTls);
 
@@ -406,7 +406,7 @@ OS_Tls_reset(
  * @retval SEOS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
  */
-seos_err_t
+OS_Error_t
 OS_Tls_free(
     OS_Tls_Handle_t hTls);
 

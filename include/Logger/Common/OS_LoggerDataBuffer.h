@@ -15,7 +15,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "Logger/Server/OS_LoggerTimestamp.h"
 #include <stdint.h>
@@ -92,7 +92,7 @@ OS_LoggerDataBuffer_setClientLogLevel(void* buf, uint8_t log_level_client);
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_setLogMessage(void* buf, const char* msg);
 
 
@@ -111,7 +111,7 @@ OS_LoggerDataBuffer_setLogMessage(void* buf, const char* msg);
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_getServerLogLevel(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -132,7 +132,7 @@ OS_LoggerDataBuffer_getServerLogLevel(
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_getClientLogLevel(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -153,7 +153,7 @@ OS_LoggerDataBuffer_getClientLogLevel(
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_getLogMessage(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -180,7 +180,7 @@ OS_LoggerDataBuffer_getLogMessage(
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_getInfo(
     void* buf,
     OS_LoggerDataBuffer_Handle_t* log_databuffer);
@@ -199,5 +199,5 @@ OS_LoggerDataBuffer_getInfo(
  *
  * @ingroup OS_LoggerDataBuffer
 */
-seos_err_t
+OS_Error_t
 OS_LoggerDataBuffer_clear(void* buf);

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 
 /**
  * Length of MD5 hash in bytes.
@@ -59,7 +59,7 @@ typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
  * @retval SEOS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
  */
-seos_err_t
+OS_Error_t
 OS_CryptoDigest_init(
     OS_CryptoDigest_Handle_t*   hDigest,
     const OS_Crypto_Handle_t    hCrypto,
@@ -74,7 +74,7 @@ OS_CryptoDigest_init(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoDigest_free(
     OS_CryptoDigest_Handle_t hDigest);
 
@@ -91,7 +91,7 @@ OS_CryptoDigest_free(
  * @retval SEOS_SUCCESS if operation succeeded
  * @retval SEOS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
-seos_err_t
+OS_Error_t
 OS_CryptoDigest_clone(
     OS_CryptoDigest_Handle_t       hDstDigest,
     const OS_CryptoDigest_Handle_t hSrcDigest);
@@ -114,7 +114,7 @@ OS_CryptoDigest_clone(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoDigest_process(
     OS_CryptoDigest_Handle_t hDigest,
     const void*              data,
@@ -145,7 +145,7 @@ OS_CryptoDigest_process(
  * @retval SEOS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
  *  `OS_Crypto_SIZE_DATAPORT`
  */
-seos_err_t
+OS_Error_t
 OS_CryptoDigest_finalize(
     OS_CryptoDigest_Handle_t hDigest,
     void*                    digest,

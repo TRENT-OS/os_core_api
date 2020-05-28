@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "OS_Crypto.h"
 
 #include "LibIO/FileStreamFactory.h"
@@ -32,10 +32,10 @@ typedef struct OS_Keystore OS_Keystore_t, *OS_Keystore_Handle_t;
  * @param hCrypto           handle to initialized OS_Crypto instance
  * @param name              name keystore
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_init(
     OS_Keystore_Handle_t* hKeystore,
     FileStreamFactory*    fileStreamFactory,
@@ -47,10 +47,10 @@ OS_Keystore_init(
  *
  * @param hKeystore  keystore handle
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_free(
     OS_Keystore_Handle_t hKeystore);
 
@@ -62,10 +62,10 @@ OS_Keystore_free(
  * @param keyData    buffer containing the key blob
  * @param keySize    size of the key blob in bytes
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_storeKey(
     OS_Keystore_Handle_t hKeystore,
     const char*          name,
@@ -80,10 +80,10 @@ OS_Keystore_storeKey(
  * @param[out]  keyData    buffer which will be filled with a key blob
  * @param[out]  keySize    variable which will be set to the key blob size
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_loadKey(
     OS_Keystore_Handle_t hKeystore,
     const char*          name,
@@ -96,10 +96,10 @@ OS_Keystore_loadKey(
  * @param hKeystore  pointer to hKeystore
  * @param name       name of the key to delete
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_deleteKey(
     OS_Keystore_Handle_t hKeystore,
     const char*          name);
@@ -111,10 +111,10 @@ OS_Keystore_deleteKey(
  * @param name           name of the key to copy
  * @param hDestKeystore  destination keystore handle
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_copyKey(
     OS_Keystore_Handle_t hKeystore,
     const char*          name,
@@ -129,10 +129,10 @@ OS_Keystore_copyKey(
  * @param name           name of the key to move
  * @param hDestKeystore  destination keystore handle
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_moveKey(
     OS_Keystore_Handle_t hKeystore,
     const char*          name,
@@ -143,10 +143,10 @@ OS_Keystore_moveKey(
  *
  * @param hKeystore  keystore handle
  *
- * @return seos_err_t
+ * @return OS_Error_t
  *
  */
-seos_err_t
+OS_Error_t
 OS_Keystore_wipeKeystore(
     OS_Keystore_Handle_t hKeystore);
 

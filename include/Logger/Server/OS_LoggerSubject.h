@@ -34,7 +34,7 @@
  *
  * @ingroup     OS_LoggerAbstractSubject
 */
-#include "SeosError.h"
+#include "OS_Error.h"
 #include "Logger/Server/OS_LoggerAbstractSubject.h"
 #include <stdbool.h>
 
@@ -101,7 +101,7 @@ OS_LoggerSubject_dtor(OS_LoggerAbstractSubject_Handle_t* self);
  *
  * @ingroup OS_LoggerSubject
 */
-seos_err_t
+OS_Error_t
 OS_LoggerSubject_attach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);
@@ -122,7 +122,7 @@ OS_LoggerSubject_attach(
  *
  * @ingroup OS_LoggerSubject
 */
-seos_err_t
+OS_Error_t
 OS_LoggerSubject_detach(
     OS_LoggerAbstractSubject_Handle_t* self,
     OS_LoggerAbstractObserver_Handle_t* observer);
