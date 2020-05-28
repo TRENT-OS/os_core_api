@@ -92,7 +92,7 @@ OS_LoggerSubject_ctor(OS_LoggerSubject_Handle_t* self);
 OS_Error_t
 OS_LoggerSubject_attach(
     OS_LoggerAbstractSubject_Handle_t* self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**
@@ -113,7 +113,7 @@ OS_LoggerSubject_attach(
 OS_Error_t
 OS_LoggerSubject_detach(
     OS_LoggerAbstractSubject_Handle_t* self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**

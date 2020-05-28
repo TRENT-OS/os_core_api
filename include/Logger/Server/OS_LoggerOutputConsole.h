@@ -22,7 +22,6 @@
  *
  * @ingroup     OS_LoggerOutput
 */
-#include "OS_Error.h"
 #include "Logger/Server/OS_LoggerOutput.h"
 
 
@@ -42,4 +41,4 @@
 OS_Error_t
 OS_LoggerOutputConsole_ctor(
     OS_LoggerOutput_Handle_t* self,
-    OS_LoggerFormat_Handle_t* log_format);
+    OS_LoggerFormat_Handle_t* logFormat);

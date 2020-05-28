@@ -26,7 +26,6 @@
 */
 #include "Logger/Server/OS_LoggerOutput.h"
 
-
 /**
  * @details %OS_LoggerOutputFileSystem_ctor is the constructor.
  *
@@ -43,4 +42,4 @@
 OS_Error_t
 OS_LoggerOutputFileSystem_ctor(
     OS_LoggerOutput_Handle_t* self,
-    OS_LoggerFormat_Handle_t* log_format);
+    OS_LoggerFormat_Handle_t* logFormat);

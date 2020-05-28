@@ -38,7 +38,7 @@
  * @ingroup     OS_LoggerServer
 */
 #include "OS_Error.h"
-#include "Logger/Server/OS_LoggerAbstractObserver.h"
+#include "Logger/Server/OS_LoggerOutput.h"
 #include <stdbool.h>
 
 /**
@@ -63,7 +63,7 @@ struct OS_LoggerAbstractSubject_Handle OS_LoggerAbstractSubject_Handle_t;
 typedef OS_Error_t
 (*OS_LoggerAbstractSubject_attach_t)(
     OS_LoggerAbstractSubject_Handle_t* self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**
@@ -80,7 +80,7 @@ typedef OS_Error_t
 typedef OS_Error_t
 (*OS_LoggerAbstractSubject_detach_t)(
     OS_LoggerAbstractSubject_Handle_t*  self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**
@@ -136,14 +136,14 @@ struct OS_LoggerAbstractSubject_Handle
  * @return  An error code.
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
- * @retval  other                      - Implementation specific.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
 OS_Error_t
 OS_LoggerAbstractSubject_attach(
     OS_LoggerAbstractSubject_Handle_t* self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**
@@ -156,14 +156,14 @@ OS_LoggerAbstractSubject_attach(
  * @return  An error code.
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
- * @retval  other                      - Implementation specific.
+ * @retval  other                        - Implementation specific.
  *
  * @ingroup OS_LoggerAbstractSubject
 */
 OS_Error_t
 OS_LoggerAbstractSubject_detach(
     OS_LoggerAbstractSubject_Handle_t* self,
-    OS_LoggerAbstractObserver_Handle_t* observer);
+    OS_LoggerOutput_Handle_t* observer);
 
 
 /**
