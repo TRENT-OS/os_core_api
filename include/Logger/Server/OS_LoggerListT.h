@@ -17,7 +17,6 @@
  * @ingroup     OS_LoggerServer
 */
 #include "OS_Error.h"
-#include <stdint.h>
 #include <stdbool.h>
 
 /**
