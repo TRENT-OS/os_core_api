@@ -2,17 +2,17 @@
 
 /**
  * @file
- * @brief List interface and implementation.
+ * @brief Generic intrusive linked list.
  */
 #pragma once
 
-
 /**
- * @defgroup    OS_LoggerListT List interface and implementation
+ * @defgroup    OS_LoggerListT Generic intrusive linked list
  *
- * @brief       Helper to the manager list objects.
- * @details     This object provides the interface to deal with lists without
- *              the malloc space.
+ * @brief       Generic intrusive linked list.
+ *
+ * This module provides the interface to deal with the intrusive list that does
+ * not require a dynamic allocation.
  *
  * @ingroup     OS_LoggerServer
 */
@@ -21,78 +21,165 @@
 #include <stdbool.h>
 
 /**
- * @details OS_LoggerNodeT_Handle_t contains the node's previous and next
- *          objects.
+ * @brief Linked list's node.
+ *
+ * Node object stores the necessary contex information for the linked list to be
+ * useful.
+ *
+ * Typically it is a member of a data structure that is a part of the list i.e.:
+ *
+ * @code
+ * typedef struct Data
+ * {
+ *      OS_LoggerNodeT_Handle_t node;
+ *      int id;
+ * } Data_t;
+ *
+ * Data_t firstElement  = { .id = 1 };
+ * Data_t middleElement = { .id = 2 };
+ * Data_t lastElement   = { .id = 3 };
+ *
+ * OS_LoggerListT_insert(firstElement.node, middleElement.node);
+ * OS_LoggerListT_insert(middleElement.node, lastElement.node);
+ *
+ * for(
+ *      OS_LoggerNodeT_Handle_t* iterator = firstElement.node;
+ *      NULL != iterator;
+ *      iterator = (OS_LoggerNodeT_Handle_t*)OS_LoggerListT_get_next(iterator);
+ * )
+ * {
+ *      printf("Acessing element with id: %d\n", ((Data_t*)iterator)->id);
+ * }
+ * @endcode
+ *
+ * @note    Typically node will be a first member of the data structure to be
+ *          placed in the list, so that the underlaying data can be accessed
+ *          with casting.
+ * @note    List can contain objects of different types:
+ *
+ * @code
+ *
+ * typdef struct Base
+ * {
+ *      OS_LoggerNodeT_Handle_t node;
+ *
+ *      enum Type
+ *      {
+ *          FOO,
+ *          BAR
+ *      } type;
+ * } Base_t;
+ *
+ * typedef struct Foo
+ * {
+ *      Base_t base;
+ *      char foo;
+ * } Foo_t;
+ *
+ * typedef struct Bar
+ * {
+ *      Base_t base;
+ *      int bar;
+ * } Bar_t;
+ *
+ * Foo_t  firstElement = { .foo = 'a', .base.type = FOO };
+ * Bar_t secondElement = { .bar = 2,   .base.type = BAR };
+ * Foo_t  thirdElement = { .foo = 'c', .base.type = FOO };
+ * Bar_t   lastElement = { .bar = 3,   .base.type = BAR };
+ *
+ * OS_LoggerListT_insert( firstElement.base.node, secondElement.base.node);
+ * OS_LoggerListT_insert(secondElement.base.node,  thirdElement.base.node);
+ * OS_LoggerListT_insert( thirdElement.base.node,   lastElement.base.node);
+ *
+ * for(
+ *      OS_LoggerNodeT_Handle_t* iterator = firstElement.base.node;
+ *      NULL != iterator;
+ *      iterator = (OS_LoggerNodeT_Handle_t*)OS_LoggerListT_get_next(iterator);
+ * )
+ * {
+ *      switch(((Base_t*)iterator)->type)
+ *      {
+ *          case FOO:
+ *          {
+ *              printf("Foo says: %c", ((Foo_t*)iterator)->foo);
+ *              break;
+ *          }
+ *          case BAR:
+ *          {
+ *              printf("Bar says: %d", ((Bar_t*)iterator)->bar);
+ *              break;
+ *          }
+ *          default:
+ *          {
+ *              printf("Unsupported type!");
+ *              break;
+ *          }
+ *      }
+ * }
+ * @endcode
  *
  * @ingroup OS_LoggerListT
 */
 typedef struct OS_LoggerNodeT_Handle
 {
-    void* prev; /**< (pointer) node to previous object */
-    void* next; /**< (pointer) node to next object */
+    void* prev; //!< Pointer to the previous list's element.
+    void* next; //!< Pointer to the next list's element.
 } OS_LoggerNodeT_Handle_t;
 
 /**
- * @details OS_LoggerListT_hasPrevious defines the interface for the function
- *          pointer to check if the list has the previous object.
+ * @brief   Checks if the given list element has the reference to the previous
+ *          element.
  *
- * @param   current:    pointer to a list object
- *
- * @return  a status code
- *
- * @ingroup OS_LoggerListT
-*/
-bool
-OS_LoggerListT_hasPrevious(OS_LoggerNodeT_Handle_t* current);
-
-/**
- * @details OS_LoggerListT_hasNext defines the interface for the function
- *          pointer to check if the list has the next object.
- *
- * @param   current:    pointer to a list object
- *
- * @return  a status code
+ * @retval  true  - if previous element is referenced.
+ * @retval  false - if previous element is NOT referenced.
  *
  * @ingroup OS_LoggerListT
 */
 bool
-OS_LoggerListT_hasNext(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_hasPrevious(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_getPrevious defines the interface for the function
- *          pointer to get the previous object from the list.
+ * @brief   Checks if the given list element has the reference to the next
+ *          element.
  *
- * @param   current:    pointer to the list object
+ * @retval  true  - if next element is referenced.
+ * @retval  false - if next element is NOT referenced.
  *
- * @return  pointer to the list object
+ * @ingroup OS_LoggerListT
+*/
+bool
+OS_LoggerListT_hasNext(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
+
+/**
+ * @brief   Gets the previous element from the list.
+ *
+ * @return  Pointer to the previous list's element.
  *
  * @ingroup OS_LoggerListT
 */
 void*
-OS_LoggerListT_getPrevious(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_getPrevious(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_getNext defines the interface for the function
- *          pointer to get the next object from the list.
+ * @brief   Gets the next element from the list.
  *
- * @param   current:    pointer to a list object
- *
- * @return  pointer to list object
+ * @return  Pointer to the next list's element.
  *
  * @ingroup OS_LoggerListT
 */
 void*
-OS_LoggerListT_getNext(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_getNext(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_insert defines the interface for the function
- *          pointer to insert a new object in the list.
- *
- *          The new object will be placed as next object after the current
- *          object.
- *
- * @param   current:    pointer to the list object
- * @param   new_node:   pointer to the list object
+ * @brief   Inserts a new element into the list.
  *
  * @return  An error code.
  *
@@ -100,58 +187,58 @@ OS_LoggerListT_getNext(OS_LoggerNodeT_Handle_t* current);
 */
 OS_Error_t
 OS_LoggerListT_insert(
-    OS_LoggerNodeT_Handle_t* current,
-    OS_LoggerNodeT_Handle_t* new_Node);
-
+    OS_LoggerNodeT_Handle_t* current, //!< [in] Pointer to the current element.
+    OS_LoggerNodeT_Handle_t* newNode  //!< [in] Pointer to the new element.
+);
 
 /**
- * @details OS_LoggerListT_delete defines the interface for the function
- *          pointer to delete an object from the list.
+ * @brief   Erases an element from the list.
  *
- * @param   current:    pointer to the list object
+ * @note    It is users responsibility to delete, if necessary, the given
+ *          object!
  *
  * @return  An error code.
  *
  * @ingroup OS_LoggerListT
 */
 OS_Error_t
-OS_LoggerListT_erase(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_erase(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_getFirst defines the interface for the function
- *          pointer to get the first object from the list.
+ * @brief   Gets the first list's element.
  *
- * @param   current:    pointer to the list object
- *
- * @return  pointer to the list object
+ * @return  Pointer to the first list's element.
  *
  * @ingroup OS_LoggerListT
 */
 void*
-OS_LoggerListT_getFirst(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_getFirst(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_getLast defines the interface for the function
- *          pointer to get the last object from the list.
+ * @brief   Gets the last list's element.
  *
- * @param   current:    pointer to the list object
- *
- * @return  pointer to the list object
+ * @return  Pointer to the last list's element.
  *
  * @ingroup OS_LoggerListT
 */
 void*
-OS_LoggerListT_getLast(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_getLast(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
 
 /**
- * @details OS_LoggerListT_isInside defines the interface for function pointer
- *          to check if the current object is inserted in the list.
+ * @brief   Checks if the given element is in the list.
  *
- * @param   current:    pointer to the list object
- *
- * @return  the status code
+ * @retval  true  - if the element is in the list.
+ * @retval  false - if the element is NOT in the list.
  *
  * @ingroup OS_LoggerListT
 */
 bool
-OS_LoggerListT_isInside(OS_LoggerNodeT_Handle_t* current);
+OS_LoggerListT_isInside(
+    OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
+);
