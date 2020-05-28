@@ -16,7 +16,6 @@
  *
  * @ingroup     OS_LoggerServer
 */
-#include "OS_Error.h"
 #include <stdbool.h>
 
 /**
@@ -180,11 +179,11 @@ OS_LoggerListT_getNext(
 /**
  * @brief   Inserts a new element into the list.
  *
- * @return  An error code.
+ * @return  Pointer to the inserted element.
  *
  * @ingroup OS_LoggerListT
 */
-OS_Error_t
+void*
 OS_LoggerListT_insert(
     OS_LoggerNodeT_Handle_t* current, //!< [in] Pointer to the current element.
     OS_LoggerNodeT_Handle_t* newNode  //!< [in] Pointer to the new element.
@@ -196,11 +195,13 @@ OS_LoggerListT_insert(
  * @note    It is users responsibility to delete, if necessary, the given
  *          object!
  *
- * @return  An error code.
+ * @return  Pointer to the element following the last removed element.
+ *
+ * @retval  NULL - if current is NULL or erasing last element in the list.
  *
  * @ingroup OS_LoggerListT
 */
-OS_Error_t
+void*
 OS_LoggerListT_erase(
     OS_LoggerNodeT_Handle_t* current //!< [in] Pointer to the current element.
 );
