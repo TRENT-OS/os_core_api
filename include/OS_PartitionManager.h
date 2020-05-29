@@ -10,7 +10,7 @@
  */
 
 /**
- * @defgroup    seos_pm Partition Manager API
+ * @defgroup    OS_PartitionManager Partition Manager API
  *
  * @brief       Partition Manager API
  *
@@ -22,7 +22,7 @@
 
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
 
-#include "seos_pm_conf.h"
+#include "OS_PartitionManagerConf.h"
 #include <string.h>
 
 #include <camkes.h>
@@ -39,7 +39,7 @@
  * @brief   The CAmkES data buffer for sending data over the component's
  *          interface.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 dataport_ptr_t buffer_send;
 
@@ -47,7 +47,7 @@ dataport_ptr_t buffer_send;
  * @brief   The CAmkES data buffer for receiving data from the component's
  *          interface.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 dataport_ptr_t buffer_receive;
 
@@ -60,8 +60,8 @@ dataport_ptr_t buffer_receive;
 #include "OS_Error.h"
 
 // Include path to partition_manager must be set in CMakeLists.txt
-#include "seos_pm_conf.h"
-#include "seos_pm_datatypes.h"
+#include "OS_PartitionManagerConf.h"
+#include "OS_PartitionManagerDataTypes.h"
 
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_LIB)
 /**
@@ -107,12 +107,12 @@ dataport_ptr_t buffer_receive;
  * @retval  OS_ERROR_PM_PARTITION_ID             If the partition id is wrong
  *                                               or partition id doesn't exist.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_init(
+OS_PartitionManager_init(
     void* nvm_object /**< [in,out] The NVM object. */)
 {
     return api_pm_partition_manager_init(nvm_object);
@@ -131,12 +131,12 @@ partition_manager_init(
  * @retval  OS_ERROR_PM_INIT            If the partition manager is uninitialized.
  * @retval  OS_ERROR_PM_OPEN            If no open operation has been done.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_open(
+OS_PartitionManager_open(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
@@ -180,12 +180,12 @@ partition_manager_open(
  * @retval  OS_ERROR_PM_OFFSET            if offset is out of range
  * @retval  OS_ERROR_PM_READ              if no read operation has been done
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_read(
+OS_PartitionManager_read(
     uint8_t partition_id,   /**< [in]  Partition's Identifier. */
     uint64_t offset,        /**< [in]  Offset when reading from partition. */
     uint64_t len,           /**< [in]  Bytes count to read. */
@@ -194,7 +194,7 @@ partition_manager_read(
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     OS_Error_t retval = OS_SUCCESS;
     const void* buf = (void*)0;
-    pm_partition_data_t pm_partition_data;
+    OS_PartitionManagerDataTypes_PartitionData_t pm_partition_data;
 
     // checks databuffer length
     if (DATABUFFER_SIZE < len)
@@ -258,19 +258,19 @@ partition_manager_read(
  * @retval  OS_ERROR_PM_OFFSET            If offset is out of range.
  * @retval  OS_ERROR_PM_WRITE             If no write operation has been done.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_write(
+OS_PartitionManager_write(
     uint8_t partition_id,   /**< [in]  Partition's identifier. */
     uint64_t offset,        /**< [in]  Offset when writing to the partition. */
     uint64_t len,           /**< [in]  Bytes count to write. */
     const void* buffer      /**< [in]  Writes content from this buffer. */)
 {
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
-    pm_partition_data_t pm_partition_data;
+    OS_PartitionManagerDataTypes_PartitionData_t pm_partition_data;
     OS_Error_t retval = OS_SUCCESS;
 
     // checks databuffer length
@@ -316,12 +316,12 @@ partition_manager_write(
  * @retval  OS_ERROR_PM_INIT            If the partition manager is uninitialized.
  * @retval  OS_ERROR_PM_CLOSE           If no close operation has been done.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_close(
+OS_PartitionManager_close(
     uint8_t partition_id /**< [in] Partition's identifier. */)
 {
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
@@ -344,13 +344,14 @@ partition_manager_close(
  * @retval  OS_ERROR_PM_INIT           If the partition manager is uninitialized.
  * @retval  OS_ERROR_PM_GET_STRUCT     If failed to get a structure.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_get_info_disk(
-    pm_disk_data_t* info_disk /**< [out] Disk data (pointer to the struct). */)
+OS_PartitionManager_getInfoDisk(
+    OS_PartitionManagerDataTypes_DiskData_t*
+    info_disk /**< [out] Disk data (pointer to the struct). */)
 {
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_get_info_disk(info_disk);
@@ -374,15 +375,15 @@ partition_manager_get_info_disk(
  * @retval  OS_ERROR_PM_INIT           If the partition manager is uninitialized.
  * @retval  OS_ERROR_PM_GET_STRUCT     If failed to get a struct.
  *
- * @ingroup seos_pm_api
+ * @ingroup OS_PartitionManager
  */
 static
 __attribute__((unused))
 OS_Error_t
-partition_manager_get_info_partition(
+OS_PartitionManager_getInfoPartition(
     uint8_t partition_id,               /**< [in]  Partition's identifier. */
-    pm_partition_data_t* info_partition /**< [out] Partition's data (pointer to
-                                                   the struct) */)
+    OS_PartitionManagerDataTypes_PartitionData_t*
+    info_partition /**< [out] Partition's data (pointer to the struct) */)
 {
 #if defined(OS_PARTITION_MANAGER_BUILD_AS_COMPONENT)
     return api_pm_component_partition_manager_get_info_partition(partition_id,

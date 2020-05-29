@@ -17,4 +17,4 @@ typedef struct
 {
     void*   buffer;
     size_t  len;
-} OS_shared_buffer_t;
+} OS_SharedBuffer_t;

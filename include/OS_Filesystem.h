@@ -9,7 +9,7 @@
 */
 
 /**
- * @defgroup seos_fs TRENTOS-M filesystem core
+ * @defgroup OS_Filesystem TRENTOS-M filesystem core
  *
  * @brief   TRENTOS-M filesystem core.
  *
@@ -30,14 +30,14 @@
 */
 
 /**
- * @defgroup    seos_fs_api TRENTOS-M filesystem API translation layer
+ * @defgroup    OS_Filesystem TRENTOS-M filesystem API translation layer
  *
  * @brief       Translates filesystem library function with different prefixes,
  *              because of different usages, to API function name uniformly.
  *
  * @see Filesystem core README.md.
  *
- * @ingroup     seos_fs
+ * @ingroup     OS_Filesystem
 */
 
 
@@ -46,11 +46,11 @@
 #include "OS_Error.h"
 #include <stddef.h>
 
-#include "seos_fs_conf.h"
-#include "seos_fs_datatypes.h"
+#include "OS_FilesystemConf.h"
+#include "OS_FilesystemDataTypes.h"
 
 #if defined(OS_FS_BUILD_AS_COMPONENT)
-#include "seos_fs_conf.h"
+#include "OS_FilesystemConf.h"
 #include <string.h>
 
 #include <camkes.h>
@@ -70,14 +70,14 @@
  * @brief   The CAmkES data buffer for sending data over the component's
  *          interface.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 dataport_ptr_t buffer_send;
 /**
  * @brief   The CAmkES data buffer for receiving data from the component's
  *          interface.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 dataport_ptr_t buffer_receive;
 #elif defined (OS_FS_BUILD_AS_LIB)
@@ -137,7 +137,7 @@ OS_Filesystem_validateFileHandle(
  * @retval  OS_ERROR_FS_INVALID_PARTITION_MODE If the partition's access mode
  *                                             is invalid.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_init(
@@ -166,7 +166,7 @@ OS_Filesystem_init(
  * @retval  >= 0 If handle is valid.
  * @retval  -1   If handle is invalid.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline hPartition_t
 OS_Filesystem_open(
@@ -245,7 +245,7 @@ OS_Filesystem_open(
  * @retval  OS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
  *                                          unsupported.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_create(
@@ -316,7 +316,7 @@ OS_Filesystem_create(
  * @retval  OS_ERROR_INVALID_HANDLE         If partition handle is not valid.
  * @retval  OS_ERROR_FS_MOUNT               If fail to mount a partition.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_mount(
@@ -346,7 +346,7 @@ OS_Filesystem_mount(
  * @retval  OS_ERROR_FS_INVALID_FILESYSTEM  If filesystem type is
  *                                          unsupported.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_unmount(
@@ -383,7 +383,7 @@ OS_Filesystem_unmount(
  * @retval  OS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve handle.
  * @retval  OS_ERROR_FS_OPEN             If partition is not open.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_wipe(
@@ -418,7 +418,7 @@ OS_Filesystem_wipe(
  *                                     deleted.
  * @retval  OS_ERROR_FS_RESOLVE_HANDLE If failed to resolve the handle.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_close(
@@ -463,7 +463,7 @@ OS_Filesystem_close(
  * @retval Pointer to the struct if handle is valid
  * @retval NULL pointer if handle is invalid
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline hFile_t
 OS_Filesystem_openFile(
@@ -504,7 +504,7 @@ OS_Filesystem_openFile(
  * @retval  OS_ERROR_FS_NO_DISK        If partition does doesn't exist.
  * @retval  OS_ERROR_FS_LIB            If library throws an error.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_closeFile(
@@ -544,7 +544,7 @@ OS_Filesystem_closeFile(
  * @retval  OS_ERROR_FS_DATABUFFER_OVERFLOW If the databuffer is too small.
  * @retval  OS_ERROR_FS_RESOLVE_HANDLE      If failed to resolve the handle.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_readFile(
@@ -612,7 +612,7 @@ OS_Filesystem_readFile(
  * @retval  OS_ERROR_FS_DATABUFFER_OVERLOW If databuffer is too small.
  * @retval  OS_ERROR_FS_RESOLVE_HANDLE     If failed to resolve handle.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_writeFile(
@@ -665,7 +665,7 @@ OS_Filesystem_writeFile(
  * @retval  OS_ERROR_FS_LIB              If library throws an error.
  * @retval  OS_ERROR_FS_RESOLVE_HANDLE   If failed to resolve the handle.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline OS_Error_t
 OS_Filesystem_deleteFile(
@@ -692,7 +692,7 @@ OS_Filesystem_deleteFile(
  * @retval  size - File's size if file exists.
  * @retval  -1   - If an error occurred.
  *
- * @ingroup seos_fs_api
+ * @ingroup OS_Filesystem
 */
 static inline int64_t
 OS_Filesystem_getSizeOfFile(

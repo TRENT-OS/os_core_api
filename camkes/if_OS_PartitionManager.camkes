@@ -8,7 +8,7 @@
 
 procedure partition_manager_interface {
     include "OS_Error.h";
-    include "seos_pm_datatypes.h";
+    include "OS_PartitionManagerDataTypes.h";
 
     OS_Error_t
     partition_manager_open(
@@ -34,10 +34,10 @@ procedure partition_manager_interface {
 
     OS_Error_t
     partition_manager_get_info_disk(
-        out pm_disk_data_t info_disk);
+        out OS_PartitionManagerDataTypes_DiskData_t info_disk);
 
     OS_Error_t
     partition_manager_get_info_partition(
             uint8_t             partition_id,
-        out pm_partition_data_t info_partition);
+        out OS_PartitionManagerDataTypes_PartitionData_t info_partition);
 };

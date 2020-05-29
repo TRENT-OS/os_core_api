@@ -15,7 +15,7 @@ extern "C" {
 /**
  * @brief   OS error codes
  *
- * @ingroup seos_error
+ * @ingroup OS_error
 */
 typedef enum
 {
