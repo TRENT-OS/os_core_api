@@ -66,6 +66,29 @@ OS_CryptoDigest_init(
     const OS_CryptoDigest_Alg_t algorithm);
 
 /**
+ * @brief Initialize and clone a DIGEST object.
+ *
+ * This function initializes \p hDigest from the already existing DIGEST object
+ * in \p hSrcDigest and and copies its entire internal state.
+ *
+ * @param hDigest (required) pointer to handle of OS Crypto DIGEST object
+ * @param hCrypto (required) handle of OS Crypto API
+ * @param hSrcDigest (required) handle of OS Crypto DIGEST object
+ *
+ * @return an error code
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_ABORTED if the internal state could not be initialized
+ * @retval OS_ERROR_INVALID_HANDLE if \p hSrcDigest is not a valid handle
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
+ */
+OS_Error_t
+OS_CryptoDigest_clone(
+    OS_CryptoDigest_Handle_t*      hDigest,
+    const OS_Crypto_Handle_t       hCrypto,
+    const OS_CryptoDigest_Handle_t hSrcDigest);
+
+/**
  * @brief Finish a DIGEST object.
  *
  * @param hDigest (required) handle of OS Crypto DIGEST object
@@ -77,24 +100,6 @@ OS_CryptoDigest_init(
 OS_Error_t
 OS_CryptoDigest_free(
     OS_CryptoDigest_Handle_t hDigest);
-
-/**
- * @brief Clone a DIGEST object.
- *
- * This function requires two initialized DIGEST objects; the internal state of
- * \p hDstDigest will be set to the internal state of \p hSrcDigest.
- *
- * @param hDstDigest (required) handle of OS Crypto DIGEST object
- * @param hSrcDigest (required) handle of OS Crypto DIGEST object
- *
- * @return an error code
- * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- */
-OS_Error_t
-OS_CryptoDigest_clone(
-    OS_CryptoDigest_Handle_t       hDstDigest,
-    const OS_CryptoDigest_Handle_t hSrcDigest);
 
 /**
  * @brief Process block of data.

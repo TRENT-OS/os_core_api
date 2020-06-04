@@ -64,15 +64,15 @@ procedure if_OS_Crypto {
         in unsigned int algorithm
     );
     OS_Error_t
+    Digest_clone
+    (
+        inout CryptoLibDigest_ptr pDigestObj,
+        in CryptoLibDigest_cptr srcDigestObj
+    );
+    OS_Error_t
     Digest_free
     (
         in CryptoLibDigest_ptr digestObj
-    );
-    OS_Error_t
-    Digest_clone
-    (
-        in CryptoLibDigest_ptr dstDigObj,
-        in CryptoLibDigest_cptr srcDigObj
     );
     OS_Error_t
     Digest_process
