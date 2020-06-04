@@ -30,6 +30,7 @@
 #define OS_CryptoKey_SIZE_DH_MAX       512     ///< max 4096 bit
 #define OS_CryptoKey_SIZE_DH_MIN       8       ///< min 64 bit
 #define OS_CryptoKey_SIZE_ECC          32      ///< always 256 bit
+#define OS_CryptoKey_SIZE_MAC_MAX      1024    ///< max 8096 bit
 
 /**
  * These need to be set to these exact values to match values expected by the
@@ -112,7 +113,11 @@ typedef enum
     /**
      * Key on generic Elliptic Curve for public operations; currently not used.
      */
-    OS_CryptoKey_TYPE_ECC_PUB
+    OS_CryptoKey_TYPE_ECC_PUB,
+    /**
+     * Key for MAC computation
+     */
+    OS_CryptoKey_TYPE_MAC
 } OS_CryptoKey_Type_t;
 
 /**
@@ -250,6 +255,15 @@ typedef struct
 } OS_CryptoKey_DhPrv_t;
 
 /**
+ * Struct for a MAC Key.
+ */
+typedef struct
+{
+    uint8_t bytes[OS_CryptoKey_SIZE_MAC_MAX];
+    uint32_t len;
+} OS_CryptoKey_Mac_t;
+
+/**
  * Struct for attributes associated with every key.
  */
 typedef struct
@@ -328,6 +342,7 @@ typedef struct
             OS_CryptoKey_RsaRub_t pub;
         } rsa;
         OS_CryptoKey_Aes_t aes;
+        OS_CryptoKey_Mac_t mac;
     } data;
 } OS_CryptoKey_Data_t;
 
