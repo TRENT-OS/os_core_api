@@ -29,18 +29,13 @@ procedure if_OS_Crypto {
     Mac_init
     (
         inout CryptoLibMac_ptr pMacObj,
+        in CryptoLibKey_cptr keyObj,
         in unsigned int algorithm
     );
     OS_Error_t
     Mac_free
     (
         in CryptoLibMac_ptr macObj
-    );
-    OS_Error_t
-    Mac_start
-    (
-        in CryptoLibMac_ptr macObj,
-        in size_t secretSize
     );
     OS_Error_t
     Mac_process

@@ -49,8 +49,12 @@ typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
 /**
  * @brief Initialize a message authentication code (MAC) object.
  *
+ * Initializes a MAC object and already feeds the secret key given in
+ * \p hKey into the internal state.
+ *
  * @param hMac (required) pointer to handle of OS Crypto MAC object
  * @param hCrypto (required) handle of OS Crypto API
+ * @param hKey (required) handle of OS Crypto Key object
  * @param algorithm (required) MAC algorithm to use
  *
  * @return an error code
@@ -62,9 +66,10 @@ typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
  */
 OS_Error_t
 OS_CryptoMac_init(
-    OS_CryptoMac_Handle_t*   hMac,
-    const OS_Crypto_Handle_t hCrypto,
-    const OS_CryptoMac_Alg_t algorithm);
+    OS_CryptoMac_Handle_t*      hMac,
+    const OS_Crypto_Handle_t    hCrypto,
+    const OS_CryptoKey_Handle_t hKey,
+    const OS_CryptoMac_Alg_t    algorithm);
 
 /**
  * @brief Finish a message authentication code (MAC) object
@@ -80,37 +85,10 @@ OS_CryptoMac_free(
     OS_CryptoMac_Handle_t hMac);
 
 /**
- * @brief Start MAC computation by feeding a secret into the MAC's state.
- *
- * In order to be used as authentication code, a MAC algorithm needs to be given
- * a secret which can be used to generate the MAC (and also to re-generate and
- * verify it).
- *
- * This function has to be called once at the beginning of each MAC computation.
- *
- * @param hMac (required) handle of OS Crypto MAC object
- * @param secret (required) secret to process
- * @param secretSize (required) length of data
- *
- * @return an error code
- * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if processing of \p secret failed or if MAC was
- *  was already started
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p secretSize is greater than
- *   `OS_Crypto_SIZE_DATAPORT`
- */
-OS_Error_t
-OS_CryptoMac_start(
-    OS_CryptoMac_Handle_t hMac,
-    const void*           secret,
-    const size_t          secretSize);
-
-/**
  * @brief Feed block of data into MACs internal state.
  *
  * Feed blocks of data into the MAC algorithm. Typically, this function will be
- * called multiple times after start and before finalizing the MAC.
+ * called multiple times before finalizing the MAC.
  *
  * @param hMac (required) handle of OS Crypto MAC object
  * @param data (required) data to process
@@ -119,8 +97,7 @@ OS_CryptoMac_start(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if processing of \p data failed or if MAC object
- *  was already finalized or not yet started
+ * @retval OS_ERROR_ABORTED if processing of \p data failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *   `OS_Crypto_SIZE_DATAPORT`
  */
@@ -133,11 +110,10 @@ OS_CryptoMac_process(
 /**
  * @brief Finish MAC computation to produce authentication code.
  *
- * Write the MAC resulting from any preceding calls to start and process into a
- * buffer.
+ * Write the MAC resulting from any preceding calls to process into a buffer.
  *
  * NOTE: This function will re-set the MAC object, so it can compute a new MAC
- *       with the algorithm given during initialization.
+ *       with the algorithm and key given during initialization.
  *
  * @param hMac (required) handle of OS Crypto MAC object
  * @param auth (required) buffer to write authenticaion code to
