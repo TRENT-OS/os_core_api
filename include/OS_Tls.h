@@ -223,47 +223,21 @@ typedef struct OS_Tls OS_Tls_t;
 typedef OS_Tls_t* OS_Tls_Handle_t;
 
 /**
- * Configuration for TLS API in RPC Server mode.
- */
-typedef struct
-{
-    /**
-     * Configuration of the local TLS library instance.
-     */
-    TlsLib_Config_t library;
-    /**
-     * Dataport to use for communication with the RPC Client.
-     */
-    OS_Dataport_t dataport;
-} TlsLibServer_Config_t;
-
-/**
- * Configuration for TLS API in RPC Client mode.
- */
-typedef struct
-{
-    /**
-     * Dataport to use for communication with the RPC Server.
-     */
-    OS_Dataport_t dataport;
-} TlsLibClient_Config_t;
-
-/**
  * Configuration of the TLS API. The mode value defines which of the union fields
  * needs to be filled in:
- *   OS_Tls_MODE_LIBRARY:       config.library
- *   OS_Tls_MODE_CLIENT:        config.client
- *   OS_Tls_MODE_SERVER:        config.server
+ *
+ *                                    | cfg.dataport | cfg.library
+ *   ---------------------------------+--------------+------------
+ *                OS_Tls_MODE_LIBRARY |              |      X
+ *                 OS_Tls_MODE_CLIENT |      X       |
+ *                 OS_Tls_MODE_SERVER |      X       |      X
+ *
  */
 typedef struct
 {
     OS_Tls_Mode_t mode;
-    union
-    {
-        TlsLib_Config_t library;
-        TlsLibClient_Config_t client;
-        TlsLibServer_Config_t server;
-    } config;
+    TlsLib_Config_t library;
+    OS_Dataport_t dataport;
 } OS_Tls_Config_t;
 
 /**
