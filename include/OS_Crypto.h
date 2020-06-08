@@ -15,7 +15,6 @@
 #include "OS_Error.h"
 #include "OS_Dataport.h"
 
-#include <limits.h>
 #include <stddef.h>
 
 /**
