@@ -121,47 +121,23 @@ typedef struct
 } CryptoLib_Config_t;
 
 /**
- * Configuration for Crypto API in RPC Client mode.
- */
-typedef struct
-{
-    /**
-     * Dataport to use for the Crypto API in RPC Client mode to communicate with
-     * an API instance in RPC Server mode.
-     */
-    OS_Dataport_t dataport;
-} CryptoLibClient_Config_t;
-
-/**
- * Configuration for Crypto API in RPC Server mode (RPC Server + Library).
- */
-typedef struct
-{
-    /**
-     * Dataport to use for the Crypto API in RPC Server mode to communicate with
-     * an API instance in RPC Client mode.
-     */
-    OS_Dataport_t dataport;
-} CryptoLibServer_Config_t;
-
-/**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
- * -  OS_Crypto_MODE_LIBRARY_ONLY:      library
- * -  OS_Crypto_MODE_CLIENT_ONLY:       rpc.client
- * -  OS_Crypto_MODE_CLIENT:            library AND rpc.client
- * -  OS_Crypto_MODE_SERVER:            library AND rpc.server
+ *
+ *                                     | cfg.dataport | cfg.library | cfg.memory
+ *   ----------------------------------+--------------+-------------+-----------
+ *         OS_Crypto_MODE_LIBRARY_ONLY |              |      X      |    X
+ *          OS_Crypto_MODE_CLIENT_ONLY |      X       |             |    X
+ *               OS_Crypto_MODE_CLIENT |      X       |      X      |    X
+ *               OS_Crypto_MODE_SERVER |      X       |      X      |    X
+ *
  */
 typedef struct
 {
     OS_Crypto_Mode_t mode;
     OS_Crypto_Memory_t memory;
+    OS_Dataport_t dataport;
     CryptoLib_Config_t library;
-    union
-    {
-        CryptoLibServer_Config_t server;
-        CryptoLibClient_Config_t client;
-    } rpc;
 } OS_Crypto_Config_t;
 
 /**
@@ -184,15 +160,15 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgRemote = {
  *        .mode = OS_Crypto_MODE_CLIENT_ONLY,
- *        .rpc.client.dataport = OS_DATAPORT_ASSIGN(clientDataport)
+ *        .dataport = OS_DATAPORT_ASSIGN(clientDataport)
  *    };
  *    \endcode
  * 3. Run API instance as RPC server backend with local library:
  *    \code{.c}
  *    OS_Crypto_Config_t cfgServer = {
  *        .mode = OS_Crypto_MODE_SERVER,
+ *        .dataport = OS_DATAPORT_ASSIGN(serverDataport)
  *        .library.rng.entropy = entropy_func,
- *        .rpc.server.dataport = OS_DATAPORT_ASSIGN(serverDataport)
  *    };
  *    \endcode
  * 4. Run API instance as RPC client with local library and seamless switch
