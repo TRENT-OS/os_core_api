@@ -146,45 +146,6 @@ typedef struct
  * This function allocates a Crypto API object and sets up Crypto API functionality
  * according to the configuration.
  *
- * Here are some example configurations for each of the modes the API can be
- * used in:
- *
- * 1. Run the API instance as local library:
- *    \code{.c}
- *    OS_Crypto_Config_t cfgLocal =  {
- *        .mode = OS_Crypto_MODE_LIBRARY_ONLY,
- *        .library.rng.entropy = entropy_func,
- *    };
- *    \endcode
- * 2. Run the API instance as remote library:
- *    \code{.c}
- *    OS_Crypto_Config_t cfgRemote = {
- *        .mode = OS_Crypto_MODE_CLIENT_ONLY,
- *        .dataport = OS_DATAPORT_ASSIGN(clientDataport)
- *    };
- *    \endcode
- * 3. Run API instance as RPC server backend with local library:
- *    \code{.c}
- *    OS_Crypto_Config_t cfgServer = {
- *        .mode = OS_Crypto_MODE_SERVER,
- *        .dataport = OS_DATAPORT_ASSIGN(serverDataport)
- *        .library.rng.entropy = entropy_func,
- *    };
- *    \endcode
- * 4. Run API instance as RPC client with local library and seamless switch
- *    between the two:
- *    \code{.c}
- *    OS_Crypto_Config_t cfgClient = {
- *        .mode = OS_Crypto_MODE_CLIENT,
- *        .library.rng.entropy = entropy_func,
- *        .rpc.client.dataport = OS_DATAPORT_ASSIGN(clientDataport)
- *    };
- *    \endcode
- *
- * All API configurations must pass function pointers to malloc/free, those involved
- * with RPC functionality must set the dataport configuration according to those
- * addresses assigned by CAmkES.
- *
  * @param hCrypto (required) pointer to handle of OS Crypto API
  * @param cfg (required) pointer to configuration
  *
