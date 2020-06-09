@@ -13,6 +13,7 @@
 #pragma once
 
 #include "OS_Crypto.h"
+#include "OS_Dataport.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -233,7 +234,7 @@ typedef struct
     /**
      * Dataport to use for communication with the RPC Client.
      */
-    void* dataport;
+    OS_Dataport_t dataport;
 } TlsLibServer_Config_t;
 
 /**
@@ -244,7 +245,7 @@ typedef struct
     /**
      * Dataport to use for communication with the RPC Server.
      */
-    void* dataport;
+    OS_Dataport_t dataport;
 } TlsLibClient_Config_t;
 
 /**
@@ -332,8 +333,8 @@ OS_Tls_handshake(
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the write failed
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
- *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
+ *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 OS_Error_t
@@ -363,8 +364,8 @@ OS_Tls_write(
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the read failed
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p data is too large for the
- *  size of the dataport, i.e., \p dataSize > `PAGE_SIZE`
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
+ *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  */
 OS_Error_t
