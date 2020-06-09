@@ -1,6 +1,6 @@
 # OS Core API
 
-project(seos_core_api C)
+project(os_core_api C)
 
 add_library(${PROJECT_NAME} INTERFACE)
 

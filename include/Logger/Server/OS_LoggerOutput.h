@@ -86,8 +86,8 @@ struct OS_LoggerOutput_Handle
  *
  * @return An error code.
  *
- * @retval SEOS_ERROR_INVALID_PARAMETER - logFormat is NULL.
- * @retval SEOS_SUCCESS                 - Operation was successful.
+ * @retval OS_ERROR_INVALID_PARAMETER - logFormat is NULL.
+ * @retval OS_SUCCESS                 - Operation was successful.
  */
 OS_Error_t
 OS_LoggerOutput_ctor(

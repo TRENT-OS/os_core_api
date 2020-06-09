@@ -14,7 +14,7 @@
  *
  * @brief       Partition Manager API
  *
- * @see seos_partition_manager/README.MD for more details.
+ * @see os_partition_manager/README.MD for more details.
  *
  */
 
