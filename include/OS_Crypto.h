@@ -13,6 +13,7 @@
 #pragma once
 
 #include "OS_Error.h"
+#include "OS_Dataport.h"
 
 #include <limits.h>
 #include <stddef.h>
@@ -121,12 +122,6 @@ typedef struct
 } CryptoLib_Config_t;
 
 /**
- * Fixed size of dataport, will be replaced with a more generic and self-contained
- * solution in the future.
- */
-#define OS_Crypto_SIZE_DATAPORT PAGE_SIZE
-
-/**
  * Configuration for Crypto API in RPC Client mode.
  */
 typedef struct
@@ -135,7 +130,7 @@ typedef struct
      * Dataport to use for the Crypto API in RPC Client mode to communicate with
      * an API instance in RPC Server mode.
      */
-    void* dataPort;
+    OS_Dataport_t dataPort;
 } CryptoLibClient_Config_t;
 
 /**
@@ -147,7 +142,7 @@ typedef struct
      * Dataport to use for the Crypto API in RPC Server mode to communicate with
      * an API instance in RPC Client mode.
      */
-    void* dataPort;
+    OS_Dataport_t dataPort;
 } CryptoLibServer_Config_t;
 
 /**
@@ -190,7 +185,7 @@ typedef struct
  *    \code{.c}
  *    OS_Crypto_Config_t cfgRemote = {
  *        .mode = OS_Crypto_MODE_CLIENT_ONLY,
- *        .rpc.client.dataPort = clientDataport
+ *        .rpc.client.dataPort = OS_DATAPORT_ASSIGN(clientDataport)
  *    };
  *    \endcode
  * 3. Run API instance as RPC server backend with local library:
@@ -198,7 +193,7 @@ typedef struct
  *    OS_Crypto_Config_t cfgServer = {
  *        .mode = OS_Crypto_MODE_SERVER,
  *        .library.rng.entropy = entropy_func,
- *        .rpc.server.dataPort = serverDataport
+ *        .rpc.server.dataPort = OS_DATAPORT_ASSIGN(serverDataport)
  *    };
  *    \endcode
  * 4. Run API instance as RPC client with local library and seamless switch
@@ -207,7 +202,7 @@ typedef struct
  *    OS_Crypto_Config_t cfgClient = {
  *        .mode = OS_Crypto_MODE_CLIENT,
  *        .library.rng.entropy = entropy_func,
- *        .rpc.client.dataPort = clientDataport
+ *        .rpc.client.dataPort = OS_DATAPORT_ASSIGN(clientDataport)
  *    };
  *    \endcode
  *

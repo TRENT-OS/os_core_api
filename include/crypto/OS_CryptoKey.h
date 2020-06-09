@@ -574,7 +574,7 @@ OS_CryptoKey_export(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoKey_getParams(
@@ -621,7 +621,7 @@ OS_CryptoKey_getAttribs(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
  *  whole \p param
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoKey_loadParams(

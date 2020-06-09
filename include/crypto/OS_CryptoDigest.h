@@ -117,7 +117,7 @@ OS_CryptoDigest_free(
  * @retval OS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
  *  was already finalized
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoDigest_process(
@@ -148,7 +148,7 @@ OS_CryptoDigest_process(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
  *  resulting digest
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoDigest_finalize(

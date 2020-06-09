@@ -108,7 +108,7 @@ OS_CryptoSignature_free(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
  *  the resulting \p signature
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
- *  greater than `OS_Crypto_SIZE_DATAPORT`
+ *  greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoSignature_sign(
@@ -138,7 +138,7 @@ OS_CryptoSignature_sign(
  * @retval OS_ERROR_ABORTED if no private key was set during initialization or
  *  if the cryptographic operation failed (i.e., the signature was invalid)
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
- *  greater than `OS_Crypto_SIZE_DATAPORT`
+ *  greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoSignature_verify(

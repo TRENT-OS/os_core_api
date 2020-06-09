@@ -99,7 +99,7 @@ OS_CryptoMac_free(
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval OS_ERROR_ABORTED if processing of \p data failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *   `OS_Crypto_SIZE_DATAPORT`
+ *   the size of the dataport
  */
 OS_Error_t
 OS_CryptoMac_process(
@@ -128,7 +128,7 @@ OS_CryptoMac_process(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p authSize is too small for the
  *  resulting MAC
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoMac_finalize(

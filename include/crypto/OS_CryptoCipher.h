@@ -87,7 +87,7 @@ typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
  * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval OS_ERROR_ABORTED if setting the key internally failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the CIPHER failed or if
- * \p ivSize is greater than `OS_Crypto_SIZE_DATAPORT`
+ * \p ivSize is greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoCipher_init(
@@ -143,7 +143,7 @@ OS_CryptoCipher_free(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p outputSize is too small to hold
  *  the full result in the \p output buffer
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p inputSize or \p outputSize is
- *  greater than `OS_Crypto_SIZE_DATAPORT`
+ *  greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoCipher_process(
@@ -170,7 +170,7 @@ OS_CryptoCipher_process(
  * @retval OS_ERROR_ABORTED if CIPHER object does not require start, or if it
  *  was already started or if the internal cryptographic operation failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p inputSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoCipher_start(
@@ -204,7 +204,7 @@ OS_CryptoCipher_start(
  * @retval OS_ERROR_BUFFER_TOO_SMALL if \p tagSize is either too small for data
  *  written to the \p tag buffer
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p tagSize is greater than
- *  `OS_Crypto_SIZE_DATAPORT`
+ *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoCipher_finalize(
