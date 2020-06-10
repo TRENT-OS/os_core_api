@@ -15,4 +15,4 @@ typedef struct
 {
     uint8_t  data[PAGE_SIZE - 16];
     size_t   len;
-} Rx_Buffer;
+} OS_NetworkStack_RxBuffer_t;

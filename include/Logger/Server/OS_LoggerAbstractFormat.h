@@ -45,7 +45,7 @@ typedef struct OS_LoggerAbstractFormat_Handle OS_LoggerAbstractFormat_Handle_t;
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 typedef OS_Error_t
-(*OS_LoggerAbstractFormat_convert)(
+(*OS_LoggerAbstractFormat_convert_t)(
     OS_LoggerAbstractFormat_Handle_t* self, /*!< [out] Result of the conversion
                                                        will be stored in the
                                                        underlying buffer */
@@ -64,7 +64,7 @@ typedef OS_Error_t
  * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 typedef void
-(*OS_LoggerAbstractFormat_print)(OS_LoggerAbstractFormat_Handle_t* self);
+(*OS_LoggerAbstractFormat_print_t)(OS_LoggerAbstractFormat_Handle_t* self);
 
 
 /**
@@ -75,8 +75,8 @@ typedef void
 */
 typedef struct
 {
-    OS_LoggerAbstractFormat_convert convert;
-    OS_LoggerAbstractFormat_print   print;
+    OS_LoggerAbstractFormat_convert_t convert;
+    OS_LoggerAbstractFormat_print_t   print;
 } OS_LoggerAbstractFormat_vtable_t;
 
 
