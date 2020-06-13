@@ -11,16 +11,11 @@
  */
 #pragma once
 
-#include <stdbool.h>
-#include <stdint.h>
+#if defined(Debug_Config_PRINT_TO_LOG_SERVER)
 
-/* Print macro ---------------------------------------------------------------*/
-#if defined (Debug_Config_PRINT_TO_LOG_SERVER)
-#    include "Logger/Client/OS_LoggerEmitter.h"
+#include "Logger/Client/OS_LoggerEmitter.h"
 
-#   define Debug_PRINT__(LEVEL, ...)                \
-    do                                              \
-    {                                               \
-        OS_LoggerEmitter_log(LEVEL, __VA_ARGS__);   \
-    } while (0)
-#endif
+#define Debug_PRINT__(LEVEL, ...) \
+            OS_LoggerEmitter_log(LEVEL, __VA_ARGS__)
+
+#endif // defined(Debug_Config_PRINT_TO_LOG_SERVER)
