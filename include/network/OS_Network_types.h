@@ -17,10 +17,10 @@
  */
 typedef struct
 {
-    unsigned domain;      /**< domain is as of now AF_INET (IPv4)*/
-    unsigned type;        /**< type is as of now SOCK_STREAM (TCP)*/
+    unsigned int  domain; /**< domain is as of now AF_INET (IPv4)*/
+    unsigned int type;    /**< type is as of now SOCK_STREAM (TCP)*/
     uint16_t listen_port; /**< port to listen to e.g. 5555 */
-    unsigned backlog;     /**< # of connections accepted (currently fixed =1)*/
+    unsigned int backlog; /**< # of connections accepted (currently fixed =1)*/
 } OS_NetworkServer_Socket_t;
 
 /**
@@ -33,9 +33,9 @@ typedef struct
 
 typedef struct
 {
-    unsigned domain; /**< domain is as of now AF_INET (IPv4) */
-    unsigned type;   /**< type is as of now SOCK_STREAM (TCP) */
-    uint16_t port;   /**< port is for e.g. HTTP port 80 */
+    unsigned int domain; /**< domain is as of now AF_INET (IPv4) */
+    unsigned int type;   /**< type is as of now SOCK_STREAM (TCP) */
+    uint16_t port;       /**< port is for e.g. HTTP port 80 */
     char     name[IP_ADD_STR_MAX_LEN]; /**< IP addr to connect to (e.g.
                                                        "10.0.0.1", "::1" ) */
 } OS_Network_Socket_t;
@@ -55,7 +55,7 @@ typedef struct
 #define OS_SOCK_DGRAM 1
 
 typedef void*    OS_Network_Context_t;
-typedef unsigned OS_NetworkSocket_Handle_t;
-typedef unsigned OS_NetworkServer_Handle_t;
+typedef unsigned int OS_NetworkSocket_Handle_t;
+typedef unsigned int OS_NetworkServer_Handle_t;
 
 #endif

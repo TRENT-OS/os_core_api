@@ -58,4 +58,18 @@ procedure if_OS_socket {
         in     unsigned  handle,
         in     uint16_t  port
     );
+
+    OS_Error_t
+    socket_sendto(
+        in     unsigned handle,
+        inout  size_t   pLen,
+        in     OS_Network_Socket_t dst_socket
+    );
+
+    OS_Error_t
+    socket_recvfrom(
+        in     unsigned handle,
+        inout  size_t   pLen,
+        out    OS_Network_Socket_t src_socket
+    );
 };

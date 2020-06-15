@@ -189,4 +189,70 @@ OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,
     size_t*                   len);
+/**
+ * @details Receives one UDP packet of up to len bytes in size.
+ * Excess data is discarded
+
+ * @param[in] handle: Used to create/open socket
+
+ * @param[in] buf: Buffer to read data into
+ *
+ * @param[in,out] len: Indicates how much data to read. After read it
+ * indicates how much was actually read
+ *
+ * @param[out] src_socket: contains a socket with the information of the
+ * remote host which sent the UDP frame
+ *
+ * @return OS_Error_t, following combinations with value of length
+
+ * OS_ERROR_GENERIC  error during read\n
+ * OS_SUCCESS and len > 0, data read\n
+ */
+
+OS_Error_t
+OS_NetworkSocket_recvfrom(
+    OS_NetworkSocket_Handle_t handle,
+    void*                     buf,
+    size_t*                   len,
+    OS_Network_Socket_t*      src_socket);
+
+/**
+ * @details Sends one UDP packet of up to len bytes in size. Can send less data
+ * than requested.
+ *
+ * @param[in] handle: Handle to the socket to be used.
+ *
+ * @param[in] buf: Buffer containing data to be written.
+ *
+ * @param[in,out] len: Length of data to be written. Returns number of bytes
+ * written
+ *
+ * @param[in] dst_socket: Socket containing the information of the
+ * destination
+ *
+ * @return OS_SUCCESS or OS_ERROR
+ *
+ */
+OS_Error_t
+OS_NetworkSocket_sendto(
+    OS_NetworkSocket_Handle_t handle,
+    const void*               buf,
+    size_t*                   len,
+    OS_Network_Socket_t       dst_socket);
+
+/**
+ * @details Binds the socket to the given port.
+ *
+ * @param[in] handle: Handle to the socket to be used.
+ *
+ * @param[in] port: Port to be used.
+ *
+ * @return OS_SUCCESS or OS_ERROR
+ *
+ */
+
+OS_Error_t
+OS_NetworkSocket_bind(
+    OS_NetworkSocket_Handle_t handle,
+    uint16_t                  receiving_port);
 /** @} */
