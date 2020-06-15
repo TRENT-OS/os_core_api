@@ -7,6 +7,7 @@
 procedure if_OS_socket {
 
     include "OS_Error.h";
+    include "network/OS_Network_types.h";
 
     OS_Error_t
     socket_create(
