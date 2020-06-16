@@ -126,9 +126,6 @@ typedef struct
      * All users of the Crypto API have to provide a platform-dependent
      * entropy function. This function will be called by the API's internal
      * DRBG to enrich its internal state with entropy.
-     *
-     * NOTE: Currently, the entropy callback will be called for every call
-     *       (external and internal) to the RNG.
      */
     OS_Crypto_Entropy_t entropy;
 } CryptoLib_Config_t;
