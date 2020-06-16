@@ -29,6 +29,11 @@ typedef struct
  */
 
 // Maximum length of an IPv6 address string can be 45 chars + 1 for '\0'
+// See RFC 4291 Section 2.2 for IP address reperesentation as string, these
+// formats are in use:
+//   IPv4: 123.123.123.123 (15 chars)
+//   IPv6: ABCD:EF01:2345:6789:ABCD:EF01:2345:6789 (38 chars)
+//   IPv6/IPv4 mixed:  FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:129.144.152.138 (45 Chars)
 #define IP_ADD_STR_MAX_LEN (45 + 1)
 
 typedef struct
