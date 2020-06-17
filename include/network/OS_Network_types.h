@@ -20,7 +20,7 @@ typedef struct
     unsigned int  domain; /**< domain is as of now AF_INET (IPv4)*/
     unsigned int type;    /**< type is as of now SOCK_STREAM (TCP)*/
     uint16_t listen_port; /**< port to listen to e.g. 5555 */
-    unsigned int backlog; /**< # of connections accepted (currently fixed =1)*/
+    unsigned int backlog; /**< # of connections accepted */
 } OS_NetworkServer_Socket_t;
 
 /**
