@@ -98,26 +98,39 @@ typedef struct
 } OS_Crypto_Memory_t;
 
 /**
+ * User of API has to provide callback and dataport to an EntropySource
+ * component
+ */
+typedef size_t (OS_Crypto_Entropy_func)(const size_t len);
+typedef struct
+{
+    OS_Crypto_Entropy_func* read;
+    OS_Dataport_t dataport;
+} OS_Crypto_Entropy_t;
+
+/**
+ * Use this to assign an EntropySource to a Crypto API config
+ */
+#define OS_CRYPTO_ASSIGN_EntropySource(_fn_, _dp_)  \
+{                                                   \
+    .read     = _fn_,                               \
+    .dataport = OS_DATAPORT_ASSIGN(_dp_)            \
+}
+
+/**
  * Configuration for underlying Crypto Library.
  */
 typedef struct
 {
-    struct
-    {
-        /**
-         * All users of the Crypto API have to provide a platform-dependent
-         * entropy function. This function will be called by the API's internal
-         * DRBG to enrich its internal state with entropy.
-         *
-         * NOTE: Currently, the entropy callback will be called for every call
-         *       (external and internal) to the RNG.
-         */
-        OS_CryptoRng_Entropy_func* entropy;
-        /**
-         * Context to pass to entropy callback.
-         */
-        void* context;
-    } rng;
+    /**
+     * All users of the Crypto API have to provide a platform-dependent
+     * entropy function. This function will be called by the API's internal
+     * DRBG to enrich its internal state with entropy.
+     *
+     * NOTE: Currently, the entropy callback will be called for every call
+     *       (external and internal) to the RNG.
+     */
+    OS_Crypto_Entropy_t entropy;
 } CryptoLib_Config_t;
 
 /**
