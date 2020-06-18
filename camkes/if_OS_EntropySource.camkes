@@ -1,0 +1,14 @@
+/*
+ *  CAmkES interface of EntropySource
+ *
+ *  Copyright (C) 2020, Hensoldt Cyber GmbH
+ *
+ */
+
+procedure if_OS_EntropySource {
+
+    size_t
+    read(
+        in size_t len);
+
+};
