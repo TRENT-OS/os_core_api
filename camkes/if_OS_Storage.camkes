@@ -1,0 +1,74 @@
+/* Copyright (C) 2020, HENSOLDT Cyber GmbH */
+
+/**
+ * @file
+ * @brief   Generic interface for accessing a data storage entity.
+ *
+ * @note    For this interface to work it is assumed that data is exchanged via
+ *          a shared buffer.
+ */
+
+/** @hideinitializer */
+procedure if_OS_Storage
+{
+    include "OS_Error.h";
+    include "stdint.h";
+
+    /**
+     * @brief Writes data to the storage.
+     *
+     * @return Implementation specific.
+     */
+    OS_Error_t
+    write(
+        in  size_t offset,      //!< [in]  Write start offset.
+        in  size_t size,        //!< [in]  Number of bytes to be written.
+        out size_t written      //!< [out] Number of bytes written.
+    );
+
+    /**
+     * @brief Reads from the storage.
+     *
+     * @return Implementation specific.
+     */
+    OS_Error_t
+    read(
+        in  size_t offset,      //!< [in]  Read start offset.
+        in  size_t size,        //!< [in]  Number of bytes to be read.
+        out size_t read         //!< [out] Number of bytes read.
+    );
+
+    /**
+     * @brief Erases given storage's memory area.
+     *
+     * @return Implementation specific.
+     */
+    OS_Error_t
+    erase(
+        in  size_t offset,      //!< [in]  Erase start offset.
+        in  size_t size,        //!< [in]  Number of bytes to be erased.
+        out size_t erased       //!< [out] Number of bytes erased.
+    );
+
+    /**
+     * @brief  Gets the storage size.
+     *
+     * @return Implementation specific.
+     */
+    OS_Error_t
+    getSize(
+        out size_t size         //!< [out] The size of the storage.
+    );
+
+    /**
+     * @brief Gets the state of the storage.
+     *
+     * @param uint32_t
+     * @return OS_Error_t
+     */
+    OS_Error_t
+    getState(
+        out uint32_t flags  //!< [out] Implementation specific flags marking the
+                            //!<        state.
+    );
+};
