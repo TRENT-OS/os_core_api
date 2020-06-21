@@ -75,7 +75,7 @@ typedef enum
     OS_ERROR_OVERFLOW_DETECTED,                /**< overflow detected */
     OS_ERROR_INSUFFICIENT_SPACE,               /**< insufficient space */
     OS_ERROR_BUFFER_TOO_SMALL,                 /**< buffer too small */
-    OS_ERROR_ABORTED,                          /**< operation abordet */
+    OS_ERROR_ABORTED,                          /**< operation aborted */
     OS_ERROR_OPERATION_DENIED,                 /**< operation denied */
     OS_ERROR_ACCESS_DENIED,                    /**< access denied */
     OS_ERROR_NOT_FOUND,                        /**< not found */
