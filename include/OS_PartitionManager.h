@@ -302,6 +302,40 @@ OS_PartitionManager_write(
 }
 
 /**
+ * @brief   Erases data and calls the underlying function from the partition
+ *          manager library accordingly to the set build parameter.
+ *
+ * This function determines from the raw data of the hard disk the start pointer
+ * to your partition, and if necessary, calculates the offset on the start
+ * pointer of the partition. At the same time the range of the offset is checked
+ * within the limits of the partition.
+ *
+ * @return  An error code.
+ *
+ * @retval  OS_SUCCESS                    If all right.
+ * @retval  OS_ERROR_INVALID_PARAMETER    If argument is missing or wrong
+ *                                        value is given.
+ * @retval  OS_ERROR_PM_PARTITION_ID      If wrong partition id or partition
+ *                                        id doesn't exist.
+ * @retval  OS_ERROR_PM_INTERNAL_OBJECT   If invalid object internally.
+ * @retval  OS_ERROR_PM_INIT              If the partition manager is uninitialized.
+ * @retval  OS_ERROR_PM_OFFSET            If offset is out of range.
+ * @retval  OS_ERROR_PM_WRITE             If no write operation has been done.
+ *
+ * @ingroup OS_PartitionManager
+ */
+static
+__attribute__((unused))
+OS_Error_t
+OS_PartitionManager_erase(
+    uint8_t partition_id,   /**< [in]  Partition's identifier. */
+    uint64_t offset,        /**< [in]  Offset when writing to the partition. */
+    uint64_t len           /**< [in]  Bytes count to write. */)
+{
+    return api_pm_partition_manager_erase(partition_id, offset, len);
+}
+
+/**
  * @brief Closes a physical partition.
  *
  * It calls the underlying function from the partition manager library
