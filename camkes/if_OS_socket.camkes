@@ -11,65 +11,65 @@ procedure if_OS_socket {
 
     OS_Error_t
     socket_create(
-        in     unsigned  domain,
-        in     unsigned  type,
-        inout  unsigned  pHandle
+        in    int                       domain,
+        in    int                       type,
+        inout OS_NetworkSocket_Handle_t pHandle
     );
 
     OS_Error_t
     socket_close(
-        in     unsigned  handle
+        in    OS_NetworkSocket_Handle_t handle
     );
 
     OS_Error_t
     socket_write(
-        in     unsigned  handle,
-        inout  size_t    pLen
+        in    OS_NetworkSocket_Handle_t handle,
+        inout size_t                    pLen
     );
 
     OS_Error_t
     socket_read(
-        in     unsigned  handle,
-        inout  size_t    pLen
+        in    OS_NetworkSocket_Handle_t handle,
+        inout size_t                    pLen
     );
 
     OS_Error_t
     socket_connect(
-        in     unsigned  handle,
-        in     string    serverName,
-        in     uint16_t  port
+        in OS_NetworkSocket_Handle_t handle,
+        in string                    serverName,
+        in uint16_t                  port
     );
 
     OS_Error_t
     socket_accept(
-        in     unsigned  handle,
-        inout  unsigned  pHandleClient,
-        in     uint16_t  port
+        in    OS_NetworkSocket_Handle_t handle,
+        inout OS_NetworkSocket_Handle_t pHandleClient,
+        in    uint16_t                  port
     );
 
     OS_Error_t
     socket_listen(
-        in     unsigned  handle,
-        in     unsigned  backlog
+        in OS_NetworkSocket_Handle_t handle,
+        in int backlog
     );
 
     OS_Error_t
     socket_bind(
-        in     unsigned  handle,
-        in     uint16_t  port
+        in OS_NetworkSocket_Handle_t handle,
+        in uint16_t                  port
     );
 
     OS_Error_t
     socket_sendto(
-        in     unsigned handle,
-        inout  size_t   pLen,
-        in     OS_Network_Socket_t dst_socket
+        in    OS_NetworkSocket_Handle_t handle,
+        inout size_t                    pLen,
+        in    OS_Network_Socket_t       dst_socket
     );
 
     OS_Error_t
     socket_recvfrom(
-        in     unsigned handle,
-        inout  size_t   pLen,
-        out    OS_Network_Socket_t src_socket
+        in    OS_NetworkSocket_Handle_t handle,
+        inout size_t                    pLen,
+        out   OS_Network_Socket_t       src_socket
     );
 };
