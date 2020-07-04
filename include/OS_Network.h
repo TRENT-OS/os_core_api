@@ -84,7 +84,6 @@ OS_NetworkSocket_create(
     OS_Network_Socket_t*       pClientStruct,
     OS_NetworkSocket_Handle_t* phandle);
 
-
 /**
  * @details Create a server socket, binds to a
  * port and listen for incoming connections
@@ -106,7 +105,6 @@ OS_NetworkServerSocket_create(
     OS_NetworkServer_Socket_t* pServerStruct,
     OS_NetworkServer_Handle_t* pSrvHandle);
 
-
 /**
  * @details Closes a NetworkServer socket. No
  * further socket communication is possible after closure.
@@ -121,7 +119,6 @@ OS_Error_t
 OS_NetworkServerSocket_close(
     OS_NetworkServer_Handle_t srvHandle);
 
-
 /**
  * @details Closes a network socket. No further
  * socket communication is possible after closure.
@@ -135,7 +132,6 @@ OS_NetworkServerSocket_close(
 OS_Error_t
 OS_NetworkSocket_close(
     OS_NetworkSocket_Handle_t handle);
-
 
 /**
  * @details Writes to a connected network socket.
@@ -156,7 +152,6 @@ OS_NetworkSocket_write(
     const void*               buf,
     size_t*                   len);
 
-
 /**
  * @details Accept incoming connections.
  *
@@ -173,7 +168,6 @@ OS_Error_t
 OS_NetworkServerSocket_accept(
     OS_NetworkServer_Handle_t  srvHandle,
     OS_NetworkSocket_Handle_t* phSocket);
-
 
 /**
  * @details Read data from connected socket.
@@ -197,7 +191,6 @@ OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,
     size_t*                   len);
-
 
 /**
  * @details Receives one UDP packet of up to len bytes in size.
@@ -227,7 +220,6 @@ OS_NetworkSocket_recvfrom(
     size_t*                   len,
     OS_Network_Socket_t*      src_socket);
 
-
 /**
  * @details Sends one UDP packet of up to len bytes in size. Can send less data
  * than requested.
@@ -252,7 +244,6 @@ OS_NetworkSocket_sendto(
     const void*               buf,
     size_t*                   len,
     OS_Network_Socket_t       dst_socket);
-
 
 /**
  * @details Binds the socket to the given port.
