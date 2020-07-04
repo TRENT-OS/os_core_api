@@ -4,7 +4,7 @@
  *  Copyright (C) 2019, Hensoldt Cyber GmbH
  *
  */
-procedure if_OS_socket {
+procedure if_OS_Socket {
 
     include "OS_Error.h";
     include "network/OS_Network_types.h";

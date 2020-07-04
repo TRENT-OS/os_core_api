@@ -6,7 +6,7 @@
  */
 
 
-procedure if_OS_nic {
+procedure if_OS_Nic {
 
     include "OS_Error.h";
 
