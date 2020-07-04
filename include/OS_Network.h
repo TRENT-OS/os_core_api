@@ -140,9 +140,11 @@ OS_NetworkSocket_close(
  *
  * @param[in] buf: Buffer containing data to be written.
  *
- * @param[in] len: Length of data to be written.
+ * @param[in] requestedLen: Length of data to be written to the socket.
  *
- * @return Actual Number of Bytes written or OS_ERROR
+ * @param[out] actualLen: Length of data that was actually written to the socket.
+ *
+ * @return OS_SUCCESS or OS_ERROR
  *
  */
 
@@ -150,7 +152,8 @@ OS_Error_t
 OS_NetworkSocket_write(
     OS_NetworkSocket_Handle_t handle,
     const void*               buf,
-    size_t*                   len);
+    size_t                    requestedLen,
+    size_t*                   actualLen);
 
 /**
  * @details Accept incoming connections.
@@ -171,15 +174,17 @@ OS_NetworkServerSocket_accept(
 
 /**
  * @details Read data from connected socket.
-
+ *
  * @param[in] handle: Handle used to create/open socket
-
+ *
  * @param[in] buf: Buffer to read data into
  *
- * @param[in,out] len: Indicates how much data to read. After read it indicates how much was actually read
+ * @param[in] requestedLen: Indicates how much data to read.
+ *
+ * @param[out] actualLen: Contains the number of bytes that were actually read
  *
  * @return OS_Error_t, following combinations with value of len
-
+ *
  * OS_ERROR_CONNECTION_CLOSED and length = 0, connection closed\n
  * OS_ERROR_GENERIC  error during read\n
  * OS_SUCCESS and len = 0, nothing read, connection still established\n
@@ -190,7 +195,8 @@ OS_Error_t
 OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,
-    size_t*                   len);
+    size_t                    requestedLen,
+    size_t*                   actualLen);
 
 /**
  * @details Receives one UDP packet of up to len bytes in size.
@@ -200,8 +206,10 @@ OS_NetworkSocket_read(
 
  * @param[in] buf: Buffer to read data into
  *
- * @param[in,out] len: Indicates how much data to read. After read it
- * indicates how much was actually read from the socket
+ * @param[in] requestedLen: Indicates how much data to read.
+ *
+ * @param[out] actualLen: After the function returns it contains how many bytes
+ *  were read from the socket
  *
  * @param[out] src_socket: contains a socket with the information of the
  * remote host which sent the UDP frame
@@ -212,12 +220,12 @@ OS_NetworkSocket_read(
  * OS_SUCCESS and len > 0, data read\n
  */
 
-
 OS_Error_t
 OS_NetworkSocket_recvfrom(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,
-    size_t*                   len,
+    size_t                    requestedLen,
+    size_t*                   actualLen,
     OS_Network_Socket_t*      src_socket);
 
 /**
@@ -228,8 +236,9 @@ OS_NetworkSocket_recvfrom(
  *
  * @param[in] buf: Buffer containing data to be written.
  *
- * @param[in,out] len: Length of data to be written. Returns number of bytes
- * written
+ * @param[in] requestedLen: Length of data to be written.
+ *
+ * @param[out]actualLen: Number of bytes actually written to the socket
  *
  * @param[in] dst_socket: Socket containing the information of the
  * destination
@@ -242,7 +251,8 @@ OS_Error_t
 OS_NetworkSocket_sendto(
     OS_NetworkSocket_Handle_t handle,
     const void*               buf,
-    size_t*                   len,
+    size_t                    requestedLen,
+    size_t*                   actualLen,
     OS_Network_Socket_t       dst_socket);
 
 /**
