@@ -19,9 +19,22 @@ extern "C" {
 */
 typedef enum
 {
-    _OS_ERROR_MIN = -59,
+    //--------------------------------------------------------------------------
+    // space reserved for custom error codes range
+    //--------------------------------------------------------------------------
+    __START_OS_ERROR_CODES_CUSTOM = -1000000,
+    // OS_ERROR_CUSTOM_FOO = -999999
+    // ...
+    // OS_ERROR_CUSTOM_BAR = -100001
+    __END_OS_ERROR_CODES_CUSTOM = -100000,
 
+    //--------------------------------------------------------------------------
     // File System specific error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_FS = -1224,
+    /// @endcond
+    //----------------------------------------
     OS_ERROR_FS_NO_FREE_HANDLE,                /**< failed cause no free handle */
     OS_ERROR_FS_DELETE_HANDLE,                 /**< failed due to delete handle */
     OS_ERROR_FS_NO_DISK,                       /**< disk doesn't exist */
@@ -45,8 +58,18 @@ typedef enum
     OS_ERROR_FS_INVALID_PARTITION_MODE,        /**< partition access mode is invalid */
     OS_ERROR_FS_PARTITION_NOT_READY,           /**< partition not ready */
     OS_ERROR_FS_INVALID_FILESYSTEM,            /**< no valid filesystem */
+    //----------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __END_OS_ERROR_CODES_FS,                   /**< -1200 */
+    /// @endcond
 
+    //--------------------------------------------------------------------------
     // Partition Manager specific error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_PM = -1118,
+    /// @endcond
+    //----------------------------------------
     OS_ERROR_PM_PARTITION_ID,                  /**< wrong partition id or partition id doesn't exist */
     OS_ERROR_PM_INIT,                          /**< fail to init */
     OS_ERROR_PM_OPEN,                          /**< fail to open */
@@ -64,13 +87,33 @@ typedef enum
     OS_ERROR_PM_BLOCK_SIZE,                    /**< block size is undefined */
     OS_ERROR_PM_REGISTER_INTERNAL_OBJECT,      /**< fail to register internal object */
     OS_ERROR_PM_DATABUFFER_OVERLOW,            /**< databuffer is too small */
+    //----------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __END_OS_ERROR_CODES_PM,                   /**< -1100 */
+    /// @endcond
 
+    //--------------------------------------------------------------------------
     // Configuration Server specific error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_CONFIG = -1004,
+    /// @endcond
+    //----------------------------------------
     OS_ERROR_CONFIG_DOMAIN_NOT_FOUND,          /**< configuration domain not found */
     OS_ERROR_CONFIG_PARAMETER_NOT_FOUND,       /**< configuration parameter not found */
     OS_ERROR_CONFIG_TYPE_MISMATCH,             /**< configuration parameter type mismatch */
+    //----------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __END_OS_ERROR_CODES_CONFIG,              /**< -1000 */
+    /// @endcond
 
+    //--------------------------------------------------------------------------
     // General error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_GENERIC = -16,
+    /// @endcond
+    //----------------------------------------
     OS_ERROR_CONNECTION_CLOSED,                /**< connection closed */
     OS_ERROR_OVERFLOW_DETECTED,                /**< overflow detected */
     OS_ERROR_INSUFFICIENT_SPACE,               /**< insufficient space */
@@ -86,11 +129,46 @@ typedef enum
     OS_ERROR_NOT_SUPPORTED,                    /**< not supported */
     OS_ERROR_NOT_IMPLEMENTED,                  /**< not implemented */
     OS_ERROR_GENERIC,                          /**< general error, not further details available */
+
+    //----------------------------------------
     OS_SUCCESS                                 /**< operation successful */
 }
 OS_Error_t;
 
-static_assert(OS_SUCCESS == 0, "OS_SUCCESS_MUST BE 0");
+
+/// @cond OS_ERROR_HELPER_DEFINES
+#define CHECK_OS_ERROR_VALUE(e, v) \
+        static_assert(e == v, #e " must be " #v)
+
+#define CHECK_OS_ERROR_OVERLAP(v1, v2) \
+        static_assert(v1 > v2, #v1 " must be greater " #v2)
+
+
+CHECK_OS_ERROR_VALUE(OS_SUCCESS, 0);
+
+CHECK_OS_ERROR_OVERLAP(
+    __START_OS_ERROR_CODES_GENERIC,
+    __END_OS_ERROR_CODES_CONFIG);
+
+CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_CONFIG, -1000);
+
+CHECK_OS_ERROR_OVERLAP(
+    __START_OS_ERROR_CODES_CONFIG,
+    __END_OS_ERROR_CODES_PM);
+
+CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_PM, -1100);
+
+CHECK_OS_ERROR_OVERLAP(
+    __START_OS_ERROR_CODES_PM,
+    __END_OS_ERROR_CODES_FS);
+
+CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_FS, -1200);
+
+CHECK_OS_ERROR_OVERLAP(
+    __START_OS_ERROR_CODES_FS,
+    __END_OS_ERROR_CODES_CUSTOM);
+
+/// @endcond
 
 
 #ifdef __cplusplus
