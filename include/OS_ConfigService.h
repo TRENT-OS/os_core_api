@@ -30,10 +30,8 @@ OS_ConfigServiceInstanceStore_t*
 OS_ConfigService_getInstances(void);
 
 /**
- * @brief Creates a handle to a ConfigService library instance.
+ * @brief Creates a handle to a ConfigService library local instance.
  *
- * @param handleKind can be either OS_CONFIG_HANDLE_KIND_RPC or
- * OS_CONFIG_HANDLE_KIND_LOCAL to distinguish where the instance is located.
  * @param id ID of the ConfigService library instance.
  * @param handle handle to the ConfigService library instance.
  *
@@ -43,8 +41,23 @@ OS_ConfigService_getInstances(void);
  *  NULL pointer, invalid id, etc.)
  */
 OS_Error_t
-OS_ConfigService_createHandle(
-    OS_ConfigServiceHandle_HandleKind_t handleKind,
+OS_ConfigService_createHandleLocal(
+    unsigned int id,
+    OS_ConfigServiceHandle_t* handle);
+
+/**
+ * @brief Creates a handle to a ConfigService library remote instance.
+ *
+ * @param id ID of the ConfigService library instance.
+ * @param handle handle to the ConfigService library instance.
+ *
+ * @return an error code
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
+ *  NULL pointer, invalid id, etc.)
+ */
+OS_Error_t
+OS_ConfigService_createHandleRemote(
     unsigned int id,
     OS_ConfigServiceHandle_t* handle);
 
