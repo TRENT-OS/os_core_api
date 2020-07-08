@@ -8,6 +8,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef struct
 {
@@ -59,3 +60,6 @@ OS_Dataport_isUnset(
 #   define PAGE_SIZE_4K (SIZE_BITS_TO_BYTES(PAGE_BITS_4K))
 #endif
 #define OS_DATAPORT_DEFAULT_SIZE PAGE_SIZE_4K
+
+// Fake dataport to be used on the host
+typedef uint8_t FakeDataport_t[PAGE_SIZE_4K];
