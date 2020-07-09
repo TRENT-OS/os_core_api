@@ -29,7 +29,7 @@
 */
 #include "OS_Error.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
-#include "OS_Filesystem.h"
+#include "OS_FileSystem.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -134,11 +134,10 @@ typedef struct
 */
 typedef struct
 {
-    uint8_t      drv_id;                                 //!< partition id
-    char         filename[OS_Logger_FILENAME_LENGTH];    //!< filename
-    hPartition_t phandle;                                //!< partition handle
-    uint64_t     offset;                                 //!< offset in log file
-    uint64_t     lenght;                                 //!< size of log file
+    OS_FileSystem_Handle_t  hFs;                                 //!< filesystem
+    char                    filename[OS_Logger_FILENAME_LENGTH]; //!< filename
+    uint64_t                offset;                              //!< offset in file
+    uint64_t                lenght;                              //!< size of file
 } OS_LoggerFile_info_t;
 
 
@@ -158,7 +157,7 @@ struct OS_LoggerFile_Handle
  * @details %OS_LoggerFile_ctor is the constructor.
  *
  * @param   self:       pointer to the class
- * @param   drv_id:     partition id
+ * @param   fs:         mounted filesystem
  * @param   filename:   name of log file
  *
  * @return  An error code.
@@ -171,7 +170,7 @@ struct OS_LoggerFile_Handle
 OS_Error_t
 OS_LoggerFile_ctor(
     OS_LoggerFile_Handle_t* self,
-    uint8_t drv_id,
+    OS_FileSystem_Handle_t hFs,
     const char* filename);
 
 
