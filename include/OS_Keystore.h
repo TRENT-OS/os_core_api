@@ -14,8 +14,7 @@
 
 #include "OS_Error.h"
 #include "OS_Crypto.h"
-
-#include "LibIO/FileStreamFactory.h"
+#include "OS_FileSystem.h"
 
 #include <stddef.h>
 
@@ -28,7 +27,7 @@ typedef struct OS_Keystore OS_Keystore_t, *OS_Keystore_Handle_t;
  * @brief Initialize an instance of the Keystore
  *
  * @param hKeystore[out]    pointer to keystore handle
- * @param fileStreamFactory file stream factory to use for writing keys
+ * @param hFs               file system
  * @param hCrypto           handle to initialized OS_Crypto instance
  * @param name              name keystore
  *
@@ -37,10 +36,10 @@ typedef struct OS_Keystore OS_Keystore_t, *OS_Keystore_Handle_t;
  */
 OS_Error_t
 OS_Keystore_init(
-    OS_Keystore_Handle_t* hKeystore,
-    FileStreamFactory*    fileStreamFactory,
-    OS_Crypto_Handle_t    hCrypto,
-    const char*           name);
+    OS_Keystore_Handle_t*  hKeystore,
+    OS_FileSystem_Handle_t hFs,
+    OS_Crypto_Handle_t     hCrypto,
+    const char*            name);
 
 /**
  * @brief Free up an instance of the Keystore
