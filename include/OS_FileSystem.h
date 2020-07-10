@@ -23,6 +23,7 @@ typedef enum
     OS_FileSystem_Type_NONE = 0,
     OS_FileSystem_Type_FATFS,
     OS_FileSystem_Type_LITTLEFS,
+    OS_FileSystem_Type_SPIFFS,
 } OS_FileSystem_Type_t;
 
 typedef enum
@@ -81,6 +82,10 @@ typedef union
         uint32_t blockSize;
         int32_t blockCycles;
     } littleFs;
+    struct
+    {
+        int dummy;
+    } spifFs;
 } OS_FileSystem_Format_t;
 
 /**
