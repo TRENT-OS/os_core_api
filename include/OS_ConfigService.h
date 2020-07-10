@@ -14,10 +14,20 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "OS_Error.h"
+#include "OS_Dataport.h"
 
 #include "OS_ConfigServiceDataTypes.h"
 #include "OS_ConfigServiceInstanceStore.h"
 
+typedef struct
+{
+    /* this is the dataport that the user will pass to this client library when
+     * calling OS_ConfigService_createHandleRemote(). The dataport is need by
+     * client to know where to retrieve the data from
+     */
+    OS_Dataport_t dataport;
+}
+OS_ConfigService_ClientCtx_t;
 
 /**
  * @brief Returns a pointer to a ConfigService library instance.
@@ -49,6 +59,7 @@ OS_ConfigService_createHandleLocal(
  * @brief Creates a handle to a ConfigService library remote instance.
  *
  * @param id ID of the ConfigService library instance.
+ * @param clientCtx a pointer to the client context. User must define it.
  * @param handle handle to the ConfigService library instance.
  *
  * @return an error code
@@ -59,6 +70,7 @@ OS_ConfigService_createHandleLocal(
 OS_Error_t
 OS_ConfigService_createHandleRemote(
     unsigned int id,
+    OS_ConfigService_ClientCtx_t* clientCtx,
     OS_ConfigServiceHandle_t* handle);
 
 /**

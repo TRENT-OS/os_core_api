@@ -10,8 +10,10 @@ procedure if_OS_ConfigService {
     include "OS_ConfigServiceDataTypes.h";
 
     OS_Error_t createHandle(
-        OS_ConfigServiceHandle_HandleKind_t handleKind,
         unsigned int id,
+        in intptr_t clientCtx,
+        dataport_ptr_t buffer,
+        size_t bufferSize,
         out OS_ConfigServiceHandle_t handle);
 
     OS_Error_t domainEnumeratorInit(
@@ -87,7 +89,6 @@ procedure if_OS_ConfigService {
     OS_Error_t parameterGetValue(
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
-        dataport_ptr_t buffer,
         size_t bufferLength,
         out size_t bytesCopied);
 
@@ -104,20 +105,17 @@ procedure if_OS_ConfigService {
     OS_Error_t parameterGetValueAsString(
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
-        dataport_ptr_t buffer,
         size_t bufferLength);
 
     OS_Error_t parameterGetValueAsBlob(
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
-        dataport_ptr_t buffer,
         size_t bufferLength);
 
     OS_Error_t parameterSetValue(
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
-        dataport_ptr_t buffer,
         size_t bufferLength);
 
     OS_Error_t parameterSetValueAsU32(
@@ -134,14 +132,12 @@ procedure if_OS_ConfigService {
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
-        dataport_ptr_t buffer,
         size_t bufferLength);
 
     OS_Error_t parameterSetValueAsBlob(
         OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
-        dataport_ptr_t buffer,
         size_t bufferLength);
 
     OS_Error_t parameterGetValueFromDomainName(
@@ -149,7 +145,6 @@ procedure if_OS_ConfigService {
         refin OS_ConfigServiceLibTypes_DomainName_t domainName,
         refin OS_ConfigServiceLibTypes_ParameterName_t parameterName,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
-        dataport_ptr_t buffer,
         size_t bufferLength,
         out size_t bytesCopied);
 };
