@@ -1,5 +1,14 @@
 # OS Core API
 
+
+if (SDK_USE_CAMKES)
+
+    CAmkESAddImportPath(${OS_LIBS_DIR}/os_core_api/camkes)
+
+endif()
+
+
+#-------------------------------------------------------------------------------
 project(os_core_api C)
 
 add_library(${PROJECT_NAME} INTERFACE)
