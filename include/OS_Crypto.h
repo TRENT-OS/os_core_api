@@ -111,9 +111,9 @@ typedef struct
 /**
  * Use this to assign an EntropySource to a Crypto API config
  */
-#define OS_CRYPTO_ASSIGN_EntropySource(_fn_, _dp_)  \
+#define OS_CRYPTO_ASSIGN_EntropySource(_rpc_, _dp_) \
 {                                                   \
-    .read     = _fn_,                               \
+    .read     = _rpc_ ## _read,                     \
     .dataport = OS_DATAPORT_ASSIGN(_dp_)            \
 }
 
