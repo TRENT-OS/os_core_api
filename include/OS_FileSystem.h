@@ -166,7 +166,26 @@ typedef union
     } littleFs;
     struct
     {
-        int dummy;
+        /**
+         * Physical size when erasing a block
+         */
+        uint32_t eraseBlockSize;
+
+        /**
+         * Logical size of a block, must be on physical block size boundary and
+         * must never be less than a physical block
+         */
+        uint32_t logicalBlockSize;
+
+        /**
+         * Logical size of a page, must be at least logicalBlockSize/8
+         */
+        uint32_t logicalPageSize;
+
+        /**
+         * Number of cache pages to be used internally.
+         */
+        size_t cachePages;
     } spifFs;
 } OS_FileSystem_Format_t;
 
