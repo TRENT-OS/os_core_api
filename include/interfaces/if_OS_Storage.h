@@ -6,13 +6,14 @@
 #include "OS_Error.h"
 
 #include <stdint.h>
+#include "stdio.h"
 
 typedef struct
 {
-    OS_Error_t (*write)(size_t offset, size_t size, size_t* written);
-    OS_Error_t (*read)(size_t offset, size_t size, size_t* read);
-    OS_Error_t (*erase)(size_t offset, size_t size, size_t* erased);
-    OS_Error_t (*getSize)(size_t* size);
+    OS_Error_t (*write)(off_t offset, size_t size, size_t* written);
+    OS_Error_t (*read)(off_t offset, size_t size, size_t* read);
+    OS_Error_t (*erase)(off_t offset, off_t size, off_t* erased);
+    OS_Error_t (*getSize)(off_t* size);
     OS_Error_t (*getState)(uint32_t* flags);
     OS_Dataport_t dataport;
 } if_OS_Storage_t;

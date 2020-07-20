@@ -13,6 +13,7 @@ procedure if_OS_Storage
 {
     include "OS_Error.h";
     include "stdint.h";
+    include "stdio.h";
 
     /**
      * @brief Writes data to the storage.
@@ -21,7 +22,7 @@ procedure if_OS_Storage
      */
     OS_Error_t
     write(
-        in  size_t offset,      //!< [in]  Write start offset.
+        in  off_t  offset,      //!< [in]  Write start offset.
         in  size_t size,        //!< [in]  Number of bytes to be written.
         out size_t written      //!< [out] Number of bytes written.
     );
@@ -33,7 +34,7 @@ procedure if_OS_Storage
      */
     OS_Error_t
     read(
-        in  size_t offset,      //!< [in]  Read start offset.
+        in  off_t  offset,      //!< [in]  Read start offset.
         in  size_t size,        //!< [in]  Number of bytes to be read.
         out size_t read         //!< [out] Number of bytes read.
     );
@@ -45,9 +46,9 @@ procedure if_OS_Storage
      */
     OS_Error_t
     erase(
-        in  size_t offset,      //!< [in]  Erase start offset.
-        in  size_t size,        //!< [in]  Number of bytes to be erased.
-        out size_t erased       //!< [out] Number of bytes erased.
+        in  off_t offset,        //!< [in]  Erase start offset.
+        in  off_t size,          //!< [in]  Number of bytes to be erased.
+        out off_t erased         //!< [out] Number of bytes erased.
     );
 
     /**
@@ -57,7 +58,7 @@ procedure if_OS_Storage
      */
     OS_Error_t
     getSize(
-        out size_t size         //!< [out] The size of the storage.
+        out off_t size         //!< [out] The size of the storage.
     );
 
     /**

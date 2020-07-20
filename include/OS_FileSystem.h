@@ -16,6 +16,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /**
  * Type of filesystem to use
@@ -98,7 +99,7 @@ typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
  * Use this to indicate that the fs size should be maximized, based on the
  * size reported by the underlying storage layer
  */
-#define OS_FileSystem_USE_STORAGE_MAX   ((size_t) -1)
+#define OS_FileSystem_USE_STORAGE_MAX   0
 
 /**
  * Pass file system specific configuration options by setting the respective
@@ -200,7 +201,7 @@ typedef struct
      * the filesystem will try to use the maximum size reported by the
      * underlying storage.
      */
-    size_t size;
+    off_t size;
 
     /**
      * Interface to underlying storage; use IF_OS_STORAGE_ASSIGN() to
@@ -350,7 +351,7 @@ OS_Error_t
 OS_FileSystemFile_read(
     OS_FileSystem_Handle_t     hFs,
     OS_FileSystemFile_Handle_t hFile,
-    const size_t               offset,
+    const off_t                offset,
     const size_t               len,
     void*                      buffer);
 
@@ -373,7 +374,7 @@ OS_Error_t
 OS_FileSystemFile_write(
     OS_FileSystem_Handle_t     hFs,
     OS_FileSystemFile_Handle_t hFile,
-    const size_t               offset,
+    const off_t                offset,
     const size_t               len,
     const void*                buffer);
 
@@ -409,6 +410,6 @@ OS_Error_t
 OS_FileSystemFile_getSize(
     OS_FileSystem_Handle_t hFs,
     const char*            name,
-    size_t*                sz);
+    off_t*                 sz);
 
 /** @} */
