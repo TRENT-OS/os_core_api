@@ -5,7 +5,7 @@
  *
  */
 
-procedure if_OS_EntropySource {
+procedure if_OS_Entropy {
 
     size_t
     read(
