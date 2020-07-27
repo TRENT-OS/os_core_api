@@ -17,7 +17,6 @@
 #include "OS_Dataport.h"
 
 #include "OS_ConfigServiceDataTypes.h"
-#include "OS_ConfigServiceInstanceStore.h"
 
 typedef struct
 {
@@ -36,13 +35,12 @@ OS_ConfigService_ClientCtx_t;
  * will either return a pointer to a client or a server library instance. Apart
  * from the naming, there is no difference for these types of instances.
  */
-OS_ConfigServiceInstanceStore_t*
-OS_ConfigService_getInstances(void);
+OS_ConfigServiceLib_t*
+OS_ConfigService_getInstance(void);
 
 /**
  * @brief Creates a handle to a ConfigService library local instance.
  *
- * @param id ID of the ConfigService library instance.
  * @param handle handle to the ConfigService library instance.
  *
  * @return an error code
@@ -52,13 +50,11 @@ OS_ConfigService_getInstances(void);
  */
 OS_Error_t
 OS_ConfigService_createHandleLocal(
-    unsigned int id,
     OS_ConfigServiceHandle_t* handle);
 
 /**
  * @brief Creates a handle to a ConfigService library remote instance.
  *
- * @param id ID of the ConfigService library instance.
  * @param clientCtx a pointer to the client context. User must define it.
  * @param handle handle to the ConfigService library instance.
  *
@@ -69,7 +65,6 @@ OS_ConfigService_createHandleLocal(
  */
 OS_Error_t
 OS_ConfigService_createHandleRemote(
-    unsigned int id,
     OS_ConfigService_ClientCtx_t* clientCtx,
     OS_ConfigServiceHandle_t* handle);
 

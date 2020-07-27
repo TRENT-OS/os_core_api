@@ -10,52 +10,41 @@ procedure if_OS_ConfigService {
     include "OS_ConfigServiceDataTypes.h";
 
     OS_Error_t createHandle(
-        unsigned int id,
         in intptr_t clientCtx,
         dataport_ptr_t buffer,
         size_t bufferSize,
         out OS_ConfigServiceHandle_t handle);
 
     OS_Error_t domainEnumeratorInit(
-        OS_ConfigServiceHandle_t handle,
         out OS_ConfigServiceLibTypes_DomainEnumerator_t enumerator);
 
     OS_Error_t domainEnumeratorClose(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_DomainEnumerator_t enumerator);
 
     OS_Error_t domainEnumeratorReset(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_DomainEnumerator_t enumerator);
 
     OS_Error_t domainEnumeratorIncrement(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_DomainEnumerator_t enumerator);
 
     OS_Error_t domainEnumeratorGetElement(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_DomainEnumerator_t enumerator,
         out OS_ConfigServiceLibTypes_Domain_t domain);
 
     OS_Error_t parameterEnumeratorInit(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_DomainEnumerator_t domainEnumerator,
         out OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator);
 
     OS_Error_t parameterEnumeratorClose(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator);
 
     OS_Error_t parameterEnumeratorReset(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator);
 
     OS_Error_t parameterEnumeratorIncrement(
-        OS_ConfigServiceHandle_t handle,
         inout OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator);
 
     OS_Error_t parameterEnumeratorGetElement(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         out OS_ConfigServiceLibTypes_Parameter_t parameter);
 
@@ -64,13 +53,11 @@ procedure if_OS_ConfigService {
         out OS_ConfigServiceLibTypes_DomainName_t domainName);
 
     OS_Error_t domainCreateParameterEnumerator(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Domain_t domain,
         refin OS_ConfigServiceLibTypes_ParameterName_t parameterName,
         out OS_ConfigServiceLibTypes_ParameterEnumerator_t parameterEnumerator);
 
     OS_Error_t domainGetElement(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Domain_t domain,
         refin OS_ConfigServiceLibTypes_ParameterName_t parameterName,
         out OS_ConfigServiceLibTypes_Parameter_t parameter);
@@ -87,61 +74,50 @@ procedure if_OS_ConfigService {
         refin OS_ConfigServiceLibTypes_Parameter_t parameter);
 
     OS_Error_t parameterGetValue(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
         size_t bufferLength,
         out size_t bytesCopied);
 
     OS_Error_t parameterGetValueAsU32(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
         out uint32_t value);
 
     OS_Error_t parameterGetValueAsU64(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
         out uint64_t value);
 
     OS_Error_t parameterGetValueAsString(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
         size_t bufferLength);
 
     OS_Error_t parameterGetValueAsBlob(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_Parameter_t parameter,
         size_t bufferLength);
 
     OS_Error_t parameterSetValue(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
         size_t bufferLength);
 
     OS_Error_t parameterSetValueAsU32(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         uint32_t value);
 
     OS_Error_t parameterSetValueAsU64(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         uint64_t value);
 
     OS_Error_t parameterSetValueAsString(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
         size_t bufferLength);
 
     OS_Error_t parameterSetValueAsBlob(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_ParameterEnumerator_t enumerator,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
         size_t bufferLength);
 
     OS_Error_t parameterGetValueFromDomainName(
-        OS_ConfigServiceHandle_t handle,
         refin OS_ConfigServiceLibTypes_DomainName_t domainName,
         refin OS_ConfigServiceLibTypes_ParameterName_t parameterName,
         OS_ConfigServiceLibTypes_ParameterType_t parameterType,
