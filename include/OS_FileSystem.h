@@ -98,7 +98,7 @@ typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
  * Use this to indicate that the fs size should be maximized, based on the
  * size reported by the underlying storage layer
  */
-#define OS_FileSystem_STORAGE_MAX   ((size_t) -1)
+#define OS_FileSystem_USE_STORAGE_MAX   ((size_t) -1)
 
 /**
  * Pass file system specific configuration options by setting the respective
@@ -196,9 +196,9 @@ typedef struct
     OS_FileSystem_Type_t type;
 
     /**
-     * Size of filesystem to use; set this to OS_FileSystem_STORAGE_MAX so the
-     * filesystem will try to use the maximum size reported by the underlying
-     * storage.
+     * Size of filesystem to use; set this to OS_FileSystem_USE_STORAGE_MAX so
+     * the filesystem will try to use the maximum size reported by the
+     * underlying storage.
      */
     size_t size;
 
