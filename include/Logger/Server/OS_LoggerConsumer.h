@@ -8,7 +8,7 @@
  */
 
 /**
- * @defgroup    OS_LoggerServer Server's Logger library
+ * @defgroup    OS_LoggerServer OS Logger Server API
  *
  * Server's specific functionality of the Logger library.
  *
@@ -16,7 +16,7 @@
  */
 
 /**
- * @defgroup    OS_LoggerConsumer Log consumer implementation
+ * @defgroup    OS_LoggerConsumer OS Logger Consumer API
  *
  * @brief       This layer provides a implementation of concrete log consumer.
  *

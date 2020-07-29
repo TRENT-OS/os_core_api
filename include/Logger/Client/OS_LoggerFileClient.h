@@ -8,7 +8,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_LoggerFileClient Log file client implementation
+ * @defgroup    OS_LoggerFileClient OS Logger File Client API
  *
  * @brief       This layer provides the implementation of log file client
  *              functions.

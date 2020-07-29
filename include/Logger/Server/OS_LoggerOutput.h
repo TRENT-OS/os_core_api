@@ -9,7 +9,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_LoggerOutput Observer pattern interface
+ * @defgroup    OS_LoggerOutput OS Logger Output API
  *
  * @brief       Defines Observer pattern interface.
  *

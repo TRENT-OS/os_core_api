@@ -7,7 +7,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_LoggerTimestamp Timestamp interface and implementation
+ * @defgroup    OS_LoggerTimestamp OS Logger Timestamp API
  *
  * @brief       Helper object to create or convert a timestamp.
  * @details     This object contain to create or convert a timestamp.

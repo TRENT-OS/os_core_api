@@ -9,7 +9,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_LoggerAbstractFormat Abstract log format interface
+ * @defgroup    OS_LoggerAbstractFormat OS Logger Abstract Formtat API
  *
  * @brief       Defined abstract format interface for log format.
  * @details     This level provides an abstract interface for converting and

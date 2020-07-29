@@ -12,7 +12,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_Logger Logger library
+ * @defgroup    OS_Logger OS Logger API
  *
  * This module is an abstraction of the logging functionality, allowing setting
  * up a logger server to which clients can send logging entries.
@@ -20,7 +20,7 @@
  */
 
 /**
- * @defgroup    OS_LoggerClient Client's Logger library
+ * @defgroup    OS_LoggerClient OS Logger Client API
  *
  * Client's specific functionality of the Logger library.
  *
