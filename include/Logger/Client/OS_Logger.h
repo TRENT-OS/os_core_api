@@ -14,15 +14,17 @@
 /**
  * @defgroup    OS_Logger OS Logger API
  *
- * This module is an abstraction of the logging functionality, allowing setting
- * up a logger server to which clients can send logging entries.
+ * @brief       An abstraction of the logging functionality
+ *
+ * Allows setting up a logger server to which clients can send logging
+ * entries.
  *
  */
 
 /**
  * @defgroup    OS_LoggerClient OS Logger Client API
  *
- * Client's specific functionality of the Logger library.
+ * @brief       Client's specific functionality of the Logger library.
  *
  * @ingroup     OS_Logger
  */
