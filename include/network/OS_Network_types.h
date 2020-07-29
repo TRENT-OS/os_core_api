@@ -3,7 +3,7 @@
  *
  * @file OS_Network_types.h
  * @defgroup OS_Network OS Network Types
- * @brief TRENTOS-M Type definitions
+ * @brief Network stack type definitions
  * @details Type definitions used by TRENTOS-M Network stack
  * @{
  */
