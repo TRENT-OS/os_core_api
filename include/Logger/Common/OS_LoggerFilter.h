@@ -2,15 +2,7 @@
 
 /**
  * @file
- * @brief Log filter implementation.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerFilter Log filter implementation
- *
- * @brief       This layer provides the interface and implementation of log
- *              filter.
+ * @brief       Log filter implementation.
  *
  * @details     The log filter layer is being used by client and server
  *              components.
@@ -33,13 +25,13 @@
  *
  * @ingroup     OS_LoggerServer, OS_LoggerClient
 */
+#pragma once
+
 #include <stdbool.h>
 #include <stdint.h>
 
 /**
  * @details OS_LoggerFilter_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerFilter
 */
 typedef struct OS_LoggerFilter_Handle OS_LoggerFilter_Handle_t;
 
@@ -52,8 +44,6 @@ typedef struct OS_LoggerFilter_Handle OS_LoggerFilter_Handle_t;
  *
  * @retval  true  - if filtered out
  * @retval  false - if NOT filtered out
- *
- * @ingroup OS_LoggerFilter
 */
 typedef bool
 (*OS_LoggerFilter_isFilteredOut_t)(
@@ -63,8 +53,6 @@ typedef bool
 
 /**
  * @details OS_LoggerFilter_vtable_t contain the member functions to his class.
- *
- * @ingroup OS_LoggerFilter
 */
 typedef struct
 {
@@ -74,8 +62,6 @@ typedef struct
 
 /**
  * @details OS_LoggerFilter_Handle contain information about log filter.
- *
- * @ingroup OS_LoggerFilter
 */
 struct OS_LoggerFilter_Handle
 {
@@ -89,8 +75,6 @@ struct OS_LoggerFilter_Handle
  *
  * @param   self:       pointer to the class
  * @param   log_level:  log level id
- *
- * @ingroup OS_LoggerFilter
 */
 void
 OS_LoggerFilter_ctor(OS_LoggerFilter_Handle_t* self, uint8_t log_level);

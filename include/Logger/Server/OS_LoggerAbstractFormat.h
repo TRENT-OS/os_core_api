@@ -2,7 +2,9 @@
 
 /**
  * @file
- * @brief Abstract log format interface
+ * @brief       Abstract log format interface
+ *
+ * @ingroup     OS_LoggerAbstractFormat
  */
 #pragma once
 
@@ -29,8 +31,6 @@
 
 /**
  * @details OS_LoggerAbstractFormat_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerAbstractFormat
 */
 typedef struct OS_LoggerAbstractFormat_Handle OS_LoggerAbstractFormat_Handle_t;
 
@@ -41,8 +41,6 @@ typedef struct OS_LoggerAbstractFormat_Handle OS_LoggerAbstractFormat_Handle_t;
  *          converted into a defined format.
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 typedef OS_Error_t
 (*OS_LoggerAbstractFormat_convert_t)(
@@ -60,8 +58,6 @@ typedef OS_Error_t
  *          Serves as helper function to print the temporary log format.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 typedef void
 (*OS_LoggerAbstractFormat_print_t)(OS_LoggerAbstractFormat_Handle_t* self);
@@ -70,8 +66,6 @@ typedef void
 /**
  * @details OS_LoggerAbstractFormat_vtable_t contain the member functions to his
  *          class.
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 typedef struct
 {
@@ -82,8 +76,6 @@ typedef struct
 
 /**
  * @details OS_LoggerAbstractFormat_Handle_t contain the vtable to his class.
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 struct OS_LoggerAbstractFormat_Handle
 {
@@ -98,8 +90,6 @@ struct OS_LoggerAbstractFormat_Handle
  * @retval  OS_ERROR_INVALID_PARAMETER - log_info is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
  * @retval  other                        - Implementation specific.
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 OS_Error_t
 FormatT_convert(
@@ -114,8 +104,6 @@ FormatT_convert(
  * @details %FormatT_print is an abstract function for the print function.
  *
  * @param   self:       pointer to the class
- *
- * @ingroup OS_LoggerAbstractFormat_Handle_t
 */
 void
 FormatT_print(OS_LoggerAbstractFormat_Handle_t* self);

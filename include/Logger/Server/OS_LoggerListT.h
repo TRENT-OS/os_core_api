@@ -2,13 +2,6 @@
 
 /**
  * @file
- * @brief Generic intrusive linked list.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerListT Generic intrusive linked list
- *
  * @brief       Generic intrusive linked list.
  *
  * This module provides the interface to deal with the intrusive list that does
@@ -16,6 +9,8 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#pragma once
+
 #include <stdbool.h>
 
 /**
@@ -115,8 +110,6 @@
  *      }
  * }
  * @endcode
- *
- * @ingroup OS_LoggerListT
 */
 typedef struct OS_LoggerNodeT_Handle
 {
@@ -130,8 +123,6 @@ typedef struct OS_LoggerNodeT_Handle
  *
  * @retval  true  - if previous element is referenced.
  * @retval  false - if previous element is NOT referenced.
- *
- * @ingroup OS_LoggerListT
 */
 bool
 OS_LoggerListT_hasPrevious(
@@ -144,8 +135,6 @@ OS_LoggerListT_hasPrevious(
  *
  * @retval  true  - if next element is referenced.
  * @retval  false - if next element is NOT referenced.
- *
- * @ingroup OS_LoggerListT
 */
 bool
 OS_LoggerListT_hasNext(
@@ -156,8 +145,6 @@ OS_LoggerListT_hasNext(
  * @brief   Gets the previous element from the list.
  *
  * @return  Pointer to the previous list's element.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_getPrevious(
@@ -168,8 +155,6 @@ OS_LoggerListT_getPrevious(
  * @brief   Gets the next element from the list.
  *
  * @return  Pointer to the next list's element.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_getNext(
@@ -180,8 +165,6 @@ OS_LoggerListT_getNext(
  * @brief   Inserts a new element into the list.
  *
  * @return  Pointer to the inserted element.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_insert(
@@ -198,8 +181,6 @@ OS_LoggerListT_insert(
  * @return  Pointer to the element following the last removed element.
  *
  * @retval  NULL - if current is NULL or erasing last element in the list.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_erase(
@@ -210,8 +191,6 @@ OS_LoggerListT_erase(
  * @brief   Gets the first list's element.
  *
  * @return  Pointer to the first list's element.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_getFirst(
@@ -222,8 +201,6 @@ OS_LoggerListT_getFirst(
  * @brief   Gets the last list's element.
  *
  * @return  Pointer to the last list's element.
- *
- * @ingroup OS_LoggerListT
 */
 void*
 OS_LoggerListT_getLast(
@@ -235,8 +212,6 @@ OS_LoggerListT_getLast(
  *
  * @retval  true  - if the element is in the list.
  * @retval  false - if the element is NOT in the list.
- *
- * @ingroup OS_LoggerListT
 */
 bool
 OS_LoggerListT_isInside(

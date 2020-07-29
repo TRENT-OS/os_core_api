@@ -2,17 +2,12 @@
 
 /**
  * @file
- * @brief Log server console backend implementation
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerOutputConsole Log server console backend
+ * @brief       Log server console backend implementation
  *
- * @brief       Derived class from class \link OS_LoggerOutput \endlink that
+ * @details     Derived class from class \link OS_LoggerOutput \endlink that
  *              provides an implemention for log server console backend.
  *
- * @details     This level provides an implementation for printing the log on
+ *              This level provides an implementation for printing the log on
  *              the console.
  *
  *              It is a child class of \link OS_LoggerOutput_Handle_t \endlink.
@@ -23,6 +18,8 @@
  *
  * @ingroup     OS_LoggerOutput
 */
+#pragma once
+
 #include "Logger/Server/OS_LoggerOutput.h"
 
 /**
@@ -32,8 +29,6 @@
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - log_format is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerOutputConsole
 */
 OS_Error_t
 OS_LoggerOutputConsole_ctor(

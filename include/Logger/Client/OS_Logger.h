@@ -11,6 +11,22 @@
  */
 #pragma once
 
+/**
+ * @defgroup    OS_Logger Logger library
+ *
+ * This module is an abstraction of the logging functionality, allowing setting
+ * up a logger server to which clients can send logging entries.
+ *
+ */
+
+/**
+ * @defgroup    OS_LoggerClient Client's Logger library
+ *
+ * Client's specific functionality of the Logger library.
+ *
+ * @ingroup     OS_Logger
+ */
+
 #if defined(Debug_Config_PRINT_TO_LOG_SERVER)
 
 #include "Logger/Client/OS_LoggerEmitter.h"

@@ -2,14 +2,7 @@
 
 /**
  * @file
- * @brief Log file client flow control.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerFileClientCallback Log file client flow control
- *
- * @brief       This layer provides functions for log file client flow control.
+ * @brief       Log file client flow control.
  *
  * @details     The functions of this level serve to control the flow of log
  *              file client.
@@ -20,6 +13,7 @@
  *
  * @ingroup     OS_LoggerFileClient
 */
+#pragma once
 #include "OS_Error.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -38,8 +32,6 @@
  *
  * @retval -1 - if the error occurred.
  * @retval  N - if success.
- *
- * @ingroup OS_LoggerFileClient
 */
 typedef int64_t
 (*OS_LoggerFileClientCallback_read_t)(
@@ -51,8 +43,6 @@ typedef int64_t
 
 /**
  * @details OS_LoggerFileClientCallback_Handle_t contain interface functions.
- *
- * @ingroup OS_LoggerFileClient
 */
 typedef struct
 {
@@ -70,8 +60,6 @@ typedef struct
  *
  * @retval OS_ERROR_INVALID_PARAMETER - Read Callback is NULL.
  * @retval OS_SUCCESS                 - Initialization was successful.
- *
- * @ingroup OS_LoggerFileClient
 */
 OS_Error_t
 OS_LoggerFileClientCallback_ctor(

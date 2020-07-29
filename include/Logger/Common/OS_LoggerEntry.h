@@ -3,13 +3,7 @@
 /**
  * @file
  * @brief Log entry data structure
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerEntry Log entry data structure
  *
- * @brief       Log entry data structure definition
  * @details     Contains all the data describing a log entry.
  *
  *              Reference to the instance of this structure is passed around
@@ -20,6 +14,8 @@
  *
  * @ingroup     OS_LoggerServer, OS_LoggerClient
 */
+#pragma once
+
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include <stdint.h>
 

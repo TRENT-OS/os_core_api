@@ -19,7 +19,7 @@
  *              This class has been created for a time server. So the time
  *              server hosts the timestamp object as singleton.
  *
- * @ingroup     OS_LoggerServer, OS_LoggerClient
+ * @ingroup     OS_LoggerServer
 */
 #include "OS_Error.h"
 #include <stdint.h>

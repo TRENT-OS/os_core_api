@@ -2,19 +2,14 @@
 
 /**
  * @file
- * @brief Defines of log server internals
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerSymbols Defines of log server internals
- *
  * @brief       Defines the configuration of the log server internals.
+ *
  * @details     This file contain configuration for the log databuffer and for
  *              the log format example implementation.
  *
  * @ingroup     OS_LoggerServer, OS_LoggerClient
  */
+#pragma once
 
 #define OS_Logger_STR_(x)                         #x
 #define OS_Logger_STR(x)                          OS_Logger_STR_(x)

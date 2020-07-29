@@ -2,14 +2,24 @@
 
 /**
  * @file
- * @brief Log consumer flow control interface.
+ * @brief       Implements concrete log consumer
+ *
+ * @ingroup     OS_LoggerConsumer
  */
-#pragma once
+
+/**
+ * @defgroup    OS_LoggerServer Server's Logger library
+ *
+ * Server's specific functionality of the Logger library.
+ *
+ * @ingroup     OS_Logger
+ */
 
 /**
  * @defgroup    OS_LoggerConsumer Log consumer implementation
  *
  * @brief       This layer provides a implementation of concrete log consumer.
+ *
  * @details     On the server side, a log consumer is the object that receives
  *              log messages from a client.
  *
@@ -45,6 +55,8 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#pragma once
+
 #include "OS_Error.h"
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "Logger/Server/OS_LoggerConsumerCallback.h"
@@ -55,8 +67,6 @@
 
 /**
  * @details OS_LoggerConsumer_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerConsumer
 */
 typedef struct OS_LoggerConsumer_Handle OS_LoggerConsumer_Handle_t;
 
@@ -65,8 +75,6 @@ typedef struct OS_LoggerConsumer_Handle OS_LoggerConsumer_Handle_t;
  *          pointer to process the logging call.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerConsumer
 */
 typedef void
 (*OS_LoggerConsumer_process_t)(OS_LoggerConsumer_Handle_t* self);
@@ -77,8 +85,6 @@ typedef void
  *          to emit a signal, that the interface is ready for new logs.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerConsumer
 */
 typedef void
 (*OS_LoggerConsumer_emit_t)(OS_LoggerConsumer_Handle_t* self);
@@ -91,8 +97,6 @@ typedef void
  * @param   self:   pointer to the class
  *
  * @return  timestamp
- *
- * @ingroup OS_LoggerConsumer
 */
 typedef uint64_t
 (*OS_LoggerConsumer_getTimestamp_t)(OS_LoggerConsumer_Handle_t* self);
@@ -101,8 +105,6 @@ typedef uint64_t
 /**
  * @details OS_LoggerConsumer_vtable_t contain the member functions to his
  *          class.
- *
- * @ingroup OS_LoggerConsumer
 */
 typedef struct
 {
@@ -113,8 +115,6 @@ typedef struct
 
 /**
  * @details OS_LoggerConsumer_Handle contain the vtable to his class.
- *
- * @ingroup OS_LoggerConsumer
 */
 struct OS_LoggerConsumer_Handle
 {
@@ -152,8 +152,6 @@ struct OS_LoggerConsumer_Handle
  * @retval  OS_ERROR_INVALID_PARAMETER - One of the parameters is a NULL
  *                                       pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerConsumer
 */
 OS_Error_t
 OS_LoggerConsumer_ctor(

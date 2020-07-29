@@ -2,18 +2,12 @@
 
 /**
  * @file
- * @brief Log server filesystem backend implementation
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerOutputFileSystem Log server filesystem backend
- *              implementation
+ * @brief       Log server filesystem backend implementation
  *
- * @brief       Derived class from class \link OS_LoggerOutput \endlink and
+ * @details     Derived class from class \link OS_LoggerOutput \endlink and
  *              provides an implemention for log server filesystem backend.
  *
- * @details     This level provides an implementation for saving logs in a
+ *              This level provides an implementation for saving logs in a
  *              file.
  *
  *              It is a child class of \link OS_LoggerOutput_Handle_t \endlink.
@@ -24,6 +18,8 @@
  *
  * @ingroup     OS_LoggerOutput
 */
+#pragma once
+
 #include "Logger/Server/OS_LoggerOutput.h"
 
 /**
@@ -33,8 +29,6 @@
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - log_format is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerOutputFileSystem
 */
 OS_Error_t
 OS_LoggerOutputFileSystem_ctor(

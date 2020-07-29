@@ -2,7 +2,8 @@
 
 /**
  * @file
- * @brief Log file client implementation.
+ * @brief       Log file client implementation.
+ * @ingroup     OS_LoggerFileClient
  */
 #pragma once
 
@@ -30,8 +31,6 @@
 
 /**
  * @details OS_LoggerFileClient_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerFileClient
 */
 typedef struct OS_LoggerFileClient_Handle OS_LoggerFileClient_Handle_t;
 
@@ -52,8 +51,6 @@ typedef struct OS_LoggerFileClient_Handle OS_LoggerFileClient_Handle_t;
  * @param   len:        length of buffer
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerFileClient
 */
 typedef OS_Error_t
 (*OS_LoggerFileClient_read_t)(
@@ -66,8 +63,6 @@ typedef OS_Error_t
 /**
  * @details OS_LoggerFileClient_vtable_t contain the member functions to his
  *          class.
- *
- * @ingroup OS_LoggerFileClient
 */
 typedef struct
 {
@@ -77,8 +72,6 @@ typedef struct
 
 /**
  * @details OS_LoggerFileClient_Handle contain the vtable to his class.
- *
- * @ingroup OS_LoggerFileClient
 */
 struct OS_LoggerFileClient_Handle
 {
@@ -103,8 +96,6 @@ struct OS_LoggerFileClient_Handle
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - One of the input parameters is null.
  * @retval  OS_SUCCESS                 - Initialization was successful.
- *
- * @ingroup OS_LoggerFileClient
 */
 OS_Error_t
 OS_LoggerFileClient_ctor(
@@ -130,8 +121,6 @@ OS_LoggerFileClient_ctor(
  * @retval OS_ERROR_INVALID_PARAMETER - Filename is a NULL pointer.
  * @retval OS_ERROR_INVALID_HANDLE    - Read callback is NULL.
  * @retval OS_SUCCESS                 - Read was successful.
- *
- * @ingroup OS_LoggerFileClient
 */
 OS_Error_t
 OS_LoggerFileClient_read(

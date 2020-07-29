@@ -2,7 +2,9 @@
 
 /**
  * @file
- * @brief Observer pattern interface.
+ * @brief       Observer pattern interface.
+ *
+ * @ingroup     OS_LoggerOutput
  */
 #pragma once
 
@@ -41,7 +43,7 @@
  *              Defines an update interface for the subject so that it is called
  *              by the subject, when subject's state changed.
  *
- * @see         OS_LoggerAbstractSubject
+ * @see         OS_LoggerSubject_Handle_t
  *
  * @ingroup     OS_LoggerServer
 */
@@ -57,8 +59,6 @@ struct OS_LoggerOutput_Handle
  * @brief   Observer's update callback.
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerOutput
 */
 typedef OS_Error_t
 (*OS_LoggerOutput_update_t)(
@@ -68,8 +68,6 @@ typedef OS_Error_t
 
 /**
  * @brief   The observer pattern handle.
- *
- * @ingroup OS_LoggerOutput
 */
 struct OS_LoggerOutput_Handle
 {
@@ -102,8 +100,6 @@ OS_LoggerOutput_ctor(
  * Wrapper for calling the child's class implementation.
  *
  * @return  An error code which is child's class implementation specific.
- *
- * @ingroup OS_LoggerOutput
 */
 OS_Error_t
 OS_LoggerOutput_update(

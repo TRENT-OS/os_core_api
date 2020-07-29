@@ -2,15 +2,7 @@
 
 /**
  * @file
- * @brief Log file interface and implementation.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerFile Log file interface and implementation
- *
- * @brief       This layer provides the interface and implementation of log
- *              file.
+ * @brief       Log file interface and implementation.
  *
  * @details     This layer is a server site implementation. It needs a
  *              filesystem partition manager backend.
@@ -27,6 +19,8 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#pragma once
+
 #include "OS_Error.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "OS_FileSystem.h"
@@ -36,8 +30,6 @@
 
 /**
  * @details OS_LoggerFile_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerFile
 */
 typedef struct OS_LoggerFile_Handle OS_LoggerFile_Handle_t;
 
@@ -47,8 +39,6 @@ typedef struct OS_LoggerFile_Handle OS_LoggerFile_Handle_t;
  *          destructor.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFile
 */
 typedef void
 (*OS_LoggerFile_dtor_t)(OS_LoggerFile_Handle_t* self);
@@ -61,8 +51,6 @@ typedef void
  * @param   self:   pointer to the class
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerFile
 */
 typedef OS_Error_t
 (*OS_LoggerFile_create_t)(OS_LoggerFile_Handle_t* self);
@@ -86,8 +74,6 @@ typedef OS_Error_t
  * @param   log_file_size:  size of log file in bytes
  *
  * @return  count read bytes
- *
- * @ingroup OS_LoggerFile
 */
 typedef int64_t
 (*OS_LoggerFile_read_t)(
@@ -105,8 +91,6 @@ typedef int64_t
  * @param   filename:   name of log file
  *
  * @return  pointer to log consumer
- *
- * @ingroup OS_LoggerFile
 */
 typedef void*
 (*OS_LoggerFile_getConsumerByFilename_t)(const char* filename);
@@ -114,8 +98,6 @@ typedef void*
 
 /**
  * @details OS_LoggerFile_vtable_t contain the member functions to his class.
- *
- * @ingroup OS_LoggerFile
 */
 typedef struct
 {
@@ -129,8 +111,6 @@ typedef struct
 /**
  * @details OS_LoggerFile_info_t contain information about log file and
  *          filesystem backend.
- *
- * @ingroup OS_LoggerFile
 */
 typedef struct
 {
@@ -143,8 +123,6 @@ typedef struct
 
 /**
  * @details OS_LoggerFile_Handle contain the vtable to his class.
- *
- * @ingroup OS_LoggerFile
 */
 struct OS_LoggerFile_Handle
 {
@@ -164,8 +142,6 @@ struct OS_LoggerFile_Handle
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - filename is NULL or too long.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerFile
 */
 OS_Error_t
 OS_LoggerFile_ctor(
@@ -178,8 +154,6 @@ OS_LoggerFile_ctor(
  * @details %OS_LoggerFile_dtor is the destructor.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFile
 */
 void
 OS_LoggerFile_dtor(OS_LoggerFile_Handle_t* self);
@@ -195,8 +169,6 @@ OS_LoggerFile_dtor(OS_LoggerFile_Handle_t* self);
  * @retval  OS_ERROR_INVALID_HANDLE - Opened partition or file handle is
  *                                    invalid.
  * @retval  OS_SUCCESS              - Operation was successful.
- *
- * @ingroup OS_LoggerFile
 */
 OS_Error_t
 OS_LoggerFile_create(OS_LoggerFile_Handle_t* self);

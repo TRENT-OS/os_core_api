@@ -1,15 +1,8 @@
 /* Copyright (C) 2020, HENSOLDT Cyber GmbH */
-
 /**
  * @file
  * @brief Implementation of concrete log emitter.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerEmitter Log emitter implementation
  *
- * @brief       This layer provides a implementation of concrete log emitter.
  * @details     On the client side, a log emitter is the object that transceives
  *              log messages to a server.
  *
@@ -38,6 +31,7 @@
  *
  * @ingroup     OS_LoggerClient
 */
+#pragma once
 #include "OS_Error.h"
 #include "Logger/Common/OS_LoggerFilter.h"
 #include "OS_Types.h"
@@ -48,8 +42,6 @@
 
 /**
  * @details OS_LoggerEmitter_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerEmitter
 */
 typedef struct OS_LoggerEmitter_Handle OS_LoggerEmitter_Handle_t;
 
@@ -70,8 +62,6 @@ typedef struct OS_LoggerEmitter_Handle OS_LoggerEmitter_Handle_t;
  *
  * @retval  not NULL, if all allright
  *              NULL, if an error has been occurred
- *
- * @ingroup OS_LoggerEmitter
 */
 OS_LoggerEmitter_Handle_t*
 OS_LoggerEmitter_getInstance(
@@ -100,8 +90,6 @@ OS_LoggerEmitter_getInstance(
  * @retval  OS_ERROR_GENERIC           - String encoding error occurred.
  * @retval  OS_ERROR_BUFFER_TOO_SMALL  - Destination log buffer too small.
  * @retval  OS_SUCCESS                 - Entry logged or filtered out.
- *
- * @ingroup OS_LoggerEmitter
 */
 OS_Error_t
 OS_LoggerEmitter_log(uint8_t log_level, const char* format, ...);

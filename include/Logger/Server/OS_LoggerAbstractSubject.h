@@ -2,14 +2,8 @@
 
 /**
  * @file
- * @brief Abstract subject interface
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerAbstractSubject Abstract subject interface
+ * @brief       Abstract subject interface
  *
- * @brief       Defined abstract subject interface.
  * @details     This level provides the mechanism for an abstract subject
  *              interface.
  *              \n
@@ -37,6 +31,8 @@
  *
  * @ingroup     OS_LoggerServer
 */
+#pragma once
+
 #include "OS_Error.h"
 #include "Logger/Server/OS_LoggerOutput.h"
 #include <stdbool.h>

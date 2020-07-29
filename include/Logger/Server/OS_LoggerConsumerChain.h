@@ -2,14 +2,8 @@
 
 /**
  * @file
- * @brief Consumer chain implementation
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerConsumerChain Consumer chain implementation
+ * @brief       Consumer chain implementation
  *
- * @brief       This layer provides to manage consumer log objects.
  * @details     All log consumer objects, which will be getting logged, has to
  *              append in a logger chain.
  *              This layer provides functions to append or remove consumer log
@@ -22,8 +16,10 @@
  *              \n \n
  *              This layer is implemented as singleton.
  *
- * @ingroup     OS_LoggerServer
+ * @ingroup     OS_LoggerConsumer
 */
+#pragma once
+
 #include "OS_Error.h"
 #include "Logger/Server/OS_LoggerConsumer.h"
 #include "Logger/Server/OS_LoggerListT.h"
@@ -32,8 +28,6 @@
 
 /**
  * @details OS_LoggerConsumerChain_Handle_t defines the class datatype.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef struct OS_LoggerConsumerChain_Handle OS_LoggerConsumerChain_Handle_t;
 
@@ -44,8 +38,6 @@ typedef struct OS_LoggerConsumerChain_Handle OS_LoggerConsumerChain_Handle_t;
  * @param   consumer:   pointer to consumer log object
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef OS_Error_t
 (*OS_LoggerConsumerChain_append_t)(OS_LoggerConsumer_Handle_t* consumer);
@@ -58,8 +50,6 @@ typedef OS_Error_t
  * @param   consumer:   pointer to consumer log object
  *
  * @return  An error code.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef OS_Error_t
 (*OS_LoggerConsumerChain_remove_t)(OS_LoggerConsumer_Handle_t* consumer);
@@ -71,8 +61,6 @@ typedef OS_Error_t
  *          sender id.
  *
  * @return  pointer to consumer log object
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef OS_LoggerConsumer_Handle_t*
 (*OS_LoggerConsumerChain_getSender_t)(void);
@@ -81,8 +69,6 @@ typedef OS_LoggerConsumer_Handle_t*
 /**
  * @details OS_LoggerConsumerChain_vtable_t contain the member functions to his
  *          class.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef struct
 {
@@ -95,8 +81,6 @@ typedef struct
 /**
  * @details OS_LoggerConsumerChain_node_t contain informations about the
  *          consumer log object and is realized as singleton.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 typedef struct
 {
@@ -106,8 +90,6 @@ typedef struct
 
 /**
  * @details OS_LoggerConsumerChain_Handle contain the vtable to his class.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 struct OS_LoggerConsumerChain_Handle
 {
@@ -131,8 +113,6 @@ struct OS_LoggerConsumerChain_Handle
  *
  * @retval  not NULL, if all allright
  *              NULL, if an error has been occurred
- *
- * @ingroup OS_LoggerConsumerChain
 */
 OS_LoggerConsumerChain_Handle_t*
 OS_LoggerConsumerChain_getInstance(void);
@@ -147,8 +127,6 @@ OS_LoggerConsumerChain_getInstance(void);
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 OS_Error_t
 OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
@@ -164,8 +142,6 @@ OS_LoggerConsumerChain_append(OS_LoggerConsumer_Handle_t* consumer);
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - consumer is a NULL pointer.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerConsumerChain
 */
 OS_Error_t
 OS_LoggerConsumerChain_remove(OS_LoggerConsumer_Handle_t* consumer);
@@ -179,8 +155,6 @@ OS_LoggerConsumerChain_remove(OS_LoggerConsumer_Handle_t* consumer);
  *
  * @retval  not NULL, if all allright
  *              NULL, if an error has been occurred
- *
- * @ingroup OS_LoggerConsumerChain
 */
 OS_LoggerConsumer_Handle_t*
 OS_LoggerConsumerChain_getSender(void);

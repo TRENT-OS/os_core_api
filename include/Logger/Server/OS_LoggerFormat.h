@@ -2,17 +2,12 @@
 
 /**
  * @file
- * @brief Log format implementation.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerFormat Log format implementation
+ * @brief       Log format implementation.
  *
- * @brief       Derived class from class \link abstract_format \endlink and
- *              provides an implemention for log format.
+ * @details     Derived class from class \link OS_LoggerAbstractFormat_Handle
+ *              \endlink and provides an implemention for log format.
  *
- * @details     This level provides an implementation for converting and
+ *              This level provides an implementation for converting and
  *              printing log format.
  *
  *              This class is derived by abstract format.
@@ -24,8 +19,10 @@
  *              Before print the log message to an backend, convert the log
  *              message in the defined format.
  *
- * @ingroup     OS_LoggerAbstractFormat_Handle_t
+ * @ingroup     OS_LoggerAbstractFormat
 */
+#pragma once
+
 #include "Logger/Server/OS_LoggerAbstractFormat.h"
 
 /**
@@ -48,8 +45,6 @@
 /**
  * @details OS_LoggerFormat_Handle_t contain informations about the log format
  *          and a pointer the parent vtable.
- *
- * @ingroup OS_LoggerFormat
 */
 typedef struct
 {
@@ -66,8 +61,6 @@ typedef struct
  * @details %OS_LoggerFormat_ctor is the constructor.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerFormat
 */
 void
 OS_LoggerFormat_ctor(OS_LoggerFormat_Handle_t* self);

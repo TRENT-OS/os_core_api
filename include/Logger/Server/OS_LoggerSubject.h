@@ -2,17 +2,12 @@
 
 /**
  * @file
- * @brief Log subject implementation.
- */
-#pragma once
-
-/**
- * @defgroup    OS_LoggerSubject Log subject implemenation
+ * @brief       Log subject implementation.
  *
- * @brief       Derived class from class \link abstract_subject \endlink and
+ * @details     Derived class from class \link abstract_subject \endlink and
  *              provides an implemention for log subject.
  *
- * @details     This level provides an implementation for log subject.
+ *              This level provides an implementation for log subject.
  *              This class is derived by abstract subject.
  *
  *              Concrete observers can be registered to one subject by
@@ -32,8 +27,10 @@
  *              observer is assigned to the second (last - if more than two
  *              assigning issues has been done) concrete subject.
  *
- * @ingroup     OS_LoggerAbstractSubject
+ * @ingroup     OS_LoggerServer
 */
+#pragma once
+
 #include "OS_Error.h"
 #include "Logger/Server/OS_LoggerAbstractSubject.h"
 #include <stdbool.h>
@@ -42,8 +39,6 @@
 /**
  * @details OS_LoggerSubjectNode_t contain informations about the log subject
  *          and is realized as singleton.
- *
- * @ingroup OS_LoggerSubject
 */
 typedef struct
 {
@@ -54,8 +49,6 @@ typedef struct
 /**
  * @details OS_LoggerSubject_Handle_t contain informations about the log
  *          subject.
- *
- * @ingroup OS_LoggerSubject
 */
 typedef struct
 {
@@ -68,8 +61,6 @@ typedef struct
  * @details %OS_LoggerSubject_ctor is the constructor.
  *
  * @param   self:   pointer to the class
- *
- * @ingroup OS_LoggerSubject
 */
 void
 OS_LoggerSubject_ctor(OS_LoggerSubject_Handle_t* self);
@@ -86,8 +77,6 @@ OS_LoggerSubject_ctor(OS_LoggerSubject_Handle_t* self);
  * @retval  OS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
  * @retval  OS_ERROR_OPERATION_DENIED  - Observer was not attached.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerSubject
 */
 OS_Error_t
 OS_LoggerSubject_attach(
@@ -107,8 +96,6 @@ OS_LoggerSubject_attach(
  * @retval  OS_ERROR_INVALID_PARAMETER - Observer is a NULL pointer.
  * @retval  OS_ERROR_OPERATION_DENIED  - Observer was not detach.
  * @retval  OS_SUCCESS                 - Operation was successful.
- *
- * @ingroup OS_LoggerSubject
 */
 OS_Error_t
 OS_LoggerSubject_detach(
@@ -122,8 +109,6 @@ OS_LoggerSubject_detach(
  *
  * @param   self:   pointer to the class
  * @param   data:   user data from observer
- *
- * @ingroup OS_LoggerSubject
 */
 void
 OS_LoggerSubject_notify(OS_LoggerAbstractSubject_Handle_t* self, void* data);
