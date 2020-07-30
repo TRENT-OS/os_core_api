@@ -22,10 +22,12 @@
 typedef enum
 {
     OS_CryptoSignature_ALG_NONE = 0,
+
     /**
      * Use RSA with PKCS#1 V1.5 padding.
      */
     OS_CryptoSignature_ALG_RSA_PKCS1_V15,
+
     /**
      * Use RSA with PKCS#1 V2.1 padding; resulting signatures are probabilistic,
      * e.g. the value-to-be-signed includes some randomness.
@@ -33,9 +35,6 @@ typedef enum
     OS_CryptoSignature_ALG_RSA_PKCS1_V21
 } OS_CryptoSignature_Alg_t;
 
-/**
- * Handle for OS Crypto API SIGNATURE objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoSignature_Handle_t;
 
 /**

@@ -22,19 +22,18 @@
 typedef enum
 {
     OS_CryptoAgreement_ALG_NONE = 0,
+
     /**
      * Use Diffie-Hellman(-Merkle) key exchange.
      */
     OS_CryptoAgreement_ALG_DH,
+
     /**
      * Use Elliptic Curve Diffie-Hellman(-Merkle) key exchange.
      */
     OS_CryptoAgreement_ALG_ECDH
 } OS_CryptoAgreement_Alg_t;
 
-/**
- * Handle for OS Crypto API (key) AGREEMENT objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
 
 /**

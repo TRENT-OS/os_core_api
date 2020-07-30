@@ -60,18 +60,8 @@ typedef enum
 } OS_Crypto_Mode_t;
 
 typedef struct OS_Crypto OS_Crypto_t;
-/**
- * Handle to an API context.
- */
 typedef OS_Crypto_t* OS_Crypto_Handle_t;
-/**
- * All underlying library objects are encapsulated via a proxy object, to which
- * ultimately all API object handles point.
- */
 typedef struct OS_Crypto_Object OS_Crypto_Object_t;
-/**
- *  Pointer to (MAC, Digest, etc.) objects managed by library.
- */
 typedef void* CryptoLib_Object_ptr;
 
 // Include all after definining the API handle above; also make sure that key and
@@ -86,11 +76,13 @@ typedef void* CryptoLib_Object_ptr;
 #include "crypto/OS_CryptoSignature.h"
 #include "crypto/OS_CryptoRng.h"
 
+typedef void* (OS_Crypto_Calloc_func)(size_t n, size_t size);
+typedef void (OS_Crypto_Free_func)(void* ptr);
+typedef size_t (OS_Crypto_Entropy_func)(const size_t len);
+
 /**
  * User of API can provide custom allocator functionality.
  */
-typedef void* (OS_Crypto_Calloc_func)(size_t n, size_t size);
-typedef void (OS_Crypto_Free_func)(void* ptr);
 typedef struct
 {
     OS_Crypto_Calloc_func* calloc;
@@ -101,10 +93,16 @@ typedef struct
  * User of API has to provide callback and dataport to an EntropySource
  * component
  */
-typedef size_t (OS_Crypto_Entropy_func)(const size_t len);
 typedef struct
 {
+    /**
+     * Function implemented by if_OS_Entropy
+     */
     OS_Crypto_Entropy_func* read;
+
+    /**
+     * Dataport to communicate with component implementing if_OS_Entropy
+     */
     OS_Dataport_t dataport;
 } OS_Crypto_Entropy_t;
 
@@ -144,9 +142,24 @@ typedef struct
  */
 typedef struct
 {
+    /**
+     * Mode the API should be operated in
+     */
     OS_Crypto_Mode_t mode;
+
+    /**
+     * Optional calloc/free functions to use instead of standard ones
+     */
     OS_Crypto_Memory_t memory;
+
+    /**
+     * Dataport to use for communication with Crypto API in SERVER mode
+     */
     OS_Dataport_t dataport;
+
+    /**
+     * Configuration options when using local library
+     */
     CryptoLib_Config_t library;
 } OS_Crypto_Config_t;
 

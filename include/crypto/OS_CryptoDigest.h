@@ -30,19 +30,18 @@
 typedef enum
 {
     OS_CryptoDigest_ALG_NONE       = 0,
+
     /**
      * Use MD5 hash.
      */
     OS_CryptoDigest_ALG_MD5        = 3,
+
     /**
      * Use SHA256 hash.
      */
     OS_CryptoDigest_ALG_SHA256     = 6
 } OS_CryptoDigest_Alg_t;
 
-/**
- * Handle for OS Crypto API DIGEST objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
 
 /**

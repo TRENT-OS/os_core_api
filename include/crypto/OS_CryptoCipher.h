@@ -31,35 +31,39 @@
 typedef enum
 {
     OS_CryptoCipher_ALG_NONE = 0,
+
     /**
      * Use AES in ECB mode for encryption.
      */
+
     OS_CryptoCipher_ALG_AES_ECB_ENC,
+
     /**
      * Use AES in ECB mode for decryption.
      */
     OS_CryptoCipher_ALG_AES_ECB_DEC,
+
     /**
      * Use AES in CBC mode for encryption.
      */
     OS_CryptoCipher_ALG_AES_CBC_ENC,
+
     /**
      * Use AES in CBC mode for decryption.
      */
     OS_CryptoCipher_ALG_AES_CBC_DEC,
+
     /**
      * Use AES in GCM mode for encryption.
      */
     OS_CryptoCipher_ALG_AES_GCM_ENC,
+
     /**
      * Use AES in GCM mode for decryption.
      */
     OS_CryptoCipher_ALG_AES_GCM_DEC,
 } OS_CryptoCipher_Alg_t;
 
-/**
- * Handle for OS Crypto API CIPHER objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
 
 /**

@@ -31,19 +31,18 @@
 typedef enum
 {
     OS_CryptoMac_ALG_NONE = 0,
+
     /**
      * Use HMAC with MD5 as hash algorithm.
      */
     OS_CryptoMac_ALG_HMAC_MD5,
+
     /**
      * Use HMAC with SHA256 as hash algorithm.
      */
     OS_CryptoMac_ALG_HMAC_SHA256,
 } OS_CryptoMac_Alg_t;
 
-/**
- * Handle for OS Crypto API MAC objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
 
 /**

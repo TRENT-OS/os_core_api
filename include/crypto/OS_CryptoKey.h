@@ -33,14 +33,25 @@
 #define OS_CryptoKey_SIZE_MAC_MAX      1024    ///< max 8096 bit
 
 /**
- * These need to be set to these exact values to match values expected by the
- * implementation of the Crypto API.
+ * Type of well-known crypto parameters to load
  */
 typedef enum
 {
     OS_CryptoKey_PARAM_NONE = 0,
+
+    /**
+     * Load curve parameters of SECP192r1 curve
+     */
     OS_CryptoKey_PARAM_ECC_SECP192R1,
+
+    /**
+     * Load curve parameters of SEC224r1 curve
+     */
     OS_CryptoKey_PARAM_ECC_SECP224R1,
+
+    /**
+     * Load curve parameters of SECP256r1 curve
+     */
     OS_CryptoKey_PARAM_ECC_SECP256R1
 } OS_CryptoKey_Param_t;
 
@@ -50,10 +61,12 @@ typedef enum
 typedef enum
 {
     OS_CryptoKey_SPECTYPE_NONE = 0,
+
     /**
      * KeySpec defines the amount of desired bits for a newly generated key directly.
      */
     OS_CryptoKey_SPECTYPE_BITS,
+
     /**
      * KeySpec defines target params of newly generated keys, thus its size is
      * defined by those parameters (e.g., in case of DH keys, the size of the
@@ -76,53 +89,60 @@ typedef enum
 typedef enum
 {
     OS_CryptoKey_TYPE_NONE = 0,
+
     /**
      * Key for use with AES encryption/decryption; can be 128, 192, 256 bits.
      */
     OS_CryptoKey_TYPE_AES,
+
     /**
      * Key for use with RSA private operations (signature/decryption); can be
      * 128-4096 bits.
      */
     OS_CryptoKey_TYPE_RSA_PRV,
+
     /**
      * Key for use with RSA public operations (verification/encryption); can be
      * 128-4096 bits.
      */
     OS_CryptoKey_TYPE_RSA_PUB,
+
     /**
      * Key for use with DH private operations; can be 64-4096 bits.
      */
     OS_CryptoKey_TYPE_DH_PRV,
+
     /**
      * Key for use with DH public operations; can be 64-4096 bits.
      */
     OS_CryptoKey_TYPE_DH_PUB,
+
     /**
      * Key on SECP256r1 Elliptic Curve for private operations; can only be 256 bits.
      */
     OS_CryptoKey_TYPE_SECP256R1_PRV,
+
     /**
      * Key on SECP256r1 Elliptic Curve for public operations; can only be 256 bits.
      */
     OS_CryptoKey_TYPE_SECP256R1_PUB,
+
     /**
      * Key on generic Elliptic Curve for private operations; currently not used.
      */
     OS_CryptoKey_TYPE_ECC_PRV,
+
     /**
      * Key on generic Elliptic Curve for public operations; currently not used.
      */
     OS_CryptoKey_TYPE_ECC_PUB,
+
     /**
      * Key for MAC computation
      */
     OS_CryptoKey_TYPE_MAC
 } OS_CryptoKey_Type_t;
 
-/**
- * Handle for OS Crypto API KEY objects.
- */
 typedef OS_Crypto_Object_t* OS_CryptoKey_Handle_t;
 
 /**
@@ -130,8 +150,8 @@ typedef OS_Crypto_Object_t* OS_CryptoKey_Handle_t;
  */
 typedef struct
 {
-    uint8_t bytes[OS_CryptoKey_SIZE_AES_MAX];
-    uint32_t len;
+    uint8_t bytes[OS_CryptoKey_SIZE_AES_MAX];   ///< key bytes
+    uint32_t len;                               ///< amount of bytes
 } OS_CryptoKey_Aes_t;
 
 /**
@@ -259,8 +279,8 @@ typedef struct
  */
 typedef struct
 {
-    uint8_t bytes[OS_CryptoKey_SIZE_MAC_MAX];
-    uint32_t len;
+    uint8_t bytes[OS_CryptoKey_SIZE_MAC_MAX];   ///< key bytes
+    uint32_t len;                               ///< amount of bytes
 } OS_CryptoKey_Mac_t;
 
 /**
@@ -271,6 +291,7 @@ typedef struct
     /**
      * Flags set for this key.
      */
+
     OS_CryptoKey_Flag_t flags;
     /**
      * Keys can be EXPORTABLE or NOT_EXPORTABLE. This flag is evaluated in two
@@ -293,15 +314,44 @@ typedef struct
  */
 typedef struct
 {
+    /**
+     * Type of spec, depending on this, use the respective field of the union
+     */
     OS_CryptoKey_SpecType_t type;
+
+    /**
+     * Key data
+     */
     struct key
     {
+        /**
+         * Type of key
+         */
         OS_CryptoKey_Type_t type;
+
+        /**
+         * Attributes of key
+         */
         OS_CryptoKey_Attrib_t attribs;
+
+        /**
+         * Use respective field based on type of spec
+         */
         union
         {
+            /**
+             * For SPECTYPE_BITS: use this to set the amount of bits required
+             */
             uint32_t bits;
+
+            /**
+             * For SPECTYPE_PARAMS: Use this to specifiy ECC params to use
+             */
             OS_CryptoKey_EccParams_t ecc;
+
+            /**
+             * For SPECTYPE_PARAMS: Use this to specify DH params to use
+             */
             OS_CryptoKey_DhParams_t dh;
         } params;
     } key;
@@ -317,31 +367,65 @@ typedef struct
  */
 typedef struct
 {
+    /**
+     * Type of key
+     */
     OS_CryptoKey_Type_t type;
+
+    /**
+     * Attribs of key
+     */
     OS_CryptoKey_Attrib_t attribs;
+
+    /**
+     * Use respective field based on type
+     */
     union
     {
+        /**
+         * Use for keys of ECC type (currently not supported)
+         */
         union
         {
             OS_CryptoKey_EccPrv_t prv;
             OS_CryptoKey_EccPub_t pub;
         } ecc;
+
+        /**
+         * Use for keys of SECP256r1 type
+         */
         union
         {
             OS_CryptoKey_Secp256r1Prv_t prv;
             OS_CryptoKey_Secp256r1Pub_t pub;
         } secp256r1;
+
+        /**
+         * Use for keys of DH type
+         */
         union
         {
             OS_CryptoKey_DhPrv_t prv;
             OS_CryptoKey_DhPub_t pub;
         } dh;
+
+        /**
+         * Use for keys of RSA type
+         */
         union
         {
             OS_CryptoKey_RsaRrv_t prv;
             OS_CryptoKey_RsaRub_t pub;
         } rsa;
+
+        /**
+         * Use for keys of AES type
+         */
         OS_CryptoKey_Aes_t aes;
+
+        /**
+         * Use for keys of MAC type
+         */
         OS_CryptoKey_Mac_t mac;
     } data;
 } OS_CryptoKey_Data_t;
