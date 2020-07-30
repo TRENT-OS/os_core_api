@@ -32,7 +32,7 @@ typedef enum
     // File System specific error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
-    __START_OS_ERROR_CODES_FS = -1224,
+    __START_OS_ERROR_CODES_FS = -1124,
     /// @endcond
     //----------------------------------------
     OS_ERROR_FS_NO_FREE_HANDLE,                /**< failed cause no free handle */
@@ -60,36 +60,7 @@ typedef enum
     OS_ERROR_FS_INVALID_FILESYSTEM,            /**< no valid filesystem */
     //----------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
-    __END_OS_ERROR_CODES_FS,                   /**< -1200 */
-    /// @endcond
-
-    //--------------------------------------------------------------------------
-    // Partition Manager specific error codes
-    //--------------------------------------------------------------------------
-    /// @cond OS_ERROR_HELPER_DEFINES
-    __START_OS_ERROR_CODES_PM = -1118,
-    /// @endcond
-    //----------------------------------------
-    OS_ERROR_PM_PARTITION_ID,                  /**< wrong partition id or partition id doesn't exist */
-    OS_ERROR_PM_INIT,                          /**< fail to init */
-    OS_ERROR_PM_OPEN,                          /**< fail to open */
-    OS_ERROR_PM_READ,                          /**< fail to read */
-    OS_ERROR_PM_WRITE,                         /**< fail to write */
-    OS_ERROR_PM_CLOSE,                         /**< fail to close */
-    OS_ERROR_PM_OFFSET,                        /**< fail to get offset */
-    OS_ERROR_PM_GET_STRUCT,                    /**< fail to get struct */
-    OS_ERROR_PM_POINTER_START_POS,             /**< wrong pointer to start position */
-    OS_ERROR_PM_POINTER_END_POS,               /**< wrong pointer to end position */
-    OS_ERROR_PM_POINTER_POS,                   /**< pointer position of start and end pointer do not match the size of the partition */
-    OS_ERROR_PM_INTERNAL_OBJECT,               /**< invalid object internally */
-    OS_ERROR_PM_NO_PARTITIONS,                 /**< no partition exists */
-    OS_ERROR_PM_DISK_SIZE,                     /**< real disk size is smaller than configured */
-    OS_ERROR_PM_BLOCK_SIZE,                    /**< block size is undefined */
-    OS_ERROR_PM_REGISTER_INTERNAL_OBJECT,      /**< fail to register internal object */
-    OS_ERROR_PM_DATABUFFER_OVERLOW,            /**< databuffer is too small */
-    //----------------------------------------
-    /// @cond OS_ERROR_HELPER_DEFINES
-    __END_OS_ERROR_CODES_PM,                   /**< -1100 */
+    __END_OS_ERROR_CODES_FS,                   /**< -1100 */
     /// @endcond
 
     //--------------------------------------------------------------------------
@@ -155,15 +126,9 @@ CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_CONFIG, -1000);
 
 CHECK_OS_ERROR_OVERLAP(
     __START_OS_ERROR_CODES_CONFIG,
-    __END_OS_ERROR_CODES_PM);
-
-CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_PM, -1100);
-
-CHECK_OS_ERROR_OVERLAP(
-    __START_OS_ERROR_CODES_PM,
     __END_OS_ERROR_CODES_FS);
 
-CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_FS, -1200);
+CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_FS, -1100);
 
 CHECK_OS_ERROR_OVERLAP(
     __START_OS_ERROR_CODES_FS,
