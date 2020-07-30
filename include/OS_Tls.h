@@ -104,6 +104,7 @@ typedef enum
  * PEM-encoded certificate.
  */
 #define OS_Tls_SIZE_CA_CERT_MAX    3072
+
 /**
  * Max values to enable static array allocation; we do not actually provide as
  * many ciphersuites, yet.
@@ -124,10 +125,12 @@ typedef struct
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
     OS_Tls_Digest_t sessionDigests[OS_Tls_MAX_DIGESTS + 1];
+
     /**
      * Amount of digests set in \p sessionDigests.
      */
     size_t sessionDigestsLen;
+
     /**
      * Also allow these digest algorithms to be used for the generation of hashes
      * which are then used for signatures (e.g., in certificates).
@@ -135,23 +138,23 @@ typedef struct
      * NOTE: We add +1 so the last element can be set to 0 internally.
      */
     OS_Tls_Digest_t signatureDigests[OS_Tls_MAX_DIGESTS + 1];
+
     /**
      * Amount of digests set in \p signatureDigests.
      */
     size_t signatureDigestsLen;
+
     /**
      * Minimum bit length for RSA-based operations.
      */
     size_t rsaMinBits;
+
     /**
      * Minimum bit length for DH-based operations.
      */
     size_t dhMinBits;
 } OS_Tls_Policy_t;
 
-/**
- * Functions for sending/receiving data on an open socket.
- */
 typedef int (OS_Tls_Recv_func)(
     void*          ctx,
     unsigned char* buf,
@@ -166,6 +169,9 @@ typedef int (OS_Tls_Send_func)(
  */
 typedef struct
 {
+    /**
+     * Functions to use for socket I/O
+     */
     struct
     {
         /**
@@ -180,6 +186,10 @@ typedef struct
          */
         void* context;
     } socket;
+
+    /**
+     * Configuration options related to cryptography
+     */
     struct
     {
         /**
@@ -187,17 +197,20 @@ typedef struct
          * chosen by the user.
          */
         OS_Tls_Policy_t* policy;
+
         /**
          * Need an initialized for OS Crypto API handle for cryptographic
          * operations.
          */
         OS_Crypto_Handle_t handle;
+
         /**
          * Here a certificate in PEM encoding (including headers) is passed to
          * the TLS API so it can be used to verify the root of the server's
          * certificate chain.
          */
         char caCert[OS_Tls_SIZE_CA_CERT_MAX];
+
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
          * given in the cipersuites will be ENFORCED for everything (incl. session hash,
@@ -208,18 +221,20 @@ typedef struct
          * NOTE: We add +1 so the last element can be set to 0 internally.
          */
         OS_Tls_CipherSuite_t cipherSuites[OS_Tls_MAX_CIPHERSUITES + 1];
+
         /**
          * Amount of ciphersuites in \p cipherSuites.
          */
         size_t cipherSuitesLen;
     } crypto;
+
+    /**
+     * Flags to set for TLS
+     */
     OS_Tls_Flag_t flags;
 } TlsLib_Config_t;
 
 typedef struct OS_Tls OS_Tls_t;
-/**
- * Handle of the main TLS API context.
- */
 typedef OS_Tls_t* OS_Tls_Handle_t;
 
 /**
@@ -235,8 +250,19 @@ typedef OS_Tls_t* OS_Tls_Handle_t;
  */
 typedef struct
 {
+    /**
+     * Mode to operate the API in
+     */
     OS_Tls_Mode_t mode;
+
+    /**
+     * Configuration options for LIBRARY mode
+     */
     TlsLib_Config_t library;
+
+    /**
+     * Dataport to use to communicate to remote OS TLS API server instance
+     */
     OS_Dataport_t dataport;
 } OS_Tls_Config_t;
 
