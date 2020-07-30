@@ -1,12 +1,15 @@
 /**
  *  Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
- * @file OS_Network.h
+ * @file
  * @defgroup OS_Network OS Network API
- * @brief TRENTOS-M Network Socket API. These API interacts with the Network
- *        Stack to offer IP functionality to the system using a socket based
- *        interface.
- * @details Include system header for TRENTOS-M Network Socket API. The
+ * @brief    Network Socket API
+ *
+ * @details These API interacts with the Network
+ *          Stack to offer IP functionality to the system using a socket based
+ *          interface.
+ *
+ *          Include system header for TRENTOS-M Network Socket API. The
  *          Network stack can be used in two different ways, in a SERVER
  *          configuration (where the APP listens for an incoming connection)
  *          and a CLIENT configuration (where the APP can connect to a remote

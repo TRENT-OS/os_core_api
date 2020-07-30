@@ -1,11 +1,10 @@
 /**
  *  Copyright (C) 2020, Hensoldt Cyber GmbH
  *
- * @file OS_Network_types.h
- * @defgroup OS_Network OS Network Types
- * @brief Network stack type definitions
+ * @file
+ * @brief   Network stack type definitions
  * @details Type definitions used by TRENTOS-M Network stack
- * @{
+ * @ingroup OS_Network
  */
 
 #pragma once
