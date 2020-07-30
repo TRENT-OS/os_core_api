@@ -9,9 +9,9 @@
 
 #define MAC_SIZE    6
 
-// Etherner frames are used on layer 2. IEEE 802.3 origianlly defined the max
-// frame size as 1518 bytes. The min size as 64 byte, so payload must be at
-// laest 46 bytes and padding has to be used if the data is less. There is no
+// Ethernet frames are used on layer 2. IEEE 802.3 originally defined the max
+// frame size as 1518 bytes and the min size as 64 byte. Payload must be at
+// least 46 bytes and padding has to be used if the data is less. There is no
 // dedicated length field in the frames, the field type/len can contain a
 // length or a type. There may be start/stop conditiona on lower layers, so a
 // frame can be detected properly. Purely on layer 2 without any meta data from
