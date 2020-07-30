@@ -18,6 +18,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/**
+ * Type of filesystem to use
+ */
 typedef enum
 {
     OS_FileSystem_Type_NONE = 0,
@@ -39,6 +42,9 @@ typedef enum
     OS_FileSystem_Type_LITTLEFS,
 } OS_FileSystem_Type_t;
 
+/**
+ * Mode when opening a file
+ */
 typedef enum
 {
     OS_FileSystem_OpenMode_NONE   = 0,
@@ -59,6 +65,9 @@ typedef enum
     OS_FileSystem_OpenMode_RDWR,
 } OS_FileSystem_OpenMode_t;
 
+/**
+ * Flags when opening a file
+ */
 typedef enum
 {
     OS_FileSystem_OpenFlags_NONE        = 0,
@@ -81,13 +90,12 @@ typedef enum
 } OS_FileSystem_OpenFlags_t;
 
 typedef unsigned int OS_FileSystemFile_Handle_t;
-
 typedef struct OS_FileSystem OS_FileSystem_t;
 typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
 
 /**
- * Use this to indicate that the fs size is dependent on the size of the
- * underlying storage
+ * Use this to indicate that the fs size should be maximized, based on the
+ * size reported by the underlying storage layer
  */
 #define OS_FileSystem_STORAGE_MAX   ((size_t) -1)
 
@@ -103,7 +111,6 @@ typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
     .getState = _rpc_ ## _getState,                 \
     .dataport = OS_DATAPORT_ASSIGN(_dp_)            \
 }
-
 
 /**
  * Pass file system specific configuration options by setting the respective
