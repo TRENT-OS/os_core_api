@@ -20,7 +20,15 @@
 typedef enum
 {
     OS_CertParserCert_Encoding_NONE = 0x00,
+
+    /**
+     * DER encoded certificate (binary)
+     */
     OS_CertParserCert_Encoding_DER,
+
+    /**
+     * PEM encoded certificate (base-64 encoded DER)
+     */
     OS_CertParserCert_Encoding_PEM
 } OS_CertParserCert_Encoding_t;
 
@@ -64,13 +72,31 @@ typedef enum
 typedef enum
 {
     OS_CertParserCert_AttribType_NONE = 0x00,
+
+    /**
+     * Get the public key of the cert
+     */
     OS_CertParserCert_AttribType_PUBLICKEY,
+
+    /**
+     * Get the subject field of the cert
+     */
     OS_CertParserCert_AttribType_SUBJECT,
+
+    /**
+     * Get the issuer field of the cert
+     */
     OS_CertParserCert_AttribType_ISSUER
 } OS_CertParserCert_AttribType_t;
 
-// Maximum length of these attributes in X509
+/**
+ *  Maximum length of subject in X509
+ */
 #define OS_CertParserCert_Subject_MAX_LEN 256
+
+/**
+ *  Maximum length of issuer in X509
+ */
 #define OS_CertParserCert_Issuer_MAX_LEN 256
 
 /**
@@ -78,7 +104,14 @@ typedef enum
  */
 typedef struct
 {
+    /**
+     * Type of certificate attribute
+     */
     OS_CertParserCert_AttribType_t type;
+
+    /**
+     * Use respective field based on type
+     */
     union
     {
         /**
@@ -109,7 +142,6 @@ typedef struct
     OS_Crypto_Handle_t hCrypto;
 } OS_CertParser_Config_t;
 
-// Anonymous structs which we do not need to reveal here
 typedef struct OS_CertParserCert OS_CertParserCert_t;
 typedef struct OS_CertParserChain OS_CertParserChain_t;
 typedef struct OS_CertParser OS_CertParser_t;
@@ -122,9 +154,9 @@ typedef OS_CertParserCert_t* OS_CertParserCert_Handle_t;
 typedef OS_CertParserChain_t* OS_CertParserChain_Handle_t;
 
 /**
- * @brief Initialize parser context
+ * @brief Initialize parser handle
  *
- * @param hParser pointer to parser context
+ * @param hParser pointer to handle of OS CertParser API
  * @param config configuration of parser
  *
  * @return an error code
@@ -140,13 +172,13 @@ OS_CertParser_init(
     const OS_CertParser_Config_t* config);
 
 /**
- * @brief Free parser context
+ * @brief Free parser handle
  *
  * NOTE: This function can also free all associated chains and certs, just
  *       be careful that you are not having other references which might
  *       still be in use!
  *
- * @param hParser parser context to free
+ * @param hParser handle of OS CertParser API
  * @param freeChains set to true if all CA chains and the certificates associated
  *  with them shall be freed as well
  *
@@ -169,7 +201,7 @@ OS_CertParser_free(
  * NOTE: Just the reference to a chain is added; the chain (and its respective
  *       certs) SHOULD NOT be free'd while it is associated to the parser.
  *
- * @param hParser parser context to add chain to
+ * @param hParser handle of OS CertParser API
  * @param hChain chain containig at least one CA certificate
  *
  * @return an error code
@@ -193,7 +225,7 @@ OS_CertParser_addTrustedChain(
  * error, this function returns OS_ERROR_GENERIC and \p result will
  * have the respective error flags set.
  *
- * @param hParser parser context
+ * @param hParser handle of OS CertParser API
  * @param index index of CA chain to use
  * @param hChain chain to verify against CA chain
  * @param result flags indicating verification result
@@ -212,14 +244,14 @@ OS_CertParser_verifyChain(
     OS_CertParser_VerifyFlags_t*      result);
 
 /**
- * @brief Initialize a cert context
+ * @brief Initialize a cert handle
  *
- * Create a cert context by parsing a blob of cert data in different encodings
+ * Create a cert handle by parsing a blob of cert data in different encodings
  * into its internal structure. This function will make sure the certificate
  * algorithms are supported.
  *
- * @param hCert pointer to cert context to be initialized
- * @param hParser parser context
+ * @param hCert pointer to cert handle to be initialized
+ * @param hParser handle of OS CertParser API
  * @param encoding encoding type of cert
  * @param data raw cert data
  * @param len length of cert data in bytes
@@ -241,9 +273,9 @@ OS_CertParserCert_init(
     const size_t                       len);
 
 /**
- * @brief Free a cert context
+ * @brief Free a cert handle
  *
- * @param hCert certificate context to free
+ * @param hCert certificate handle to free
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
@@ -260,7 +292,7 @@ OS_CertParserCert_free(
  * etc. This function allows to extract some of those fields into a usable
  * form.
  *
- * @param hCert certificate context
+ * @param hCert certificate handle
  * @param type type of attribute to extract
  * @param attrib buffer to attribute data
  *
@@ -276,10 +308,10 @@ OS_CertParserCert_getAttrib(
     OS_CertParserCert_Attrib_t*          attrib);
 
 /**
- * @brief Initialize a certificate chain context
+ * @brief Initialize a certificate chain handle
  *
- * @param hChain chain context to initialize
- * @param hParser parser context
+ * @param hChain chain handle to initialize
+ * @param hParser handle of OS CertParser API
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
@@ -292,12 +324,12 @@ OS_CertParserChain_init(
     const OS_CertParser_Handle_t hParser);
 
 /**
- * @brief Free certificate chain context
+ * @brief Free certificate chain handle
  *
  * NOTE: This function can free all associated certs; just make sure there are
  *       no other references to those certs in use when they are freed.
  *
- * @param hChain chain context to free
+ * @param hChain chain handle to free
  * @param freeCerts set to true if all associated certs should be free'd
  *  as well
  *
@@ -320,9 +352,9 @@ OS_CertParserChain_free(
  *
  * NOTE: Just the reference to \p hCert is added; the certificte SHOULD NOT
  *       be free'd  while it is associated with a chain that is in use (or
- *       associated with a parser context).
+ *       associated with a parser handle).
  *
- * @param hChain chain context to add cert to
+ * @param hChain chain handle to add cert to
  * @param hCert certificate to add to the chain
  *
  * @return an error code
@@ -344,9 +376,9 @@ OS_CertParserChain_addCert(
  * Get pointer to a certificate in \p hChain. The certificate is selected by
  * giving its \p index, i.e., its position in \p hChain.
  *
- * @param hChain chain context
+ * @param hChain chain handle
  * @param index index of certificate in chain
- * @param hCert pointer to cert context
+ * @param hCert pointer to cert handle
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
@@ -362,7 +394,7 @@ OS_CertParserChain_getCert(
 /**
  * @brief Get number of certs in chain
  *
- * @param hChain chain context
+ * @param hChain chain handle
  * @param len pointer to length
  *
  * @return an error code
