@@ -1,5 +1,5 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
 /**
- *  Copyright (C) 2019-2020, Hensoldt Cyber GmbH
  *
  * @file
  * @defgroup OS_Network OS Network API

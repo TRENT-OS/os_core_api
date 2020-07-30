@@ -1,5 +1,5 @@
+/* Copyright (C) 2020, Hensoldt Cyber GmbH */
 /**
- *  Copyright (C) 2020, Hensoldt Cyber GmbH
  *
  * @file
  * @brief   Network stack type definitions
