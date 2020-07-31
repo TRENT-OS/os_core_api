@@ -152,15 +152,6 @@ typedef struct
     size_t dhMinBits;
 } OS_Tls_Policy_t;
 
-typedef int (OS_Tls_Recv_func)(
-    void*          ctx,
-    unsigned char* buf,
-    size_t         len);
-typedef int (OS_Tls_Send_func)(
-    void*                ctx,
-    const unsigned char* buf,
-    size_t               len);
-
 /**
  * Configuration for the TLS provider library used by the TLS API layer.
  */
@@ -172,11 +163,15 @@ typedef struct
     struct
     {
         /**
-         * Callbacks to use by the TLS library to send/recieve data for a socket
-         * that is already CONNECTED.
+         * Used by the TLS library to receive data from a connected socket
          */
-        OS_Tls_Recv_func* recv;
-        OS_Tls_Send_func* send;
+        int (*recv)(void* ctx, unsigned char* buf, size_t len);
+
+        /**
+         * Used by the TLS library to send data to a connected socket
+         */
+        int (*send)(void* ctx, const unsigned char* buf, size_t len);
+
         /**
          * This is a parameter which is passed into every call to send/recv.
          * Typically it would be a socket handle or similar.
