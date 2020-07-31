@@ -4,7 +4,7 @@
  * @file
  * @addtogroup OS_CertParser OS CertParser API
  * @{
- * @brief CertParser API library
+ * @brief OS CertParser API library
  */
 
 #pragma once
