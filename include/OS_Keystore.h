@@ -4,7 +4,7 @@
  * @file
  * @addtogroup OS_Keystore OS Keystore API
  * @{
- * @brief OS Keystore library API
+ * @brief OS Keystore API library
  */
 
 #pragma once
