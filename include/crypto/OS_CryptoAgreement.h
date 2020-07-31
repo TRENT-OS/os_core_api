@@ -36,7 +36,9 @@ typedef enum
     OS_CryptoAgreement_ALG_ECDH
 } OS_CryptoAgreement_Alg_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize an AGREEMENT object.

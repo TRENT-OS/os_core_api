@@ -66,7 +66,9 @@ typedef enum
     OS_CryptoCipher_ALG_AES_GCM_DEC,
 } OS_CryptoCipher_Alg_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize a CIPHER object.

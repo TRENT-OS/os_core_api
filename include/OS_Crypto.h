@@ -56,10 +56,12 @@ typedef enum
     OS_Crypto_MODE_SERVER,
 } OS_Crypto_Mode_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef struct OS_Crypto OS_Crypto_t;
 typedef OS_Crypto_t* OS_Crypto_Handle_t;
 typedef struct OS_Crypto_Object OS_Crypto_Object_t;
 typedef void* CryptoLib_Object_ptr;
+///@endcond --------------------------------------------------------------------
 
 // Include all after definining the API handle above; also make sure that key and
 // digest are included first so they are defined for the other functions.
@@ -185,6 +187,8 @@ OS_Error_t
 OS_Crypto_free(
     OS_Crypto_Handle_t hCrypto);
 
+///@cond INTERNAL --------------------------------------------------------------
+
 /**
  * @brief Get pointer to library object.
  *
@@ -258,5 +262,7 @@ OS_Crypto_migrateLibObject(
 OS_Crypto_Mode_t
 OS_Crypto_getMode(
     const OS_Crypto_Handle_t hCrypto);
+
+///@endcond --------------------------------------------------------------------
 
 /** @} */

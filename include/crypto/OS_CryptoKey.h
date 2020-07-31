@@ -145,7 +145,9 @@ typedef enum
     OS_CryptoKey_TYPE_MAC
 } OS_CryptoKey_Type_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoKey_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * Struct for an AES Key.

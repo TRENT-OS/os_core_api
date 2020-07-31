@@ -45,7 +45,9 @@ typedef enum
     OS_CryptoMac_ALG_HMAC_SHA256,
 } OS_CryptoMac_Alg_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize a message authentication code (MAC) object.

@@ -44,7 +44,9 @@ typedef enum
     OS_CryptoDigest_ALG_SHA256     = 6
 } OS_CryptoDigest_Alg_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize a DIGEST object.
