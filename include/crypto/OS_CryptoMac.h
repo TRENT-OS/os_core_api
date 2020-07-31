@@ -1,13 +1,15 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
- * @defgroup OS_Crypto OS Crypto API
+ * @file
+ * @ingroup OS_CryptoMac
+ */
+
+/**
+ * @defgroup OS_CryptoMac
  * @{
- *
- * @file OS_CryptoMac.h
- *
- * @brief OS Crypto API library types, constants and enums for MAC object
- *
+ * @ingroup OS_Crypto
+ * @brief OS Crypto API library MAC object
  */
 
 #pragma once

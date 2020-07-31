@@ -1,13 +1,15 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
- * @defgroup OS_Crypto OS Crypto API
+ * @file
+ * @ingroup OS_CryptoDigest
+ */
+
+/**
+ * @defgroup OS_CryptoDigest
  * @{
- *
- * @file OS_CryptoDigest.h
- *
- * @brief OS Crypto API library types, constants and enums for DIGEST object
- *
+ * @ingroup OS_Crypto
+ * @brief OS Crypto API library DIGEST object
  */
 
 #pragma once

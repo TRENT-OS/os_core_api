@@ -1,13 +1,15 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
- * @defgroup OS_Crypto OS Crypto API
+ * @file
+ * @ingroup OS_CryptoRng
+ */
+
+/**
+ * @defgroup OS_CryptoRng
  * @{
- *
- * @file OS_CryptoRng.h
- *
- * @brief OS Crypto API library types, constants and enums for RNG object
- *
+ * @ingroup OS_Crypto
+ * @brief OS Crypto API library RNG (pseudo-)object
  */
 
 #pragma once

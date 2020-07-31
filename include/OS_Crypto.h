@@ -1,13 +1,10 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
+ * @file
  * @defgroup OS_Crypto OS Crypto API
  * @{
- *
- * @file OS_Crypto.h
- *
  * @brief OS Crypto API library
- *
  */
 
 #pragma once

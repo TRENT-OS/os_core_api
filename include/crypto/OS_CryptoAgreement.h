@@ -1,13 +1,15 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
- * @defgroup OS_Crypto OS Crypto API
+ * @file
+ * @ingroup OS_CryptoAgreement
+ */
+
+/**
+ * @defgroup OS_CryptoAgreement
  * @{
- *
- * @file OS_CryptoAgreement.h
- *
- * @brief OS Crypto API library types, constants and enums for AGREEMENT object
- *
+ * @ingroup OS_Crypto
+ * @brief OS Crypto API library AGREEMENT object
  */
 
 #pragma once
