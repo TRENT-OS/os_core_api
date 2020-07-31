@@ -226,8 +226,10 @@ typedef struct
     OS_Tls_Flag_t flags;
 } TlsLib_Config_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef struct OS_Tls OS_Tls_t;
 typedef OS_Tls_t* OS_Tls_Handle_t;
+///@endcond  -------------------------------------------------------------------
 
 /**
  * Configuration of the TLS API. The mode value defines which of the union fields
