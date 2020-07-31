@@ -1,13 +1,10 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
+ * @file
  * @defgroup OS_ConfigService OS ConfigService API
  * @{
- *
- * @file OS_ConfigService.h
- *
  * @brief ConfigService API library
- *
  */
 
 #pragma once

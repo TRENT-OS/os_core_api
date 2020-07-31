@@ -1,13 +1,10 @@
+/* Copyright (C) 2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2020, Hensoldt Cyber GmbH
- *
+ * @file
  * @defgroup OS_FileSystem OS FileSystem API
  * @{
- *
- * @file OS_FileSystem.h
- *
  * @brief OS FileSystem API library
- *
  */
 
 #pragma once

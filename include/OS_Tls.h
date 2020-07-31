@@ -1,13 +1,10 @@
+/* Copyright (C) 2019-2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019-2020, Hensoldt Cyber GmbH
- *
+ * @file
  * @defgroup OS_Tls OS TLS API
  * @{
- *
- * @file OS_Tls.h
- *
  * @brief OS TLS API library
- *
  */
 
 #pragma once

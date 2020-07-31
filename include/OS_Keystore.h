@@ -1,13 +1,10 @@
+/* Copyright (C) 2019, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2019, Hensoldt Cyber GmbH
- *
+ * @file
  * @addtogroup OS_Keystore OS Keystore API
  * @{
- *
- * @file OS_Keystore.h
- *
  * @brief OS Keystore library API
- *
  */
 
 #pragma once

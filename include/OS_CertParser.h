@@ -1,13 +1,10 @@
+/* Copyright (C) 2020, Hensoldt Cyber GmbH */
+
 /**
- * Copyright (C) 2020, Hensoldt Cyber GmbH
- *
+ * @file
  * @addtogroup OS_CertParser OS CertParser API
  * @{
- *
- * @file OS_CertParser.h
- *
  * @brief CertParser API library
- *
  */
 
 #pragma once
