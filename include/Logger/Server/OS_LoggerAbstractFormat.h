@@ -9,7 +9,7 @@
 #pragma once
 
 /**
- * @defgroup    OS_LoggerAbstractFormat OS Logger Abstract Formtat API
+ * @defgroup    OS_LoggerAbstractFormat OS Logger Abstract Format API
  *
  * @brief       OS Logger API library abstract log format definition
  *
