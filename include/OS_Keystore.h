@@ -15,10 +15,9 @@
 
 #include <stddef.h>
 
-/**
- * API context is an opaque struct, the handle of an API context is a pointer
- */
+///@cond INTERNAL --------------------------------------------------------------
 typedef struct OS_Keystore OS_Keystore_t, *OS_Keystore_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize an instance of the Keystore
