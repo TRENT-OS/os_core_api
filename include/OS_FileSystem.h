@@ -38,6 +38,7 @@ typedef enum
 
     /**
      * Use LITTLEFS (optimized for FLASH storage)
+     * @todo Not implemented yet
      */
     OS_FileSystem_Type_LITTLEFS,
 } OS_FileSystem_Type_t;
