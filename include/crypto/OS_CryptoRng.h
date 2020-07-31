@@ -27,13 +27,6 @@ typedef enum
 } OS_CryptoRng_Flag_t;
 
 /**
- * Callback to be provided by user of Crypto API so the internal DRBG can be
- * enriched with entropy.
- */
-typedef int (OS_CryptoRng_Entropy_func)(
-    void* ctx, unsigned char* buf, size_t len);
-
-/**
  * @brief Extract random numbers from internal RNG.
  *
  * The internal RNG is based on CTR_DRBG using AES. It is fed from an entropy
