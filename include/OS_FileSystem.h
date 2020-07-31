@@ -87,9 +87,11 @@ typedef enum
     OS_FileSystem_OpenFlags_TRUNCATE    = (1u << 2),
 } OS_FileSystem_OpenFlags_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef unsigned int OS_FileSystemFile_Handle_t;
 typedef struct OS_FileSystem OS_FileSystem_t;
 typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * Use this to indicate that the fs size should be maximized, based on the
