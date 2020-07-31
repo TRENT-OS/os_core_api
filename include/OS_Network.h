@@ -3,7 +3,7 @@
 /**
  * @file
  * @defgroup OS_Network OS Network API
- * @brief    Network Socket API
+ * @brief    OS Network API library
  *
  * @details These API interacts with the Network
  *          Stack to offer IP functionality to the system using a socket based
