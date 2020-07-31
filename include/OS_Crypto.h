@@ -73,17 +73,13 @@ typedef void* CryptoLib_Object_ptr;
 #include "crypto/OS_CryptoSignature.h"
 #include "crypto/OS_CryptoRng.h"
 
-typedef void* (OS_Crypto_Calloc_func)(size_t n, size_t size);
-typedef void (OS_Crypto_Free_func)(void* ptr);
-typedef size_t (OS_Crypto_Entropy_func)(const size_t len);
-
 /**
  * User of API can provide custom allocator functionality.
  */
 typedef struct
 {
-    OS_Crypto_Calloc_func* calloc;
-    OS_Crypto_Free_func* free;
+    void* (*calloc)(size_t n, size_t size);
+    void  (*free)(void* ptr);
 } OS_Crypto_Memory_t;
 
 /**
@@ -95,7 +91,7 @@ typedef struct
     /**
      * Function implemented by if_OS_Entropy
      */
-    OS_Crypto_Entropy_func* read;
+    size_t (*read)(const size_t len);
 
     /**
      * Dataport to communicate with component implementing if_OS_Entropy
