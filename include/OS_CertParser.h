@@ -139,16 +139,14 @@ typedef struct
     OS_Crypto_Handle_t hCrypto;
 } OS_CertParser_Config_t;
 
+///@cond INTERNAL --------------------------------------------------------------
 typedef struct OS_CertParserCert OS_CertParserCert_t;
 typedef struct OS_CertParserChain OS_CertParserChain_t;
 typedef struct OS_CertParser OS_CertParser_t;
-
-/**
- * These are our handles as pointers to anonymous structs
- */
 typedef OS_CertParser_t* OS_CertParser_Handle_t;
 typedef OS_CertParserCert_t* OS_CertParserCert_Handle_t;
 typedef OS_CertParserChain_t* OS_CertParserChain_Handle_t;
+///@endcond --------------------------------------------------------------------
 
 /**
  * @brief Initialize parser handle
