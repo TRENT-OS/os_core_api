@@ -109,19 +109,6 @@ typedef struct
 }
 
 /**
- * Configuration for underlying Crypto Library.
- */
-typedef struct
-{
-    /**
-     * All users of the Crypto API have to provide a platform-dependent
-     * entropy function. This function will be called by the API's internal
-     * DRBG to enrich its internal state with entropy.
-     */
-    OS_Crypto_Entropy_t entropy;
-} CryptoLib_Config_t;
-
-/**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
  *
@@ -153,7 +140,15 @@ typedef struct
     /**
      * Configuration options when using local library
      */
-    CryptoLib_Config_t library;
+    struct
+    {
+        /**
+         * All users of the Crypto API have to provide a platform-dependent
+         * entropy function. This function will be called by the API's internal
+         * DRBG to enrich its internal state with entropy.
+         */
+        OS_Crypto_Entropy_t entropy;
+    } library;
 } OS_Crypto_Config_t;
 
 /**
