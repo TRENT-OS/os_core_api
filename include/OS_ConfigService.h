@@ -4,7 +4,7 @@
  * @file
  * @defgroup OS_ConfigService OS ConfigService API
  * @{
- * @brief ConfigService API library
+ * @brief OS ConfigService API library
  */
 
 #pragma once
