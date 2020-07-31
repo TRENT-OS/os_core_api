@@ -9,7 +9,7 @@
 /**
  * @defgroup    OS_LoggerTimestamp OS Logger Timestamp API
  *
- * @brief       Helper object to create or convert a timestamp.
+ * @brief       OS Logger API library timestamp functionality
  *
  * @details     This object contain to create or convert a timestamp.
  *              \n

@@ -11,7 +11,7 @@
 /**
  * @defgroup    OS_LoggerAbstractFormat OS Logger Abstract Formtat API
  *
- * @brief       Defines abstract format interface for the log format.
+ * @brief       OS Logger API library abstract log format definition
  *
  * @details     This level provides an abstract interface for converting and
  *              printing log format.

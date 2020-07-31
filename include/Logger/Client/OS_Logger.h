@@ -14,7 +14,7 @@
 /**
  * @defgroup    OS_Logger OS Logger API
  *
- * @brief       An abstraction of the logging functionality
+ * @brief       OS Logger API library
  *
  * Allows setting up a logger server to which clients can send logging
  * entries.
@@ -24,7 +24,7 @@
 /**
  * @defgroup    OS_LoggerClient OS Logger Client API
  *
- * @brief       Client's specific functionality of the Logger library.
+ * @brief       OS Logger API library client specific functionality
  *
  * @ingroup     OS_Logger
  */

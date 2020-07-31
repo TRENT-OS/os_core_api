@@ -10,7 +10,7 @@
 /**
  * @defgroup    OS_LoggerFileClient OS Logger File Client API
  *
- * @brief       Provides the implementation of log file client functions.
+ * @brief       OS Logger API library client log file functions
  *
  * @details     This is a client library, so this library doesn't know anything
  *              about the file handling on the log server i.e. it doesn't

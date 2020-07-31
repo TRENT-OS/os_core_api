@@ -11,7 +11,7 @@
 /**
  * @defgroup    OS_LoggerOutput OS Logger Output API
  *
- * @brief       Defines Observer pattern interface.
+ * @brief       OS Logger API library observer pattern definition
  *
  * @details     This level provides a mechanism for an abstract observer
  *              interface.

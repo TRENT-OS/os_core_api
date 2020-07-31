@@ -10,7 +10,7 @@
 /**
  * @defgroup    OS_LoggerServer OS Logger Server API
  *
- * @brief       Server's specific functionality of the Logger library.
+ * @brief       OS Logger API library server specific functionality
  *
  * @ingroup     OS_Logger
  */
@@ -18,7 +18,7 @@
 /**
  * @defgroup    OS_LoggerConsumer OS Logger Consumer API
  *
- * @brief       Provides an implementation of the concrete log consumer.
+ * @brief       OS Logger API library concrete log consumer implementation
  *
  * @details     On the server side, a log consumer is the object that receives
  *              log messages from a client.
