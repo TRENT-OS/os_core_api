@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoDigest
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library DIGEST object
+ * @brief OS Crypto API library digest/hash functionality
  */
 
 #pragma once

@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoMac
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library MAC object
+ * @brief OS Crypto API library MAC functionality
  */
 
 #pragma once

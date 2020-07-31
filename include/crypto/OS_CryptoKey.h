@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoKey
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library KEY object
+ * @brief OS Crypto API library key functionality
  */
 
 #pragma once

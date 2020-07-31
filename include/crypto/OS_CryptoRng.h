@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoRng
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library RNG (pseudo-)object
+ * @brief OS Crypto API library RNG functionality
  */
 
 #pragma once

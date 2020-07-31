@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoAgreement
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library AGREEMENT object
+ * @brief OS Crypto API library agreement functionality
  */
 
 #pragma once

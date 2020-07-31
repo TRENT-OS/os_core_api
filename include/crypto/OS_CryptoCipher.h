@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoCipher
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library CIPHER object
+ * @brief OS Crypto API library symmetric cipher functionality
  */
 
 #pragma once

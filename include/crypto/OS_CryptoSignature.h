@@ -9,7 +9,7 @@
  * @defgroup OS_CryptoSignature
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library SIGNATURE object
+ * @brief OS Crypto API library signature functionality
  */
 
 #pragma once
