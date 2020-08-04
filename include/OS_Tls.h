@@ -32,17 +32,10 @@ typedef enum
     OS_Tls_MODE_LIBRARY,
 
     /**
-     * Forward all TLS API calls to a remote instance of the TLS API where the
-     * TLS library is running in RPC Server mode. This allows for isolation of
-     * the actual TLS protocol stack.
+     * Forward all TLS API calls to a remote instance of the TLS API via CAmkES
+     * RPC. This allows for isolation of the actual TLS protocol stack.
      */
     OS_Tls_MODE_CLIENT,
-
-    /**
-     * Use as RPC Server; can only be accessed through an appropriately configured
-     * RPC client instance of the TLS API.
-     */
-    OS_Tls_MODE_SERVER
 } OS_Tls_Mode_t;
 
 /**
@@ -235,14 +228,7 @@ typedef OS_Tls_t* OS_Tls_Handle_t;
 
 /**
  * Configuration of the TLS API. The mode value defines which of the union fields
- * needs to be filled in:
- *
- *                                    | cfg.dataport | cfg.library
- *   ---------------------------------+--------------+------------
- *                OS_Tls_MODE_LIBRARY |              |      X
- *                 OS_Tls_MODE_CLIENT |      X       |
- *                 OS_Tls_MODE_SERVER |      X       |      X
- *
+ * needs to be filled in.
  */
 typedef struct
 {
