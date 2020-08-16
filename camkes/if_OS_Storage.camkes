@@ -62,6 +62,22 @@ procedure if_OS_Storage
     );
 
     /**
+     * @brief   Gets the storage block size in bytes.
+     *
+     * @note    Certain storages might only allow block-wise operation thus
+     *          offset and size must be adjusted accordingly to this parameter.
+     *
+     * @note    Block cannot be larger than what we can address in the memory
+     *          thus it's type shall be `size_t`.
+     *
+     * @return  Implementation specific.
+     */
+    OS_Error_t
+    getBlockSize(
+        out size_t blockSize    //!< [out] The size of the block in bytes.
+    );
+
+    /**
      * @brief Gets the state of the storage.
      *
      * @return OS_Error_t
