@@ -302,7 +302,7 @@ typedef struct
      * places:
      * - The RPC Server interface checks if a key can be exported, before passing
      *   key material to the RPC client.
-     * - When a Crypto API instance is configured in ROUTER mode, this flag is
+     * - When a Crypto API instance is configured in CLIENT mode, this flag is
      *   evaluated to determine whether a Key can be used locally or needs to be
      *   handled by a RPC server instance (e.g., the CryptoServer).
      */
