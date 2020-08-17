@@ -47,15 +47,6 @@ typedef enum
      *   associated key resides.
      */
     OS_Crypto_MODE_CLIENT,
-
-    /**
-     * In this mode, the Crypto API has a library and a RPC server instance. The
-     * server instance is accessed through an internal CAmkES interface by a
-     * Crypto API RPC client.
-     * All direct calls to a Crypto API instance configured such are processed
-     * by the local library.
-     */
-    OS_Crypto_MODE_SERVER,
 } OS_Crypto_Mode_t;
 
 ///@cond INTERNAL --------------------------------------------------------------
@@ -95,12 +86,11 @@ typedef struct
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
  *
- *                                     | cfg.dataport | cfg.library | cfg.memory
- *   ----------------------------------+--------------+-------------+-----------
- *         OS_Crypto_MODE_LIBRARY_ONLY |              |      X      |    X
- *          OS_Crypto_MODE_CLIENT_ONLY |      X       |             |    X
- *               OS_Crypto_MODE_CLIENT |      X       |      X      |    X
- *               OS_Crypto_MODE_SERVER |      X       |      X      |    X
+ *                                     | cfg.memory | cfg.entropy | cfg.crypto
+ *   ----------------------------------+------------+-------------+-----------
+ *         OS_Crypto_MODE_LIBRARY_ONLY |      X     |      X      |
+ *          OS_Crypto_MODE_CLIENT_ONLY |      X     |             |    X
+ *               OS_Crypto_MODE_CLIENT |      X     |      X      |    X
  *
  */
 typedef struct
