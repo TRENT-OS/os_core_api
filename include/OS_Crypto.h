@@ -62,7 +62,6 @@ typedef enum
 typedef struct OS_Crypto OS_Crypto_t;
 typedef OS_Crypto_t* OS_Crypto_Handle_t;
 typedef struct OS_Crypto_Object OS_Crypto_Object_t;
-typedef void* CryptoLib_Object_ptr;
 ///@endcond --------------------------------------------------------------------
 
 // Include all after definining the API handle above; also make sure that key and
@@ -167,7 +166,7 @@ OS_Crypto_free(
 ///@cond INTERNAL --------------------------------------------------------------
 
 /**
- * @brief Get pointer to library object.
+ * @brief Get pointer managed by proxy object
  *
  * If we have a Crypto API proxy object and we need to migrate it from one API
  * instance to another, we need to get the pointer to the underlying library object.
@@ -177,45 +176,34 @@ OS_Crypto_free(
  *       proxy objects point to the same library objects, which, in turn may lead
  *       to use-after-free and other issues!
  *
- * @param proxy (required) handle of OS Crypto Key object, e.g.,
- * OS_CryptoMac_Handle_t, OS_CryptoDigest_Handle_t, etc.
+ * @param proxy (required) proxy object
  *
  * @return pointer to object or NULL of \p proxy was NULL
  */
-CryptoLib_Object_ptr*
-OS_Crypto_getLibObject(
+void*
+OS_Crypto_getProxyPtr(
     const OS_Crypto_Object_t* proxy);
 
 /**
- * @brief Migrate a library object from a one API instance to another instance.
+ * @brief Create a proxy object for an existing Crypto API instance
  *
- * With the RPC functionality of the Crypto API it is possible to have an RPC
- * server with an instance of the library in one component and an RPC client in
- * another component that uses the same library.
- *
- * Now, if we are on the RPC client side and get a pointer to a Key object of the
- * library (which lives in the RPC server), we need to use this function to create a
- * Key object which can be used through the RPC client.
- *
- * The reason for this is that the API key object "knows" its API context and
- * contains a pointer to the library Key object (which holds the actual data). This
- * function sets the correct API context of a API key object (for the RPC client)
- * together with the pointer to the actual Key (on the RPC server).
+ * Create a proxy object to wrap an Crypto API object and associate it with a
+ * Crypto API instance. This would be used to be able to handle objects
+ * belonging to a remote Crypto API instance through the local API instance
+ * (when in client mode).
  *
  * NOTE: This function allocates a new object, which must be free'd with the
- *       appropriate function (e.g., if it is a OS_CryptoKey_Handle_t, the corresponding
- *       OS_CryptoKey_free() needs to be called).
+ *       appropriate function.
  *
- * NOTE: This function should only be used by an expert; underlying library objects
- *       should never be used directly, as this may create situations where multiple
- *       proxy objects point to the same library objects, which, in turn may lead
- *       to use-after-free and other issues!
+ * NOTE: This function should only be used by an expert; underlying objects
+ *       should never be used directly, as this may create situations where
+ *       multiple proxy objects point to the same library objects, which, in
+ *       turn may lead to use-after-free and other issues!
  *
- * @param proxy (required) pointer to handle of OS Crypto object (e.g., can
- *  be a OS_CryptoKey_Handle_t*)
+ * @param proxy (required) pointer to proxy object
  * @param hCrypto (required) handle of OS Crypto API
- * @param ptr (required) pointer to the library object from some API instance
- * @param local (required) indicate if the library obect belongs to a local or
+ * @param ptr (required) pointer to the underlying object from some API instance
+ * @param local (required) indicate if the object belongs to a local or
  *  remote instance of the crypto library
  *
  * @return an error code
@@ -223,10 +211,10 @@ OS_Crypto_getLibObject(
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
-OS_Crypto_migrateLibObject(
+OS_Crypto_createProxy(
     OS_Crypto_Object_t**       proxy,
     const OS_Crypto_Handle_t   self,
-    const CryptoLib_Object_ptr ptr,
+    const void*                ptr,
     const bool                 local);
 
 /**
