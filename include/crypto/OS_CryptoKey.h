@@ -306,7 +306,7 @@ typedef struct
      *   evaluated to determine whether a Key can be used locally or needs to be
      *   handled by a RPC server instance (e.g., the CryptoServer).
      */
-    bool exportable;
+    bool keepLocal;
 } OS_CryptoKey_Attrib_t;
 
 /**
