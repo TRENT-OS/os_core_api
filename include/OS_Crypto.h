@@ -42,7 +42,7 @@ typedef enum
      * transparently switches between the local and remote instance:
      * - Crypto objects that use no keys are always executed in the local library.
      * - Key objects are allocated and handled in the local or remote library,
-     *   depending on their "exportable" attribute.
+     *   depending on their "keepLocal" attribute.
      * - Crypto objects that use a key are allocated and handled wherever the
      *   associated key resides.
      */

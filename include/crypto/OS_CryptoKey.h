@@ -295,16 +295,25 @@ typedef struct
     /**
      * Flags set for this key.
      */
-
     OS_CryptoKey_Flag_t flags;
+
     /**
-     * Keys can be EXPORTABLE or NOT_EXPORTABLE. This flag is evaluated in two
-     * places:
-     * - The RPC Server interface checks if a key can be exported, before passing
-     *   key material to the RPC client.
-     * - When a Crypto API instance is configured in CLIENT mode, this flag is
-     *   evaluated to determine whether a Key can be used locally or needs to be
-     *   handled by a RPC server instance (e.g., the CryptoServer).
+     * The Crypto API can be instantiated as local library or as remote instance
+     * where all operations are executed in another component. Consequently, it
+     * can be desirable to keep certain keys locally (e.g., temporary keys)
+     * whereas some keys we would rather isolate into in a remote instance.
+     *
+     * This flag allows to indicate to the Crypto API what the preference is for
+     * the key material associated with a key:
+     * 1. If a Crypto API is instantiated as "LIBRARY_ONLY", this attribute is
+     *    ignored, all keys are handled in the local address space.
+     * 2. If a Crypto API is instantiated as "CLIENT_ONLY", this attribute is
+     *    ignored, all keys are handled in the remote address space.
+     * 3. If a Crypto API is instantiated as "CLIENT", this attribute is evaluated
+     *    and if set to TRUE, keys are handled locally and if FALSE, keys are
+     *    handled remotely.
+     * Crypto objectes (e.g. CryptoCipher) that use a key are always created and
+     * executed where the associated key resides.
      */
     bool keepLocal;
 } OS_CryptoKey_Attrib_t;
@@ -444,8 +453,8 @@ typedef struct
  * generated and wich attributes the resulting key has.
  *
  * Here are some example specs for typical keys:
- * 1. Create a DH priv key with 101 bits, which is NOT exportable (this is the default
- *    value). Use a parameter spec which already provides the prime P and base G.
+ * 1. Create a DH priv key with 101 bits. Use a parameter spec which already
+ *    provides the prime P and base G.
  *  \code{.c}
  *  static const OS_CryptoKey_Spec_t dh101pSpec = {
  *      .type = OS_CryptoKey_SPECTYPE_PARAMS,
@@ -460,13 +469,14 @@ typedef struct
  *      }
  *  };
  *  \endcode
- * 2. Create a 128 bit AES key and make it exportable, use a bit spec for that:
+ * 2. Create a 128 bit AES key and allow it to be kept in the local address space,+
+ *    use a bit spec for that:
  *  \code{.c}
  *  static const OS_CryptoKey_Spec_t aes128Spec = {
  *      .type = OS_CryptoKey_SPECTYPE_BITS,
  *      .key = {
  *          .type = OS_CryptoKey_TYPE_AES,
- *          .attribs.exportable = true,
+ *          .attribs.keepLocal = true,
  *          .params.bits = 128
  *      }
  *  };
@@ -511,34 +521,36 @@ OS_CryptoKey_generate(
  * provided by RSA or based on the amounts of bytes passed for AES).
  *
  * Here are some example key data configurations for typical types of keys:
- * 1. Define a 128-bit AES key that is exportable:
+ * 1. Define a 128-bit AES key that is kept in the local address space:
  *  \code{.c}
  *  static const OS_CryptoKey_Data_t aes128Data =
  *  {
  *      .type = OS_CryptoKey_TYPE_AES,
- *      .attribs.exportable = true,
+ *      .attribs.keepLocal = true,
  *      .data.aes.bytes  = "0123456789abcdef",
  *      .data.aes.len    = 16
  *  };
  *  \endcode
- * 2. Define a SECP256r1 private key that is NOT exportable (abbreviated):
+ * 2. Define a SECP256r1 private key that is kept in the remote address space
+ *    (abbreviated):
  *  \code{.c}
  *  static const OS_CryptoKey_Data_t secp256r1PrvData =
  *  {
  *      .type = OS_CryptoKey_TYPE_SECP256R1_PRV,
- *      .attribs.exportable = false,
+ *      .attribs.keepLocal = false,
  *      .data.secp256r1.prv = {
  *          .dBytes = {0xc6, 0xef, 0x9c, 0x5d, ... 0x20},
  *          .dLen   = 32,
  *      }
  *  };
  *  \endcode
- * 3. Define 1024-bit RSA private key that is exportable (abbreviated):
+ * 3. Define 1024-bit RSA private key that is kept in the local address space
+ *   (abbreviated):
  *  \code{.c}
  *  static const OS_CryptoKey_Data_t rsa1024PrvData =
  *  {
  *      .type = OS_CryptoKey_TYPE_RSA_PRV,
- *      .attribs.exportable = true,
+ *      .attribs.keepLocal = true,
  *      .data.rsa.prv = {
  *          .dBytes = {0x35, 0xe7, 0x4c, 0x80, ... 0x99},
  *          .dLen   = 128,
@@ -615,17 +627,7 @@ OS_CryptoKey_free(
 /**
  * @brief Export data from KEY handle into buffer.
  *
- * If a KEY object is in the local address space (Crypto API used in LIB mode)
- * or if it has the exportable attribute set, this function will export the
- * associated key material into a buffer.
- *
- * If a KEY is not exportable AND held in a remote Crypto API instance (e.g., the
- * CryptoServer) this function will fail.
- *
- * NOTE: It is intentional that a KEY obejct which is not exportable but used only
- *       in a local library instance will be exported, IGNORING the exportable
- *       attribute. The rationale behind this is that it resides in the callers
- *       address space anyways so he might equally well read the data himself.
+ * Export data of KEY object into buffer.
  *
  * @param hKey (required) handle of OS Crypto KEY object
  * @param keyData (required) buffer for key data
@@ -633,8 +635,7 @@ OS_CryptoKey_free(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_OPERATION_DENIED if the key cannot be exported due attribs
- *  set during creation of the key object
+ * @retval OS_ERROR_OPERATION_DENIED if the key cannot be exported
  */
 OS_Error_t
 OS_CryptoKey_export(
@@ -645,9 +646,7 @@ OS_CryptoKey_export(
  * @brief Get shared parameters from KEY.
  *
  * Some key types have shared parameters, e.g., DHPrv and DHPub typically share
- * the prime P and base G. This function allows to read out these parameters. The
- * exportable flag is ignored here, as these are public parameters which may be
- * needed to generate more keys (e.g., in case of key exchange).
+ * the prime P and base G. This function allows to read out these parameters.
  *
  * @param hKey (required) handle of OS Crypto KEY object
  * @param param (required) buffer for key params
@@ -673,8 +672,7 @@ OS_CryptoKey_getParams(
 /**
  * @brief Get attributes from KEY object.
  *
- * All KEYs have a set of attributes which can be extracted with this function, e.g,
- * to check if a KEY object can be exported.
+ * All KEYs have a set of attributes which can be extracted with this function.
  *
  * @param hKey (required) handle of OS Crypto KEY object
  * @param attribs (required) buffer for attributes
