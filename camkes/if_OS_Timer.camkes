@@ -20,10 +20,32 @@
 #include <plat/timers.h>
 
 procedure if_OS_Timer {
-    unsigned int completed();
-    int periodic(in int tid, in uint64_t ns);
-    int oneshot_absolute(in int tid, in uint64_t ns);
-    int oneshot_relative(in int tid, in uint64_t ns);
-    int stop(in int tid);
-    uint64_t time();
+    include "OS_Error.h";
+
+    OS_Error_t
+    completed(
+        out uint32_t tmr);
+
+    OS_Error_t
+    periodic(
+        in int tid,
+        in uint64_t ns);
+
+    OS_Error_t
+    oneshot_absolute(
+        in int tid,
+        in uint64_t ns);
+
+    OS_Error_t
+    oneshot_relative(
+        in int tid,
+        in uint64_t ns);
+
+    OS_Error_t
+    stop(
+        in int tid);
+
+    OS_Error_t
+    time(
+        out uint64_t ns);
 };
