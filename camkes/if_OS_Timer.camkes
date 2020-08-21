@@ -10,6 +10,13 @@
  * @TAG(DATA61_BSD)
  */
 
+ /*
+  *  OS CAmkES Interface for Timer
+  *
+  *  Copyright (C) 2020, Hensoldt Cyber GmbH
+  *
+  */
+
 #include <plat/timers.h>
 
 procedure if_OS_Timer {
