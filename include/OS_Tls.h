@@ -12,6 +12,8 @@
 #include "OS_Crypto.h"
 #include "OS_Dataport.h"
 
+#include "interfaces/if_OS_Tls.h"
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -255,9 +257,9 @@ typedef struct
     TlsLib_Config_t library;
 
     /**
-     * Dataport to use to communicate to remote OS TLS API server instance
+     * CAmkES interface for remote RPC server (to be used in CLIENT mode)
      */
-    OS_Dataport_t dataport;
+    if_OS_Tls_t rpc;
 } OS_Tls_Config_t;
 
 /**
