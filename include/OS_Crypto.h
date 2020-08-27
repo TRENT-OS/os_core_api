@@ -12,6 +12,8 @@
 #include "OS_Error.h"
 #include "OS_Dataport.h"
 
+#include "interfaces/if_OS_Entropy.h"
+
 #include <stddef.h>
 
 /**
@@ -85,32 +87,6 @@ typedef struct
 } OS_Crypto_Memory_t;
 
 /**
- * User of API has to provide callback and dataport to an EntropySource
- * component
- */
-typedef struct
-{
-    /**
-     * Function implemented by if_OS_Entropy
-     */
-    size_t (*read)(const size_t len);
-
-    /**
-     * Dataport to communicate with component implementing if_OS_Entropy
-     */
-    OS_Dataport_t dataport;
-} OS_Crypto_Entropy_t;
-
-/**
- * Use this to assign a source of entropy to a Crypto API config
- */
-#define OS_CRYPTO_ASSIGN_Entropy(_rpc_, _dp_) \
-{                                             \
-    .read     = _rpc_ ## _read,               \
-    .dataport = OS_DATAPORT_ASSIGN(_dp_)      \
-}
-
-/**
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
  *
@@ -140,17 +116,11 @@ typedef struct
     OS_Dataport_t dataport;
 
     /**
-     * Configuration options when using local library
+     * All users of the Crypto API have to provide a platform-dependent
+     * entropy function. This function will be called by the API's internal
+     * DRBG to enrich its internal state with entropy.
      */
-    struct
-    {
-        /**
-         * All users of the Crypto API have to provide a platform-dependent
-         * entropy function. This function will be called by the API's internal
-         * DRBG to enrich its internal state with entropy.
-         */
-        OS_Crypto_Entropy_t entropy;
-    } library;
+    if_OS_Entropy_t entropy;
 } OS_Crypto_Config_t;
 
 /**
