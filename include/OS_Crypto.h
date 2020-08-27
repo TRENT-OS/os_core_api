@@ -77,6 +77,12 @@ typedef void* CryptoLib_Object_ptr;
 #include "crypto/OS_CryptoSignature.h"
 #include "crypto/OS_CryptoRng.h"
 
+// Include this after the respective OS_CryptoXXX_Handle_t are defined, which
+// requires:
+// 1. the definition of OS_Crypto_Object_t
+// 2. the inclusion of crypto/OS_CryptoXXX.h
+#include "interfaces/if_OS_Crypto.h"
+
 /**
  * User of API can provide custom allocator functionality.
  */
@@ -111,16 +117,17 @@ typedef struct
     OS_Crypto_Memory_t memory;
 
     /**
-     * Dataport to use for communication with Crypto API in SERVER mode
-     */
-    OS_Dataport_t dataport;
-
-    /**
      * All users of the Crypto API have to provide a platform-dependent
      * entropy function. This function will be called by the API's internal
      * DRBG to enrich its internal state with entropy.
      */
     if_OS_Entropy_t entropy;
+
+    /**
+     * If the API is operated in CLIENT or CLIENT_ONLY mode, use this
+     * interface to set to the remote instance's CAmkES RPC functionality.
+     */
+    if_OS_Crypto_t crypto;
 } OS_Crypto_Config_t;
 
 /**
