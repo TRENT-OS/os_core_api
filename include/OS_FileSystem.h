@@ -12,6 +12,8 @@
 #include "OS_Error.h"
 #include "OS_Dataport.h"
 
+#include "interfaces/if_OS_Storage.h"
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -97,19 +99,6 @@ typedef OS_FileSystem_t* OS_FileSystem_Handle_t;
  * size reported by the underlying storage layer
  */
 #define OS_FileSystem_STORAGE_MAX   ((size_t) -1)
-
-/**
- * Use this to assign a Storage to a FileSystem API config
- */
-#define OS_FILESYSTEM_ASSIGN_Storage(_rpc_, _dp_)   \
-{                                                   \
-    .write    = _rpc_ ## _write,                    \
-    .read     = _rpc_ ## _read,                     \
-    .erase    = _rpc_ ## _erase,                    \
-    .getSize  = _rpc_ ## _getSize,                  \
-    .getState = _rpc_ ## _getState,                 \
-    .dataport = OS_DATAPORT_ASSIGN(_dp_)            \
-}
 
 /**
  * Pass file system specific configuration options by setting the respective
@@ -214,18 +203,10 @@ typedef struct
     size_t size;
 
     /**
-     * Interface to underlying storage; use OS_FILESYSTEM_ASSIGN_Storage() to
+     * Interface to underlying storage; use IF_OS_STORAGE_ASSIGN() to
      * assign properly.
      */
-    struct
-    {
-        OS_Dataport_t dataport;
-        OS_Error_t (*write)(size_t offset, size_t size, size_t* written);
-        OS_Error_t (*read)(size_t offset, size_t size, size_t* read);
-        OS_Error_t (*erase)(size_t offset, size_t size, size_t* erased);
-        OS_Error_t (*getSize)(size_t* size);
-        OS_Error_t (*getState)(uint32_t* flags);
-    } storage;
+    if_OS_Storage_t storage;
 
     /**
      * Formatting options for FS; can be NULL, then we will use defaults
