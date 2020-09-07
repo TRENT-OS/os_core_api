@@ -16,6 +16,12 @@ procedure if_OS_Nic {
     );
 
     OS_Error_t
-    get_mac(void);
+    rx_data(
+        out  size_t  len,
+        out  size_t  frames_available
+    );
+
+    OS_Error_t
+    get_mac_address(void);
 
 };
