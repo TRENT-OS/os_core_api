@@ -320,7 +320,8 @@ OS_Tls_handshake(
  *
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
- * @param dataSize (required) amount of bytes to write
+ * @param dataSize (required) amount of bytes to write, will be set the amount of
+ *  bytes that could be written
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
@@ -335,7 +336,7 @@ OS_Error_t
 OS_Tls_write(
     OS_Tls_Handle_t hTls,
     const void*     data,
-    const size_t    dataSize);
+    size_t*         dataSize);
 
 /**
  * @brief Read from a TLS connection.

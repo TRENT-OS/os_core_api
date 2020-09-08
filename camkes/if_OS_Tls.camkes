@@ -13,7 +13,7 @@ procedure if_OS_Tls {
 
     OS_Error_t
     write(
-        in size_t dataSize
+        inout size_t dataSize
     );
 
     OS_Error_t
