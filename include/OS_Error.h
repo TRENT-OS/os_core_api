@@ -82,9 +82,10 @@ typedef enum
     // General error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
-    __START_OS_ERROR_CODES_GENERIC = -17,
+    __START_OS_ERROR_CODES_GENERIC = -18,
     /// @endcond
     //----------------------------------------
+    OS_ERROR_WOULD_BLOCK,                      /**< operation would block */
     OS_ERROR_OUT_OF_BOUNDS,                    /**< operation violated boundaries */
     OS_ERROR_CONNECTION_CLOSED,                /**< connection closed */
     OS_ERROR_OVERFLOW_DETECTED,                /**< overflow detected */
