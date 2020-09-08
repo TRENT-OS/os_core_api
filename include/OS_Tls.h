@@ -338,9 +338,8 @@ OS_Tls_write(
  *
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
- * @param dataSize (required) amount of bytes requested, in case of success it
- * will be set to the amount of bytes effectively read (or zero if peer has closed
- * the connection)
+ * @param dataSize (required) amount of bytes requested, will be set to the amount
+ *  of bytes that could be read
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
