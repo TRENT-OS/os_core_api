@@ -338,6 +338,9 @@ OS_Tls_handshake(
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_WOULD_BLOCK if the socket send() signals during the write
+ *  that it would block; parts may have been written already, as indicated by
+ *  the updated value in \p dataSize
  */
 OS_Error_t
 OS_Tls_write(
@@ -368,6 +371,9 @@ OS_Tls_write(
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_WOULD_BLOCK if the socket recv() signals during the read
+ *  that it would block; parts may have been written already, as indicated by
+ *  the updated value in \p dataSize
  */
 OS_Error_t
 OS_Tls_read(
