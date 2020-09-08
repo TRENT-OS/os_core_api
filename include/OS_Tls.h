@@ -87,7 +87,13 @@ typedef enum
      * Do not attempt to validate server certificate. This is dangerous,
      * so you better know what you are doing!
      */
-    OS_Tls_FLAG_NO_VERIFY     = (1u << 2)
+    OS_Tls_FLAG_NO_VERIFY     = (1u << 2),
+
+    /**
+     * In case the socket I/O indicates that an operation would block,
+     * don't attempt to resume I/O but return OS_ERROR_WOULD_BLOCK.
+     */
+    OS_Tls_FLAG_NON_BLOCKING  = (1u << 3)
 } OS_Tls_Flag_t;
 
 /**
