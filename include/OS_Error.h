@@ -29,6 +29,38 @@ typedef enum
     __END_OS_ERROR_CODES_CUSTOM = -100000,
 
     //--------------------------------------------------------------------------
+    // Device specific error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_DEVICE = -1204,
+    /// @endcond
+
+    /**
+     * @brief   The device is present, but it can't be used.
+     *
+     * The difference to OS_ERROR_DEVICE_NOT_READY is, that this is intended for
+     * permanent conditions, where the user should be prompted to connect the
+     * valid device.
+     */
+    OS_ERROR_DEVICE_INVALID,
+
+    /**
+     * @brief   The device is not present.
+     */
+    OS_ERROR_DEVICE_NOT_PRESENT,
+
+    /**
+     * @brief   The device is present, but temporarily not accessible.
+     *
+     * Please retry some time soon, or wait for the ready event.
+     */
+    OS_ERROR_DEVICE_BUSY,
+
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __END_OS_ERROR_CODES_DEVICE,                   /**< -1200 */
+    /// @endcond
+
+    //--------------------------------------------------------------------------
     // File System specific error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
