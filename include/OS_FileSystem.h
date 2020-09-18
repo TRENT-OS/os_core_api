@@ -257,7 +257,7 @@ OS_FileSystem_free(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
  */
 OS_Error_t
 OS_FileSystem_format(
@@ -271,7 +271,8 @@ OS_FileSystem_format(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
  */
 OS_Error_t
 OS_FileSystem_mount(
@@ -285,7 +286,8 @@ OS_FileSystem_mount(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
  */
 OS_Error_t
 OS_FileSystem_unmount(
@@ -303,7 +305,10 @@ OS_FileSystem_unmount(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_OUT_OF_BOUNDS if too many file handles are already open
  *
  */
@@ -323,7 +328,10 @@ OS_FileSystemFile_open(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
@@ -343,7 +351,10 @@ OS_FileSystemFile_close(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
@@ -366,7 +377,10 @@ OS_FileSystemFile_read(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
@@ -386,7 +400,10 @@ OS_FileSystemFile_write(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
@@ -403,7 +420,10 @@ OS_FileSystemFile_delete(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_ABORTED if underlying FS implementation reported an error
+ * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ *  during main operation
+ * @retval OS_ERROR_ABORTED if underlying FS implementation reported
+ *  inconsistencies
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t
