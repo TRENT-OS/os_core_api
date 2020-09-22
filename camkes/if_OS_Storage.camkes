@@ -22,7 +22,7 @@ procedure if_OS_Storage
      */
     OS_Error_t
     write(
-        in  off_t  offset,      //!< [in]  Write start offset.
+        in  off_t  offset,      //!< [in]  Write start offset in bytes.
         in  size_t size,        //!< [in]  Number of bytes to be written.
         out size_t written      //!< [out] Number of bytes written.
     );
@@ -34,7 +34,7 @@ procedure if_OS_Storage
      */
     OS_Error_t
     read(
-        in  off_t  offset,      //!< [in]  Read start offset.
+        in  off_t  offset,      //!< [in]  Read start offset in bytes.
         in  size_t size,        //!< [in]  Number of bytes to be read.
         out size_t read         //!< [out] Number of bytes read.
     );
@@ -46,19 +46,19 @@ procedure if_OS_Storage
      */
     OS_Error_t
     erase(
-        in  off_t offset,        //!< [in]  Erase start offset.
+        in  off_t offset,        //!< [in]  Erase start offset in bytes.
         in  off_t size,          //!< [in]  Number of bytes to be erased.
         out off_t erased         //!< [out] Number of bytes erased.
     );
 
     /**
-     * @brief  Gets the storage size.
+     * @brief  Gets the storage size in bytes.
      *
      * @return Implementation specific.
      */
     OS_Error_t
     getSize(
-        out off_t size         //!< [out] The size of the storage.
+        out off_t size         //!< [out] The size of the storage in bytes.
     );
 
     /**
