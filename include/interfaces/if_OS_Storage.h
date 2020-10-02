@@ -8,6 +8,12 @@
 #include <stdint.h>
 #include "stdio.h"
 
+enum
+{
+    OS_Storage_StateFlag_MEDIUM_PRESENT = 0,
+}
+OS_Storage_StateFlag_e;
+
 typedef struct
 {
     OS_Error_t (*write)(off_t offset, size_t size, size_t* written);
