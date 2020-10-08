@@ -258,6 +258,11 @@ OS_FileSystem_free(
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystem_format(
@@ -273,6 +278,11 @@ OS_FileSystem_format(
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
  *  during main operation
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystem_mount(
@@ -288,6 +298,11 @@ OS_FileSystem_mount(
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval OS_ERROR_GENERIC if underlying FS implementation reported an error
  *  during main operation
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystem_unmount(
@@ -310,7 +325,11 @@ OS_FileSystem_unmount(
  * @retval OS_ERROR_ABORTED if underlying FS implementation reported
  *  inconsistencies
  * @retval OS_ERROR_OUT_OF_BOUNDS if too many file handles are already open
- *
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_open(
@@ -334,6 +353,11 @@ OS_FileSystemFile_open(
  *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_close(
@@ -357,6 +381,11 @@ OS_FileSystemFile_close(
  *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_read(
@@ -383,6 +412,11 @@ OS_FileSystemFile_read(
  *  inconsistencies
  * @retval OS_ERROR_INVALID_HANDLE if file handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_write(
@@ -405,6 +439,11 @@ OS_FileSystemFile_write(
  * @retval OS_ERROR_ABORTED if underlying FS implementation reported
  *  inconsistencies
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_delete(
@@ -425,6 +464,11 @@ OS_FileSystemFile_delete(
  * @retval OS_ERROR_ABORTED if underlying FS implementation reported
  *  inconsistencies
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_DEVICE_INVALID if storage device is present, but can't be
+ *  used
+ * @retval OS_ERROR_DEVICE_NOT_PRESENT if storage device is not present
+ * @retval OS_ERROR_DEVICE_BUSY if storage device is present, but temporarily
+ *  not accessible
  */
 OS_Error_t
 OS_FileSystemFile_getSize(
