@@ -299,7 +299,7 @@ OS_Tls_init(
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
- * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not already established
+ * @retval OS_ERROR_OPERATION_DENIED if the TLS session is already established
  */
 OS_Error_t
 OS_Tls_handshake(
