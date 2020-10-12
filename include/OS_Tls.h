@@ -300,6 +300,10 @@ OS_Tls_init(
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
  *  NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is already established
+ * @retval OS_ERROR_WOULD_BLOCK if the socket send()/recv() signals during the
+ *  handshake that it would block
+ * @retval OS_ERROR_CONNECTION_CLOSED if the socket send()/recv() signals that
+ *  the connection was closed by the other side during the handshake
  */
 OS_Error_t
 OS_Tls_handshake(
@@ -327,6 +331,11 @@ OS_Tls_handshake(
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_WOULD_BLOCK if the socket send() signals during the write
+ *  that it would block; parts may have been written already, as indicated by
+ *  the updated value in \p dataSize
+ * @retval OS_ERROR_CONNECTION_CLOSED if the socket send() signals that the
+ *  connection was closed by the other side during the write
  */
 OS_Error_t
 OS_Tls_write(
@@ -357,6 +366,11 @@ OS_Tls_write(
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
+ * @retval OS_ERROR_WOULD_BLOCK if the socket recv() signals during the read
+ *  that it would block; parts may have been written already, as indicated by
+ *  the updated value in \p dataSize
+ * @retval OS_ERROR_CONNECTION_CLOSED if the socket recv() signals that the
+ *  connection was closed by the other side during the read
  */
 OS_Error_t
 OS_Tls_read(
