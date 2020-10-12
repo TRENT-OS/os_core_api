@@ -10,7 +10,7 @@
 typedef struct
 {
     OS_Error_t (*handshake)(void);
-    OS_Error_t (*write)(size_t dataSize);
+    OS_Error_t (*write)(size_t* dataSize);
     OS_Error_t (*read)(size_t* dataSize);
     OS_Error_t (*reset)(void);
     OS_Dataport_t dataport;

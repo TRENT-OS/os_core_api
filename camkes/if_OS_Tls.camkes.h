@@ -5,7 +5,7 @@
 #define IF_OS_TLS_CAMKES        \
     OS_Error_t handshake();     \
     OS_Error_t write(           \
-        in size_t dataSize      \
+        inout size_t dataSize   \
     );                          \
     OS_Error_t read(            \
         inout size_t dataSize   \
