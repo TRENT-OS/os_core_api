@@ -91,6 +91,14 @@ typedef enum
 } OS_Tls_Flag_t;
 
 /**
+ * Special return codes for socket I/O, in case they would block on read
+ * or write. Theses specific values are expected by mbedTLS, so they cannot
+ * be changed.
+ */
+#define OS_Tls_SOCKET_READ_WOULD_BLOCK     -0x6900
+#define OS_Tls_SOCKET_WRITE_WOULD_BLOCK    -0x6880
+
+/**
  * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
  * static buffer in the config struct and for now set such it may hold ONE large
  * PEM-encoded certificate.
