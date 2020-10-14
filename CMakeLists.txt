@@ -1,5 +1,8 @@
+#
 # OS Core API
-
+#
+# Copyright (C) 2019-2020, Hensoldt Cyber GmbH
+#
 
 if (SDK_USE_CAMKES)
 
