@@ -130,16 +130,16 @@ typedef uint8_t OS_Tls_Digest_Flags_t;
 typedef struct
 {
     /**
-     * Allow these digest algorithms to be used for signature hashes during the
-     * session.
+     * Allow these digest algorithms to be used for generation of hashes
+     * during the TLS handshake.
      */
-    OS_Tls_Digest_Flags_t sessionDigests;
+    OS_Tls_Digest_Flags_t handshakeDigests;
 
     /**
      * Allow these digest algorithms to be used for the generation of hashes
-     * which are then used for signatures (e.g., in certificates).
+     * on certificates.
      */
-    OS_Tls_Digest_Flags_t signatureDigests;
+    OS_Tls_Digest_Flags_t certDigests;
 
     /**
      * Minimum bit length for RSA-based operations.
