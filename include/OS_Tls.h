@@ -187,6 +187,8 @@ typedef struct
         /**
          * Policy can be NULL, then it is set automatically based on the ciphersuites
          * chosen by the user.
+         *
+         * This will be copied on call to OS_Tls_init().
          */
         const OS_Tls_Policy_t* policy;
 
@@ -200,6 +202,8 @@ typedef struct
          * Here a list of certificates in PEM encoding (including headers) is
          * passed to the TLS API so it can be used to verify the root of the
          * server's certificate chain.
+         *
+         * This will be copied on call to OS_Tls_init().
          */
         const char* caCerts;
 
