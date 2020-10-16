@@ -188,7 +188,7 @@ typedef struct
          * Policy can be NULL, then it is set automatically based on the ciphersuites
          * chosen by the user.
          */
-        OS_Tls_Policy_t* policy;
+        const OS_Tls_Policy_t* policy;
 
         /**
          * Need an initialized for OS Crypto API handle for cryptographic
@@ -201,7 +201,7 @@ typedef struct
          * passed to the TLS API so it can be used to verify the root of the
          * server's certificate chain.
          */
-        char* caCerts;
+        const char* caCerts;
 
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
