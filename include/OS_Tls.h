@@ -197,11 +197,11 @@ typedef struct
         OS_Crypto_Handle_t handle;
 
         /**
-         * Here a certificate in PEM encoding (including headers) is passed to
-         * the TLS API so it can be used to verify the root of the server's
-         * certificate chain.
+         * Here a list of certificates in PEM encoding (including headers) is
+         * passed to the TLS API so it can be used to verify the root of the
+         * server's certificate chain.
          */
-        char caCert[OS_Tls_SIZE_CA_CERT_MAX];
+        char* caCerts;
 
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
