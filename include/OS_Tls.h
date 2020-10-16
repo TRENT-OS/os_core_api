@@ -117,13 +117,6 @@ typedef uint8_t OS_Tls_Digest_Flags_t;
 ///@endcond  -------------------------------------------------------------------
 
 /**
- * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
- * static buffer in the config struct and for now set such it may hold ONE large
- * PEM-encoded certificate.
- */
-#define OS_Tls_SIZE_CA_CERT_MAX    3072
-
-/**
  * For legacy reasons it may be important to override the param/algorithm choices
  * automatically derived from the chosen ciphersuites (where possible).
  */
