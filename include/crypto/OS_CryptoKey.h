@@ -305,13 +305,13 @@ typedef struct
      *
      * This flag allows to indicate to the Crypto API what the preference is for
      * the key material associated with a key:
-     * 1. If a Crypto API is instantiated as "LIBRARY_ONLY", this attribute is
-     *    ignored, all keys are handled in the local address space.
-     * 2. If a Crypto API is instantiated as "CLIENT_ONLY", this attribute is
-     *    ignored, all keys are handled in the remote address space.
-     * 3. If a Crypto API is instantiated as "CLIENT", this attribute is evaluated
-     *    and if set to TRUE, keys are handled locally and if FALSE, keys are
-     *    handled remotely.
+     * 1. If a Crypto API is instantiated as OS_Crypto_MODE_LIBRARY, this
+     *    attribute is ignored, all keys are handled in the local address space.
+     * 2. If a Crypto API is instantiated as OS_Crypto_MODE_CLIENT, this
+     *    attribute is ignored, all keys are handled in the remote address space.
+     * 3. If a Crypto API is instantiated as "OS_Crypto_MODE_KEY_SWITCH, this
+     *    attribute is evaluated and if set to TRUE, keys are handled locally
+     *    and if FALSE, keys are handled remotely.
      * Crypto objectes (e.g. CryptoCipher) that use a key are always created and
      * executed where the associated key resides.
      */

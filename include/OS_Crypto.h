@@ -28,14 +28,14 @@ typedef enum
      * In this mode, the Crypto API uses only a library instance so all functions
      * called through the API are executed in the context of the calling component.
      */
-    OS_Crypto_MODE_LIBRARY_ONLY,
+    OS_Crypto_MODE_LIBRARY,
 
     /**
      * In this mode, the Crypto API uses only a RPC client instance so all functions
      * called through the API are forwarded to the RPC server and executed in
      * the context of this component.
      */
-    OS_Crypto_MODE_CLIENT_ONLY,
+    OS_Crypto_MODE_CLIENT,
 
     /**
      * In this mode, the Crypto API has a library and a RPC client instance and
@@ -46,7 +46,7 @@ typedef enum
      * - Crypto objects that use a key are allocated and handled wherever the
      *   associated key resides.
      */
-    OS_Crypto_MODE_CLIENT,
+    OS_Crypto_MODE_KEY_SWITCH,
 } OS_Crypto_Mode_t;
 
 ///@cond INTERNAL --------------------------------------------------------------
@@ -88,9 +88,9 @@ typedef struct
  *
  *                                     | cfg.memory | cfg.entropy |  cfg.rpc
  *   ----------------------------------+------------+-------------+-----------
- *         OS_Crypto_MODE_LIBRARY_ONLY |      X     |      X      |
- *          OS_Crypto_MODE_CLIENT_ONLY |      X     |             |    X
- *               OS_Crypto_MODE_CLIENT |      X     |      X      |    X
+ *              OS_Crypto_MODE_LIBRARY |      X     |      X      |
+ *               OS_Crypto_MODE_CLIENT |      X     |             |    X
+ *           OS_Crypto_MODE_KEY_SWITCH |      X     |      X      |    X
  *
  */
 typedef struct
@@ -113,8 +113,9 @@ typedef struct
     if_OS_Entropy_t entropy;
 
     /**
-     * If the API is operated in CLIENT or CLIENT_ONLY mode, use this
-     * interface to set to the remote instance's CAmkES RPC functionality.
+     * If the API is in OS_Crypto_MODE_CLIENT/OS_Crypto_MODE_KEY_SWITCH mode,
+     * use this interface to set to the remote instance's CAmkES RPC
+     * functionality.
      */
     if_OS_Crypto_t rpc;
 } OS_Crypto_Config_t;
