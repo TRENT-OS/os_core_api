@@ -39,36 +39,42 @@ typedef enum
 } OS_Tls_Mode_t;
 
 /**
- * Digest algorithms available; these need to match the values of the underlying
- * TLS provider library
+ * Digest algorithms available
  */
 typedef enum
 {
-    OS_Tls_DIGEST_NONE     = 0x00,
+    OS_Tls_DIGEST_NONE = 0,
 
     /**
      * Use SHA256 as hash algorithm.
      */
-    OS_Tls_DIGEST_SHA256   = 0x06,
+    OS_Tls_DIGEST_SHA256,
+
+///@cond INTERNAL --------------------------------------------------------------
+    __OS_Tls_DIGEST_MAX
+///@endcond  -------------------------------------------------------------------
 } OS_Tls_Digest_t;
 
 /**
- * Cipher suites available; these need to match the values of the underlying
- * TLS provider library
+ * Cipher suites available
  */
 typedef enum
 {
-    OS_Tls_CIPHERSUITE_NONE                              = 0x0000,
+    OS_Tls_CIPHERSUITE_NONE = 0,
 
     /**
      * Use DHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    OS_Tls_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256   = 0x009e,
+    OS_Tls_CIPHERSUITE_DHE_RSA_WITH_AES_128_GCM_SHA256,
 
     /**
      * Use ECDHE_RSA_WITH_AES_128_GCM_SHA256 ciphersuite.
      */
-    OS_Tls_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = 0xc02f
+    OS_Tls_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+
+///@cond INTERNAL --------------------------------------------------------------
+    __OS_Tls_CIPHERSUITE_MAX
+///@endcond  -------------------------------------------------------------------
 } OS_Tls_CipherSuite_t;
 
 /**
@@ -104,6 +110,12 @@ typedef enum
 #define OS_Tls_SOCKET_READ_WOULD_BLOCK     -0x6900
 #define OS_Tls_SOCKET_WRITE_WOULD_BLOCK    -0x6880
 
+///@cond INTERNAL --------------------------------------------------------------
+// For now, we don't have many ciphersuites or digests, so uint8_t is enough.
+typedef uint8_t OS_Tls_CipherSuite_Flags_t;
+typedef uint8_t OS_Tls_Digest_Flags_t;
+///@endcond  -------------------------------------------------------------------
+
 /**
  * Maxmimum size of PEM-encoded CA cert we accept. This is used to allocate a
  * static buffer in the config struct and for now set such it may hold ONE large
@@ -112,43 +124,22 @@ typedef enum
 #define OS_Tls_SIZE_CA_CERT_MAX    3072
 
 /**
- * Max values to enable static array allocation; we do not actually provide as
- * many ciphersuites, yet.
- */
-#define OS_Tls_MAX_CIPHERSUITES    8
-#define OS_Tls_MAX_DIGESTS         OS_Tls_MAX_CIPHERSUITES
-
-/**
  * For legacy reasons it may be important to override the param/algorithm choices
  * automatically derived from the chosen ciphersuites (where possible).
  */
 typedef struct
 {
     /**
-     * Also allow these digest algorithms to be used for the hashing of all
-     * session data.
-     *
-     * NOTE: We add +1 so the last element can be set to 0 internally.
+     * Allow these digest algorithms to be used for signature hashes during the
+     * session.
      */
-    OS_Tls_Digest_t sessionDigests[OS_Tls_MAX_DIGESTS + 1];
+    OS_Tls_Digest_Flags_t sessionDigests;
 
     /**
-     * Amount of digests set in \p sessionDigests.
-     */
-    size_t sessionDigestsLen;
-
-    /**
-     * Also allow these digest algorithms to be used for the generation of hashes
+     * Allow these digest algorithms to be used for the generation of hashes
      * which are then used for signatures (e.g., in certificates).
-     *
-     * NOTE: We add +1 so the last element can be set to 0 internally.
      */
-    OS_Tls_Digest_t signatureDigests[OS_Tls_MAX_DIGESTS + 1];
-
-    /**
-     * Amount of digests set in \p signatureDigests.
-     */
-    size_t signatureDigestsLen;
+    OS_Tls_Digest_Flags_t signatureDigests;
 
     /**
      * Minimum bit length for RSA-based operations.
@@ -218,15 +209,8 @@ typedef struct
          * signature hashes etc.). Similary, the key size of the AES key will be used to
          * determine the minimum asymmetric key lengths automatically, so all parameters
          * and algorithms will be internally consistent (as far as the suite allows it).
-         *
-         * NOTE: We add +1 so the last element can be set to 0 internally.
          */
-        OS_Tls_CipherSuite_t cipherSuites[OS_Tls_MAX_CIPHERSUITES + 1];
-
-        /**
-         * Amount of ciphersuites in \p cipherSuites.
-         */
-        size_t cipherSuitesLen;
+        OS_Tls_CipherSuite_Flags_t cipherSuites;
     } crypto;
 
     /**
@@ -261,6 +245,43 @@ typedef struct
      */
     if_OS_Tls_t rpc;
 } OS_Tls_Config_t;
+
+///@cond INTERNAL --------------------------------------------------------------
+// Variadic macro, add more FE_x as the size of the underlying flag type
+// increases. Currently we have uint8_t, so having 8 FE macros here is enough.
+#define OS_Tls_FE_1(WHAT,F)     WHAT(F)
+#define OS_Tls_FE_2(WHAT,F,...) WHAT(F) | OS_Tls_FE_1(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_3(WHAT,F,...) WHAT(F) | OS_Tls_FE_2(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_4(WHAT,F,...) WHAT(F) | OS_Tls_FE_3(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_5(WHAT,F,...) WHAT(F) | OS_Tls_FE_4(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_6(WHAT,F,...) WHAT(F) | OS_Tls_FE_5(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_7(WHAT,F,...) WHAT(F) | OS_Tls_FE_6(WHAT,__VA_ARGS__)
+#define OS_Tls_FE_8(WHAT,F,...) WHAT(F) | OS_Tls_FE_7(WHAT,__VA_ARGS__)
+// Select the right FE macro based on the number of input args.
+#define OS_Tls_GET_FE( _1,_2,_3,_4,_5,_6,_7,_8,NAME,...)                \
+    OS_Tls_ ## NAME
+// Apply the "action macro" to each of the inputs.
+#define OS_Tls_FOR_EACH(action, ...)                                    \
+    OS_Tls_GET_FE(__VA_ARGS__,FE_8,FE_7,FE_6,FE_5,FE_4,FE_3,FE_2,FE_1)  \
+        (action, __VA_ARGS__)
+// This is an "action macro" for: turn an ID into a flag bit (for uint8_t),
+// add more as the underlying flag field increases in width.
+#define OS_Tls_ID_TO_FLAGS_U8(id) ( (1u << (id)) )
+///@endcond  -------------------------------------------------------------------
+
+/**
+ * \brief Translate up to eight OS_Tls_CipherSuite_t values into a single
+ *  OS_Tls_CipherSuite_Flags_t value.
+ */
+#define OS_Tls_CIPHERSUITE_FLAGS(...) \
+    OS_Tls_FOR_EACH(OS_Tls_ID_TO_FLAGS_U8,__VA_ARGS__)
+
+/**
+ * \brief Translate up to eight OS_Tls_Digest_t values into a single
+ *  OS_Tls_Digest_Flags_t value.
+ */
+#define OS_Tls_DIGEST_FLAGS(...) \
+    OS_Tls_FOR_EACH(OS_Tls_ID_TO_FLAGS_U8,__VA_ARGS__)
 
 /**
  * @brief Initialize TLS API.
