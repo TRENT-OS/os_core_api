@@ -130,16 +130,6 @@ typedef enum
     OS_CryptoKey_TYPE_SECP256R1_PUB,
 
     /**
-     * Key on generic Elliptic Curve for private operations; currently not used.
-     */
-    OS_CryptoKey_TYPE_ECC_PRV,
-
-    /**
-     * Key on generic Elliptic Curve for public operations; currently not used.
-     */
-    OS_CryptoKey_TYPE_ECC_PUB,
-
-    /**
      * Key for MAC computation
      */
     OS_CryptoKey_TYPE_MAC
@@ -202,28 +192,6 @@ typedef struct
     uint8_t nBytes[OS_CryptoKey_SIZE_ECC]; ///< order of G
     uint32_t nLen;
 } OS_CryptoKey_EccParams_t;
-
-/**
- * Struct for generic ECC public key data.
- */
-typedef struct
-{
-    OS_CryptoKey_EccParams_t params; ///< params of curve: A, B, G, P, n=ord(G)
-    uint8_t qxBytes[OS_CryptoKey_SIZE_ECC]; ///< x of point Q=P*d
-    uint32_t qxLen;
-    uint8_t qyBytes[OS_CryptoKey_SIZE_ECC]; ///< y of point Q=P*d
-    uint32_t qyLen;
-} OS_CryptoKey_EccPub_t;
-
-/**
- * Struct for generic ECC private key data.
- */
-typedef struct
-{
-    OS_CryptoKey_EccParams_t params; ///< params of curve: A, B, G, P, n=ord(G)
-    uint8_t dBytes[OS_CryptoKey_SIZE_ECC];       ///<  private scalar
-    uint32_t dLen;
-} OS_CryptoKey_EccPrv_t;
 
 /**
  * Struct for SECP256r1 ECC public key data; does not need to carry the params
@@ -395,15 +363,6 @@ typedef struct
      */
     union
     {
-        /**
-         * Use for keys of ECC type (currently not supported)
-         */
-        union
-        {
-            OS_CryptoKey_EccPrv_t prv;
-            OS_CryptoKey_EccPub_t pub;
-        } ecc;
-
         /**
          * Use for keys of SECP256r1 type
          */
