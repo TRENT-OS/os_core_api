@@ -86,7 +86,7 @@ typedef struct
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
  *
- *                                     | cfg.memory | cfg.entropy | cfg.crypto
+ *                                     | cfg.memory | cfg.entropy |  cfg.rpc
  *   ----------------------------------+------------+-------------+-----------
  *         OS_Crypto_MODE_LIBRARY_ONLY |      X     |      X      |
  *          OS_Crypto_MODE_CLIENT_ONLY |      X     |             |    X
@@ -116,7 +116,7 @@ typedef struct
      * If the API is operated in CLIENT or CLIENT_ONLY mode, use this
      * interface to set to the remote instance's CAmkES RPC functionality.
      */
-    if_OS_Crypto_t crypto;
+    if_OS_Crypto_t rpc;
 } OS_Crypto_Config_t;
 
 /**
