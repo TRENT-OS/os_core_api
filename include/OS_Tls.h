@@ -372,7 +372,7 @@ OS_Tls_write(
  *
  * After handshake has been completed, this function can be used to read from an
  * established TLS connection. The server may close the session, this will be
- * signaled by returning no error, but setting \p dataSize to zero.
+ * signaled by returning OS_ERROR_CONNECTION_CLOSED.
  *
  * NOTE: Internally, it will use the callback provided via the config struct to
  *       read() data from the socket.
