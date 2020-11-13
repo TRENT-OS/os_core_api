@@ -113,7 +113,6 @@ OS_CryptoCipher_init(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_HANDLE if the object handle is invalid
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  */
 OS_Error_t

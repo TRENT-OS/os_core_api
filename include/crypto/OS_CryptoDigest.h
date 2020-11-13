@@ -82,7 +82,6 @@ OS_CryptoDigest_init(
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
  * @retval OS_ERROR_ABORTED if the internal state could not be initialized
- * @retval OS_ERROR_INVALID_HANDLE if \p hSrcDigest is not a valid handle
  * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the DIGEST failed
  */
 OS_Error_t
