@@ -103,12 +103,9 @@ OS_CryptoAgreement_free(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
- *  this includes passing the wrong type of key
+ *  this includes passing the wrong type of key or oversized or too small
+ *  buffer
  * @retval OS_ERROR_ABORTED if the underlying AGREEMENT operation failed
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p sharedSize is too small to hold
- *  the full result in the \p shared buffer
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p sharedSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoAgreement_agree(

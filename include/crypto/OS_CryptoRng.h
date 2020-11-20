@@ -43,11 +43,10 @@ typedef enum
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if the internal RNG had a failure
  * @retval OS_ERROR_NOT_SUPPORTED if \p flags are not supported by RNG
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p bufSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoRng_getBytes(
@@ -69,10 +68,9 @@ OS_CryptoRng_getBytes(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter is missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if the RNG had a failure
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p seedSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoRng_reseed(

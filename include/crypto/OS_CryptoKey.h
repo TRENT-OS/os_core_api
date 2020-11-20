@@ -615,12 +615,9 @@ OS_CryptoKey_export(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_NOT_SUPPORTED if key has no exportable parameters
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
- *  whole \p param
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoKey_getParams(
@@ -661,12 +658,9 @@ OS_CryptoKey_getAttribs(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_NOT_SUPPORTED if \p name indicates an unknown parameter set
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p paramSize is too small to hold the
- *  whole \p param
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p paramSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoKey_loadParams(

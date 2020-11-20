@@ -115,11 +115,10 @@ OS_CryptoDigest_free(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if processing of \p data failed or if DIGEST was
  *  was already finalized
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoDigest_process(
@@ -144,13 +143,10 @@ OS_CryptoDigest_process(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if the digest could not be produced or if no
  *  blocks were processed before finalizing or if finalize was already called
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p digestSize is too small for the
- *  resulting digest
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p digestSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoDigest_finalize(

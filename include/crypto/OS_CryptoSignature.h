@@ -61,7 +61,7 @@ typedef OS_Crypto_Object_t* OS_CryptoSignature_Handle_t;
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
- *  includes passing the wrong types of key
+ *  includes passing the wrong types of key, an oversized or too small buffer
  * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the digest failed
  * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  */
@@ -104,13 +104,10 @@ OS_CryptoSignature_free(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if no private key was set during initialization or
  *  if the cryptographic operation failed
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p signatureSize is too small to hold
- *  the resulting \p signature
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p hashSize or \p signatureSize is
- *  greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoSignature_sign(
@@ -136,11 +133,9 @@ OS_CryptoSignature_sign(
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
  * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
- *  this includes passing a \p signatureSize that is unexpected (due to the key)
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if no private key was set during initialization or
  *  if the cryptographic operation failed (i.e., the signature was invalid)
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
- *  greater than the size of the dataport
  */
 OS_Error_t
 OS_CryptoSignature_verify(

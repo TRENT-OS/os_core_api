@@ -62,7 +62,8 @@ typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid, this
+ *  includes passing the wrong type of key or algorithm
  * @retval OS_ERROR_ABORTED if the internal state could not be initialized
  * @retval OS_ERROR_NOT_SUPPORTED if \p algorithm is not supported
  * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the MAC object failed
@@ -99,10 +100,9 @@ OS_CryptoMac_free(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if processing of \p data failed
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *   the size of the dataport
  */
 OS_Error_t
 OS_CryptoMac_process(
@@ -125,13 +125,10 @@ OS_CryptoMac_process(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing an oversized or too small buffer
  * @retval OS_ERROR_ABORTED if \p auth could not be produced or if no
  *  blocks were processed before finalizing or if finalize was already called
- * @retval OS_ERROR_BUFFER_TOO_SMALL if \p authSize is too small for the
- *  resulting MAC
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p authSize is greater than
- *  the size of the dataport
  */
 OS_Error_t
 OS_CryptoMac_finalize(
