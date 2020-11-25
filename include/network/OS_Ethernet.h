@@ -16,7 +16,7 @@
 // length or a type. There may be start/stop conditiona on lower layers, so a
 // frame can be detected properly. Purely on layer 2 without any meta data from
 // the lower layers, one cannot accurately determine what a frame is. For
-// practical usage, this can be determies with reasonable accuracy, though.
+// practical usage, this can be determines with reasonable accuracy, though.
 //
 //  +---------+---------+----------+-----------+--------+
 //  | dst MAC | src MAC | type/len | payload   | CRC    |
