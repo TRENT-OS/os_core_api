@@ -114,9 +114,14 @@ typedef enum
     // General error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
-    __START_OS_ERROR_CODES_GENERIC = -18,
+    __START_OS_ERROR_CODES_GENERIC = -23,
     /// @endcond
     //----------------------------------------
+    OS_ERROR_BUFFER_FULL,                      /**< buffer is full */
+    OS_ERROR_BUFFER_EMPTY,                     /**< buffer is empty */
+    OS_ERROR_NO_DATA,                          /**< no data available to fullfill the request */
+    OS_ERROR_NOT_INITIALIZED,                  /**< not initialized */
+    OS_ERROR_TRY_AGAIN,                        /**< caller should retry operation */
     OS_ERROR_WOULD_BLOCK,                      /**< operation would block */
     OS_ERROR_OUT_OF_BOUNDS,                    /**< operation violated boundaries */
     OS_ERROR_CONNECTION_CLOSED,                /**< connection closed */
