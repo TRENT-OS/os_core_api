@@ -139,35 +139,6 @@ typedef union
     struct
     {
         /**
-         * Minimum size of a block read. This determines the size of read buffers.
-         * This may be larger than the physical read size to improve performance
-         * by caching more of the block device.
-          */
-        uint32_t readSize;
-
-        /**
-         * Minimum size of a block write. This determines the size of write
-         * buffers. This may be larger than the physical write size to improve
-         * performance by caching more of the block device.
-         */
-        uint32_t writeSize;
-
-        /**
-         * Size of a logical block. This does not impact ram consumption and may
-         * be larger than the physical erase block. If the physical erase block
-         * is larger, littlefs will use that instead. Larger values will be faster
-         * but waste more storage when files are not aligned to a block size.
-         */
-        uint32_t blockSize;
-
-        /**
-         * Number of erase cycles before a block is evicted.
-         */
-        int32_t blockCycles;
-    } littleFs;
-    struct
-    {
-        /**
          * Physical size when erasing a block
          */
         uint32_t eraseBlockSize;
