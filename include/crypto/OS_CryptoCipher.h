@@ -123,7 +123,7 @@ OS_CryptoCipher_free(
  * @brief Process data blocks with the CIPHER object.
  *
  * Process blocks of data with the selected algorithm. If the CIPHER is operated
- * in ENC mode, \p input will hold the plaintext and \p output will be the cipertext.
+ * in ENC mode, \p input will hold the plaintext and \p output will be the ciphertext.
  * If operated in DEC mode, it will be vice versa.
  *
  * NOTE: Special attention needs to be paid to the alignment of inputs:
@@ -195,7 +195,7 @@ OS_CryptoCipher_start(
  *
  * @param hCipher (required) handle of OS Crypto CIPHER object
  * @param tag (required) input/output buffer for final operation
- * @param tagSize (required) lenght of input/size of output buffer, will be set
+ * @param tagSize (required) length of input/size of output buffer, will be set
  *  to actual amount of bytes written if function succeeds (or the minimum size
  *  fails)
  *

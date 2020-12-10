@@ -119,7 +119,7 @@ OS_CryptoMac_process(
  *       with the algorithm and key given during initialization.
  *
  * @param hMac (required) handle of OS Crypto MAC object
- * @param auth (required) buffer to write authenticaion code to
+ * @param auth (required) buffer to write authentication code to
  * @param authSize (required) size of buffer, will be set to the amount of bytes
  *  written to \p auth (or the minimum size if it fails due too small buffer)
  *

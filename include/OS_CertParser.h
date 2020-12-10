@@ -197,7 +197,7 @@ OS_CertParser_free(
  *       certs) SHOULD NOT be free'd while it is associated to the parser.
  *
  * @param hParser handle of OS CertParser API
- * @param hChain chain containig at least one CA certificate
+ * @param hChain chain containing at least one CA certificate
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
@@ -215,7 +215,7 @@ OS_CertParser_addTrustedChain(
  *
  * This function takes a chain and verifies it against one of the trusted
  * CA chains added to the parser. Which chain to use is indicated by the
- * \p index parameter. If verifcation succeeds, this function returns no
+ * \p index parameter. If verification succeeds, this function returns no
  * error and \p result is set to 0. If there is a specific verification
  * error, this function returns OS_ERROR_GENERIC and \p result will
  * have the respective error flags set.
@@ -345,7 +345,7 @@ OS_CertParserChain_free(
  * check if \p hCert actually belongs to \p hChain by ensuring that the issuer
  * of \p hCert matches the last certificate in \p hChain.
  *
- * NOTE: Just the reference to \p hCert is added; the certificte SHOULD NOT
+ * NOTE: Just the reference to \p hCert is added; the certificate SHOULD NOT
  *       be free'd  while it is associated with a chain that is in use (or
  *       associated with a parser handle).
  *

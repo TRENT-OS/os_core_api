@@ -84,7 +84,7 @@ OS_CryptoAgreement_free(
 /**
  * @brief Agree on a shared value.
  *
- * Computes the underlying key agreement based on the private key assosciated with
+ * Computes the underlying key agreement based on the private key associated with
  * the object and a public key given here.
  *
  * The resulting shared secret is a bignum specific to the underlying algorithm,

@@ -280,7 +280,7 @@ typedef struct
      * 3. If a Crypto API is instantiated as "OS_Crypto_MODE_KEY_SWITCH, this
      *    attribute is evaluated and if set to TRUE, keys are handled locally
      *    and if FALSE, keys are handled remotely.
-     * Crypto objectes (e.g. CryptoCipher) that use a key are always created and
+     * Crypto objects (e.g. CryptoCipher) that use a key are always created and
      * executed where the associated key resides.
      */
     bool keepLocal;
@@ -326,7 +326,7 @@ typedef struct
             uint32_t bits;
 
             /**
-             * For SPECTYPE_PARAMS: Use this to specifiy ECC params to use
+             * For SPECTYPE_PARAMS: Use this to specify ECC params to use
              */
             OS_CryptoKey_EccParams_t ecc;
 
@@ -409,7 +409,7 @@ typedef struct
  * by the internal RNG of the Crypto API.
  *
  * This function takes a \p spec parameter, which defines what type of key is
- * generated and wich attributes the resulting key has.
+ * generated and which attributes the resulting key has.
  *
  * Here are some example specs for typical keys:
  * 1. Create a DH priv key with 101 bits. Use a parameter spec which already
@@ -462,7 +462,7 @@ typedef struct
  * @retval OS_ERROR_NOT_SUPPORTED if the spec type, the key type or the amount of
  *  key bits given by the spec is in an unsupported range (e.g. DH key with 40 bits)
  * @retval OS_ERROR_INSUFFICIENT_SPACE if allocation of the key failed
- * @retval OS_ERROR_ABORTED if an internal error occured during cryptographic
+ * @retval OS_ERROR_ABORTED if an internal error occurred during cryptographic
  *  operations
  */
 OS_Error_t

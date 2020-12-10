@@ -202,7 +202,7 @@ typedef struct
 
         /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
-         * given in the cipersuites will be ENFORCED for everything (incl. session hash,
+         * given in the ciphersuites will be ENFORCED for everything (incl. session hash,
          * signature hashes etc.). Similary, the key size of the AES key will be used to
          * determine the minimum asymmetric key lengths automatically, so all parameters
          * and algorithms will be internally consistent (as far as the suite allows it).
@@ -426,7 +426,7 @@ OS_Tls_reset(
 /**
  * @brief Free a TLS object.
  *
- * Frees the memory allocted with a TLS object.
+ * Frees the memory allocated with a TLS object.
  *
  * @param hTls (required) handle of the OS TLS API context
  *
