@@ -16,7 +16,6 @@
 // indicates the length of the data stored in the buffer, which will be used
 // by the network stack.
 //
-// TODO: Make data also volatile, see SEOS-1603
 
 typedef struct
 {
