@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoAgreement
+ * @defgroup OS_CryptoAgreement Crypto API library agreement functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library agreement functionality
@@ -36,9 +36,11 @@ typedef enum
     OS_CryptoAgreement_ALG_ECDH
 } OS_CryptoAgreement_Alg_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+///@cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoAgreement_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize an AGREEMENT object.

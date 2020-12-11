@@ -15,27 +15,25 @@
 
 #include <stddef.h>
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef struct OS_Keystore OS_Keystore_t, *OS_Keystore_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize an instance of the Keystore
  *
- * @param hKeystore[out]    pointer to keystore handle
- * @param hFs               file system
- * @param hCrypto           handle to initialized OS_Crypto instance
- * @param name              name keystore
- *
  * @return OS_Error_t
- *
  */
 OS_Error_t
 OS_Keystore_init(
-    OS_Keystore_Handle_t*  hKeystore,
-    OS_FileSystem_Handle_t hFs,
-    OS_Crypto_Handle_t     hCrypto,
-    const char*            name);
+    OS_Keystore_Handle_t*  hKeystore, /**< [in,out] Pointer to the keystore
+                                                    handle. */
+    OS_FileSystem_Handle_t hFs,       /**< [in] Keystore's file system handle.*/
+    OS_Crypto_Handle_t     hCrypto,   /**< [in] Handle to initialized the
+                                                OS_Crypto instance. */
+    const char*            name       /**< [in] Name of the given keystore. */);
 
 /**
  * @brief Free up an instance of the Keystore

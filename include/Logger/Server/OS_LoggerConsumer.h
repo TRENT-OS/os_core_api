@@ -49,9 +49,10 @@
  *                  flow control functions
  *              \endcode
  *
- *              The latter is the class \link log_consumer_callback \endlink .
+ *              The latter is the class \link OS_LoggerConsumerCallback_t
+ *              \endlink .
  *
- * @see         log_consumer_callback
+ * @see         OS_LoggerConsumerCallback_t
  *
  * @ingroup     OS_LoggerServer
 */

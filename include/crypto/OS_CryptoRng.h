@@ -6,10 +6,11 @@
  */
 
 /**
- * @defgroup OS_CryptoRng
+ * @defgroup    OS_CryptoRng Crypto API library Random Number Generator
+ *              functionality
  * @{
  * @ingroup OS_Crypto
- * @brief OS Crypto API library RNG functionality
+ * @brief OS Crypto API library Random Number Generator functionality
  */
 
 #pragma once

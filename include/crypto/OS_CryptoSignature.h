@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoSignature
+ * @defgroup OS_CryptoSignature Crypto API library signature functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library signature functionality
@@ -37,9 +37,11 @@ typedef enum
     OS_CryptoSignature_ALG_RSA_PKCS1_V21
 } OS_CryptoSignature_Alg_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoSignature_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize a SIGNATURE object

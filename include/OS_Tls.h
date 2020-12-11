@@ -50,9 +50,11 @@ typedef enum
      */
     OS_Tls_DIGEST_SHA256,
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
     __OS_Tls_DIGEST_MAX
-///@endcond  -------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 } OS_Tls_Digest_t;
 
 /**
@@ -72,9 +74,11 @@ typedef enum
      */
     OS_Tls_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
     __OS_Tls_CIPHERSUITE_MAX
-///@endcond  -------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 } OS_Tls_CipherSuite_t;
 
 /**
@@ -110,11 +114,13 @@ typedef enum
 #define OS_Tls_SOCKET_READ_WOULD_BLOCK     -0x6900
 #define OS_Tls_SOCKET_WRITE_WOULD_BLOCK    -0x6880
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 // For now, we don't have many ciphersuites or digests, so uint8_t is enough.
 typedef uint8_t OS_Tls_CipherSuite_Flags_t;
 typedef uint8_t OS_Tls_Digest_Flags_t;
-///@endcond  -------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * For legacy reasons it may be important to override the param/algorithm choices
@@ -216,10 +222,12 @@ typedef struct
     OS_Tls_Flag_t flags;
 } TlsLib_Config_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef struct OS_Tls OS_Tls_t;
 typedef OS_Tls_t* OS_Tls_Handle_t;
-///@endcond  -------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * Configuration of the TLS API. The mode value defines which of the union fields
@@ -243,7 +251,8 @@ typedef struct
     if_OS_Tls_t rpc;
 } OS_Tls_Config_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 // Variadic macro, add more FE_x as the size of the underlying flag type
 // increases. Currently we have uint8_t, so having 8 FE macros here is enough.
 #define OS_Tls_FE_1(WHAT,F)     WHAT(F)
@@ -264,7 +273,8 @@ typedef struct
 // This is an "action macro" for: turn an ID into a flag bit (for uint8_t),
 // add more as the underlying flag field increases in width.
 #define OS_Tls_ID_TO_FLAGS_U8(id) ( (1u << (id)) )
-///@endcond  -------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * \brief Translate up to eight OS_Tls_CipherSuite_t values into a single

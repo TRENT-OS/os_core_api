@@ -235,35 +235,20 @@ OS_NetworkSocket_recvfrom(
  * @details Sends one UDP packet of up to len bytes in size. Can send less data
  * than requested.
  *
- * @param[in] handle: Handle to the socket to be used.
- *
- * @param[in] buf: Buffer containing data to be written.
- *
- * @param[in] requestedLen: Length of data to be written.
- *
- * @param[out]actualLen: Number of bytes actually written to the socket
- *
- * @param[in] dst_socket: Socket containing the information of the
- * destination
- *
  * @return OS_SUCCESS or OS_ERROR
  *
  */
-
 OS_Error_t
 OS_NetworkSocket_sendto(
-    OS_NetworkSocket_Handle_t handle,
-    const void*               buf,
-    size_t                    requestedLen,
-    size_t*                   actualLen,
-    OS_Network_Socket_t       dst_socket);
+    OS_NetworkSocket_Handle_t handle, /**< [in] Handle to the used socket. */
+    const void* buf, /**< [in] Buffer containing data to be written. */
+    size_t requestedLen, /**< [in]  Length of data to be written. */
+    size_t* actualLen, /**< [out] Number of bytes written to the socket. */
+    OS_Network_Socket_t dst_socket /**< [in] Socket containing the information
+                                             of the destination */);
 
 /**
  * @details Binds the socket to the given port.
- *
- * @param[in] handle: Handle to the socket to be used.
- *
- * @param[in] port: Port to be used.
  *
  * @return OS_SUCCESS or OS_ERROR
  *
@@ -271,6 +256,8 @@ OS_NetworkSocket_sendto(
 
 OS_Error_t
 OS_NetworkSocket_bind(
-    OS_NetworkSocket_Handle_t handle,
-    uint16_t                  receiving_port);
+    OS_NetworkSocket_Handle_t handle, //!< [in] Handle to the socket to be used.
+    uint16_t receiving_port           //!< [in] Port to be used.
+);
+
 /** @} */

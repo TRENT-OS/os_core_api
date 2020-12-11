@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoCipher
+ * @defgroup OS_CryptoCipher Crypto API library symmetric cipher functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library symmetric cipher functionality
@@ -66,9 +66,11 @@ typedef enum
     OS_CryptoCipher_ALG_AES_GCM_DEC,
 } OS_CryptoCipher_Alg_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoCipher_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize a CIPHER object.

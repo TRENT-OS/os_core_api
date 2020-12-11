@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoMac
+ * @defgroup OS_CryptoMac Crypto API library MAC functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library MAC functionality
@@ -45,9 +45,11 @@ typedef enum
     OS_CryptoMac_ALG_HMAC_SHA256,
 } OS_CryptoMac_Alg_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoMac_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize a message authentication code (MAC) object.

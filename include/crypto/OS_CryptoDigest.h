@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoDigest
+ * @defgroup OS_CryptoDigest Crypto API library digest/hash functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library digest/hash functionality
@@ -44,9 +44,11 @@ typedef enum
     OS_CryptoDigest_ALG_SHA256     = 6
 } OS_CryptoDigest_Alg_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoDigest_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * @brief Initialize a DIGEST object.

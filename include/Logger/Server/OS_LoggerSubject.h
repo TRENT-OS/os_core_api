@@ -4,8 +4,8 @@
  * @file
  * @brief       Log subject implementation.
  *
- * @details     Derived class from class \link abstract_subject \endlink and
- *              provides an implemention for log subject.
+ * @details     Derived class from class \link OS_LoggerAbstractSubject_Handle_t
+ *              \endlink and provides an implemention for log subject.
  *
  *              This level provides an implementation for log subject.
  *              This class is derived by abstract subject.

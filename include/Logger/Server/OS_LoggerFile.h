@@ -134,10 +134,6 @@ struct OS_LoggerFile_Handle
 /**
  * @details %OS_LoggerFile_ctor is the constructor.
  *
- * @param   self:       pointer to the class
- * @param   fs:         mounted filesystem
- * @param   filename:   name of log file
- *
  * @return  An error code.
  *
  * @retval  OS_ERROR_INVALID_PARAMETER - filename is NULL or too long.
@@ -145,9 +141,10 @@ struct OS_LoggerFile_Handle
 */
 OS_Error_t
 OS_LoggerFile_ctor(
-    OS_LoggerFile_Handle_t* self,
-    OS_FileSystem_Handle_t hFs,
-    const char* filename);
+    OS_LoggerFile_Handle_t* self, //!< [in] Logger file handle.
+    OS_FileSystem_Handle_t hFs,   //!< [in] Handle to the file's file system.
+    const char* filename          //!< [in] Logger file name.
+);
 
 
 /**

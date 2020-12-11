@@ -6,7 +6,7 @@
  */
 
 /**
- * @defgroup OS_CryptoKey
+ * @defgroup OS_CryptoKey Crypto API library key functionality
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library key functionality
@@ -135,9 +135,11 @@ typedef enum
     OS_CryptoKey_TYPE_MAC
 } OS_CryptoKey_Type_t;
 
-///@cond INTERNAL --------------------------------------------------------------
+/// @cond INTERNAL
+//------------------------------------------------------------------------------
 typedef OS_Crypto_Object_t* OS_CryptoKey_Handle_t;
-///@endcond --------------------------------------------------------------------
+//------------------------------------------------------------------------------
+/// @endcond
 
 /**
  * Struct for an AES Key.

@@ -25,10 +25,6 @@
  *                  flow control functions
  *              \endcode
  *
- *              The latter is the class \link log_emitter_callback \endlink .
- *
- * @see         log_emitter_callback
- *
  * @ingroup     OS_LoggerClient
 */
 #pragma once
@@ -67,7 +63,8 @@ OS_LoggerEmitter_Handle_t*
 OS_LoggerEmitter_getInstance(
     void* buffer,                         //!< The logging data exchange buffer.
     OS_LoggerFilter_Handle_t* log_filter, //!< The client's logging filter.
-    event_notify_func_t emit);            //!< The logging emit callback.
+    event_notify_func_t emit              //!< The logging emit callback.
+);
 
 /**
  * @details %OS_LoggerEmitter_log provides the client log action.
@@ -77,10 +74,6 @@ OS_LoggerEmitter_getInstance(
  *
  *          The function has variable parameters so that a log message can be
  *          called up as usual with the syntax of the printf function.
- *
- * @param   logLevel:  client log level id
- * @param   format:     log message
- * @param   ...:        optional parameters for log message
  *
  * @return  An error code.
  *
@@ -92,4 +85,8 @@ OS_LoggerEmitter_getInstance(
  * @retval  OS_SUCCESS                 - Entry logged or filtered out.
 */
 OS_Error_t
-OS_LoggerEmitter_log(uint8_t log_level, const char* format, ...);
+OS_LoggerEmitter_log(
+    uint8_t log_level,  //!< [in] The desired logging level.
+    const char* format, //!< [in] Formatted log message string.
+    ...                 //!< [in] Optional format's arguments.
+);
