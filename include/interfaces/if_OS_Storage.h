@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "stdio.h"
 
-enum
+typedef enum
 {
     OS_Storage_StateFlag_MEDIUM_PRESENT = 0,
 }
