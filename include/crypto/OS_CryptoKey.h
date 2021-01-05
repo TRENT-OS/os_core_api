@@ -20,8 +20,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "compiler.h"
-
 /**
  * Maximum sizes supported for the respective key types.
  */
