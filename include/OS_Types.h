@@ -1,7 +1,7 @@
 /*
- *  OS type definitions
+ * OS type definitions
  *
- *  Copyright (C) 2019, Hensoldt Cyber GmbH
+ * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
  */
 
 #pragma once

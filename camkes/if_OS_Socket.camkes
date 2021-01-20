@@ -1,8 +1,7 @@
 /*
- *  OS CAmkES Interface for Sockets
+ * OS CAmkES Interface for Sockets
  *
- *  Copyright (C) 2019, Hensoldt Cyber GmbH
- *
+ * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
  */
 procedure if_OS_Socket {
 

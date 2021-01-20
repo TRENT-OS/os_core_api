@@ -1,8 +1,8 @@
 /*
-   *  CAmkES configuration file for configuration service as server.
-   *
-   *  Copyright (C) 2019, Hensoldt Cyber GmbH
-*/
+ * CAmkES configuration file for configuration service as server.
+ *
+ * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
+ */
 
 
 procedure if_OS_ConfigService {
