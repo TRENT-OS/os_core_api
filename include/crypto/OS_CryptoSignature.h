@@ -151,4 +151,32 @@ OS_CryptoSignature_verify(
     const void*                 signature,
     const size_t                signatureSize);
 
+/**
+ * PointBlank @ 05.01.2021
+ * @brief Encrypt buffer.
+ *
+ * Encrypt buffer. For this operation to work, the \p hPubKey param
+ * must be set during SIGNATURE initialization.
+ *
+ * @param hSig (required) handle of OS Crypto SIGNATURE object
+ * @param input (required) hash value to recompute signature for
+ * @param inputSize (required) size of hash
+ * @param output (required) buffer for signature to verify
+ *
+ * @return an error code
+ * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_ERROR_INVALID_PARAMETER if a parameter was missing or invalid,
+ *  this includes passing a \p signatureSize that is unexpected (due to the key)
+ * @retval OS_ERROR_ABORTED if no private key was set during initialization or
+ *  if the cryptographic operation failed (i.e., the signature was invalid)
+ * @retval OS_ERROR_INSUFFICIENT_SPACE if \p signatureSize + \p hashSize is
+ *  greater than the size of the dataport
+ */
+OS_Error_t
+OS_CryptoSignature_encrypt(
+    OS_CryptoSignature_Handle_t hSig,
+    const void*                 input,
+    const size_t                inputSize,
+    const void*                 output);
+
 /** @} */
