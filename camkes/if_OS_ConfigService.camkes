@@ -2,10 +2,8 @@
  * CAmkES configuration file for configuration service as server.
  *
  * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
- *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
 
 procedure if_OS_ConfigService {
     include "OS_Error.h";
