@@ -66,4 +66,7 @@ typedef void*    OS_Network_Context_t;
 typedef int OS_NetworkSocket_Handle_t;
 typedef int OS_NetworkServer_Handle_t;
 
+#define OS_NetworkSocket_Handle_INVALID ((OS_NetworkSocket_Handle_t) -1)
+#define OS_NetworkServer_Handle_INVALID ((OS_NetworkServer_Handle_t) -1)
+
 #endif
