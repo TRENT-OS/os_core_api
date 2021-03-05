@@ -115,9 +115,13 @@ typedef enum
     // General error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
-    __START_OS_ERROR_CODES_GENERIC = -23,
+    __START_OS_ERROR_CODES_GENERIC = -27,
     /// @endcond
     //----------------------------------------
+    OS_ERROR_IN_PROGRESS,                      /**< operation in progress */
+    OS_ERROR_TIMEOUT,                          /**< operation timeout */
+    OS_ERROR_IO,                               /**< generic IO error */
+    OS_ERROR_EXISTS,                           /**< alredy exists */
     OS_ERROR_BUFFER_FULL,                      /**< buffer is full */
     OS_ERROR_BUFFER_EMPTY,                     /**< buffer is empty */
     OS_ERROR_NO_DATA,                          /**< no data available to fullfill the request */
