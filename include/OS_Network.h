@@ -76,7 +76,8 @@
  *
  * @param[out] phandle: Handle to the created socket.
  *
- * @return  OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  */
 
 OS_Error_t
@@ -97,7 +98,8 @@ OS_NetworkSocket_create(
  *
  * @param[out] pSrvHandle: Handle to the created socket.
  *
- * @return  OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  */
 
 OS_Error_t
@@ -113,7 +115,8 @@ OS_NetworkServerSocket_create(
  * @param[in] srvHandle: Handle to the server socket we want
  * to close.
  *
- * @return  OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  */
 
 OS_Error_t
@@ -126,7 +129,8 @@ OS_NetworkServerSocket_close(
  *
  * @param[in] handle: Handle to the socket we want to close.
  *
- * @return OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  *
  */
 
@@ -145,7 +149,8 @@ OS_NetworkSocket_close(
  *
  * @param[out] actualLen: Length of data that was actually written to the socket.
  *
- * @return OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  *
  */
 
@@ -165,7 +170,8 @@ OS_NetworkSocket_write(
  * needed for further communication with the connecting host. All subsequent
  * read/write commands in this conversation need this handle.
  *
- * @return OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  */
 
 OS_Error_t
@@ -233,7 +239,8 @@ OS_NetworkSocket_recvfrom(
  * @details Sends one UDP packet of up to len bytes in size. Can send less data
  * than requested.
  *
- * @return OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  *
  */
 OS_Error_t
@@ -248,7 +255,8 @@ OS_NetworkSocket_sendto(
 /**
  * @details Binds the socket to the given port.
  *
- * @return OS_SUCCESS or OS_ERROR
+ * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
+ * error (OS_ERROR_*)
  *
  */
 
