@@ -14,11 +14,20 @@ endif()
 
 
 #-------------------------------------------------------------------------------
+set(CMAKE_C_STANDARD 11)
+
 project(os_core_api C)
 
-add_library(${PROJECT_NAME} INTERFACE)
+add_library(${PROJECT_NAME}
+    "OS_Error.c"
+)
 
 target_include_directories(${PROJECT_NAME}
-    INTERFACE
+    PUBLIC
         include
+)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+    PRE_BUILD
+    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/error_codes_generator.py
 )
