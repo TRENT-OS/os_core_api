@@ -1,8 +1,8 @@
 import json
 
-os_error_codes = json.loads(open('OS_Error.json').read())['OS_Error_t']
+os_error_codes = json.loads(open('/host/OS-SDK/pkg/os_core_api/OS_Error.json').read())['OS_Error_t']
 
-with open('include/OS_Error.test.h', "w") as os_error_header_file:
+with open('/host/OS-SDK/pkg/os_core_api/include/OS_Error.test.h', "w") as os_error_header_file:
     os_error_header_file.write(
 """
 /*
@@ -18,8 +18,6 @@ with open('include/OS_Error.test.h', "w") as os_error_header_file:
 extern "C" {
 #endif
 
-#include <assert.h>
-
 /**
  * @brief   OS error codes
  *
@@ -28,7 +26,7 @@ extern "C" {
 typedef enum
 {""")
 
-    with open('OS_Error.c', "w") as os_error_source_file:
+    with open('/host/OS-SDK/pkg/os_core_api/OS_Error.c', "w") as os_error_source_file:
         os_error_source_file.write(
 """
 #include "OS_Error.h"
