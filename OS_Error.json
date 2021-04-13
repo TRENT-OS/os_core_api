@@ -1,0 +1,332 @@
+{
+    "OS_Error_t": [
+    {
+        "description":"Success codes",
+        "offset":"0",
+        "members":[
+            {
+                "name": "OS_SUCCESS",
+                "description": "Operation successful."
+            }
+        ]
+    },
+    {
+        "description":"General error codes",
+        "offset":"-1",
+        "members":[
+            {
+                "name": "OS_ERROR_IN_PROGRESS",
+                "description": "operation in progress"
+            },
+            {
+                "name": "OS_ERROR_TIMEOUT",
+                "description": "operation timeout"
+            },
+            {
+                "name": "OS_ERROR_IO",
+                "description": "generic IO error"
+            },
+            {
+                "name": "OS_ERROR_EXISTS",
+                "description": "alredy exists"
+            },
+            {
+                "name": "OS_ERROR_BUFFER_FULL",
+                "description": "buffer is full"
+            },
+            {
+                "name": "OS_ERROR_BUFFER_EMPTY",
+                "description": "buffer is empty"
+            },
+            {
+                "name": "OS_ERROR_NO_DATA",
+                "description": "no data available to fullfill the request"
+            },
+            {
+                "name": "OS_ERROR_NOT_INITIALIZED",
+                "description": "not initialized"
+            },
+            {
+                "name": "OS_ERROR_TRY_AGAIN",
+                "description": "caller should retry operation"
+            },
+            {
+                "name": "OS_ERROR_WOULD_BLOCK",
+                "description": "operation would block"
+            },
+            {
+                "name": "OS_ERROR_OUT_OF_BOUNDS",
+                "description": "operation violated boundaries"
+            },
+            {
+                "name": "OS_ERROR_CONNECTION_CLOSED",
+                "description": "connection closed"
+            },
+            {
+                "name": "OS_ERROR_OVERFLOW_DETECTED",
+                "description": "overflow detected"
+            },
+            {
+                "name": "OS_ERROR_INSUFFICIENT_SPACE",
+                "description": "insufficient space"
+            },
+            {
+                "name": "OS_ERROR_BUFFER_TOO_SMALL",
+                "description": "buffer too small"
+            },
+            {
+                "name": "OS_ERROR_ABORTED",
+                "description": "operation aborted"
+            },
+            {
+                "name": "OS_ERROR_OPERATION_DENIED",
+                "description": "operation denied"
+            },
+            {
+                "name": "OS_ERROR_ACCESS_DENIED",
+                "description": "access denied"
+            },
+            {
+                "name": "OS_ERROR_NOT_FOUND",
+                "description": "not found"
+            },
+            {
+                "name": "OS_ERROR_INVALID_HANDLE",
+                "description": "invalid handle"
+            },
+            {
+                "name": "OS_ERROR_INVALID_NAME",
+                "description": "invalid name"
+            },
+            {
+                "name": "OS_ERROR_INVALID_PARAMETER",
+                "description": "invalid parameter"
+            },
+            {
+                "name": "OS_ERROR_INVALID_STATE",
+                "description": "invalid state"
+            },
+            {
+                "name": "OS_ERROR_NOT_SUPPORTED",
+                "description": "not supported"
+            },
+            {
+                "name": "OS_ERROR_NOT_IMPLEMENTED",
+                "description": "not implemented"
+            },
+            {
+                "name": "OS_ERROR_GENERIC",
+                "description": "general error, not further details available"
+            }
+        ]
+    },
+    {
+        "description":"Configuration Server specific",
+        "offset":"-1000",
+        "members":[
+            {
+                "name": "OS_ERROR_CONFIG_DOMAIN_NOT_FOUND",
+                "description": "configuration domain not found"
+            },
+            {
+                "name": "OS_ERROR_CONFIG_PARAMETER_NOT_FOUND",
+                "description": "configuration parameter not found"
+            },
+            {
+                "name": "OS_ERROR_CONFIG_TYPE_MISMATCH",
+                "description": "configuration parameter type mismatc"
+            }
+        ]
+    },
+    {
+        "description":"File System specific error codes",
+        "offset":"-1100",
+        "members":[
+            {
+                "name": "OS_ERROR_FS_NO_FREE_HANDLE",
+                "description": "failed cause no free handle"
+            },
+            {
+                "name": "OS_ERROR_FS_DELETE_HANDLE",
+                "description": "failed due to delete handle"
+            },
+            {
+                "name": "OS_ERROR_FS_NO_DISK",
+                "description": "disk doesn't exist"
+            },
+            {
+                "name": "OS_ERROR_FS_INIT",
+                "description": "failed to init"
+            },
+            {
+                "name": "OS_ERROR_FS_REGISTER",
+                "description": "failed to register low level functions"
+            },
+            {
+                "name": "OS_ERROR_FS_CREATE_FS",
+                "description": "failed to create filesystem"
+            },
+            {
+                "name": "OS_ERROR_FS_FORMAT_FS",
+                "description": "failed to format filesystem"
+            },
+            {
+                "name": "OS_ERROR_FS_PARTITION_READ",
+                "description": "partiton read throws an error"
+            },
+            {
+                "name": "OS_ERROR_FS_OPEN",
+                "description": "failed to open"
+            },
+            {
+                "name": "OS_ERROR_FS_CLOSE",
+                "description": "failed to close"
+            },
+            {
+                "name": "OS_ERROR_FS_MOUNT",
+                "description": "failed to mount"
+            },
+            {
+                "name": "OS_ERROR_FS_UNMOUNT",
+                "description": "failed to unmount"
+            },
+            {
+                "name": "OS_ERROR_FS_FILE_NOT_FOUND",
+                "description":
+                    "file is missing (if FS_O_CREATE has not been passed)"
+            },
+            {
+                "name": "OS_ERROR_FS_OPERATION_DENIED",
+                "description": "partition was opened in read-only mode"
+            },
+            {
+                "name": "OS_ERROR_FS_INSUFFICIENT_STORAGE_CAPACITY",
+                "description": "less space or file to big"
+            },
+            {
+                "name": "OS_ERROR_FS_STRUCTURE",
+                "description": "failed to get internal structure"
+            },
+            {
+                "name": "OS_ERROR_FS_RESOLVE_HANDLE",
+                "description": "failed to resolve handle"
+            },
+            {
+                "name": "OS_ERROR_FS_DELETE_RESOLVE_HANDLE",
+                "description": "failed to delete resolve handle"
+            },
+            {
+                "name": "OS_ERROR_FS_LIB",
+                "description": "error from lib"
+            },
+            {
+                "name": "OS_ERROR_FS_DATABUFFER_OVERLOW",
+                "description": "databuffer is too small"
+            },
+            {
+                "name": "OS_ERROR_FS_INVALID_PARTITION_MODE",
+                "description": "partition access mode is invalid"
+            },
+            {
+                "name": "OS_ERROR_FS_PARTITION_NOT_READY",
+                "description": "partition not ready"
+            },
+            {
+                "name": "OS_ERROR_FS_INVALID_FILESYSTEM",
+                "description": "no valid filesystem"
+            }
+        ]
+    },
+    {
+        "description":"Device specific error codes",
+        "offset":"-1200",
+        "members":[
+            {
+                "name": "OS_ERROR_DEVICE_INVALID",
+                "description":"The device is present, but it can't be used."
+            },
+            {
+                "name": "OS_ERROR_DEVICE_NOT_PRESENT",
+                "description": "The device is not present."
+            },
+            {
+                "name": "OS_ERROR_DEVICE_BUSY",
+                "description": "The device is present, but temporarily not accessible."
+            }
+        ]
+    },
+    {
+        "description":"Network specific error codes",
+        "offset":"-1300",
+        "members":[
+            {
+                "name": "OS_ERROR_NETWORK_NO_SUPPORT",
+                "description": "no network support" },
+            {
+                "name": "OS_ERROR_NETWORK_OP_NO_SUPPORT",
+                "description": "operation not supported"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_DOWN",
+                "description": "network stack is down"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_UNREACHABLE",
+                "description": "network is unreachable"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_NO_ROUTE",
+                "description": "no route to host or network"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_PROTO",
+                "description": "protocol error"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_PROTO_NO_SUPPORT",
+                "description": "protocol not supported"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_PROTO_OPT_NO_SUPPORT",
+                "description": "protocol option not supported"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_ADDR_IN_USE",
+                "description": "address already in use"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE",
+                "description": "address not available"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_CONN_RESET",
+                "description": "connection reset"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_CONN_ALREADY_BOUND",
+                "description": "already connected"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_CONN_NONE",
+                "description": "no connection"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_CONN_SHUTDOWN",
+                "description": "connection shutdown"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_CONN_REFUSED",
+                "description": "connection refused"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_HOST_DOWN",
+                "description": "host is down"
+            },
+            {
+                "name": "OS_ERROR_NETWORK_HOST_UNREACHABLE",
+                "description": "host is unreachable"
+            }
+        ]
+    }
+    ]
+}
