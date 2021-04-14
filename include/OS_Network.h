@@ -43,13 +43,6 @@
  *              }
  *          \endcode
  *
- *          <b> CMakeLists.txt file: </b> \n
- *          \code
- *              Define                            | Description
- *              ----------------------------------|---------------------------------------------------------------------------
- *               OS_NETWORK_STACK_USE_CONFIGSERVER| use configuration server to configure IP addresses
- *          \endcode
- *
  *          <b> Limitations: </b> \n
  *          + Only IPv4 connections are supported
  *          + Only TCP socket is supported
