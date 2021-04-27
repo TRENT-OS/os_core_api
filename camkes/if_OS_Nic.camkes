@@ -1,29 +1,94 @@
 /*
- * OS CAmkES Interface for a NIC
- *
  * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+/**
+ * @file
+ *
+ * OS CAmkES Interface for a NIC.
+ *
+ * This file describes the NIC interface in terms of CAmkES connections. This
+ * interface is to define the way a network stack could connect to a generic NIC
+ * component as a "user" component: the interface is <b>provided</b> by a NIC
+ * component that implements it and gets <b>used</b> by, for example, a network
+ * stack component.
+ * The interface consists of:
+ *  - RPC functions to be called by the user of the interface,
+ *  - one shared memory for transmission of data from the user component of the
+ *    interface to the NIC component (interface provider),
+ *  - one shared memory for transmission of data from the NIC component
+ *    (interface provider) to the user component,
+ *  - one event emitted by the NIC component (interface provider) to the user
+ *    component, to signal available data.
+ * Please see the macro IF_OS_NIC_PROVIDE() for further details.
+ * The macros that this file defines facilitate the declaration of all the
+ * needed CAmkES connectors from both the sides of the interface, the interface
+ * provider (NIC) and the interface user (network stack).
+ */
+
 #pragma once
 
-//------------------------------------------------------------------------------
-// The RPC interface of if_OS_Nic
+/**
+ * The RPC interface of if_OS_Nic.
+ *
+ * @hideinitializer
+ */
 procedure if_OS_Nic {
 
     include "OS_Error.h";
 
+    /**
+     * Transmit data. The data is supposed to be placed in the dataport shared
+     * with the client component before the invocation of this RPC.
+     *
+     * @retval OS_SUCCESS                Operation was successful.
+     * @retval OS_ERROR_BUFFER_TOO_SMALL If len is greater than the dataport
+     *                                   size behind.
+     * @retval other                     Each component implementing this might
+     *                                   have additional error codes.
+     *
+     * @param[in] len Length of the data to transmit.
+     */
     OS_Error_t
     tx_data(
         inout  size_t  len
     );
 
+    /**
+     * Receive data. If some data has been receive from the NIC it will be
+     * placed in the dataport shared with the client.
+     *
+     * @retval OS_SUCCESS Operation was successful.
+     * @retval other      Each component implementing this might have additional
+     *                    error codes.
+     *
+     * @param[out] len              Length of the data received.
+     * @param[out] frames_available If 0 then it means no more received Ethernet
+     *                              frames available in NIC. Otherwise other
+     *                              received Ethernet frames available in NIC.
+     *                              RPC call can be repeated to get more data.
+     */
     OS_Error_t
     rx_data(
         out  size_t  len,
         out  size_t  frames_available
     );
 
+    /**
+     * Get the NIC's MAC address. The MAC address will be placed in the first 6
+     * bytes of the dataport. Each nibble contains one hex coded MAC element.
+     * Example: a devices MAC Address of 2F 43 3A 64 10 AA will be stored in the
+     * dataport as:
+     *      dataport[0] = 0x2F
+     *      dataport[1] = 0x43
+     *      dataport[2] = 0x3A
+     *      ...
+     *
+     * @retval OS_SUCCESS Operation was successful.
+     * @retval other      Each component implementing this might have additional
+     *                    error codes.
+     */
     OS_Error_t
     get_mac_address(void);
 
@@ -34,100 +99,150 @@ procedure if_OS_Nic {
 // Component interface fields macros
 //==============================================================================
 
-//------------------------------------------------------------------------------
-// The interface fields of a component implementing the user side of the NIC
-// interface, except for the event. The event is excluded because the user side
-// component can have multiple event sources connect to one event sink.
+/**
+ * Declares the interface fields of a component implementing the user side of
+ * the NIC interface, except for the event. The event is excluded because the
+ * user side component can have multiple event sources connect to one event
+ * sink.
+ *
+ * @param[in] prefix    Prefix to be used to generate a unique name for the
+                        connectors.
+ * @param[in] port_size Size of dataport containing data from the NIC.
+ */
 #define IF_OS_NIC_USE_WITHOUT_EVENT( \
-    _prefix_, \
-    _port_size_) \
+    prefix, \
+    port_size) \
     \
-    uses      if_OS_Nic         _prefix_##_rpc; \
-    dataport  Buf(_port_size_)  _prefix_##_from_port; /* input from NIC */ \
-    dataport  Buf               _prefix_##_to_port; /* output to NIC */
+    uses      if_OS_Nic         prefix##_rpc; \
+    dataport  Buf(port_size)    prefix##_from_port;   /* input from NIC */ \
+    dataport  Buf               prefix##_to_port;     /* output to NIC */
 
 
-//------------------------------------------------------------------------------
-// The interface fields of a component implementing the user side of the NIC
-// interface.
+/**
+ * Declares the interface fields of a component implementing the user side of
+ * the NIC interface.
+ *
+ * @param[in] prefix    Prefix to be used to generate a unique name for the
+                        connectors.
+ * @param[in] port_size Size of dataport containing data from the NIC.
+ */
 #define IF_OS_NIC_USE( \
-    _prefix_, \
-    _port_size_) \
+    prefix, \
+    port_size) \
     \
-    consumes  EventDataAvailable  _prefix_##_event_hasData; \
-    FIELDS_IF_OS_NIC_UPPER_WITHOUT_EVENT(_prefix_, _port_size_)
+    consumes EventDataAvailable prefix##_event_hasData; \
+    FIELDS_IF_OS_NIC_UPPER_WITHOUT_EVENT(prefix, port_size)
 
-
-//------------------------------------------------------------------------------
-// Fields of a component implementing the nic side of the NIC interface.
+/**
+ * Declares the interface fields of a component implementing the NIC side of
+ * the NIC interface.
+ *
+ * @param[in] prefix    Prefix to be used to generate a unique name for the
+                        connectors.
+ * @param[in] port_size Size of dataport containing data from the NIC.
+ */
 #define IF_OS_NIC_PROVIDE( \
-    _prefix_, \
-    _port_size_) \
+    prefix, \
+    port_size) \
     \
-    provides  if_OS_Nic           _prefix_##_rpc; \
-    emits     EventDataAvailable  _prefix_##_event_hasData; \
-    dataport  Buf(_port_size_)    _prefix_##_to_port; /* input to user */ \
-    dataport  Buf                 _prefix_##_from_port; /* output from user */
+    provides  if_OS_Nic             prefix##_rpc; \
+    emits     EventDataAvailable    prefix##_event_hasData; \
+    dataport  Buf(port_size)        prefix##_to_port;   /* input to user */ \
+    dataport  Buf                   prefix##_from_port; /* output from user */
 
 
 //==============================================================================
 // Component interface field connection macros
 //==============================================================================
 
-//------------------------------------------------------------------------------
-// Connect two components via the NIC interface, but leave out the connection
-// for event. Rationale is, that often multiple event sources are connected to
-// the same event sink. This can be done with IF_OS_NIC_CONNECT_EVENT() then.
+/**
+ * Connects two components via the NIC interface, but leave out the connection
+ * for event. Rationale is, that often multiple event sources are connected to
+ * the same event sink. This can be done with IF_OS_NIC_CONNECT_EVENT() then.
+ *
+ * @param[in] inst_user              Name of the interface user component
+ *                                   instance.
+ * @param[in] inst_user_field_prefix Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_USE().
+ * @param[in] inst_nic               Name of the interface provider component
+ *                                   instance.
+ * @param[in] inst_nic_field_prefix  Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_PROVIDE().
+ */
 #define IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
-    _inst_user_, \
-    _inst_user_field_prefix_, \
-    _inst_nic_, \
-    _inst_nic_field_prefix_) \
+    inst_user, \
+    inst_user_field_prefix, \
+    inst_nic, \
+    inst_nic_field_prefix) \
     \
     connection seL4RPCCall \
-        conn_##_inst_user_##_##_inst_nic_##_rpc( \
-            from _inst_user_._inst_user_field_prefix_##_rpc, \
-            to   _inst_nic_._inst_nic_field_prefix_##_rpc); \
+        conn_##inst_user##_##inst_nic##_rpc( \
+            from inst_user.inst_user_field_prefix##_rpc, \
+            to   inst_nic.inst_nic_field_prefix##_rpc); \
     \
     connection seL4SharedData \
-        conn_##_inst_user_##_##_inst_nic_##_port_input( \
-            from _inst_user_._inst_user_field_prefix_##_from_port, \
-            to   _inst_nic_._inst_nic_field_prefix_##_to_port, ); \
+        conn_##inst_user##_##inst_nic##_port_input( \
+            from inst_user.inst_user_field_prefix##_from_port, \
+            to   inst_nic.inst_nic_field_prefix##_to_port, ); \
     \
     connection seL4SharedData \
-        conn_##_inst_nic_##_##_inst_user_##_port_output( \
-            from _inst_nic_._inst_nic_field_prefix_##_from_port, \
-            to   _inst_user_._inst_user_field_prefix_##_to_port);
+        conn_##inst_nic##_##inst_user##_port_output( \
+            from inst_nic.inst_nic_field_prefix##_from_port, \
+            to   inst_user.inst_user_field_prefix##_to_port);
 
-
-//------------------------------------------------------------------------------
-// Connect the NIC event between two components.
+/**
+ * Connects the NIC event between two components.
+ *
+ * @param[in] inst_user             Name of the interface user component
+ *                                  instance.
+ * @param[in] inst_user_event       Name of the event of the interface user
+ *                                  component to be connected to the interface
+ *                                  provider component event.
+ * @param[in] inst_nic              Name of the interface provider component
+ *                                  instance.
+ * @param[in] inst_nic_field_prefix Prefix used to generate a unique name for
+ *                                  the connectors in IF_OS_NIC_PROVIDE().
+ */
 #define IF_OS_NIC_CONNECT_EVENT( \
-    _inst_user_, \
-    _inst_user_event_, \
-    _inst_nic_, \
-    _inst_nic_field_prefix_) \
+    inst_user, \
+    inst_user_event, \
+    inst_nic, \
+    inst_nic_field_prefix) \
     \
     connection seL4NotificationNative \
-        conn_##_inst_nic_##_##_inst_user_##_event_hasData( \
-            from _inst_nic_._inst_nic_field_prefix_##_event_hasData, \
-            to   _inst_user_._inst_user_event_);
+        conn_##inst_nic##_##inst_user##_event_hasData( \
+            from inst_nic.inst_nic_field_prefix##_event_hasData, \
+            to   inst_user.inst_user_event);
 
-//------------------------------------------------------------------------------
-// Connect two components via the NIC interface, including the event.
+/**
+ * Connects two components via the NIC interface, including the event.
+ *
+ * @param[in] inst_user              Name of the interface user component
+ *                                   instance.
+ * @param[in] inst_user_field_prefix Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_USE().
+ * @param[in] inst_user_event        Name of the event of the interface user
+ *                                   component to be connected to the interface
+ *                                   provider component event.
+ * @param[in] inst_nic               Name of the interface provider component
+ *                                   instance.
+ * @param[in] inst_nic_field_prefix  Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_PROVIDE().
+ */
 #define IF_OS_NIC_CONNECT( \
-    _inst_user_, \
-    _inst_user_field_prefix_, \
-    _inst_nic_, \
-    _inst_nic_field_prefix__) \
+    inst_user, \
+    inst_user_field_prefix, \
+    inst_user_event, \
+    inst_nic, \
+    inst_nic_field_prefix) \
     \
     IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
-        _inst_user_, \
-        _inst_user_field_prefix_, \
-        _inst_nic_, \
-        _inst_nic_field_prefix_) \
+        inst_user, \
+        inst_user_field_prefix, \
+        inst_nic, \
+        inst_nic_field_prefix) \
     IF_OS_NIC_CONNECT_EVENT( \
-        _inst_user_, \
-        _inst_user_event_, \
-        _inst_nic_, \
-        _inst_nic_field_prefix_)
+        inst_user, \
+        inst_user_event, \
+        inst_nic, \
+        inst_nic_field_prefix)
