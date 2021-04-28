@@ -35,22 +35,22 @@ procedure if_OS_Nic {
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// The interface fields of a component implementing the upper side of the NIC
-// interface, except for the event. The event is excluded because the upper side
+// The interface fields of a component implementing the user side of the NIC
+// interface, except for the event. The event is excluded because the user side
 // component can have multiple event sources connect to one event sink.
-#define IF_OS_NIC_UPPER_INTERFACE_FIELDS_WITHOUT_EVENT( \
+#define IF_OS_NIC_USE_WITHOUT_EVENT( \
     _prefix_, \
     _port_size_) \
     \
     uses      if_OS_Nic         _prefix_##_rpc; \
-    dataport  Buf(_port_size_)  _prefix_##_from_port; /* input from lower */ \
-    dataport  Buf               _prefix_##_to_port; /* output to lower */
+    dataport  Buf(_port_size_)  _prefix_##_from_port; /* input from NIC */ \
+    dataport  Buf               _prefix_##_to_port; /* output to NIC */
 
 
 //------------------------------------------------------------------------------
-// The interface fields of a component implementing the upper side of the NIC
+// The interface fields of a component implementing the user side of the NIC
 // interface.
-#define IF_OS_NIC_UPPER_INTERFACE_FIELDS( \
+#define IF_OS_NIC_USE( \
     _prefix_, \
     _port_size_) \
     \
@@ -59,15 +59,15 @@ procedure if_OS_Nic {
 
 
 //------------------------------------------------------------------------------
-// Fields of a component implementing the lower side of the NIC interface.
-#define IF_OS_NIC_LOWER_INTERFACE_FIELDS( \
+// Fields of a component implementing the nic side of the NIC interface.
+#define IF_OS_NIC_PROVIDE( \
     _prefix_, \
     _port_size_) \
     \
     provides  if_OS_Nic           _prefix_##_rpc; \
     emits     EventDataAvailable  _prefix_##_event_hasData; \
-    dataport  Buf(_port_size_)    _prefix_##_to_port; /* input to upper */ \
-    dataport  Buf                 _prefix_##_from_port; /* output from upper */
+    dataport  Buf(_port_size_)    _prefix_##_to_port; /* input to user */ \
+    dataport  Buf                 _prefix_##_from_port; /* output from user */
 
 
 //==============================================================================
@@ -79,56 +79,56 @@ procedure if_OS_Nic {
 // for event. Rationale is, that often multiple event sources are connected to
 // the same event sink. This can be done with IF_OS_NIC_CONNECT_EVENT() then.
 #define IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
-    _inst_upper_, \
-    _inst_upper_field_prefix_, \
-    _inst_lower_, \
-    _inst_lower_field_prefix_) \
+    _inst_user_, \
+    _inst_user_field_prefix_, \
+    _inst_nic_, \
+    _inst_nic_field_prefix_) \
     \
     connection seL4RPCCall \
-        conn_##_inst_upper_##_##_inst_lower_##_rpc( \
-            from _inst_upper_._inst_upper_field_prefix_##_rpc, \
-            to   _inst_lower_._inst_lower_field_prefix_##_rpc); \
+        conn_##_inst_user_##_##_inst_nic_##_rpc( \
+            from _inst_user_._inst_user_field_prefix_##_rpc, \
+            to   _inst_nic_._inst_nic_field_prefix_##_rpc); \
     \
     connection seL4SharedData \
-        conn_##_inst_upper_##_##_inst_lower_##_port_input( \
-            from _inst_upper_._inst_upper_field_prefix_##_from_port, \
-            to   _inst_lower_._inst_lower_field_prefix_##_to_port, ); \
+        conn_##_inst_user_##_##_inst_nic_##_port_input( \
+            from _inst_user_._inst_user_field_prefix_##_from_port, \
+            to   _inst_nic_._inst_nic_field_prefix_##_to_port, ); \
     \
     connection seL4SharedData \
-        conn_##_inst_lower_##_##_inst_upper_##_port_output( \
-            from _inst_lower_._inst_lower_field_prefix_##_from_port, \
-            to   _inst_upper_._inst_upper_field_prefix_##_to_port);
+        conn_##_inst_nic_##_##_inst_user_##_port_output( \
+            from _inst_nic_._inst_nic_field_prefix_##_from_port, \
+            to   _inst_user_._inst_user_field_prefix_##_to_port);
 
 
 //------------------------------------------------------------------------------
 // Connect the NIC event between two components.
 #define IF_OS_NIC_CONNECT_EVENT( \
-    _inst_upper_, \
-    _inst_upper_event_, \
-    _inst_lower_, \
-    _inst_lower_field_prefix_) \
+    _inst_user_, \
+    _inst_user_event_, \
+    _inst_nic_, \
+    _inst_nic_field_prefix_) \
     \
     connection seL4NotificationNative \
-        conn_##_inst_lower_##_##_inst_upper_##_event_hasData( \
-            from _inst_lower_._inst_lower_field_prefix_##_event_hasData, \
-            to   _inst_upper_._inst_upper_event_);
+        conn_##_inst_nic_##_##_inst_user_##_event_hasData( \
+            from _inst_nic_._inst_nic_field_prefix_##_event_hasData, \
+            to   _inst_user_._inst_user_event_);
 
 
 //------------------------------------------------------------------------------
 // Connect two components via the NIC interface, including the event.
 #define IF_OS_NIC_CONNECT( \
-    _inst_upper_, \
-    _inst_upper_field_prefix_, \
-    _inst_lower_, \
-    _inst_lower_field_prefix__) \
+    _inst_user_, \
+    _inst_user_field_prefix_, \
+    _inst_nic_, \
+    _inst_nic_field_prefix__) \
     \
     CONNECT_IF_OS_NIC_WITHOUT_EVENT( \
-        _inst_upper_._inst_upper_field_prefix_, \
-        _inst_lower_._inst_lower_field_prefix_ \
+        _inst_user_._inst_user_field_prefix_, \
+        _inst_nic_._inst_nic_field_prefix_ \
     ) \
     \
     CONNECT_IF_OS_NIC_EVENT( \
-        _inst_upper_, \
-        _inst_upper_field_prefix_##_event_hasData, \
-        _inst_lower_, \
-        _inst_lower_field_prefix_)
+        _inst_user_, \
+        _inst_user_field_prefix_##_event_hasData, \
+        _inst_nic_, \
+        _inst_nic_field_prefix_)
