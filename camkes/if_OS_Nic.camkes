@@ -113,7 +113,6 @@ procedure if_OS_Nic {
             from _inst_nic_._inst_nic_field_prefix_##_event_hasData, \
             to   _inst_user_._inst_user_event_);
 
-
 //------------------------------------------------------------------------------
 // Connect two components via the NIC interface, including the event.
 #define IF_OS_NIC_CONNECT( \
@@ -122,13 +121,13 @@ procedure if_OS_Nic {
     _inst_nic_, \
     _inst_nic_field_prefix__) \
     \
-    CONNECT_IF_OS_NIC_WITHOUT_EVENT( \
-        _inst_user_._inst_user_field_prefix_, \
-        _inst_nic_._inst_nic_field_prefix_ \
-    ) \
-    \
-    CONNECT_IF_OS_NIC_EVENT( \
+    IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
         _inst_user_, \
-        _inst_user_field_prefix_##_event_hasData, \
+        _inst_user_field_prefix_, \
+        _inst_nic_, \
+        _inst_nic_field_prefix_) \
+    IF_OS_NIC_CONNECT_EVENT( \
+        _inst_user_, \
+        _inst_user_event_, \
         _inst_nic_, \
         _inst_nic_field_prefix_)
