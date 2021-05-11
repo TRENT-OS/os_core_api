@@ -131,7 +131,7 @@ procedure if_OS_Nic {
     port_size) \
     \
     consumes EventDataAvailable prefix##_event_hasData; \
-    FIELDS_IF_OS_NIC_UPPER_WITHOUT_EVENT(prefix, port_size)
+    IF_OS_NIC_USE_WITHOUT_EVENT(prefix, port_size)
 
 /**
  * Declares the interface fields of a component implementing the NIC side of
