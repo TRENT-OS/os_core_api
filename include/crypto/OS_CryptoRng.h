@@ -9,8 +9,8 @@
  */
 
 /**
- * @defgroup    OS_CryptoRng Crypto API library Random Number Generator
- *              functionality
+ * @defgroup    OS_CryptoRng Crypto API library RNG functionality
+ *
  * @{
  * @ingroup OS_Crypto
  * @brief OS Crypto API library Random Number Generator functionality
