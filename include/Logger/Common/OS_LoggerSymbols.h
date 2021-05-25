@@ -30,12 +30,6 @@
 #define DATABUFFER_SIZE             4096
 #endif
 
-#define OS_Logger_LOG_LEVEL_SERVER_OFFSET   0
-#define OS_Logger_LOG_LEVEL_CLIENT_OFFSET   OS_Logger_LOG_LEVEL_LENGTH
-
-#define OS_Logger_MESSAGE_OFFSET            OS_Logger_LOG_LEVEL_CLIENT_OFFSET \
-                                            + OS_Logger_LOG_LEVEL_LENGTH
-
 #define OS_Logger_LOG_LEVEL_LENGTH          3 // Without the null terminator!
 #define OS_Logger_MESSAGE_LENGTH            (DATABUFFER_SIZE \
                                             - (OS_Logger_LOG_LEVEL_LENGTH \
