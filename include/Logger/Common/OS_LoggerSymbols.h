@@ -14,8 +14,8 @@
  */
 #pragma once
 
-#define OS_Logger_STR_(x)                         #x
-#define OS_Logger_STR(x)                          OS_Logger_STR_(x)
+#define OS_Logger_STR_(x)                   #x
+#define OS_Logger_STR(x)                    OS_Logger_STR_(x)
 
 // include parameter for configuration file
 #if !defined(OS_Logger_CONFIG_H_FILE)
@@ -27,7 +27,7 @@
 
 // configuration of log server
 #if !defined (DATABUFFER_SIZE)
-#define DATABUFFER_SIZE             4096
+#define DATABUFFER_SIZE                     4096
 #endif
 
 //! Length of the log level (excluding the null terminator).
