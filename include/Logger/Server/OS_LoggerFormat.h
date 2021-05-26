@@ -39,13 +39,20 @@
  */
 #define OS_Logger_FORMAT_TIMESTAMP_LENGTH 20
 
-#define OS_Logger_FORMAT_BUFFER_SIZE    (OS_Logger_ID_LENGTH  +              \
-                                         OS_Logger_NAME_LENGTH +             \
-                                         OS_Logger_FORMAT_TIMESTAMP_LENGTH + \
-                                         OS_Logger_LOG_LEVEL_LENGTH +        \
-                                         OS_Logger_LOG_LEVEL_LENGTH +        \
-                                         OS_Logger_ENTRY_MESSAGE_LENGTH +          \
-                                         1) // including null terminator
+/**
+ * @brief   Required size for the buffer used to store the complete log message
+ *          consisting of the message header and the mesage itself.
+ *
+ * @note    The spaces between the different segments of the header and the null
+ *          terminator are also accounted for.
+ */
+#define OS_Logger_FORMAT_BUFFER_SIZE  ((OS_Logger_ID_LENGTH + 1)               \
+                                      + (OS_Logger_NAME_LENGTH + 1)            \
+                                      + (OS_Logger_FORMAT_TIMESTAMP_LENGTH + 1)\
+                                      + (OS_Logger_LOG_LEVEL_LENGTH + 1)       \
+                                      + (OS_Logger_LOG_LEVEL_LENGTH + 1)       \
+                                      + OS_Logger_ENTRY_MESSAGE_LENGTH         \
+                                      + 1) // including null terminator
 
 /**
  * @details OS_LoggerFormat_Handle_t contain informations about the log format
