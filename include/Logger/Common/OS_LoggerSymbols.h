@@ -65,7 +65,8 @@
 #define OS_Logger_NAME_LENGTH               (OS_Logger_ID_AND_NAME_LENGTH \
                                             - OS_Logger_ID_LENGTH)
 
-#define OS_Logger_FILENAME_LENGTH           20
+//! Maximum log file name length (excluding the null terminator).
+#define OS_Logger_MAX_FILENAME_LENGTH       19
 
 // includes
 #include <assert.h>

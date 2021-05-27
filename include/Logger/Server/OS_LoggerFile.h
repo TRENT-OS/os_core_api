@@ -117,10 +117,14 @@ typedef struct
 */
 typedef struct
 {
-    OS_FileSystem_Handle_t  hFs;                                 //!< filesystem
-    char                    filename[OS_Logger_FILENAME_LENGTH]; //!< filename
-    uint64_t                offset;                              //!< offset in file
-    uint64_t                length;                              //!< size of file
+    //! filesystem handle
+    OS_FileSystem_Handle_t  hFs;
+    //! filename (including null terminator)
+    char                    filename[OS_Logger_MAX_FILENAME_LENGTH + 1];
+    //! offset in file
+    uint64_t                offset;
+    //! size of file
+    uint64_t                length;
 } OS_LoggerFile_info_t;
 
 
