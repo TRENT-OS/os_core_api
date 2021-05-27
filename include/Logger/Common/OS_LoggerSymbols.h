@@ -30,34 +30,20 @@
 #define DATABUFFER_SIZE             4096
 #endif
 
-#define OS_Logger_LOG_LEVEL_LENGTH          3 // Without the null terminator!
+//! Length of the log level (excluding the null terminator).
+#define OS_Logger_LOG_LEVEL_LENGTH          3
+
+//! Max length of a message (excluding the null terminator).
 #define OS_Logger_MESSAGE_LENGTH            (DATABUFFER_SIZE \
                                             - (OS_Logger_LOG_LEVEL_LENGTH \
                                                 + OS_Logger_LOG_LEVEL_LENGTH))
 
-/**
- * @brief   Length of the string containing name and the id of the log client.
- *
- *          Size of it has been chosen arbitrary so that there is enough place
- *          for the id in the decimal format, and a descriptive name.
- *
- *          Size is fixed so that the fields of the log entries are nicely
- *          aligned.
- *
- *          If changed make sure there is enough place for both the name and id.
- */
-#define OS_Logger_ID_AND_NAME_LENGTH        24
-
-/**
- * @brief   Length of the string containing id of the log client.
- *
- *          The 32bit integer consists at max of 10 digits when displayed in
- *          decimal.
- */
+//! Length of the id of the log client (excluding the null terminator). The
+//! 32bit integer is displayed with at most 10 decimal digits.
 #define OS_Logger_ID_LENGTH                 10
 
-#define OS_Logger_NAME_LENGTH               (OS_Logger_ID_AND_NAME_LENGTH \
-                                            - OS_Logger_ID_LENGTH)
+//! Length of the name of the log client (excluding the null terminator).
+#define OS_Logger_NAME_LENGTH               13
 
 //! Maximum log file name length (excluding the null terminator).
 #define OS_Logger_MAX_FILENAME_LENGTH       19
@@ -66,4 +52,3 @@
 #include <assert.h>
 
 #define OS_Logger_CHECK_SELF(self)          assert(self)
-

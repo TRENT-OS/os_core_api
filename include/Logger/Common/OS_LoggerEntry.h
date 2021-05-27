@@ -36,10 +36,14 @@ typedef struct
  */
 typedef struct
 {
-    uint64_t timestamp;               //!< Timestamp of the entry.
-    uint32_t id;                      //!< Identifier assigned to the emitter.
-    char name[OS_Logger_NAME_LENGTH]; //!< Name of the emitter.
-    uint8_t filteringLevel;           //!< The consumer's filtering level.
+    //! Timestamp of the entry.
+    uint64_t timestamp;
+    //! Identifier assigned to the emitter.
+    uint32_t id;
+    //! Name of the emitter (including null terminator).
+    char name[OS_Logger_NAME_LENGTH + 1];
+    //! The consumer's filtering level.
+    uint8_t filteringLevel;
 } OS_LoggerConsumerMetadata_t;
 
 /**

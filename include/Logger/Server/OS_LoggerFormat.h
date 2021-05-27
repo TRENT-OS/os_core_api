@@ -39,11 +39,13 @@
  */
 #define OS_Logger_FORMAT_TIMESTAMP_LENGTH 20
 
-#define OS_Logger_FORMAT_BUFFER_SIZE    (OS_Logger_ID_AND_NAME_LENGTH  +     \
+#define OS_Logger_FORMAT_BUFFER_SIZE    (OS_Logger_ID_LENGTH  +              \
+                                         OS_Logger_NAME_LENGTH +             \
                                          OS_Logger_FORMAT_TIMESTAMP_LENGTH + \
                                          OS_Logger_LOG_LEVEL_LENGTH +        \
                                          OS_Logger_LOG_LEVEL_LENGTH +        \
-                                         OS_Logger_MESSAGE_LENGTH)
+                                         OS_Logger_MESSAGE_LENGTH +          \
+                                         1) // including null terminator
 
 /**
  * @details OS_LoggerFormat_Handle_t contain informations about the log format
