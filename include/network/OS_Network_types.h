@@ -31,20 +31,21 @@ typedef struct
  *          to connect to a remote host.
  */
 
-// Maximum length of an IPv6 address string can be 45 chars + 1 for '\0'
+// Maximum length of an IPv6 address string can be 45 chars (excluding null
+// terminator).
 // See RFC 4291 Section 2.2 for IP address reperesentation as string, these
 // formats are in use:
 //   IPv4: 123.123.123.123 (15 chars)
 //   IPv6: ABCD:EF01:2345:6789:ABCD:EF01:2345:6789 (38 chars)
 //   IPv6/IPv4 mixed:  FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:129.144.152.138 (45 Chars)
-#define IP_ADD_STR_MAX_LEN (45 + 1)
+#define IP_ADD_STR_MAX_LEN (45)
 
 typedef struct
 {
     int domain; /**< domain is as of now AF_INET (IPv4) */
     int type;   /**< type is as of now SOCK_STREAM (TCP) */
     uint16_t port;       /**< port is for e.g. HTTP port 80 */
-    char     name[IP_ADD_STR_MAX_LEN]; /**< IP addr to connect to (e.g.
+    char     name[IP_ADD_STR_MAX_LEN + 1]; /**< IP addr to connect to (e.g.
                                                        "10.0.0.1", "::1" ) */
 } OS_Network_Socket_t;
 
