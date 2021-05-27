@@ -90,14 +90,14 @@ typedef enum
 } OS_CertParserCert_AttribType_t;
 
 /**
- *  Maximum length of subject in X509
+ *  Maximum size of subject in X509 (including null terminator).
  */
-#define OS_CertParserCert_Subject_MAX_LEN 256
+#define OS_CertParserCert_Subject_MAX_SIZE 256
 
 /**
- *  Maximum length of issuer in X509
+ *  Maximum size of issuer in X509 (including null terminator).
  */
-#define OS_CertParserCert_Issuer_MAX_LEN 256
+#define OS_CertParserCert_Issuer_MAX_SIZE 256
 
 /**
  * x509 cert attribute data
@@ -122,12 +122,12 @@ typedef struct
         /**
          * Subject field of x509 cert
          */
-        char subject[OS_CertParserCert_Subject_MAX_LEN];
+        char subject[OS_CertParserCert_Subject_MAX_SIZE];
 
         /**
          * Issuer field of x509 cert
          */
-        char issuer[OS_CertParserCert_Issuer_MAX_LEN];
+        char issuer[OS_CertParserCert_Issuer_MAX_SIZE];
     } data;
 } OS_CertParserCert_Attrib_t;
 
