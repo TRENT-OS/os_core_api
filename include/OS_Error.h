@@ -176,7 +176,7 @@ typedef enum
     OS_ERROR_INVALID_STATE,                    /**< invalid state */
     OS_ERROR_NOT_SUPPORTED,                    /**< not supported */
     OS_ERROR_NOT_IMPLEMENTED,                  /**< not implemented */
-    OS_ERROR_GENERIC,                          /**< general error, not further details available */
+    OS_ERROR_GENERIC,                          /**< general error, no further details available */
 
     //----------------------------------------
     OS_SUCCESS                                 /**< operation successful */
