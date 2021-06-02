@@ -19,6 +19,7 @@
 */
 #pragma once
 
+#include "lib_debug/Debug.h"
 #include "Logger/Common/OS_LoggerSymbols.h"
 #include "OS_Dataport.h"
 
@@ -77,3 +78,7 @@ typedef struct __attribute__((packed))
     char msg[OS_Logger_ENTRY_MESSAGE_LENGTH + 1];
 }
 OS_LoggerEntry_t;
+
+// Ensure that the log entry struct matches with the buffer size it will be
+// mapped onto.
+Debug_STATIC_ASSERT(sizeof(OS_LoggerEntry_t) == DATABUFFER_SIZE);
