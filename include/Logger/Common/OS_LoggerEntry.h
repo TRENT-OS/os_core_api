@@ -70,11 +70,11 @@ OS_LoggerConsumerMetadata_t;
  */
 typedef struct __attribute__((packed))
 {
-    /** Metadata assigned by emitter */
+    //! Metadata assigned by emitter.
     OS_LoggerEmitterMetadata_t  emitterMetadata;
-    /** Metadata assigned by consumer */
+    //! Metadata assigned by consumer.
     OS_LoggerConsumerMetadata_t consumerMetadata;
-    /** Log entry's message */
+    //! Log entry's message (including null terminator).
     char msg[OS_Logger_ENTRY_MESSAGE_LENGTH + 1];
 }
 OS_LoggerEntry_t;
