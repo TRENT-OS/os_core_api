@@ -25,16 +25,17 @@
 /**
  * @brief Log entry metadata which are set on the emitter side.
  */
-typedef struct
+typedef struct __attribute__((packed))
 {
     uint8_t level;          //!< Log level of the current entry.
     uint8_t filteringLevel; //!< The emitter's filtering level.
-} OS_LoggerEmitterMetadata_t;
+}
+OS_LoggerEmitterMetadata_t;
 
 /**
  * @brief Log entry metadata which are set on the consumer side.
  */
-typedef struct
+typedef struct __attribute__((packed))
 {
     //! Timestamp of the entry.
     uint64_t timestamp;
@@ -44,12 +45,13 @@ typedef struct
     char name[OS_Logger_NAME_LENGTH + 1];
     //! The consumer's filtering level.
     uint8_t filteringLevel;
-} OS_LoggerConsumerMetadata_t;
+}
+OS_LoggerConsumerMetadata_t;
 
 /**
  * @brief Log entry with all the metadata and the log message itself.
  */
-typedef struct
+typedef struct __attribute__((packed))
 {
     /** Metadata assigned by emitter */
     OS_LoggerEmitterMetadata_t  emitterMetadata;
@@ -57,4 +59,5 @@ typedef struct
     OS_LoggerConsumerMetadata_t consumerMetadata;
     /** Log entry's message */
     char msg[];
-} OS_LoggerEntry_t;
+}
+OS_LoggerEntry_t;
