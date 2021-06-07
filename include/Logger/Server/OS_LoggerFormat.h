@@ -44,7 +44,7 @@
                                          OS_Logger_FORMAT_TIMESTAMP_LENGTH + \
                                          OS_Logger_LOG_LEVEL_LENGTH +        \
                                          OS_Logger_LOG_LEVEL_LENGTH +        \
-                                         OS_Logger_MESSAGE_LENGTH +          \
+                                         OS_Logger_ENTRY_MESSAGE_LENGTH +          \
                                          1) // including null terminator
 
 /**

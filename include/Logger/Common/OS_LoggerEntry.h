@@ -20,7 +20,23 @@
 #pragma once
 
 #include "Logger/Common/OS_LoggerSymbols.h"
+#include "OS_Dataport.h"
+
 #include <stdint.h>
+
+// configuration of log server
+#if !defined (DATABUFFER_SIZE)
+#define DATABUFFER_SIZE                 OS_DATAPORT_DEFAULT_SIZE
+#endif
+
+//! Offset resulting from the message entries metadata overhead.
+#define OS_Logger_ENTRY_METADATA_OFFSET (sizeof(OS_LoggerEmitterMetadata_t) \
+                                        + sizeof(OS_LoggerConsumerMetadata_t))
+
+//! Max length of the message itself (excluding the null terminator).
+#define OS_Logger_ENTRY_MESSAGE_LENGTH  (DATABUFFER_SIZE \
+                                        - OS_Logger_ENTRY_METADATA_OFFSET \
+                                        - 1)
 
 /**
  * @brief Log entry metadata which are set on the emitter side.
@@ -58,6 +74,6 @@ typedef struct __attribute__((packed))
     /** Metadata assigned by consumer */
     OS_LoggerConsumerMetadata_t consumerMetadata;
     /** Log entry's message */
-    char msg[];
+    char msg[OS_Logger_ENTRY_MESSAGE_LENGTH + 1];
 }
 OS_LoggerEntry_t;

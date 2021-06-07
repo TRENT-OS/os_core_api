@@ -24,19 +24,8 @@
 #   include OS_Logger_STR(OS_Logger_CONFIG_H_FILE)
 #endif
 
-
-// configuration of log server
-#if !defined (DATABUFFER_SIZE)
-#define DATABUFFER_SIZE                     4096
-#endif
-
 //! Length of the log level (excluding the null terminator).
 #define OS_Logger_LOG_LEVEL_LENGTH          3
-
-//! Max length of a message (excluding the null terminator).
-#define OS_Logger_MESSAGE_LENGTH            (DATABUFFER_SIZE \
-                                            - (OS_Logger_LOG_LEVEL_LENGTH \
-                                                + OS_Logger_LOG_LEVEL_LENGTH))
 
 //! Length of the id of the log client (excluding the null terminator). The
 //! 32bit integer is displayed with at most 10 decimal digits.
