@@ -40,7 +40,7 @@ typedef enum
     OS_FileSystem_Type_SPIFFS,
 
     /**
-     * Use LITTLEFS (optimized for FLASH storage); not implemented yet
+     * Use LITTLEFS (optimized for FLASH storage)
      */
     OS_FileSystem_Type_LITTLEFS,
 } OS_FileSystem_Type_t;
