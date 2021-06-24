@@ -20,10 +20,10 @@
  */
 typedef struct
 {
-    int domain;  /**< domain is as of now AF_INET (IPv4)*/
-    int type;    /**< type is as of now SOCK_STREAM (TCP)*/
+    int      domain;      /**< domain is as of now AF_INET (IPv4)*/
+    int      type;        /**< type is as of now SOCK_STREAM (TCP)*/
     uint16_t listen_port; /**< port to listen to e.g. 5555 */
-    int backlog; /**< # of connections accepted */
+    int      backlog;     /**< # of connections accepted */
 } OS_NetworkServer_Socket_t;
 
 /**
@@ -42,9 +42,9 @@ typedef struct
 
 typedef struct
 {
-    int domain; /**< domain is as of now AF_INET (IPv4) */
-    int type;   /**< type is as of now SOCK_STREAM (TCP) */
-    uint16_t port;       /**< port is for e.g. HTTP port 80 */
+    int      domain; /**< domain is as of now AF_INET (IPv4) */
+    int      type;   /**< type is as of now SOCK_STREAM (TCP) */
+    uint16_t port;   /**< port is for e.g. HTTP port 80 */
     char     name[IP_ADD_STR_MAX_LEN + 1]; /**< IP addr to connect to (e.g.
                                                        "10.0.0.1", "::1" ) */
 } OS_Network_Socket_t;
