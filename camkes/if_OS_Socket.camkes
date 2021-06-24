@@ -14,62 +14,62 @@ procedure if_OS_Socket {
     socket_create(
         in    int                       domain,
         in    int                       type,
-        inout OS_NetworkSocket_Handle_t pHandle
+        inout int                       pHandle
     );
 
     OS_Error_t
     socket_close(
-        in    OS_NetworkSocket_Handle_t handle
+        in    int                       handle
     );
 
     OS_Error_t
     socket_write(
-        in    OS_NetworkSocket_Handle_t handle,
+        in    int                       handle,
         inout size_t                    pLen
     );
 
     OS_Error_t
     socket_read(
-        in    OS_NetworkSocket_Handle_t handle,
+        in    int                       handle,
         inout size_t                    pLen
     );
 
     OS_Error_t
     socket_connect(
-        in OS_NetworkSocket_Handle_t handle,
+        in int                       handle,
         in string                    serverName,
         in uint16_t                  port
     );
 
     OS_Error_t
     socket_accept(
-        in    OS_NetworkSocket_Handle_t handle,
-        inout OS_NetworkSocket_Handle_t pHandleClient,
+        in    int                       handle,
+        inout int                       pHandleClient,
         in    uint16_t                  port
     );
 
     OS_Error_t
     socket_listen(
-        in OS_NetworkSocket_Handle_t handle,
+        in int handle,
         in int backlog
     );
 
     OS_Error_t
     socket_bind(
-        in OS_NetworkSocket_Handle_t handle,
+        in int                       handle,
         in uint16_t                  port
     );
 
     OS_Error_t
     socket_sendto(
-        in    OS_NetworkSocket_Handle_t handle,
+        in    int                       handle,
         inout size_t                    pLen,
         in    OS_Network_Socket_t       dst_socket
     );
 
     OS_Error_t
     socket_recvfrom(
-        in    OS_NetworkSocket_Handle_t handle,
+        in    int                       handle,
         inout size_t                    pLen,
         out   OS_Network_Socket_t       src_socket
     );
