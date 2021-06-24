@@ -63,11 +63,18 @@ typedef struct
 /** Datagram socket - UDP */
 #define OS_SOCK_DGRAM 1
 
-typedef void*    OS_Network_Context_t;
-typedef int OS_NetworkSocket_Handle_t;
-typedef int OS_NetworkServer_Handle_t;
+typedef const void* OS_Network_Context_t;
 
-#define OS_NetworkSocket_Handle_INVALID ((OS_NetworkSocket_Handle_t) -1)
-#define OS_NetworkServer_Handle_INVALID ((OS_NetworkServer_Handle_t) -1)
+typedef struct
+{
+    OS_Network_Context_t ctx;      /**< Pointer to the RPC vtable used */
+    int                  handleID; /**< Handle id*/
+} OS_NetworkSocket_Handle_t, OS_NetworkServer_Handle_t;
+
+#define OS_NetworkSocket_Handle_INVALID                                        \
+    (OS_NetworkSocket_Handle_t) { .ctx = NULL, .handleID = -1 }
+
+#define OS_NetworkServer_Handle_INVALID                                        \
+    (OS_NetworkServer_Handle_t) { .ctx = NULL, .handleID = -1 }
 
 #endif
