@@ -40,18 +40,17 @@ typedef struct
     OS_Dataport_t dataport;
 } if_OS_Socket_t;
 
-#define IF_OS_SOCKET_ASSIGN(_rpc_, _port_)                                     \
-    {                                                                          \
-        .socket_create   = _rpc_##_socket_create,                              \
-        .socket_accept   = _rpc_##_socket_accept,                              \
-        .socket_bind     = _rpc_##_socket_bind,                                \
-        .socket_listen   = _rpc_##_socket_listen,                              \
-        .socket_connect  = _rpc_##_socket_connect,                             \
-        .socket_close    = _rpc_##_socket_close,                               \
-        .socket_write    = _rpc_##_socket_write,                               \
-        .socket_read     = _rpc_##_socket_read,                                \
-        .socket_sendto   = _rpc_##_socket_sendto,                              \
-        .socket_recvfrom = _rpc_##_socket_recvfrom,                            \
-                                                                               \
-        .dataport = OS_DATAPORT_ASSIGN(_port_)                                 \
-    }
+#define IF_OS_SOCKET_ASSIGN(_rpc_, _port_)         \
+{                                                  \
+    .socket_create   = _rpc_##_socket_create,      \
+    .socket_accept   = _rpc_##_socket_accept,      \
+    .socket_bind     = _rpc_##_socket_bind,        \
+    .socket_listen   = _rpc_##_socket_listen,      \
+    .socket_connect  = _rpc_##_socket_connect,     \
+    .socket_close    = _rpc_##_socket_close,       \
+    .socket_write    = _rpc_##_socket_write,       \
+    .socket_read     = _rpc_##_socket_read,        \
+    .socket_sendto   = _rpc_##_socket_sendto,      \
+    .socket_recvfrom = _rpc_##_socket_recvfrom,    \
+    .dataport = OS_DATAPORT_ASSIGN(_port_)         \
+}
