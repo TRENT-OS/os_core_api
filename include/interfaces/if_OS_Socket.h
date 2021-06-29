@@ -38,9 +38,9 @@ typedef struct
         OS_Network_Socket_t dst_socket);
 
     OS_Dataport_t dataport;
-} if_OS_NetworkStack_t;
+} if_OS_Socket_t;
 
-#define IF_OS_NETWORKSTACK_ASSIGN(_rpc_, _port_)                               \
+#define IF_OS_SOCKET_ASSIGN(_rpc_, _port_)                                     \
     {                                                                          \
         .socket_create   = _rpc_##_socket_create,                              \
         .socket_accept   = _rpc_##_socket_accept,                              \
