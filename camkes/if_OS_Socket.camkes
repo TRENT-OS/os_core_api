@@ -59,9 +59,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_create(
-        in    int                       domain,
-        in    int                       type,
-        inout int                       pHandle
+        in    int domain,
+        in    int type,
+        inout int pHandle
     );
 
     /**
@@ -76,7 +76,7 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_close(
-        in    int                       handle
+        in int handle
     );
 
     /**
@@ -97,8 +97,8 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_write(
-        in    int                       handle,
-        inout size_t                    pLen
+        in    int    handle,
+        inout size_t pLen
     );
 
     /**
@@ -121,8 +121,8 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_read(
-        in    int                       handle,
-        inout size_t                    pLen
+        in    int    handle,
+        inout size_t pLen
     );
 
     /**
@@ -140,9 +140,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_connect(
-        in int                       handle,
-        in string                    serverName,
-        in uint16_t                  port
+        in int      handle,
+        in string   serverName,
+        in uint16_t port
     );
 
     /**
@@ -162,9 +162,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_accept(
-        in    int                       handle,
-        inout int                       pHandleClient,
-        in    uint16_t                  port
+        in    int      handle,
+        inout int      pHandleClient,
+        in    uint16_t port
     );
 
     /**
@@ -198,8 +198,8 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_bind(
-        in int                       handle,
-        in uint16_t                  port
+        in int      handle,
+        in uint16_t port
     );
 
     /**
@@ -223,9 +223,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_sendto(
-        in    int                       handle,
-        inout size_t                    pLen,
-        in    OS_Network_Socket_t       dst_socket
+        in    int                 handle,
+        inout size_t              pLen,
+        in    OS_Network_Socket_t dst_socket
     );
 
     /**
@@ -249,9 +249,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_recvfrom(
-        in    int                       handle,
-        inout size_t                    pLen,
-        out   OS_Network_Socket_t       src_socket
+        in    int                 handle,
+        inout size_t              pLen,
+        out   OS_Network_Socket_t src_socket
     );
 };
 
