@@ -1,15 +1,62 @@
 /*
- * OS CAmkES Interface for Sockets
- *
  * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+/**
+ * @file
+ *
+ * OS CAmkES Interface for Socket operations.
+ *
+ * This file describes the Socket interface in terms of CAmkES connections. This
+ * interface defines the way an application component can connect to a generic
+ * NetworkStack component as a "user" component: the interface is
+ * <b>provided</b> by a NetworkStack component that implements it and gets
+ * <b>used</b> by, for example, an application component that requires
+ * networking functionalities.
+ * The interface consists of:
+ *  - RPC functions to be called by the user of the interface,
+ *  - one shared memory space for the exchange of data between the user
+ *    component of the interface and the NetworkStack component (interface
+ *    provider),
+ *  - one event emitted by the NetworkStack component (interface provider) to
+ *    the user component, to signal that an event occurred on at least one of
+ *    its created sockets.
+ * Please see the macro IF_OS_SOCKET_PROVIDE() for further details.
+ * The macros that this file defines facilitate the declaration of all the
+ * needed CAmkES connectors for both sides of the interface.
+ */
+
+#pragma once
+
+#include "lib_macros/ForEach.h"
+
+/**
+ * The RPC interface of if_OS_Socket. All offered functions are non-blocking.
+ *
+ * @hideinitializer
+ */
 procedure if_OS_Socket {
 
     include "OS_Error.h";
     include "network/OS_Network_types.h";
 
+    /**
+     * Create a socket.
+     *
+     * @retval OS_SUCCESS                        Operation was successful.
+     * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the passed domain or type
+     *                                           are unsupported.
+     * @retval OS_ERROR_INSUFFICIENT_SPACE       If no free sockets could be
+     *                                           found.
+     * @retval other                             Each component implementing
+     *                                           this might have additional
+     *                                           error codes.
+     *
+     * @param[in] domain  Domain of the socket that should be created.
+     * @param[in] type    Type of the socket that should be created.
+     * @param[in] pHandle Handle that will be assigned to the created socket.
+     */
     OS_Error_t
     socket_create(
         in    int                       domain,
@@ -17,23 +64,80 @@ procedure if_OS_Socket {
         inout int                       pHandle
     );
 
+    /**
+     * Close a socket.
+     *
+     * @retval OS_SUCCESS              Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+     * @retval other                   Each component implementing this might
+     *                                 have additional error codes.
+     *
+     * @param[in] handle Handle of the socket that should be closed.
+     */
     OS_Error_t
     socket_close(
         in    int                       handle
     );
 
+    /**
+     * Write data on a socket. This function checks if the socket is bound,
+     * connected and that it isn't shutdown locally.
+     *
+     * @retval OS_SUCCESS                 Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+     * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
+     *                                    dataport size.
+     * @retval other                      Each component implementing this might
+     *                                    have additional error codes.
+     *
+     * @param[in] handle  Handle of the socket to write on.
+     * @param[in] pLen    Length of the data that should be written on the
+     *                    socket. Will be overwritten by the function with the
+     *                    actual amount that was written before it returns.
+     */
     OS_Error_t
     socket_write(
         in    int                       handle,
         inout size_t                    pLen
     );
 
+    /**
+     * Read data from a socket. This function checks whether or not the socket
+     * is bound.
+     *
+     * @retval OS_SUCCESS                     Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
+     * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
+     *                                        the dataport size.
+     * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
+     * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got closed.
+     * @retval other                          Each component implementing this
+     *                                        might have additional error codes.
+     *
+     * @param[in] handle Handle of the socket to read from.
+     * @param[in] plen   Length of the data that should be read from the
+     *                   socket. Will be overwritten by the function with the
+     *                   actual amount that was read before it returns.
+     */
     OS_Error_t
     socket_read(
         in    int                       handle,
         inout size_t                    pLen
     );
 
+    /**
+     * Connect a socket to a specified address.
+     *
+     * @retval OS_SUCCESS                 Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+     * @retval OS_ERROR_INVALID_PARAMETER If the passed address is invalid.
+     * @retval other                      Each component implementing this might
+     *                                    have additional error codes.
+     *
+     * @param[in] handle     Handle of the socket to connect.
+     * @param[in] serverName Address of the destination to connect to.
+     * @param[in] port       Port of the destination to connect to.
+     */
     OS_Error_t
     socket_connect(
         in int                       handle,
@@ -41,6 +145,21 @@ procedure if_OS_Socket {
         in uint16_t                  port
     );
 
+    /**
+     * Accept the next connection request on the queue of pending connections
+     * for the listening socket.
+     *
+     * @retval OS_SUCCESS              Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+     * @retval other                   Each component implementing this might
+     *                                 have additional error codes.
+     *
+     * @param[in] handle        Handle of the listening socket.
+     * @param[in] pHandleClient Handle that will be used to map the accepted
+     *                          connection to.
+     * @param[in] port          Remote port of the incoming connection.
+     *
+     */
     OS_Error_t
     socket_accept(
         in    int                       handle,
@@ -48,18 +167,60 @@ procedure if_OS_Socket {
         in    uint16_t                  port
     );
 
+    /**
+     * Listen for connections on an opened and bound socket.
+     *
+     * @retval OS_SUCCESS              Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+     * @retval other                   Each component implementing this might
+     *                                 have additional error codes.
+     *
+     * @param[in] handle  Handle of the socket to listen on.
+     * @param[in] backlog Sets the maximum size to which the queue of
+     *                    pending connections may grow.
+     */
     OS_Error_t
     socket_listen(
         in int handle,
         in int backlog
     );
 
+    /**
+     * Bind a specified port to a socket.
+     *
+     * @retval OS_SUCCESS              Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+     * @retval other                   Each component implementing this might
+     *                                 have additional error codes.
+     *
+     * @param[in] handle Handle of the socket to bind.
+     * @param[in] port   Local port to bind the socket to.
+     */
     OS_Error_t
     socket_bind(
         in int                       handle,
         in uint16_t                  port
     );
 
+    /**
+     * Send data on a destination socket without checking if the destination is
+     * connected or not and is therefore not connection-oriented.
+     *
+     * @retval OS_SUCCESS                 Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+     * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
+     *                                    dataport size.
+     * @retval other                      Each component implementing this might
+     *                                    have additional error codes.
+     *
+     * @param[in] handle     Handle to a previously created socket.
+     * @param[in] pLen       Length of the data that should be written on the
+     *                       destination socket. Will be overwritten by the
+     *                       function with the actual amount that was written
+     *                       before it returns.
+     * @param[in] dst_socket Destination socket to send data on.
+     *
+     */
     OS_Error_t
     socket_sendto(
         in    int                       handle,
@@ -67,6 +228,25 @@ procedure if_OS_Socket {
         in    OS_Network_Socket_t       dst_socket
     );
 
+    /**
+     * Receive data from a specified socket. This operation checks if the socket
+     * is bound but not if it is connected and is therefore not
+     * connection-oriented.
+     *
+     * @retval OS_SUCCESS                 Operation was successful.
+     * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+     * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds
+     *                                    the dataport size.
+     * @retval other                      Each component implementing this
+     *                                    might have additional error codes.
+     *
+     * @param[in] handle     Handle to a previously created and bound socket.
+     * @param[in] pLen       Length of the data that should be read from the
+     *                       source socket. Will be overwritten by the
+     *                       function with the actual amount that was read
+     *                       before it returns.
+     * @param[in] src_socket Source socket to read data from.
+     */
     OS_Error_t
     socket_recvfrom(
         in    int                       handle,
@@ -74,3 +254,101 @@ procedure if_OS_Socket {
         out   OS_Network_Socket_t       src_socket
     );
 };
+
+
+//==============================================================================
+// Component interface fields macros
+//==============================================================================
+
+/**
+ * Declares the interface fields of a component implementing the user side of
+ * the Socket interface.
+ *
+ * @param[in] prefix Prefix to be used to generate a unique name for the
+ *                   connectors.
+ */
+#define IF_OS_SOCKET_USE( \
+    prefix) \
+    \
+    uses     if_OS_Socket         prefix##_rpc; \
+    consumes SocketEventAvailable prefix##_event_notify; \
+    dataport Buf                  prefix##_socket_port;
+
+/**
+ * Declares the interface fields of a component implementing the Socket
+ * interface. This currently allows for up to 8 clients to be connected.
+ *
+ * @param[in] prefix Prefix to be used to generate a unique name for the
+ *                   connectors.
+ */
+#define IF_OS_SOCKET_PROVIDE( \
+    prefix) \
+    \
+    provides       if_OS_Socket prefix##_rpc; \
+    maybe dataport Buf          prefix##_1_port; \
+    maybe dataport Buf          prefix##_2_port; \
+    maybe dataport Buf          prefix##_3_port; \
+    maybe dataport Buf          prefix##_4_port; \
+    maybe dataport Buf          prefix##_5_port; \
+    maybe dataport Buf          prefix##_6_port; \
+    maybe dataport Buf          prefix##_7_port; \
+    maybe dataport Buf          prefix##_8_port; \
+    \
+    emits SocketEventAvailable  prefix##_1_event_notify; \
+    emits SocketEventAvailable  prefix##_2_event_notify; \
+    emits SocketEventAvailable  prefix##_3_event_notify; \
+    emits SocketEventAvailable  prefix##_4_event_notify; \
+    emits SocketEventAvailable  prefix##_5_event_notify; \
+    emits SocketEventAvailable  prefix##_6_event_notify; \
+    emits SocketEventAvailable  prefix##_7_event_notify; \
+    emits SocketEventAvailable  prefix##_8_event_notify;
+
+
+//==============================================================================
+// Component interface field connection macros
+//==============================================================================
+
+/**
+ * Connect a user (e.g. a user application requiring network connectivity) of an
+ * if_OS_Socket interface to a provider (e.g. a NetworkStack).
+ *
+ * @param[in] inst_nw_stack              Name of the interface provider
+ *                                       component instance.
+ * @param[in] inst_nw_stack_field_prefix Prefix used to generate a unique
+ *                                       name for the connectors in
+ *                                       IF_OS_SOCKET_PROVIDE().
+ * @param[in] inst_user                  Name of the interface user component
+ *                                       instance.
+ * @param[in] inst_user_field_prefix     Prefix used to generate a unique name
+ *                                       for the connectors in
+ *                                       IF_OS_SOCKET_USE().
+ * @param[in] user_num                   Number of the interface provider port
+ *                                       and event to connect the user component
+ *                                       to.
+ */
+// TODO: Clarify what connectors exactly we want to provide, especially
+// regarding the usage of seL4MessageQueue and seL4RPCOverMultiSharedData.
+// Currently this is just a WIP here to at least have the macro in place and
+// once we finalize the connectors and the implementation itself, we can also
+// update the macros in this file.
+#define IF_OS_SOCKET_CONNECT( \
+    inst_nw_stack, \
+    inst_nw_stack_field_prefix, \
+    inst_user, \
+    inst_user_field_prefix, \
+    user_num) \
+    \
+    connection seL4RPCCall \
+        conn_##inst_user##_##inst_nw_stack##_rpc( \
+            from inst_user.inst_user_field_prefix##_rpc, \
+            to   inst_nw_stack.inst_nw_stack_field_prefix##_rpc); \
+    \
+    connection seL4SharedData \
+        conn_##inst_user##_##inst_nw_stack##_port( \
+            from inst_user.inst_user_field_prefix##_socket_port, \
+            to   inst_nw_stack.inst_nw_stack_field_prefix##_##user_num##_port); \
+    \
+    connection seL4Notification \
+        conn_##inst_nw_stack##_##inst_user##_event_notify( \
+            from inst_nw_stack.inst_nw_stack_field_prefix##_##user_num##_event_notify, \
+            to   inst_user.inst_user_field_prefix##_event_notify);
