@@ -55,98 +55,63 @@
 #pragma once
 
 #include "OS_Error.h"
+#include "interfaces/if_OS_Socket.h"
 #include "network/OS_Network_types.h"
 #include <stdint.h>
 
-/**
- * @details Create a socket and connect to it
- *
- * @param[in] ctx:  Runtime context of the APP. As of now
- * NULL.
- *
- * @param[in] pClientStruct: Configuration parameters for the socket to
- * be created.
- *
- * @param[out] phandle: Handle to the created socket.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
- */
 
+// TODO: We should discuss if we need to hide this struct in the implementation
+// and just have the typedef in the API without showing the implementation
+// (similar as its done for OS_Crypto for example).
+typedef struct
+{
+    if_OS_Socket_t ctx;      /**< Pointer to the RPC vtable used */
+    int            handleID; /**< Handle id*/
+} OS_NetworkSocket_Handle_t;
+
+#define OS_NetworkSocket_Handle_INVALID                                        \
+    (OS_NetworkSocket_Handle_t) { .ctx = {NULL}, .handleID = -1 }
+
+/**
+ * Create a socket.
+ *
+ * @retval OS_SUCCESS                        Operation was successful.
+ * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the passed domain or type
+ *                                           are unsupported.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE       If no free sockets could be
+ *                                           found.
+ * @retval other                             Each component implementing
+ *                                           this might have additional
+ *                                           error codes.
+ *
+ * @param[in] ctx     Interface context that should be used with the handle.
+ * @param[in] phandle Handle that will be assigned to the created socket.
+ * @param[in] domain  Domain of the socket that should be created.
+ * @param[in] type    Type of the socket that should be created.
+ */
 OS_Error_t
 OS_NetworkSocket_create(
-    OS_Network_Context_t       ctx,
-    OS_Network_Socket_t*       pClientStruct,
-    OS_NetworkSocket_Handle_t* phandle);
+    const if_OS_Socket_t*      ctx,
+    OS_NetworkSocket_Handle_t* phandle,
+    int                        domain,
+    int                        type);
 
 /**
- * @details Create a server socket, binds to a
- * port and listen for incoming connections
+ * Write data on a socket. This function checks if the socket is bound,
+ * connected and that it isn't shutdown locally.
  *
- * @param[in] ctx:  Runtime context of the APP. As of now
- * NULL.
+ * @retval OS_SUCCESS                 Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
+ *                                    dataport size.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
  *
- * @param[in] pServerStruct: Configuration parameters for the
- * server socket to be created.
- *
- * @param[out] pSrvHandle: Handle to the created socket.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
+ * @param[in]  handle       Handle of the socket to write on.
+ * @param[in]  buf          Buffer containing data that should be sent.
+ * @param[in]  requestedLen Amount of data that should be written.
+ * @param[out] actualLen    Actual length that was written on the socket.
  */
-
-OS_Error_t
-OS_NetworkServerSocket_create(
-    OS_Network_Context_t       ctx,
-    OS_NetworkServer_Socket_t* pServerStruct,
-    OS_NetworkServer_Handle_t* pSrvHandle);
-
-/**
- * @details Closes a NetworkServer socket. No
- * further socket communication is possible after closure.
- *
- * @param[in] srvHandle: Handle to the server socket we want
- * to close.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
- */
-
-OS_Error_t
-OS_NetworkServerSocket_close(
-    OS_NetworkServer_Handle_t srvHandle);
-
-/**
- * @details Closes a network socket. No further
- * socket communication is possible after closure.
- *
- * @param[in] handle: Handle to the socket we want to close.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
- *
- */
-
-OS_Error_t
-OS_NetworkSocket_close(
-    OS_NetworkSocket_Handle_t handle);
-
-/**
- * @details Writes to a connected network socket.
- *
- * @param[in] handle: Handle to the socket to be used.
- *
- * @param[in] buf: Buffer containing data to be written.
- *
- * @param[in] requestedLen: Length of data to be written to the socket.
- *
- * @param[out] actualLen: Length of data that was actually written to the socket.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
- *
- */
-
 OS_Error_t
 OS_NetworkSocket_write(
     OS_NetworkSocket_Handle_t handle,
@@ -155,42 +120,78 @@ OS_NetworkSocket_write(
     size_t*                   actualLen);
 
 /**
- * @details Accept incoming connections.
+ * Connect a socket to a specified address.
  *
- * @param[in] srvHandle: Handle used to create server socket.
+ * @retval OS_SUCCESS                 Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER If the passed address is invalid.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
  *
- * @param[out] phSocket: Network Socket containing the data
- * needed for further communication with the connecting host. All subsequent
- * read/write commands in this conversation need this handle.
- *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
+ * @param[in] handle  Handle of the socket to connect.
+ * @param[in] dstAddr Address of the destination to connect to.
  */
-
 OS_Error_t
-OS_NetworkServerSocket_accept(
-    OS_NetworkServer_Handle_t  srvHandle,
-    OS_NetworkSocket_Handle_t* phSocket);
+OS_NetworkSocket_connect(
+    OS_NetworkSocket_Handle_t      handle,
+    const OS_NetworkSocket_Addr_t* dstAddr);
 
 /**
- * @details Read data from connected socket.
+ * Listen for connections on an opened and bound socket.
  *
- * @param[in] handle: Handle used to create/open socket
+ * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+ * @retval other                   Each component implementing this might
+ *                                 have additional error codes.
  *
- * @param[in] buf: Buffer to read data into
+ * @param[in] handle  Handle of the socket to listen on.
+ * @param[in] backlog Sets the maximum size to which the queue of pending
+ *                    connections may grow.
  *
- * @param[in] requestedLen: Indicates how much data to read.
- *
- * @param[out] actualLen: Contains the number of bytes that were actually read
- *
- * @return OS_Error_t, following combinations with value of len
- *
- * OS_ERROR_CONNECTION_CLOSED and length = 0, connection closed\n
- * OS_ERROR_GENERIC  error during read\n
- * OS_SUCCESS and len = 0, nothing read, connection still established\n
- * OS_SUCCESS and len > 0, data read, connection still established\n
  */
+OS_Error_t
+OS_NetworkSocket_listen(
+    OS_NetworkSocket_Handle_t handle,
+    int                       backlog);
 
+/**
+ * Accept the next connection request on the queue of pending connections
+ * for the listening socket.
+ *
+ * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+ * @retval other                   Each component implementing this might
+ *                                 have additional error codes.
+ *
+ * @param[in]  handle         Handle of the listening socket.
+ * @param[out] pClientHandle  Handle that will be used to map the accepted
+ *                            connection to.
+ * @param[out] srcAddr        Address of the accepted socket.
+ */
+OS_Error_t
+OS_NetworkSocket_accept(
+    OS_NetworkSocket_Handle_t  handle,
+    OS_NetworkSocket_Handle_t* pClientHandle,
+    OS_NetworkSocket_Addr_t*   srcAddr);
+
+/**
+ * Read data from a socket. This function checks whether or not the socket
+ * is bound.
+ *
+ * @retval OS_SUCCESS                     Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
+ *                                        the dataport size.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
+ * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got closed.
+ * @retval other                          Each component implementing this
+ *                                        might have additional error codes.
+ *
+ * @param[in]  handle       Handle of the socket to read from.
+ * @param[in]  buf          Buffer to store the read data.
+ * @param[in]  requestedLen Length of the data that should be read.
+ * @param[out] actualLen    Actual length that was read from the socket.
+ */
 OS_Error_t
 OS_NetworkSocket_read(
     OS_NetworkSocket_Handle_t handle,
@@ -199,64 +200,100 @@ OS_NetworkSocket_read(
     size_t*                   actualLen);
 
 /**
- * @details Receives one UDP packet of up to len bytes in size.
- * Excess data is discarded
-
- * @param[in] handle: Handle used to create/open socket
-
- * @param[in] buf: Buffer to read data into
+ * Receive data from a specified socket. This operation checks if the socket
+ * is bound but not if it is connected and is therefore not
+ * connection-oriented.
  *
- * @param[in] requestedLen: Indicates how much data to read.
+ * @retval OS_SUCCESS                 Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
+ *                                    dataport size.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
  *
- * @param[out] actualLen: After the function returns it contains how many bytes
- *  were read from the socket
- *
- * @param[out] src_socket: contains a socket with the information of the
- * remote host which sent the UDP frame
- *
- * @return OS_Error_t, following combinations with value of length
-
- * OS_ERROR_GENERIC  error during read\n
- * OS_SUCCESS and len > 0, data read\n
+ * @param[in]  handle       Handle to a previously created socket.
+ * @param[in]  buf          Buffer to store the read data.
+ * @param[in]  requestedLen Length of the data that should be read.
+ * @param[out] actualLen    Actual length that was read from the socket.
+ * @param[out] srcAddr      Address of the source socket that data was received
+ *                          from.
  */
-
 OS_Error_t
 OS_NetworkSocket_recvfrom(
     OS_NetworkSocket_Handle_t handle,
     void*                     buf,
     size_t                    requestedLen,
     size_t*                   actualLen,
-    OS_Network_Socket_t*      src_socket);
+    OS_NetworkSocket_Addr_t*  srcAddr);
 
 /**
- * @details Sends one UDP packet of up to len bytes in size. Can send less data
- * than requested.
+ * Send data on a destination socket without checking if the destination is
+ * connected or not and is therefore not connection-oriented.
  *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
+ * @retval OS_SUCCESS                 Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
+ *                                    dataport size.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
  *
+ * @param[in]  handle        Handle to a previously created socket.
+ * @param[in]  buf           Buffer containing data to be written.
+ * @param[in]  requestedLen  Length of the data that should be written on the
+ *                           destination socket.
+ * @param[out] actualLen     Actual length that was written on the socket.
+ * @param[in]  dstAddr       Address of the destination socket to send data on.
  */
 OS_Error_t
 OS_NetworkSocket_sendto(
-    OS_NetworkSocket_Handle_t handle, /**< [in] Handle to the used socket. */
-    const void* buf, /**< [in] Buffer containing data to be written. */
-    size_t requestedLen, /**< [in]  Length of data to be written. */
-    size_t* actualLen, /**< [out] Number of bytes written to the socket. */
-    OS_Network_Socket_t dst_socket /**< [in] Socket containing the information
-                                             of the destination */);
+    OS_NetworkSocket_Handle_t      handle,
+    const void*                    buf,
+    size_t                         requestedLen,
+    size_t*                        actualLen,
+    const OS_NetworkSocket_Addr_t* dstAddr);
 
 /**
- * @details Binds the socket to the given port.
+ * Bind a specified port to a socket.
  *
- * @return OS_SUCCESS or error code for network (OS_ERROR_NETWORK_*) or general
- * error (OS_ERROR_*)
+ * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+ * @retval other                   Each component implementing this might
+ *                                 have additional error codes.
  *
+ * @param[in] handle    Handle of the socket to bind.
+ * @param[in] localAddr Local address to bind the socket to.
  */
-
 OS_Error_t
 OS_NetworkSocket_bind(
-    OS_NetworkSocket_Handle_t handle, //!< [in] Handle to the socket to be used.
-    uint16_t receiving_port           //!< [in] Port to be used.
-);
+    OS_NetworkSocket_Handle_t      handle,
+    const OS_NetworkSocket_Addr_t* localAddr);
+
+/**
+ * Get the events for the opened sockets socket communication is possible after
+ * closure.
+ * TODO: This function still needs to be implemented with SEOS-2933. Currently
+ * it will just return OS_ERROR_NOT_IMPLEMENTED.
+ *
+ * @retval OS_SUCCESS              Operation was successful.
+ * @retval other                   Each component implementing this might
+ *                                 have additional error codes.
+ */
+OS_Error_t
+OS_NetworkSocket_getPendingEvents(void);
+
+/**
+ * Closes a network socket. No further socket communication is possible after
+ * closure.
+ *
+ * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+ * @retval other                   Each component implementing this might
+ *                                 have additional error codes.
+ *
+ * @param[in] handle Handle of the socket that should be closed.
+ */
+OS_Error_t
+OS_NetworkSocket_close(
+    OS_NetworkSocket_Handle_t handle);
 
 /** @} */
