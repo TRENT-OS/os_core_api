@@ -13,13 +13,20 @@ typedef struct
 {
     OS_Error_t (*socket_create)(int domain, int type, int* pHandle);
 
-    OS_Error_t (*socket_accept)(int handle, int* pHandleClient, uint16_t port);
+    OS_Error_t (*socket_accept)(
+        int handle,
+        int* pHandleClient,
+        OS_NetworkSocket_Addr_t* srcAddr);
 
-    OS_Error_t (*socket_bind)(int handle, uint16_t port);
+    OS_Error_t (*socket_bind)(
+        int handle,
+        const OS_NetworkSocket_Addr_t* localAddr);
 
     OS_Error_t (*socket_listen)(int handle, int backlog);
 
-    OS_Error_t (*socket_connect)(int handle, const char* name, uint16_t port);
+    OS_Error_t (*socket_connect)(
+        int handle,
+        const OS_NetworkSocket_Addr_t* dstAddr);
 
     OS_Error_t (*socket_close)(int handle);
 
@@ -28,14 +35,14 @@ typedef struct
     OS_Error_t (*socket_read)(int handle, size_t* pLen);
 
     OS_Error_t (*socket_recvfrom)(
-        int                  handle,
-        size_t*              plen,
-        OS_Network_Socket_t* src_socket);
+        int handle,
+        size_t* pLen,
+        OS_NetworkSocket_Addr_t* srcAddr);
 
     OS_Error_t (*socket_sendto)(
-        int                 handle,
-        size_t*             pLen,
-        OS_Network_Socket_t dst_socket);
+        int handle,
+        size_t* pLen,
+        const OS_NetworkSocket_Addr_t* dstAddr);
 
     OS_Dataport_t dataport;
 } if_OS_Socket_t;

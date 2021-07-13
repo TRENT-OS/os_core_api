@@ -39,7 +39,7 @@
 procedure if_OS_Socket {
 
     include "OS_Error.h";
-    include "network/OS_Network_types.h";
+    include "interfaces/if_OS_Socket.h";
 
     /**
      * Create a socket.
@@ -136,15 +136,13 @@ procedure if_OS_Socket {
      * @retval other                      Each component implementing this might
      *                                    have additional error codes.
      *
-     * @param[in] handle     Handle of the socket to connect.
-     * @param[in] serverName Address of the destination to connect to.
-     * @param[in] port       Port of the destination to connect to.
+     * @param[in] handle  Handle of the socket to connect.
+     * @param[in] dstAddr Address of the destination to connect to.
      */
     OS_Error_t
     socket_connect(
-        in int      handle,
-        in string   serverName,
-        in uint16_t port
+        in    int                     handle,
+        refin OS_NetworkSocket_Addr_t dstAddr
     );
 
     /**
@@ -156,17 +154,16 @@ procedure if_OS_Socket {
      * @retval other                   Each component implementing this might
      *                                 have additional error codes.
      *
-     * @param[in] handle        Handle of the listening socket.
-     * @param[in] pHandleClient Handle that will be used to map the accepted
-     *                          connection to.
-     * @param[in] port          Remote port of the incoming connection.
-     *
+     * @param[in]     handle        Handle of the listening socket.
+     * @param[in,out] pHandleClient Handle that will be used to map the accepted
+     *                              connection to.
+     * @param[out]    srcAddr       Remote address of the incoming connection.
      */
     OS_Error_t
     socket_accept(
-        in    int      handle,
-        inout int      pHandleClient,
-        in    uint16_t port
+        in    int                     handle,
+        inout int                     pHandleClient,
+        out   OS_NetworkSocket_Addr_t srcAddr
     );
 
     /**
@@ -195,13 +192,13 @@ procedure if_OS_Socket {
      * @retval other                   Each component implementing this might
      *                                 have additional error codes.
      *
-     * @param[in] handle Handle of the socket to bind.
-     * @param[in] port   Local port to bind the socket to.
+     * @param[in] handle    Handle of the socket to bind.
+     * @param[in] localAddr Address to bind the socket to.
      */
     OS_Error_t
     socket_bind(
-        in int      handle,
-        in uint16_t port
+        in    int                     handle,
+        refin OS_NetworkSocket_Addr_t localAddr
     );
 
     /**
@@ -215,19 +212,18 @@ procedure if_OS_Socket {
      * @retval other                      Each component implementing this might
      *                                    have additional error codes.
      *
-     * @param[in] handle     Handle to a previously created socket.
-     * @param[in] pLen       Length of the data that should be written on the
-     *                       destination socket. Will be overwritten by the
-     *                       function with the actual amount that was written
-     *                       before it returns.
-     * @param[in] dst_socket Destination socket to send data on.
-     *
+     * @param[in]     handle  Handle to a previously created socket.
+     * @param[in,out] pLen    Length of the data that should be written on the
+     *                        destination socket. Will be overwritten by the
+     *                        function with the actual amount that was written
+     *                        before it returns.
+     * @param[in]     dstAddr Address of the destination socket to send data on.
      */
     OS_Error_t
     socket_sendto(
-        in    int                 handle,
-        inout size_t              pLen,
-        in    OS_Network_Socket_t dst_socket
+        in    int                     handle,
+        inout size_t                  pLen,
+        refin OS_NetworkSocket_Addr_t dstAddr
     );
 
     /**
@@ -242,18 +238,19 @@ procedure if_OS_Socket {
      * @retval other                      Each component implementing this
      *                                    might have additional error codes.
      *
-     * @param[in] handle     Handle to a previously created and bound socket.
-     * @param[in] pLen       Length of the data that should be read from the
-     *                       source socket. Will be overwritten by the
-     *                       function with the actual amount that was read
-     *                       before it returns.
-     * @param[in] src_socket Source socket to read data from.
+     * @param[in]     handle  Handle to a previously created and bound socket.
+     * @param[in,out] pLen    Length of the data that should be read from the
+     *                        source socket. Will be overwritten by the
+     *                        function with the actual amount that was read
+     *                        before it returns.
+     * @param[out]    srcAddr Address of the source socket that data was
+     *                        received from.
      */
     OS_Error_t
     socket_recvfrom(
-        in    int                 handle,
-        inout size_t              pLen,
-        out   OS_Network_Socket_t src_socket
+        in    int                     handle,
+        inout size_t                  pLen,
+        out   OS_NetworkSocket_Addr_t srcAddr,
     );
 };
 

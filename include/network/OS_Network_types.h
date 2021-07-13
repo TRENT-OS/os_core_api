@@ -15,18 +15,6 @@
 #include <stdint.h>
 
 /**
- * @brief   contains elements that must be filled
- *          out by the APP to configure it to listen on a given port.
- */
-typedef struct
-{
-    int      domain;      /**< domain is as of now AF_INET (IPv4)*/
-    int      type;        /**< type is as of now SOCK_STREAM (TCP)*/
-    uint16_t listen_port; /**< port to listen to e.g. 5555 */
-    int      backlog;     /**< # of connections accepted */
-} OS_NetworkServer_Socket_t;
-
-/**
  * @brief   contains elements that must be filled by APP
  *          to connect to a remote host.
  */
@@ -42,12 +30,9 @@ typedef struct
 
 typedef struct
 {
-    int      domain; /**< domain is as of now AF_INET (IPv4) */
-    int      type;   /**< type is as of now SOCK_STREAM (TCP) */
-    uint16_t port;   /**< port is for e.g. HTTP port 80 */
-    char     name[IP_ADD_STR_MAX_LEN + 1]; /**< IP addr to connect to (e.g.
-                                                       "10.0.0.1", "::1" ) */
-} OS_Network_Socket_t;
+    uint8_t  addr[IP_ADD_STR_MAX_LEN + 1];
+    uint16_t port;
+} OS_NetworkSocket_Addr_t;
 
 #if !defined(CUSTOM_OS_NETWORK_STACK_API_TYPES)
 
@@ -62,19 +47,5 @@ typedef struct
 #define OS_SOCK_STREAM 2
 /** Datagram socket - UDP */
 #define OS_SOCK_DGRAM 1
-
-typedef const void* OS_Network_Context_t;
-
-typedef struct
-{
-    OS_Network_Context_t ctx;      /**< Pointer to the RPC vtable used */
-    int                  handleID; /**< Handle id*/
-} OS_NetworkSocket_Handle_t, OS_NetworkServer_Handle_t;
-
-#define OS_NetworkSocket_Handle_INVALID                                        \
-    (OS_NetworkSocket_Handle_t) { .ctx = NULL, .handleID = -1 }
-
-#define OS_NetworkServer_Handle_INVALID                                        \
-    (OS_NetworkServer_Handle_t) { .ctx = NULL, .handleID = -1 }
 
 #endif
