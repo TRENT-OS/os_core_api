@@ -53,9 +53,10 @@ procedure if_OS_Socket {
      *                                           this might have additional
      *                                           error codes.
      *
-     * @param[in] domain  Domain of the socket that should be created.
-     * @param[in] type    Type of the socket that should be created.
-     * @param[in] pHandle Handle that will be assigned to the created socket.
+     * @param[in]     domain  Domain of the socket that should be created.
+     * @param[in]     type    Type of the socket that should be created.
+     * @param[in,out] pHandle Handle that will be assigned to the created
+     *                        socket.
      */
     OS_Error_t
     socket_create(
@@ -90,10 +91,11 @@ procedure if_OS_Socket {
      * @retval other                      Each component implementing this might
      *                                    have additional error codes.
      *
-     * @param[in] handle  Handle of the socket to write on.
-     * @param[in] pLen    Length of the data that should be written on the
-     *                    socket. Will be overwritten by the function with the
-     *                    actual amount that was written before it returns.
+     * @param[in]     handle Handle of the socket to write on.
+     * @param[in,out] pLen   Length of the data that should be written on the
+     *                       socket. Will be overwritten by the function with
+     *                       the actual amount that was written before it
+     *                       returns.
      */
     OS_Error_t
     socket_write(
@@ -114,10 +116,10 @@ procedure if_OS_Socket {
      * @retval other                          Each component implementing this
      *                                        might have additional error codes.
      *
-     * @param[in] handle Handle of the socket to read from.
-     * @param[in] plen   Length of the data that should be read from the
-     *                   socket. Will be overwritten by the function with the
-     *                   actual amount that was read before it returns.
+     * @param[in]     handle Handle of the socket to read from.
+     * @param[in,out] pLen   Length of the data that should be read from the
+     *                       socket. Will be overwritten by the function with
+     *                       the actual amount that was read before it returns.
      */
     OS_Error_t
     socket_read(
@@ -176,8 +178,8 @@ procedure if_OS_Socket {
      *                                 have additional error codes.
      *
      * @param[in] handle  Handle of the socket to listen on.
-     * @param[in] backlog Sets the maximum size to which the queue of
-     *                    pending connections may grow.
+     * @param[in] backlog Sets the maximum size to which the queue of pending
+     *                    connections may grow.
      */
     OS_Error_t
     socket_listen(
