@@ -94,10 +94,10 @@ typedef struct
  */
 OS_Error_t
 OS_NetworkSocket_create(
-    const if_OS_Socket_t*      ctx,
-    OS_NetworkSocket_Handle_t* phandle,
-    int                        domain,
-    int                        type);
+    const if_OS_Socket_t* const      ctx,
+    OS_NetworkSocket_Handle_t* const phandle,
+    const int                        domain,
+    const int                        type);
 
 /**
  * Write data on a socket. This function checks if the socket is bound,
@@ -128,10 +128,10 @@ OS_NetworkSocket_create(
  */
 OS_Error_t
 OS_NetworkSocket_write(
-    OS_NetworkSocket_Handle_t handle,
-    const void*               buf,
-    size_t                    requestedLen,
-    size_t*                   actualLen);
+    const OS_NetworkSocket_Handle_t handle,
+    const void* const               buf,
+    const size_t                    requestedLen,
+    size_t* const                   actualLen);
 
 /**
  * Connect a socket to a specified address.
@@ -149,8 +149,8 @@ OS_NetworkSocket_write(
  */
 OS_Error_t
 OS_NetworkSocket_connect(
-    OS_NetworkSocket_Handle_t      handle,
-    const OS_NetworkSocket_Addr_t* dstAddr);
+    const OS_NetworkSocket_Handle_t handle,
+    const OS_NetworkSocket_Addr_t*  dstAddr);
 
 /**
  * Listen for connections on an opened and bound socket.
@@ -169,8 +169,8 @@ OS_NetworkSocket_connect(
  */
 OS_Error_t
 OS_NetworkSocket_listen(
-    OS_NetworkSocket_Handle_t handle,
-    int                       backlog);
+    const OS_NetworkSocket_Handle_t handle,
+    const int                       backlog);
 
 /**
  * Accept the next connection request on the queue of pending connections
@@ -190,9 +190,9 @@ OS_NetworkSocket_listen(
  */
 OS_Error_t
 OS_NetworkSocket_accept(
-    OS_NetworkSocket_Handle_t  handle,
-    OS_NetworkSocket_Handle_t* pClientHandle,
-    OS_NetworkSocket_Addr_t*   srcAddr);
+    const OS_NetworkSocket_Handle_t  handle,
+    OS_NetworkSocket_Handle_t* const pClientHandle,
+    OS_NetworkSocket_Addr_t* const   srcAddr);
 
 /**
  * Read data from a socket. This function checks whether or not the socket
@@ -215,10 +215,10 @@ OS_NetworkSocket_accept(
  */
 OS_Error_t
 OS_NetworkSocket_read(
-    OS_NetworkSocket_Handle_t handle,
-    void*                     buf,
-    size_t                    requestedLen,
-    size_t*                   actualLen);
+    const OS_NetworkSocket_Handle_t handle,
+    void* const                     buf,
+    size_t                          requestedLen,
+    size_t* const                   actualLen);
 
 /**
  * Receive data from a specified socket. This operation checks if the socket
@@ -244,11 +244,11 @@ OS_NetworkSocket_read(
  */
 OS_Error_t
 OS_NetworkSocket_recvfrom(
-    OS_NetworkSocket_Handle_t handle,
-    void*                     buf,
-    size_t                    requestedLen,
-    size_t*                   actualLen,
-    OS_NetworkSocket_Addr_t*  srcAddr);
+    const OS_NetworkSocket_Handle_t handle,
+    void* const                     buf,
+    size_t                          requestedLen,
+    size_t* const                   actualLen,
+    OS_NetworkSocket_Addr_t* const  srcAddr);
 
 /**
  * Send data on a destination socket without checking if the destination is
@@ -277,11 +277,11 @@ OS_NetworkSocket_recvfrom(
  */
 OS_Error_t
 OS_NetworkSocket_sendto(
-    OS_NetworkSocket_Handle_t      handle,
-    const void*                    buf,
-    size_t                         requestedLen,
-    size_t*                        actualLen,
-    const OS_NetworkSocket_Addr_t* dstAddr);
+    const OS_NetworkSocket_Handle_t      handle,
+    const void* const                    buf,
+    size_t                               requestedLen,
+    size_t* const                        actualLen,
+    const OS_NetworkSocket_Addr_t* const dstAddr);
 
 /**
  * Bind a specified local IP-address and port to a socket.
@@ -300,8 +300,8 @@ OS_NetworkSocket_sendto(
  */
 OS_Error_t
 OS_NetworkSocket_bind(
-    OS_NetworkSocket_Handle_t      handle,
-    const OS_NetworkSocket_Addr_t* localAddr);
+    const OS_NetworkSocket_Handle_t      handle,
+    const OS_NetworkSocket_Addr_t* const localAddr);
 
 /**
  * Get the events for the opened sockets socket communication is possible after
@@ -329,6 +329,6 @@ OS_NetworkSocket_getPendingEvents(void);
  */
 OS_Error_t
 OS_NetworkSocket_close(
-    OS_NetworkSocket_Handle_t handle);
+    const OS_NetworkSocket_Handle_t handle);
 
 /** @} */
