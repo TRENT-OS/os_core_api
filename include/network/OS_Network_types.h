@@ -48,4 +48,8 @@ typedef struct
 /** Datagram socket - UDP */
 #define OS_SOCK_DGRAM 1
 
+// Special network addresses.
+#define OS_INADDR_ANY_STR      "0.0.0.0"
+#define OS_INADDR_LOOPBACK_STR "127.0.0.1"
+
 #endif
