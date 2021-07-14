@@ -11,38 +11,48 @@
 
 typedef struct
 {
-    OS_Error_t (*socket_create)(int domain, int type, int* pHandle);
+    OS_Error_t (*socket_create)(
+        const int domain,
+        const int type,
+        int* const pHandle);
 
     OS_Error_t (*socket_accept)(
-        int handle,
-        int* pHandleClient,
-        OS_NetworkSocket_Addr_t* srcAddr);
+        const int handle,
+        int* const pHandleClient,
+        OS_NetworkSocket_Addr_t* const srcAddr);
 
     OS_Error_t (*socket_bind)(
-        int handle,
-        const OS_NetworkSocket_Addr_t* localAddr);
+        const int handle,
+        const OS_NetworkSocket_Addr_t* const localAddr);
 
-    OS_Error_t (*socket_listen)(int handle, int backlog);
+    OS_Error_t (*socket_listen)(
+        const int handle,
+        const int backlog);
 
     OS_Error_t (*socket_connect)(
-        int handle,
-        const OS_NetworkSocket_Addr_t* dstAddr);
+        const int handle,
+        const OS_NetworkSocket_Addr_t* const dstAddr);
 
-    OS_Error_t (*socket_close)(int handle);
+    OS_Error_t (*socket_close)(
+        const int handle);
 
-    OS_Error_t (*socket_write)(int handle, size_t* pLen);
+    OS_Error_t (*socket_write)(
+        const int handle,
+        size_t* const pLen);
 
-    OS_Error_t (*socket_read)(int handle, size_t* pLen);
+    OS_Error_t (*socket_read)(
+        const int handle,
+        size_t* const pLen);
 
     OS_Error_t (*socket_recvfrom)(
-        int handle,
-        size_t* pLen,
-        OS_NetworkSocket_Addr_t* srcAddr);
+        const int handle,
+        size_t* const pLen,
+        OS_NetworkSocket_Addr_t* const srcAddr);
 
     OS_Error_t (*socket_sendto)(
-        int handle,
-        size_t* pLen,
-        const OS_NetworkSocket_Addr_t* dstAddr);
+        const int handle,
+        size_t* const pLen,
+        const OS_NetworkSocket_Addr_t* const dstAddr);
 
     OS_Dataport_t dataport;
 } if_OS_Socket_t;
