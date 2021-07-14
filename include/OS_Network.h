@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+// TODO: The section below needs to be updated in its content and form to match
+// to our doxygen guidelines.
 /**
  * @file
  * @defgroup OS_Network OS Network API
@@ -78,6 +80,7 @@ typedef struct
  * @retval OS_SUCCESS                        Operation was successful.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the passed domain or type
  *                                           are unsupported.
+ * @retval OS_ERROR_NETWORK_UNREACHABLE      If the network is unreachable.
  * @retval OS_ERROR_INSUFFICIENT_SPACE       If no free sockets could be
  *                                           found.
  * @retval other                             Each component implementing
@@ -100,12 +103,23 @@ OS_NetworkSocket_create(
  * Write data on a socket. This function checks if the socket is bound,
  * connected and that it isn't shutdown locally.
  *
- * @retval OS_SUCCESS                 Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
- *                                    dataport size.
- * @retval other                      Each component implementing this might
- *                                    have additional error codes.
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If the requested length exceeds
+ *                                             the dataport size.
+ * @retval OS_ERROR_IO                         If there is an input/output
+ *                                             error.
+ * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
+ * @retval OS_ERROR_TRY_AGAIN                  If the ressource is temporarily
+ *                                             unavailable and the caller should
+ *                                             try again.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
  *
  * @param[in]  handle       Handle of the socket to write on.
  * @param[in]  buf          Buffer containing data that should be sent.
@@ -122,11 +136,13 @@ OS_NetworkSocket_write(
 /**
  * Connect a socket to a specified address.
  *
- * @retval OS_SUCCESS                 Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER If the passed address is invalid.
- * @retval other                      Each component implementing this might
- *                                    have additional error codes.
+ * @retval OS_SUCCESS                        Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE           If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER        If the passed address is invalid.
+ * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the protocol is not supported.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE If the host is not unreachable.
+ * @retval other                             Each component implementing this
+ *                                           might have additional error codes.
  *
  * @param[in] handle  Handle of the socket to connect.
  * @param[in] dstAddr Address of the destination to connect to.
@@ -139,15 +155,17 @@ OS_NetworkSocket_connect(
 /**
  * Listen for connections on an opened and bound socket.
  *
- * @retval OS_SUCCESS              Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
- * @retval other                   Each component implementing this might
- *                                 have additional error codes.
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_NETWORK_CONN_ALREADY_BOUND If the socket is already
+ *                                             connected.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
  *
  * @param[in] handle  Handle of the socket to listen on.
  * @param[in] backlog Sets the maximum size to which the queue of pending
  *                    connections may grow.
- *
  */
 OS_Error_t
 OS_NetworkSocket_listen(
@@ -160,6 +178,8 @@ OS_NetworkSocket_listen(
  *
  * @retval OS_SUCCESS              Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
+ * @retval OS_ERROR_TRY_AGAIN      If the ressource is temporarily unavailable
+ *                                 and the caller should try again.
  * @retval other                   Each component implementing this might
  *                                 have additional error codes.
  *
@@ -176,12 +196,13 @@ OS_NetworkSocket_accept(
 
 /**
  * Read data from a socket. This function checks whether or not the socket
- * is bound.
+ * is bound and connected before it attempts to receive data.
  *
  * @retval OS_SUCCESS                     Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
  *                                        the dataport size.
+ * @retval OS_ERROR_IO                    If there is an input/output error.
  * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
  * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got closed.
  * @retval other                          Each component implementing this
@@ -204,12 +225,15 @@ OS_NetworkSocket_read(
  * is bound but not if it is connected and is therefore not
  * connection-oriented.
  *
- * @retval OS_SUCCESS                 Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
- *                                    dataport size.
- * @retval other                      Each component implementing this might
- *                                    have additional error codes.
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If the requested length exceeds
+ *                                             the dataport size.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
  *
  * @param[in]  handle       Handle to a previously created socket.
  * @param[in]  buf          Buffer to store the read data.
@@ -230,12 +254,19 @@ OS_NetworkSocket_recvfrom(
  * Send data on a destination socket without checking if the destination is
  * connected or not and is therefore not connection-oriented.
  *
- * @retval OS_SUCCESS                 Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER If the requested length exceeds the
- *                                    dataport size.
- * @retval other                      Each component implementing this might
- *                                    have additional error codes.
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If the requested length exceeds
+ *                                             the dataport size.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
+ * @retval OS_ERROR_TRY_AGAIN                  If the ressource is temporarily
+ *                                             unavailable and the caller should
+ *                                             try again.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
  *
  * @param[in]  handle        Handle to a previously created socket.
  * @param[in]  buf           Buffer containing data to be written.
@@ -253,12 +284,16 @@ OS_NetworkSocket_sendto(
     const OS_NetworkSocket_Addr_t* dstAddr);
 
 /**
- * Bind a specified port to a socket.
+ * Bind a specified local IP-address and port to a socket.
  *
- * @retval OS_SUCCESS              Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
- * @retval other                   Each component implementing this might
- *                                 have additional error codes.
+ * @retval OS_SUCCESS                  Operation was successful.
+ * @retval OS_ERROR_INVALID_PARAMETER  If the requested length exceeds the
+ *                                     dataport size.
+ * @retval OS_ERROR_IO                 If the specified address can not be
+ *                                     found.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE If there is not enough space.
+ * @retval other                       Each component implementing this might
+ *                                     have additional error codes.
  *
  * @param[in] handle    Handle of the socket to bind.
  * @param[in] localAddr Local address to bind the socket to.
