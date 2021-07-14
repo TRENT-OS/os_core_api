@@ -30,7 +30,7 @@
 
 typedef struct
 {
-    uint8_t  addr[IP_ADD_STR_MAX_LEN + 1];
+    char     addr[IP_ADD_STR_MAX_LEN + 1];
     uint16_t port;
 } OS_NetworkSocket_Addr_t;
 
