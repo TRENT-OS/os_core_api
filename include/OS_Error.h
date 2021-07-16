@@ -30,6 +30,21 @@ typedef enum
     __END_OS_ERROR_CODES_CUSTOM = -100000,
 
     //--------------------------------------------------------------------------
+    // Crypto specific error codes
+    //--------------------------------------------------------------------------
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __START_OS_ERROR_CODES_CRYPTO = -1404,
+    /// @endcond
+    //--------------------------------------
+    OS_ERROR_CRYPTO_KEY_SIZE_NOT_SUPPORTED, /**< Wrong key size passed */
+    OS_ERROR_CRYPTO_AES_CTR_FAIL,           /**< AES CTR mode failed to encrypt or decrypt buffer */
+    OS_ERROR_CRYPTO_AES_ECB_FAIL,           /**< AES ECB failed to encrypt or decrypt buffer */
+
+    /// @cond OS_ERROR_HELPER_DEFINES
+    __END_OS_ERROR_CODES_CRYPTO,            /**< -1400 */
+    /// @endcond
+
+    //--------------------------------------------------------------------------
     // Network specific error codes
     //--------------------------------------------------------------------------
     /// @cond OS_ERROR_HELPER_DEFINES
@@ -220,6 +235,12 @@ CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_NETWORK, -1300);
 
 CHECK_OS_ERROR_OVERLAP(
     __START_OS_ERROR_CODES_NETWORK,
+    __END_OS_ERROR_CODES_CRYPTO);
+
+CHECK_OS_ERROR_VALUE(__END_OS_ERROR_CODES_CRYPTO, -1400);
+
+CHECK_OS_ERROR_OVERLAP(
+    __START_OS_ERROR_CODES_CRYPTO,
     __END_OS_ERROR_CODES_CUSTOM);
 
 /// @endcond

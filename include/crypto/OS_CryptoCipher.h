@@ -67,6 +67,16 @@ typedef enum
      * Use AES in GCM mode for decryption.
      */
     OS_CryptoCipher_ALG_AES_GCM_DEC,
+
+    /**
+     * Use AES in CTR mode for encryption.
+     */
+    OS_CryptoCipher_ALG_AES_CTR_ENC,
+
+    /**
+     * Use AES in CTR mode for decryption.
+     */
+    OS_CryptoCipher_ALG_AES_CTR_DEC,
 } OS_CryptoCipher_Alg_t;
 
 /// @cond INTERNAL
