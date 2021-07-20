@@ -15,6 +15,7 @@ typedef struct
 {
     void**  io;
     size_t  size;
+    size_t  (*get_size_func)(void);
 } OS_Dataport_t;
 
 // Access the dataport
@@ -28,6 +29,10 @@ static __attribute__((unused)) size_t
 OS_Dataport_getSize(
     const OS_Dataport_t dp)
 {
+    if (dp.get_size_func)
+    {
+        return dp.get_size_func();
+    }
     return dp.size;
 }
 static __attribute__((unused)) bool
@@ -38,13 +43,30 @@ OS_Dataport_isUnset(
 }
 
 // Assign the dataport
-#define OS_DATAPORT_ASSIGN(p) { \
-    .io   = (void**)( &(p) ),   \
-    .size = sizeof( *(p) )      \
+#define OS_DATAPORT_ASSIGN(p) {          \
+    .io            = (void**)( &(p) ),   \
+    .size          = sizeof( *(p) ),     \
+    .get_size_func = NULL                \
 }
+// Macro to be used when the Dataport has a custom size and the sizeof operator
+// fails to return the right value due to pointer decay.
+#define OS_DATAPORT_ASSIGN_SIZE(p, _size_) { \
+    .io            = (void**)(&(p)),         \
+    .size          = (_size_),               \
+    .get_size_func = NULL                    \
+}
+// Macro to be used when the size of the Dataport is returned by a CAmkES
+// function.
+#define OS_DATAPORT_ASSIGN_FUNC(p, _func_) { \
+    .io            = (void**)(&(p)),         \
+    .size          = 0,                      \
+    .get_size_func = _func_                  \
+}
+
 #define OS_DATAPORT_NONE {  \
-    .io   = NULL,           \
-    .size = 0               \
+    .io            = NULL,  \
+    .size          = 0,     \
+    .get_size_func = NULL   \
 }
 
 /*
