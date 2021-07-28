@@ -204,7 +204,6 @@ OS_NetworkSocket_accept(
  *                                        the dataport size.
  * @retval OS_ERROR_IO                    If there is an input/output error.
  * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
- * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got closed.
  * @retval other                          Each component implementing this
  *                                        might have additional error codes.
  *
