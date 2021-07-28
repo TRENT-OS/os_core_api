@@ -29,8 +29,6 @@
 
 #pragma once
 
-#include "lib_macros/ForEach.h"
-
 /**
  * The RPC interface of if_OS_Socket. All offered functions are non-blocking.
  *
