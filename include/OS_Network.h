@@ -60,6 +60,7 @@
 #include "interfaces/if_OS_Socket.h"
 #include "network/OS_Network_types.h"
 #include <stdint.h>
+#include <stddef.h>
 
 
 // TODO: We should discuss if we need to hide this struct in the implementation
