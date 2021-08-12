@@ -285,8 +285,7 @@ procedure if_OS_Socket {
     prefix) \
     \
     uses     if_OS_Socket         prefix##_rpc; \
-    consumes SocketEventAvailable prefix##_event_notify; \
-    dataport Buf                  prefix##_socket_port;
+    consumes SocketEventAvailable prefix##_event_notify;
 
 /**
  * Declares the interface fields of a component implementing the Socket
@@ -298,15 +297,7 @@ procedure if_OS_Socket {
 #define IF_OS_SOCKET_PROVIDE( \
     prefix) \
     \
-    provides       if_OS_Socket prefix##_rpc; \
-    maybe dataport Buf          prefix##_1_port; \
-    maybe dataport Buf          prefix##_2_port; \
-    maybe dataport Buf          prefix##_3_port; \
-    maybe dataport Buf          prefix##_4_port; \
-    maybe dataport Buf          prefix##_5_port; \
-    maybe dataport Buf          prefix##_6_port; \
-    maybe dataport Buf          prefix##_7_port; \
-    maybe dataport Buf          prefix##_8_port; \
+    provides if_OS_Socket prefix##_rpc; \
     \
     emits SocketEventAvailable  prefix##_1_event_notify; \
     emits SocketEventAvailable  prefix##_2_event_notify; \
@@ -340,11 +331,6 @@ procedure if_OS_Socket {
  *                                       and event to connect the user component
  *                                       to.
  */
-// TODO: Clarify what connectors exactly we want to provide, especially
-// regarding the usage of seL4MessageQueue and seL4RPCOverMultiSharedData.
-// Currently this is just a WIP here to at least have the macro in place and
-// once we finalize the connectors and the implementation itself, we can also
-// update the macros in this file.
 #define IF_OS_SOCKET_CONNECT( \
     inst_nw_stack, \
     inst_nw_stack_field_prefix, \
@@ -352,15 +338,9 @@ procedure if_OS_Socket {
     inst_user_field_prefix, \
     user_num) \
     \
-    connection seL4RPCCall \
-        conn_##inst_user##_##inst_nw_stack##_rpc( \
-            from inst_user.inst_user_field_prefix##_rpc, \
-            to   inst_nw_stack.inst_nw_stack_field_prefix##_rpc); \
-    \
-    connection seL4SharedData \
-        conn_##inst_user##_##inst_nw_stack##_port( \
-            from inst_user.inst_user_field_prefix##_socket_port, \
-            to   inst_nw_stack.inst_nw_stack_field_prefix##_##user_num##_port); \
+    connection seL4RPCDataport conn_##inst_nw_stack##_##inst_user##_rpc( \
+        from inst_user.inst_user_field_prefix##_rpc, \
+        to   inst_nw_stack.inst_nw_stack_field_prefix##_rpc); \
     \
     connection seL4Notification \
         conn_##inst_nw_stack##_##inst_user##_event_notify( \
