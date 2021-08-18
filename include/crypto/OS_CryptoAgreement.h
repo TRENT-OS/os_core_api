@@ -37,6 +37,11 @@ typedef enum
      * Use Elliptic Curve Diffie-Hellman(-Merkle) key exchange.
      */
     OS_CryptoAgreement_ALG_ECDH
+
+
+    // TODO: Add RSA
+
+
 } OS_CryptoAgreement_Alg_t;
 
 ///@cond INTERNAL

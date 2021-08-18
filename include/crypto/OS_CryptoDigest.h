@@ -45,6 +45,11 @@ typedef enum
      * Use SHA256 hash.
      */
     OS_CryptoDigest_ALG_SHA256     = 6
+
+
+    // TODO: Add SHA / SHA1
+
+
 } OS_CryptoDigest_Alg_t;
 
 /// @cond INTERNAL

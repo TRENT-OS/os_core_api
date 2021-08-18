@@ -77,6 +77,10 @@ typedef enum
      */
     OS_Tls_CIPHERSUITE_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 
+
+    // TODO: Add TLS_RSA_WITH_AES_128_CBC_SHA
+
+
 /// @cond INTERNAL
 //------------------------------------------------------------------------------
     __OS_Tls_CIPHERSUITE_MAX
