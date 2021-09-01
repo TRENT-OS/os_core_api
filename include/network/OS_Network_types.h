@@ -14,6 +14,8 @@
 #pragma once
 #include <stdint.h>
 
+#include "OS_Error.h"
+
 /**
  * @brief   contains elements that must be filled by APP
  *          to connect to a remote host.
@@ -28,11 +30,29 @@
 //   IPv6/IPv4 mixed:  FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:129.144.152.138 (45 Chars)
 #define IP_ADD_STR_MAX_LEN (45)
 
+#define OS_SOCK_EV_NONE      (0)
+#define OS_SOCK_EV_CONN_EST  (1<<0)
+#define OS_SOCK_EV_CONN_ACPT (1<<1)
+#define OS_SOCK_EV_READ      (1<<2)
+#define OS_SOCK_EV_WRITE     (1<<3)
+#define OS_SOCK_EV_FIN       (1<<4)
+#define OS_SOCK_EV_CLOSE     (1<<5)
+#define OS_SOCK_EV_ERROR     (1<<6)
+
 typedef struct
 {
     char     addr[IP_ADD_STR_MAX_LEN + 1];
     uint16_t port;
 } OS_NetworkSocket_Addr_t;
+
+typedef struct __attribute__((packed))
+{
+    int        socketHandle;
+    int        parentSocketHandle;
+    uint8_t    eventMask;
+    OS_Error_t currentError;
+}
+OS_NetworkSocket_Evt_t;
 
 #if !defined(CUSTOM_OS_NETWORK_STACK_API_TYPES)
 
