@@ -54,6 +54,10 @@ typedef struct
         size_t* const pLen,
         const OS_NetworkSocket_Addr_t* const dstAddr);
 
+    OS_Error_t (*socket_getPendingEvents)(
+        const size_t bufSize,
+        int* const pNumberOfEvents);
+
     OS_Dataport_t dataport;
 } if_OS_Socket_t;
 
@@ -63,16 +67,17 @@ typedef struct
 
 #define IF_OS_SOCKET_ASSIGN(_rpc_)                                             \
 {                                                                              \
-    .socket_create   = _rpc_##_socket_create,                                  \
-    .socket_accept   = _rpc_##_socket_accept,                                  \
-    .socket_bind     = _rpc_##_socket_bind,                                    \
-    .socket_listen   = _rpc_##_socket_listen,                                  \
-    .socket_connect  = _rpc_##_socket_connect,                                 \
-    .socket_close    = _rpc_##_socket_close,                                   \
-    .socket_write    = _rpc_##_socket_write,                                   \
-    .socket_read     = _rpc_##_socket_read,                                    \
-    .socket_sendto   = _rpc_##_socket_sendto,                                  \
-    .socket_recvfrom = _rpc_##_socket_recvfrom,                                \
+    .socket_create           = _rpc_##_socket_create,                          \
+    .socket_accept           = _rpc_##_socket_accept,                          \
+    .socket_bind             = _rpc_##_socket_bind,                            \
+    .socket_listen           = _rpc_##_socket_listen,                          \
+    .socket_connect          = _rpc_##_socket_connect,                         \
+    .socket_close            = _rpc_##_socket_close,                           \
+    .socket_write            = _rpc_##_socket_write,                           \
+    .socket_read             = _rpc_##_socket_read,                            \
+    .socket_sendto           = _rpc_##_socket_sendto,                          \
+    .socket_recvfrom         = _rpc_##_socket_recvfrom,                        \
+    .socket_getPendingEvents = _rpc_##_socket_getPendingEvents,                \
                                                                                \
     .dataport = OS_DATAPORT_ASSIGN_FUNC(_rpc_##_buf, _rpc_##_get_size)         \
 }

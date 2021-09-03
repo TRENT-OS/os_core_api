@@ -305,15 +305,24 @@ OS_NetworkSocket_bind(
 /**
  * Get the events for the opened sockets socket communication is possible after
  * closure.
- * TODO: This function still needs to be implemented with SEOS-2933. Currently
- * it will just return OS_ERROR_NOT_IMPLEMENTED.
  *
  * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
  * @retval other                   Each component implementing this might
  *                                 have additional error codes.
+ *
+ * @param[in]  ctx            Interface context that should be used with the
+ *                            handle.
+ * @param[in]  buf            Buffer to store the event data.
+ * @param[in]  bufSize        Size of the buffer to store the event data.
+ * @param[out] numberOfEvents Will be overwritten with the number of events.
  */
 OS_Error_t
-OS_NetworkSocket_getPendingEvents(void);
+OS_NetworkSocket_getPendingEvents(
+    const if_OS_Socket_t* const ctx,
+    void* const                 buf,
+    const size_t                bufSize,
+    int* const                  numberOfEvents);
 
 /**
  * Closes a network socket. No further socket communication is possible after

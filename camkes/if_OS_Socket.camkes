@@ -252,6 +252,23 @@ procedure if_OS_Socket {
         inout size_t                  pLen,
         out   OS_NetworkSocket_Addr_t srcAddr,
     );
+
+    /**
+     * Get all pending events for the client's sockets.
+     *
+     * @retval OS_SUCCESS                 Operation was successful.
+     * @retval OS_ERROR_INVALID_PARAMETER If an empty pointer was passed.
+     * @retval other                      Each component implementing this
+     *                                    might have additional error codes.
+     *
+     * @param[in]  bufSize         Size of the caller buffer.
+     * @param[out] pNumberOfEvents Will be overwritten with the number of
+     *                             events.
+     */
+    OS_Error_t
+    socket_getPendingEvents(
+        in  size_t bufSize,
+        out int    pNumberOfEvents);
 };
 
 
