@@ -160,20 +160,20 @@ procedure if_OS_Nic {
  * for event. Rationale is, that often multiple event sources are connected to
  * the same event sink. This can be done with IF_OS_NIC_CONNECT_EVENT() then.
  *
- * @param[in] inst_user              Name of the interface user component
- *                                   instance.
- * @param[in] inst_user_field_prefix Prefix used to generate a unique name for
- *                                   the connectors in IF_OS_NIC_USE().
  * @param[in] inst_nic               Name of the interface provider component
  *                                   instance.
  * @param[in] inst_nic_field_prefix  Prefix used to generate a unique name for
  *                                   the connectors in IF_OS_NIC_PROVIDE().
+ * @param[in] inst_user              Name of the interface user component
+ *                                   instance.
+ * @param[in] inst_user_field_prefix Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_USE().
  */
 #define IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
-    inst_user, \
-    inst_user_field_prefix, \
     inst_nic, \
-    inst_nic_field_prefix) \
+    inst_nic_field_prefix, \
+    inst_user, \
+    inst_user_field_prefix) \
     \
     connection seL4RPCCall \
         conn_##inst_user##_##inst_nic##_rpc( \
@@ -193,21 +193,21 @@ procedure if_OS_Nic {
 /**
  * Connects the NIC event between two components.
  *
+ * @param[in] inst_nic              Name of the interface provider component
+ *                                  instance.
+ * @param[in] inst_nic_field_prefix Prefix used to generate a unique name for
+ *                                  the connectors in IF_OS_NIC_PROVIDE().
  * @param[in] inst_user             Name of the interface user component
  *                                  instance.
  * @param[in] inst_user_event       Name of the event of the interface user
  *                                  component to be connected to the interface
  *                                  provider component event.
- * @param[in] inst_nic              Name of the interface provider component
- *                                  instance.
- * @param[in] inst_nic_field_prefix Prefix used to generate a unique name for
- *                                  the connectors in IF_OS_NIC_PROVIDE().
  */
 #define IF_OS_NIC_CONNECT_EVENT( \
-    inst_user, \
-    inst_user_event, \
     inst_nic, \
-    inst_nic_field_prefix) \
+    inst_nic_field_prefix, \
+    inst_user, \
+    inst_user_event) \
     \
     connection seL4NotificationNative \
         conn_##inst_nic##_##inst_user##_event_hasData( \
@@ -217,6 +217,10 @@ procedure if_OS_Nic {
 /**
  * Connects two components via the NIC interface, including the event.
  *
+ * @param[in] inst_nic               Name of the interface provider component
+ *                                   instance.
+ * @param[in] inst_nic_field_prefix  Prefix used to generate a unique name for
+ *                                   the connectors in IF_OS_NIC_PROVIDE().
  * @param[in] inst_user              Name of the interface user component
  *                                   instance.
  * @param[in] inst_user_field_prefix Prefix used to generate a unique name for
@@ -224,25 +228,21 @@ procedure if_OS_Nic {
  * @param[in] inst_user_event        Name of the event of the interface user
  *                                   component to be connected to the interface
  *                                   provider component event.
- * @param[in] inst_nic               Name of the interface provider component
- *                                   instance.
- * @param[in] inst_nic_field_prefix  Prefix used to generate a unique name for
- *                                   the connectors in IF_OS_NIC_PROVIDE().
  */
 #define IF_OS_NIC_CONNECT( \
+    inst_nic, \
+    inst_nic_field_prefix, \
     inst_user, \
     inst_user_field_prefix, \
-    inst_user_event, \
-    inst_nic, \
-    inst_nic_field_prefix) \
+    inst_user_event) \
     \
     IF_OS_NIC_CONNECT_WITHOUT_EVENT( \
-        inst_user, \
-        inst_user_field_prefix, \
         inst_nic, \
-        inst_nic_field_prefix) \
+        inst_nic_field_prefix, \
+        inst_user, \
+        inst_user_field_prefix) \
     IF_OS_NIC_CONNECT_EVENT( \
-        inst_user, \
-        inst_user_event, \
         inst_nic, \
-        inst_nic_field_prefix)
+        inst_nic_field_prefix, \
+        inst_user, \
+        inst_user_event)
