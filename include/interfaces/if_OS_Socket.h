@@ -67,17 +67,17 @@ typedef struct
 
 #define IF_OS_SOCKET_ASSIGN(_rpc_)                                             \
 {                                                                              \
-    .socket_create           = _rpc_##_socket_create,                          \
-    .socket_accept           = _rpc_##_socket_accept,                          \
-    .socket_bind             = _rpc_##_socket_bind,                            \
-    .socket_listen           = _rpc_##_socket_listen,                          \
-    .socket_connect          = _rpc_##_socket_connect,                         \
-    .socket_close            = _rpc_##_socket_close,                           \
-    .socket_write            = _rpc_##_socket_write,                           \
-    .socket_read             = _rpc_##_socket_read,                            \
-    .socket_sendto           = _rpc_##_socket_sendto,                          \
-    .socket_recvfrom         = _rpc_##_socket_recvfrom,                        \
-    .socket_getPendingEvents = _rpc_##_socket_getPendingEvents,                \
+    .socket_create           = _rpc_##_create,                                 \
+    .socket_accept           = _rpc_##_accept,                                 \
+    .socket_bind             = _rpc_##_bind,                                   \
+    .socket_listen           = _rpc_##_listen,                                 \
+    .socket_connect          = _rpc_##_connect,                                \
+    .socket_close            = _rpc_##_close,                                  \
+    .socket_write            = _rpc_##_write,                                  \
+    .socket_read             = _rpc_##_read,                                   \
+    .socket_sendto           = _rpc_##_sendto,                                 \
+    .socket_recvfrom         = _rpc_##_recvfrom,                               \
+    .socket_getPendingEvents = _rpc_##_getPendingEvents,                       \
                                                                                \
     .dataport = OS_DATAPORT_ASSIGN_FUNC(_rpc_##_buf, _rpc_##_get_size)         \
 }

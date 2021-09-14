@@ -57,7 +57,7 @@ procedure if_OS_Socket {
      *                        socket.
      */
     OS_Error_t
-    socket_create(
+    create(
         in    int domain,
         in    int type,
         inout int pHandle
@@ -74,7 +74,7 @@ procedure if_OS_Socket {
      * @param[in] handle Handle of the socket that should be closed.
      */
     OS_Error_t
-    socket_close(
+    close(
         in int handle
     );
 
@@ -96,7 +96,7 @@ procedure if_OS_Socket {
      *                       returns.
      */
     OS_Error_t
-    socket_write(
+    write(
         in    int    handle,
         inout size_t pLen
     );
@@ -120,7 +120,7 @@ procedure if_OS_Socket {
      *                       the actual amount that was read before it returns.
      */
     OS_Error_t
-    socket_read(
+    read(
         in    int    handle,
         inout size_t pLen
     );
@@ -138,7 +138,7 @@ procedure if_OS_Socket {
      * @param[in] dstAddr Address of the destination to connect to.
      */
     OS_Error_t
-    socket_connect(
+    connect(
         in    int                     handle,
         refin OS_NetworkSocket_Addr_t dstAddr
     );
@@ -158,7 +158,7 @@ procedure if_OS_Socket {
      * @param[out]    srcAddr       Remote address of the incoming connection.
      */
     OS_Error_t
-    socket_accept(
+    accept(
         in    int                     handle,
         inout int                     pHandleClient,
         out   OS_NetworkSocket_Addr_t srcAddr
@@ -177,7 +177,7 @@ procedure if_OS_Socket {
      *                    connections may grow.
      */
     OS_Error_t
-    socket_listen(
+    listen(
         in int handle,
         in int backlog
     );
@@ -194,7 +194,7 @@ procedure if_OS_Socket {
      * @param[in] localAddr Address to bind the socket to.
      */
     OS_Error_t
-    socket_bind(
+    bind(
         in    int                     handle,
         refin OS_NetworkSocket_Addr_t localAddr
     );
@@ -218,7 +218,7 @@ procedure if_OS_Socket {
      * @param[in]     dstAddr Address of the destination socket to send data on.
      */
     OS_Error_t
-    socket_sendto(
+    sendto(
         in    int                     handle,
         inout size_t                  pLen,
         refin OS_NetworkSocket_Addr_t dstAddr
@@ -245,7 +245,7 @@ procedure if_OS_Socket {
      *                        received from.
      */
     OS_Error_t
-    socket_recvfrom(
+    recvfrom(
         in    int                     handle,
         inout size_t                  pLen,
         out   OS_NetworkSocket_Addr_t srcAddr,
@@ -264,7 +264,7 @@ procedure if_OS_Socket {
      *                             events.
      */
     OS_Error_t
-    socket_getPendingEvents(
+    getPendingEvents(
         in  size_t bufSize,
         out int    pNumberOfEvents);
 };
