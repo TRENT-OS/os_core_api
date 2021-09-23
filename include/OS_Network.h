@@ -308,6 +308,7 @@ OS_NetworkSocket_bind(
  * closure.
  *
  * @retval OS_SUCCESS              Operation was successful.
+ * @retval OS_ERROR_ABORTED        If an internal error occurred.
  * @retval OS_ERROR_INVALID_HANDLE If an invalid handle was passed.
  * @retval other                   Each component implementing this might
  *                                 have additional error codes.
