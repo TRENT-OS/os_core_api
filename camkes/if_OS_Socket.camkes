@@ -286,7 +286,7 @@ procedure if_OS_Socket {
     \
     uses     if_OS_Socket         prefix##_rpc; \
     consumes SocketEventAvailable prefix##_event_notify; \
-    has      mutex                prefix##_rpc_shared_resource_mutex;
+    has      mutex                prefix##_shared_resource_mutex;
 
 /**
  * Declares the interface fields of a component implementing the Socket

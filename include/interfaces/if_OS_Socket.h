@@ -69,22 +69,23 @@ typedef struct
     extern volatile void* _rpc_##_buf;                                         \
     size_t                _rpc_##_get_size(void);
 
-#define IF_OS_SOCKET_ASSIGN(_rpc_)                                             \
+#define IF_OS_SOCKET_ASSIGN(_prefix_)                                          \
 {                                                                              \
-    .socket_create           = _rpc_##_socket_create,                          \
-    .socket_accept           = _rpc_##_socket_accept,                          \
-    .socket_bind             = _rpc_##_socket_bind,                            \
-    .socket_listen           = _rpc_##_socket_listen,                          \
-    .socket_connect          = _rpc_##_socket_connect,                         \
-    .socket_close            = _rpc_##_socket_close,                           \
-    .socket_write            = _rpc_##_socket_write,                           \
-    .socket_read             = _rpc_##_socket_read,                            \
-    .socket_sendto           = _rpc_##_socket_sendto,                          \
-    .socket_recvfrom         = _rpc_##_socket_recvfrom,                        \
-    .socket_getPendingEvents = _rpc_##_socket_getPendingEvents,                \
+    .socket_create           = _prefix_##_rpc_socket_create,                   \
+    .socket_accept           = _prefix_##_rpc_socket_accept,                   \
+    .socket_bind             = _prefix_##_rpc_socket_bind,                     \
+    .socket_listen           = _prefix_##_rpc_socket_listen,                   \
+    .socket_connect          = _prefix_##_rpc_socket_connect,                  \
+    .socket_close            = _prefix_##_rpc_socket_close,                    \
+    .socket_write            = _prefix_##_rpc_socket_write,                    \
+    .socket_read             = _prefix_##_rpc_socket_read,                     \
+    .socket_sendto           = _prefix_##_rpc_socket_sendto,                   \
+    .socket_recvfrom         = _prefix_##_rpc_socket_recvfrom,                 \
+    .socket_getPendingEvents = _prefix_##_rpc_socket_getPendingEvents,         \
                                                                                \
-    .shared_resource_mutex_lock   = _rpc_##_shared_resource_mutex_lock,        \
-    .shared_resource_mutex_unlock = _rpc_##_shared_resource_mutex_unlock,      \
+    .shared_resource_mutex_lock   = _prefix_##_shared_resource_mutex_lock,     \
+    .shared_resource_mutex_unlock = _prefix_##_shared_resource_mutex_unlock,   \
                                                                                \
-    .dataport = OS_DATAPORT_ASSIGN_FUNC(_rpc_##_buf, _rpc_##_get_size)         \
+    .dataport = OS_DATAPORT_ASSIGN_FUNC(_prefix_##_rpc_buf,                    \
+                                        _prefix_##_rpc_get_size)               \
 }
