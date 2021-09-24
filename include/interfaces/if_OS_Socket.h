@@ -7,6 +7,7 @@
 
 #include "OS_Dataport.h"
 #include "OS_Error.h"
+#include "OS_Types.h"
 #include "network/OS_Network_types.h"
 
 typedef struct
@@ -58,6 +59,9 @@ typedef struct
         const size_t bufSize,
         int* const pNumberOfEvents);
 
+    mutex_lock_func_t   shared_resource_mutex_lock;
+    mutex_unlock_func_t shared_resource_mutex_unlock;
+
     OS_Dataport_t dataport;
 } if_OS_Socket_t;
 
@@ -78,6 +82,9 @@ typedef struct
     .socket_sendto           = _rpc_##_socket_sendto,                          \
     .socket_recvfrom         = _rpc_##_socket_recvfrom,                        \
     .socket_getPendingEvents = _rpc_##_socket_getPendingEvents,                \
+                                                                               \
+    .shared_resource_mutex_lock   = _rpc_##_shared_resource_mutex_lock,        \
+    .shared_resource_mutex_unlock = _rpc_##_shared_resource_mutex_unlock,      \
                                                                                \
     .dataport = OS_DATAPORT_ASSIGN_FUNC(_rpc_##_buf, _rpc_##_get_size)         \
 }
