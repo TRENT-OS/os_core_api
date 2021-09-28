@@ -304,6 +304,21 @@ OS_NetworkSocket_bind(
     const OS_NetworkSocket_Addr_t* const localAddr);
 
 /**
+ * Query the current state of the Network Stack component.
+ *
+ * @retval UNINITIALIZED Network Stack is uninitialized.
+ * @retval INITIALIZED   Network Stack is initialized.
+ * @retval RUNNING       Network Stack is running.
+ * @retval FATAL_ERROR   Network Stack has experienced a fatal error.
+ *
+ * @param[in] ctx Interface context that should be used to query the respective
+ *                Network Stack component.
+ */
+OS_NetworkStack_State_t
+OS_NetworkSocket_getStatus(
+    const if_OS_Socket_t* const ctx);
+
+/**
  * Get the events for the opened sockets socket communication is possible after
  * closure.
  *

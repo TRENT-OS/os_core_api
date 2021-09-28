@@ -38,6 +38,7 @@ procedure if_OS_Socket {
 
     include "OS_Error.h";
     include "interfaces/if_OS_Socket.h";
+    include "network/OS_Network_types.h";
 
     /**
      * Create a socket.
@@ -250,6 +251,18 @@ procedure if_OS_Socket {
         inout size_t                  pLen,
         out   OS_NetworkSocket_Addr_t srcAddr,
     );
+
+    /**
+     * Query the current state of the Network Stack component.
+     *
+      * @retval UNINITIALIZED Network Stack is uninitialized.
+      * @retval INITIALIZED   Network Stack is initialized.
+      * @retval RUNNING       Network Stack is running.
+      * @retval FATAL_ERROR   Network Stack has experienced a fatal error.
+     */
+    OS_NetworkStack_State_t
+    socket_getStatus(
+        void);
 
     /**
      * Get all pending events for the client's sockets.

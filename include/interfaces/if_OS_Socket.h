@@ -55,6 +55,9 @@ typedef struct
         size_t* const pLen,
         const OS_NetworkSocket_Addr_t* const dstAddr);
 
+    OS_NetworkStack_State_t (*socket_getStatus)(
+        void);
+
     OS_Error_t (*socket_getPendingEvents)(
         const size_t bufSize,
         int* const pNumberOfEvents);
@@ -77,6 +80,7 @@ typedef struct
     .socket_read             = _prefix_##_rpc_socket_read,                     \
     .socket_sendto           = _prefix_##_rpc_socket_sendto,                   \
     .socket_recvfrom         = _prefix_##_rpc_socket_recvfrom,                 \
+    .socket_getStatus        = _prefix_##_rpc_socket_getStatus,                \
     .socket_getPendingEvents = _prefix_##_rpc_socket_getPendingEvents,         \
                                                                                \
     .shared_resource_mutex_lock   = _prefix_##_shared_resource_mutex_lock,     \

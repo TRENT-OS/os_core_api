@@ -39,6 +39,14 @@
 #define OS_SOCK_EV_CLOSE     (1<<5)
 #define OS_SOCK_EV_ERROR     (1<<6)
 
+typedef enum
+{
+    UNINITIALIZED,
+    INITIALIZED,
+    RUNNING,
+    FATAL_ERROR
+} OS_NetworkStack_State_t;
+
 typedef struct
 {
     char     addr[IP_ADD_STR_MAX_LEN + 1];
