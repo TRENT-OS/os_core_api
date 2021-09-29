@@ -65,10 +65,6 @@ typedef struct
     OS_Dataport_t dataport;
 } if_OS_Socket_t;
 
-#define IF_OS_SOCKET_DEFINE_CONNECTOR(_rpc_)                                   \
-    extern volatile void* _rpc_##_buf;                                         \
-    size_t                _rpc_##_get_size(void);
-
 #define IF_OS_SOCKET_ASSIGN(_prefix_)                                          \
 {                                                                              \
     .socket_create           = _prefix_##_rpc_socket_create,                   \
