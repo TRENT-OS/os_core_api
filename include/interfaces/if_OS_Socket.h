@@ -86,6 +86,6 @@ typedef struct
     .shared_resource_mutex_lock   = _prefix_##_shared_resource_mutex_lock,     \
     .shared_resource_mutex_unlock = _prefix_##_shared_resource_mutex_unlock,   \
                                                                                \
-    .dataport = OS_DATAPORT_ASSIGN_FUNC(_prefix_##_rpc_buf,                    \
+    .dataport = OS_DATAPORT_ASSIGN_FUNC((void*)_prefix_##_rpc_get_buf,         \
                                         _prefix_##_rpc_get_size)               \
 }
