@@ -107,46 +107,6 @@ OS_NetworkSocket_create(
     const int                        type);
 
 /**
- * Write data on a socket. This function checks if the socket is bound,
- * connected and that it isn't shutdown locally.
- *
- * @retval OS_SUCCESS                          Operation was successful.
- * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If NULL is passed as a buffer
- *                                             pointer, the handle context is
- *                                             invalid or the requested length
- *                                             exceeds the dataport size.
- * @retval OS_ERROR_IO                         If there is an input/output
- *                                             error.
- * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
- * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
- * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
- * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
- * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
- * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
- *                                             unavailable or the request would
- *                                             block and the caller should try
- *                                             again.
- * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
- *                                             before the network stack was
- *                                             fully initialized.
- * @retval other                               Each component implementing this
- *                                             might have additional error
- *                                             codes.
- *
- * @param[in]  handle       Handle of the socket to write on.
- * @param[in]  buf          Buffer containing data that should be sent.
- * @param[in]  requestedLen Amount of data that should be written.
- * @param[out] actualLen    Actual length that was written on the socket.
- */
-OS_Error_t
-OS_NetworkSocket_write(
-    const OS_NetworkSocket_Handle_t handle,
-    const void* const               buf,
-    const size_t                    requestedLen,
-    size_t* const                   actualLen);
-
-/**
  * Connect a socket to a specified address.
  *
  * @retval OS_SUCCESS                        Operation was successful.
@@ -294,6 +254,46 @@ OS_NetworkSocket_recvfrom(
     size_t                          requestedLen,
     size_t* const                   actualLen,
     OS_NetworkSocket_Addr_t* const  srcAddr);
+
+/**
+ * Write data on a socket. This function checks if the socket is bound,
+ * connected and that it isn't shutdown locally.
+ *
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If NULL is passed as a buffer
+ *                                             pointer, the handle context is
+ *                                             invalid or the requested length
+ *                                             exceeds the dataport size.
+ * @retval OS_ERROR_IO                         If there is an input/output
+ *                                             error.
+ * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
+ * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
+ *                                             unavailable or the request would
+ *                                             block and the caller should try
+ *                                             again.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
+ *                                             before the network stack was
+ *                                             fully initialized.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
+ *
+ * @param[in]  handle       Handle of the socket to write on.
+ * @param[in]  buf          Buffer containing data that should be sent.
+ * @param[in]  requestedLen Amount of data that should be written.
+ * @param[out] actualLen    Actual length that was written on the socket.
+ */
+OS_Error_t
+OS_NetworkSocket_write(
+    const OS_NetworkSocket_Handle_t handle,
+    const void* const               buf,
+    const size_t                    requestedLen,
+    size_t* const                   actualLen);
 
 /**
  * Send data on a destination socket without checking if the destination is
