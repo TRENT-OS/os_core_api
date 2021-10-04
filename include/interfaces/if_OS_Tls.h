@@ -19,11 +19,12 @@ typedef struct
     OS_Dataport_t dataport;
 } if_OS_Tls_t;
 
-#define IF_OS_TLS_ASSIGN(_rpc_, _port_)         \
-{                                               \
-    .handshake  = _rpc_ ## _handshake,          \
-    .write      = _rpc_ ## _write,              \
-    .read       = _rpc_ ## _read,               \
-    .reset      = _rpc_ ## _reset,              \
-    .dataport   = OS_DATAPORT_ASSIGN(_port_)    \
+#define IF_OS_TLS_ASSIGN(_prefix_)                                             \
+{                                                                              \
+    .handshake  = _prefix_##_rpc_handshake,                                    \
+    .write      = _prefix_##_rpc_write,                                        \
+    .read       = _prefix_##_rpc_read,                                         \
+    .reset      = _prefix_##_rpc_reset,                                        \
+    .dataport   = OS_DATAPORT_ASSIGN_FUNC((void*)_prefix_##_rpc_get_buf,       \
+                                          _prefix_##_rpc_get_size)             \
 }
