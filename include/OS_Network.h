@@ -191,8 +191,8 @@ OS_NetworkSocket_accept(
  * @retval OS_SUCCESS                     Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
- *                                        the dataport size.
- * @retval OS_ERROR_INVALID_PARAMETER     If the handle context is invalid.
+ *                                        the dataport size or the handle
+ *                                        context is invalid.
  * @retval OS_ERROR_IO                    If there is an input/output error.
  * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got shut down.
  * @retval OS_ERROR_NOT_INITIALIZED       If the function was called
@@ -225,7 +225,7 @@ OS_NetworkSocket_read(
  * @retval OS_SUCCESS                          Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
- * @retval OS_ERROR_INVALID_PARAMETER          If the requested length exceeds
+                                               or the requested length exceeds
  *                                             the dataport size.
  * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
  * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
@@ -301,8 +301,8 @@ OS_NetworkSocket_write(
  *
  * @retval OS_SUCCESS                          Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
- * @retval OS_ERROR_INVALID_PARAMETER          If the requested length exceeds
+ * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid
+ *                                             or the requested length exceeds
  *                                             the dataport size.
  * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
  * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
@@ -338,9 +338,9 @@ OS_NetworkSocket_sendto(
  *
  * @retval OS_SUCCESS                  Operation was successful.
  * @retval OS_ERROR_INVALID_HANDLE     If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid.
- * @retval OS_ERROR_INVALID_PARAMETER  If the requested length exceeds the
- *                                     dataport size.
+ * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid or the
+                                       requested length exceeds the dataport
+                                       size.
  * @retval OS_ERROR_IO                 If the specified address can not be
  *                                     found.
  * @retval OS_ERROR_INSUFFICIENT_SPACE If there is not enough space.
