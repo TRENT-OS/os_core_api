@@ -62,6 +62,16 @@ typedef struct
         const size_t bufSize,
         int* const pNumberOfEvents);
 
+    void (*socket_wait)(
+        void);
+
+    int (*socket_poll)(
+        void);
+
+    int (*socket_regCallback)(
+        void (*callback)(void*),
+        void* arg);
+
     mutex_lock_func_t   shared_resource_mutex_lock;
     mutex_unlock_func_t shared_resource_mutex_unlock;
 
@@ -82,6 +92,10 @@ typedef struct
     .socket_recvfrom         = _prefix_##_rpc_socket_recvfrom,                 \
     .socket_getStatus        = _prefix_##_rpc_socket_getStatus,                \
     .socket_getPendingEvents = _prefix_##_rpc_socket_getPendingEvents,         \
+                                                                               \
+    .socket_wait             = _prefix_##_event_notify_wait,                   \
+    .socket_poll             = _prefix_##_event_notify_poll,                   \
+    .socket_regCallback      = _prefix_##_event_notify_reg_callback,           \
                                                                                \
     .shared_resource_mutex_lock   = _prefix_##_shared_resource_mutex_lock,     \
     .shared_resource_mutex_unlock = _prefix_##_shared_resource_mutex_unlock,   \

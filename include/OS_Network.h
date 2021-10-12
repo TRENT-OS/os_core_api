@@ -400,6 +400,59 @@ OS_NetworkSocket_getPendingEvents(
     int* const                  numberOfEvents);
 
 /**
+ * Block until a notification event gets received.
+ *
+ * @retval OS_SUCCESS                 Notification event found.
+ * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
+ *
+ * @param[in] ctx Interface context that should be used with the
+ *                handle.
+ */
+OS_Error_t
+OS_NetworkSocket_wait(
+    const if_OS_Socket_t* const ctx);
+
+/**
+ * Check whether there is a pending notification.
+ *
+ * @retval OS_SUCCESS                 Notification event found.
+ * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval OS_ERROR_TRY_AGAIN         If no notification event was found.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
+ *
+ * @param[in] ctx Interface context that should be used with the
+ *                handle.
+ */
+OS_Error_t
+OS_NetworkSocket_poll(
+    const if_OS_Socket_t* const ctx);
+
+/**
+ * Register a callback function that should be invoked with the provided
+ * argument when a notification event is received.
+ *
+ * @retval OS_SUCCESS                 Callback successfully registered.
+ * @retval OS_ERROR_GENERIC           If the callback could not be registered.
+ * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval other                      Each component implementing this might
+ *                                    have additional error codes.
+ *
+ * @param[in] ctx      Interface context that should be used with the
+ *                     handle.
+ * @param[in] callback Function pointer to the function that should be invoked.
+ * @param[in] arg      Argument that the registered function should be invoked
+ *                     with.
+ */
+OS_Error_t
+OS_NetworkSocket_regCallback(
+    const if_OS_Socket_t* const ctx,
+    void (*callback)(void*),
+    void* arg);
+
+/**
  * Closes a network socket. No further socket communication is possible after
  * closure.
  *
