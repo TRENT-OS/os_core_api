@@ -12,7 +12,9 @@
  */
 
 #pragma once
+
 #include <stdint.h>
+#include <arpa/inet.h>
 
 #include "OS_Error.h"
 
@@ -46,6 +48,13 @@ typedef enum
     RUNNING,
     FATAL_ERROR
 } OS_NetworkStack_State_t;
+
+typedef struct
+{
+    char dev_addr[INET_ADDRSTRLEN];
+    char gateway_addr[INET_ADDRSTRLEN];
+    char subnet_mask[INET_ADDRSTRLEN];
+} OS_NetworkStack_AddressConfig_t;
 
 typedef struct
 {
