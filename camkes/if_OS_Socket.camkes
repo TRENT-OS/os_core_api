@@ -38,7 +38,7 @@ procedure if_OS_Socket {
 
     include "OS_Error.h";
     include "interfaces/if_OS_Socket.h";
-    include "network/OS_Network_types.h";
+    include "network/OS_SocketTypes.h";
 
     /**
      * Create a socket.
@@ -140,8 +140,8 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_connect(
-        in    int                     handle,
-        refin OS_NetworkSocket_Addr_t dstAddr
+        in    int              handle,
+        refin OS_Socket_Addr_t dstAddr
     );
 
     /**
@@ -160,9 +160,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_accept(
-        in    int                     handle,
-        inout int                     pHandleClient,
-        out   OS_NetworkSocket_Addr_t srcAddr
+        in    int              handle,
+        inout int              pHandleClient,
+        out   OS_Socket_Addr_t srcAddr
     );
 
     /**
@@ -196,8 +196,8 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_bind(
-        in    int                     handle,
-        refin OS_NetworkSocket_Addr_t localAddr
+        in    int              handle,
+        refin OS_Socket_Addr_t localAddr
     );
 
     /**
@@ -220,9 +220,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_sendto(
-        in    int                     handle,
-        inout size_t                  pLen,
-        refin OS_NetworkSocket_Addr_t dstAddr
+        in    int              handle,
+        inout size_t           pLen,
+        refin OS_Socket_Addr_t dstAddr
     );
 
     /**
@@ -247,9 +247,9 @@ procedure if_OS_Socket {
      */
     OS_Error_t
     socket_recvfrom(
-        in    int                     handle,
-        inout size_t                  pLen,
-        out   OS_NetworkSocket_Addr_t srcAddr,
+        in    int              handle,
+        inout size_t           pLen,
+        out   OS_Socket_Addr_t srcAddr,
     );
 
     /**

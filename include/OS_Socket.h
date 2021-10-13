@@ -58,7 +58,10 @@
 
 #include "OS_Error.h"
 #include "interfaces/if_OS_Socket.h"
-#include "network/OS_Network_types.h"
+
+#include "network/OS_SocketTypes.h"
+#include "network/OS_NetworkStackTypes.h"
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -70,10 +73,10 @@ typedef struct
 {
     if_OS_Socket_t ctx;      /**< RPC vtable context */
     int            handleID; /**< Handle id*/
-} OS_NetworkSocket_Handle_t;
+} OS_Socket_Handle_t;
 
-#define OS_NetworkSocket_Handle_INVALID                                        \
-    (OS_NetworkSocket_Handle_t) { .ctx = {NULL}, .handleID = -1 }
+#define OS_Socket_Handle_INVALID                                               \
+    (OS_Socket_Handle_t) { .ctx = {NULL}, .handleID = -1 }
 
 /**
  * Create a socket.
@@ -102,11 +105,11 @@ typedef struct
  * @param[in] type    Type of the socket that should be created.
  */
 OS_Error_t
-OS_NetworkSocket_create(
-    const if_OS_Socket_t* const      ctx,
-    OS_NetworkSocket_Handle_t* const phandle,
-    const int                        domain,
-    const int                        type);
+OS_Socket_create(
+    const if_OS_Socket_t* const ctx,
+    OS_Socket_Handle_t* const   phandle,
+    const int                   domain,
+    const int                   type);
 
 /**
  * Connect a socket to a specified address.
@@ -131,9 +134,9 @@ OS_NetworkSocket_create(
  * @param[in] dstAddr Address of the destination to connect to.
  */
 OS_Error_t
-OS_NetworkSocket_connect(
-    const OS_NetworkSocket_Handle_t handle,
-    const OS_NetworkSocket_Addr_t*  dstAddr);
+OS_Socket_connect(
+    const OS_Socket_Handle_t handle,
+    const OS_Socket_Addr_t*  dstAddr);
 
 /**
  * Listen for connections on an opened and bound socket.
@@ -159,9 +162,9 @@ OS_NetworkSocket_connect(
  *                    connections may grow.
  */
 OS_Error_t
-OS_NetworkSocket_listen(
-    const OS_NetworkSocket_Handle_t handle,
-    const int                       backlog);
+OS_Socket_listen(
+    const OS_Socket_Handle_t handle,
+    const int                backlog);
 
 /**
  * Accept the next connection request on the queue of pending connections
@@ -189,10 +192,10 @@ OS_NetworkSocket_listen(
  * @param[out] srcAddr       Address of the accepted socket.
  */
 OS_Error_t
-OS_NetworkSocket_accept(
-    const OS_NetworkSocket_Handle_t  handle,
-    OS_NetworkSocket_Handle_t* const pClientHandle,
-    OS_NetworkSocket_Addr_t* const   srcAddr);
+OS_Socket_accept(
+    const OS_Socket_Handle_t  handle,
+    OS_Socket_Handle_t* const pClientHandle,
+    OS_Socket_Addr_t* const   srcAddr);
 
 /**
  * Read data from a socket. This function checks whether or not the socket
@@ -223,11 +226,11 @@ OS_NetworkSocket_accept(
  * @param[out] actualLen    Actual length that was read from the socket.
  */
 OS_Error_t
-OS_NetworkSocket_read(
-    const OS_NetworkSocket_Handle_t handle,
-    void* const                     buf,
-    size_t                          requestedLen,
-    size_t* const                   actualLen);
+OS_Socket_read(
+    const OS_Socket_Handle_t handle,
+    void* const              buf,
+    size_t                   requestedLen,
+    size_t* const            actualLen);
 
 /**
  * Receive data from a specified socket. This operation checks if the socket
@@ -264,12 +267,12 @@ OS_NetworkSocket_read(
  *                          from.
  */
 OS_Error_t
-OS_NetworkSocket_recvfrom(
-    const OS_NetworkSocket_Handle_t handle,
-    void* const                     buf,
-    size_t                          requestedLen,
-    size_t* const                   actualLen,
-    OS_NetworkSocket_Addr_t* const  srcAddr);
+OS_Socket_recvfrom(
+    const OS_Socket_Handle_t handle,
+    void* const              buf,
+    size_t                   requestedLen,
+    size_t* const            actualLen,
+    OS_Socket_Addr_t* const  srcAddr);
 
 /**
  * Write data on a socket. This function checks if the socket is bound,
@@ -309,11 +312,11 @@ OS_NetworkSocket_recvfrom(
  * @param[out] actualLen    Actual length that was written on the socket.
  */
 OS_Error_t
-OS_NetworkSocket_write(
-    const OS_NetworkSocket_Handle_t handle,
-    const void* const               buf,
-    const size_t                    requestedLen,
-    size_t* const                   actualLen);
+OS_Socket_write(
+    const OS_Socket_Handle_t handle,
+    const void* const        buf,
+    const size_t             requestedLen,
+    size_t* const            actualLen);
 
 /**
  * Send data on a destination socket without checking if the destination is
@@ -350,12 +353,12 @@ OS_NetworkSocket_write(
  * @param[in]  dstAddr      Address of the destination socket to send data on.
  */
 OS_Error_t
-OS_NetworkSocket_sendto(
-    const OS_NetworkSocket_Handle_t      handle,
-    const void* const                    buf,
-    size_t                               requestedLen,
-    size_t* const                        actualLen,
-    const OS_NetworkSocket_Addr_t* const dstAddr);
+OS_Socket_sendto(
+    const OS_Socket_Handle_t      handle,
+    const void* const             buf,
+    size_t                        requestedLen,
+    size_t* const                 actualLen,
+    const OS_Socket_Addr_t* const dstAddr);
 
 /**
  * Bind a specified local IP-address and port to a socket.
@@ -380,9 +383,9 @@ OS_NetworkSocket_sendto(
  * @param[in] localAddr Local address to bind the socket to.
  */
 OS_Error_t
-OS_NetworkSocket_bind(
-    const OS_NetworkSocket_Handle_t      handle,
-    const OS_NetworkSocket_Addr_t* const localAddr);
+OS_Socket_bind(
+    const OS_Socket_Handle_t      handle,
+    const OS_Socket_Addr_t* const localAddr);
 
 /**
  * Query the current state of the Network Stack component.
@@ -396,7 +399,7 @@ OS_NetworkSocket_bind(
  *                Network Stack component.
  */
 OS_NetworkStack_State_t
-OS_NetworkSocket_getStatus(
+OS_Socket_getStatus(
     const if_OS_Socket_t* const ctx);
 
 /**
@@ -422,7 +425,7 @@ OS_NetworkSocket_getStatus(
  * @param[out] numberOfEvents Will be overwritten with the number of events.
  */
 OS_Error_t
-OS_NetworkSocket_getPendingEvents(
+OS_Socket_getPendingEvents(
     const if_OS_Socket_t* const ctx,
     void* const                 buf,
     const size_t                bufSize,
@@ -440,7 +443,7 @@ OS_NetworkSocket_getPendingEvents(
  *                handle.
  */
 OS_Error_t
-OS_NetworkSocket_wait(
+OS_Socket_wait(
     const if_OS_Socket_t* const ctx);
 
 /**
@@ -456,7 +459,7 @@ OS_NetworkSocket_wait(
  *                handle.
  */
 OS_Error_t
-OS_NetworkSocket_poll(
+OS_Socket_poll(
     const if_OS_Socket_t* const ctx);
 
 /**
@@ -476,7 +479,7 @@ OS_NetworkSocket_poll(
  *                     with.
  */
 OS_Error_t
-OS_NetworkSocket_regCallback(
+OS_Socket_regCallback(
     const if_OS_Socket_t* const ctx,
     void (*callback)(void*),
     void* arg);
@@ -498,7 +501,7 @@ OS_NetworkSocket_regCallback(
  * @param[in] handle Handle of the socket that should be closed.
  */
 OS_Error_t
-OS_NetworkSocket_close(
-    const OS_NetworkSocket_Handle_t handle);
+OS_Socket_close(
+    const OS_Socket_Handle_t handle);
 
 /** @} */

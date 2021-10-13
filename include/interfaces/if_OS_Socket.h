@@ -8,7 +8,8 @@
 #include "OS_Dataport.h"
 #include "OS_Error.h"
 #include "OS_Types.h"
-#include "network/OS_Network_types.h"
+#include "network/OS_SocketTypes.h"
+#include "network/OS_NetworkStackTypes.h"
 
 typedef struct
 {
@@ -20,11 +21,11 @@ typedef struct
     OS_Error_t (*socket_accept)(
         const int handle,
         int* const pHandleClient,
-        OS_NetworkSocket_Addr_t* const srcAddr);
+        OS_Socket_Addr_t* const srcAddr);
 
     OS_Error_t (*socket_bind)(
         const int handle,
-        const OS_NetworkSocket_Addr_t* const localAddr);
+        const OS_Socket_Addr_t* const localAddr);
 
     OS_Error_t (*socket_listen)(
         const int handle,
@@ -32,7 +33,7 @@ typedef struct
 
     OS_Error_t (*socket_connect)(
         const int handle,
-        const OS_NetworkSocket_Addr_t* const dstAddr);
+        const OS_Socket_Addr_t* const dstAddr);
 
     OS_Error_t (*socket_close)(
         const int handle);
@@ -48,12 +49,12 @@ typedef struct
     OS_Error_t (*socket_recvfrom)(
         const int handle,
         size_t* const pLen,
-        OS_NetworkSocket_Addr_t* const srcAddr);
+        OS_Socket_Addr_t* const srcAddr);
 
     OS_Error_t (*socket_sendto)(
         const int handle,
         size_t* const pLen,
-        const OS_NetworkSocket_Addr_t* const dstAddr);
+        const OS_Socket_Addr_t* const dstAddr);
 
     OS_NetworkStack_State_t (*socket_getStatus)(
         void);
