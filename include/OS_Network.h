@@ -68,7 +68,7 @@
 // (similar as its done for OS_Crypto for example).
 typedef struct
 {
-    if_OS_Socket_t ctx;      /**< Pointer to the RPC vtable used */
+    if_OS_Socket_t ctx;      /**< RPC vtable context */
     int            handleID; /**< Handle id*/
 } OS_NetworkSocket_Handle_t;
 
@@ -79,17 +79,19 @@ typedef struct
  * Create a socket.
  *
  * @retval OS_SUCCESS                        Operation was successful.
+ * @retval OS_ERROR_ABORTED                  If the Network Stack has
+ *                                           experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED          If the function was called before
+ *                                           the Network Stack was fully
+ *                                           initialized.
+ * @retval OS_ERROR_INVALID_PARAMETER        If one of the passed parameters is
+ *                                           NULL or the handle context is
+ *                                           invalid.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the passed domain or type
  *                                           are unsupported.
  * @retval OS_ERROR_NETWORK_UNREACHABLE      If the network is unreachable.
  * @retval OS_ERROR_INSUFFICIENT_SPACE       If no free sockets could be
  *                                           found.
- * @retval OS_ERROR_INVALID_PARAMETER        If one of the passed parameters is
- *                                           NULL or the handle context is
- *                                           invalid.
- * @retval OS_ERROR_NOT_INITIALIZED          If the function was called before
- *                                           the network stack was fully
- *                                           initialized.
  * @retval other                             Each component implementing
  *                                           this might have additional
  *                                           error codes.
@@ -110,14 +112,18 @@ OS_NetworkSocket_create(
  * Connect a socket to a specified address.
  *
  * @retval OS_SUCCESS                        Operation was successful.
+ * @retval OS_ERROR_ABORTED                  If the Network Stack has
+ *                                           experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED          If the function was called
+ *                                           before the Network Stack was fully
+ *                                           initialized.
  * @retval OS_ERROR_INVALID_HANDLE           If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER        If the passed address is invalid or
  *                                           the handle context is invalid.
+ * @retval OS_ERROR_CONNECTION_CLOSED        If the socket connection was
+ *                                           previously shut down.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the protocol is not supported.
  * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE If the host is not unreachable.
- * @retval OS_ERROR_NOT_INITIALIZED          If the function was called
- *                                           before the network stack was fully
- *                                           initialized.
  * @retval other                             Each component implementing this
  *                                           might have additional error codes.
  *
@@ -133,13 +139,17 @@ OS_NetworkSocket_connect(
  * Listen for connections on an opened and bound socket.
  *
  * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_ABORTED                    If the Network Stack has
+ *                                             experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
+ *                                             before the Network Stack was
+ *                                             fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
+ * @retval OS_ERROR_CONNECTION_CLOSED          If the connection is in a closed
+ *                                             state.
  * @retval OS_ERROR_NETWORK_CONN_ALREADY_BOUND If the socket is already
  *                                             connected.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
- * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
- *                                             before the network stack was
- *                                             fully initialized.
  * @retval other                               Each component implementing this
  *                                             might have additional error
  *                                             codes.
@@ -158,25 +168,25 @@ OS_NetworkSocket_listen(
  * for the listening socket.
  *
  * @retval OS_SUCCESS                  Operation was successful.
+ * @retval OS_ERROR_ABORTED            If the Network Stack has
+ *                                     experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED    If the function was called before the
+ *                                     Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE     If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid.
  * @retval OS_ERROR_TRY_AGAIN          If the resource is temporarily
  *                                     unavailable and the caller should try
  *                                     again.
- * @retval OS_ERROR_NOT_INITIALIZED    If the function was called
- *                                     before the network stack was fully
- *                                     initialized.
- * @retval OS_ERROR_CONNECTION_CLOSED  Connection was closed by remote before it
- *                                     was accepted by the local host.
  * @retval OS_ERROR_INSUFFICIENT_SPACE If no free sockets could be found.
+ * @retval OS_ERROR_CONNECTION_CLOSED  If the connection was closed by remote
+ *                                     before it was accepted by the local host.
+ * @retval other                       Each component implementing this might
+ *                                     have additional error codes.
  *
- * @retval other                    Each component implementing this might
- *                                  have additional error codes.
- *
- * @param[in]  handle         Handle of the listening socket.
- * @param[out] pClientHandle  Handle that will be used to map the accepted
- *                            connection to.
- * @param[out] srcAddr        Address of the accepted socket.
+ * @param[in]  handle        Handle of the listening socket.
+ * @param[out] pClientHandle Handle that will be used to map the accepted
+ *                           connection to.
+ * @param[out] srcAddr       Address of the accepted socket.
  */
 OS_Error_t
 OS_NetworkSocket_accept(
@@ -189,19 +199,21 @@ OS_NetworkSocket_accept(
  * is bound and connected before it attempts to receive data.
  *
  * @retval OS_SUCCESS                     Operation was successful.
+ * @retval OS_ERROR_ABORTED               If the Network Stack has
+ *                                        experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED       If the function was called before the
+ *                                        Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
  *                                        the dataport size or the handle
  *                                        context is invalid.
  * @retval OS_ERROR_IO                    If there is an input/output error.
- * @retval OS_ERROR_CONNECTION_CLOSED     If the connection got shut down.
- * @retval OS_ERROR_NOT_INITIALIZED       If the function was called
- *                                        before the network stack was fully
- *                                        initialized.
  * @retval OS_ERROR_TRY_AGAIN             If the resource is temporarily
  *                                        unavailable or the request would
  *                                        block and the caller should try again.
- *                                        try again.
+ * @retval OS_ERROR_CONNECTION_CLOSED     If the connection is in a closed
+ *                                        state.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
  * @retval other                          Each component implementing this
  *                                        might have additional error codes.
  *
@@ -223,19 +235,23 @@ OS_NetworkSocket_read(
  * connection-oriented.
  *
  * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_ABORTED                    If the Network Stack has
+ *                                             experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called before
+ *                                             the Network Stack was fully
+ *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
-                                               or the requested length exceeds
+ *                                             or the requested length exceeds
  *                                             the dataport size.
- * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
- * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
- * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
- *                                             before the network stack was
- *                                             fully initialized.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
  *                                             block and the caller should try
  *                                             again.
+ * @retval OS_ERROR_CONNECTION_CLOSED          If no further communication is
+ *                                             possible on the socket.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
  * @retval other                               Each component implementing this
  *                                             might have additional error
  *                                             codes.
@@ -260,6 +276,11 @@ OS_NetworkSocket_recvfrom(
  * connected and that it isn't shutdown locally.
  *
  * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_ABORTED                    If the Network Stack has
+ *                                             experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called before
+ *                                             the Network Stack was fully
+ *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER          If NULL is passed as a buffer
  *                                             pointer, the handle context is
@@ -267,18 +288,17 @@ OS_NetworkSocket_recvfrom(
  *                                             exceeds the dataport size.
  * @retval OS_ERROR_IO                         If there is an input/output
  *                                             error.
- * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
- * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
- * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
- * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
  * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
  *                                             block and the caller should try
  *                                             again.
- * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
- *                                             before the network stack was
- *                                             fully initialized.
+ * @retval OS_ERROR_CONNECTION_CLOSED          If the connection is in a closed
+ *                                             state.
+ * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
  * @retval other                               Each component implementing this
  *                                             might have additional error
  *                                             codes.
@@ -300,30 +320,34 @@ OS_NetworkSocket_write(
  * connected or not and is therefore not connection-oriented.
  *
  * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_ABORTED                    If the Network Stack has
+ *                                             experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called before
+ *                                             the Network Stack was fully
+ *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid
  *                                             or the requested length exceeds
  *                                             the dataport size.
- * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
- * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
  * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
  *                                             block and the caller should try
  *                                             again.
- * @retval OS_ERROR_NOT_INITIALIZED            If the function was called
- *                                             before the network stack was
- *                                             fully initialized.
+ * @retval OS_ERROR_CONNECTION_CLOSED          If no further communication is
+ *                                             possible on the socket.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
  * @retval other                               Each component implementing this
  *                                             might have additional error
  *                                             codes.
  *
- * @param[in]  handle        Handle to a previously created socket.
- * @param[in]  buf           Buffer containing data to be written.
- * @param[in]  requestedLen  Length of the data that should be written on the
- *                           destination socket.
- * @param[out] actualLen     Actual length that was written on the socket.
- * @param[in]  dstAddr       Address of the destination socket to send data on.
+ * @param[in]  handle       Handle to a previously created socket.
+ * @param[in]  buf          Buffer containing data to be written.
+ * @param[in]  requestedLen Length of the data that should be written on the
+ *                          destination socket.
+ * @param[out] actualLen    Actual length that was written on the socket.
+ * @param[in]  dstAddr      Address of the destination socket to send data on.
  */
 OS_Error_t
 OS_NetworkSocket_sendto(
@@ -337,6 +361,10 @@ OS_NetworkSocket_sendto(
  * Bind a specified local IP-address and port to a socket.
  *
  * @retval OS_SUCCESS                  Operation was successful.
+ * @retval OS_ERROR_ABORTED            If the Network Stack has experienced a
+ *                                     fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED    If the function was called before the
+ *                                     Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE     If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid or the
                                        requested length exceeds the dataport
@@ -344,9 +372,7 @@ OS_NetworkSocket_sendto(
  * @retval OS_ERROR_IO                 If the specified address can not be
  *                                     found.
  * @retval OS_ERROR_INSUFFICIENT_SPACE If there is not enough space.
- * @retval OS_ERROR_NOT_INITIALIZED    If the function was called
- *                                     before the network stack was fully
- *                                     initialized.
+ * @retval OS_ERROR_CONNECTION_CLOSED  If the connection is in a closed state.
  * @retval other                       Each component implementing this might
  *                                     have additional error codes.
  *
@@ -378,11 +404,14 @@ OS_NetworkSocket_getStatus(
  * closure.
  *
  * @retval OS_SUCCESS                 Operation was successful.
- * @retval OS_ERROR_ABORTED           If an internal error occurred.
+ * @retval OS_ERROR_ABORTED           If the Network Stack has experienced a
+ *                                    fatal error or an internal error occurred.
+ * @retval OS_ERROR_NOT_INITIALIZED   If the function was called before the
+ *                                    Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
- * @retval OS_ERROR_NOT_INITIALIZED   If the function was called before the
- *                                    network stack was fully initialized.
+ * @retval OS_ERROR_BUFFER_TOO_SMALL  If the buffer is not even large enough for
+ *                                    one event.
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
@@ -457,10 +486,12 @@ OS_NetworkSocket_regCallback(
  * closure.
  *
  * @retval OS_SUCCESS                 Operation was successful.
+ * @retval OS_ERROR_ABORTED           If the Network Stack has experienced a
+ *                                    fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED   If the function was called before the
+ *                                    Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
  * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
- * @retval OS_ERROR_NOT_INITIALIZED   If the function was called before the
- *                                    network stack was fully initialized.
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
