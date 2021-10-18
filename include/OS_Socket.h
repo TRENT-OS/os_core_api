@@ -26,9 +26,6 @@
 #include <stddef.h>
 
 
-// TODO: We should discuss if we need to hide this struct in the implementation
-// and just have the typedef in the API without showing the implementation
-// (similar as its done for OS_Crypto for example).
 typedef struct
 {
     if_OS_Socket_t ctx;      /**< RPC vtable context */
