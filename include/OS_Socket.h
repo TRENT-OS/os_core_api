@@ -3,55 +3,15 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-// TODO: The section below needs to be updated in its content and form to match
-// to our doxygen guidelines.
 /**
  * @file
- * @defgroup OS_Network OS Network API
- * @brief    OS Network API library
  *
- * @details These API interacts with the Network
- *          Stack to offer IP functionality to the system using a socket based
- *          interface.
+ * OS Socket API
  *
- *          Include system header for TRENTOS-M Network Socket API. The
- *          Network stack can be used in two different ways, in a SERVER
- *          configuration (where the APP listens for an incoming connection)
- *          and a CLIENT configuration (where the APP can connect to a remote
- *          host).\n\n
- *          The Network Stack is implemented as a CAmkES component and in
- *          order to use it you must instantiate at least one such component
- *          and additionally an interface file and a CAmkES component file must
- *          be created/configured. \n\n The reference implementation can be
- *          found in the test_network_api folder in tests.\n
+ * @ingroup OS_Socket
+ * @defgroup OS_Socket The OS Socket API
  *
- *          <b> Dependencies </b> \n
- *          The Network depends on a network interface driver, the
- *          configuration server and the system libraries.\n\n
- *
- *          <b> Network interface file: </b> \n
- *          The CAmkES interface implementation can be found in
- *          if_OS_Socket.camkes file.
- *
- *          <b> CAmkES configuration file: </b> \n
- *          In order to use the Stack, your component definition needs to
- *          include the following.
- *          \code
- *              component <COMPONENT_NAME> {
- *                      //Reference to the RPC socket interface
- *                      uses      if_OS_Socket    networkStack_rpc;
- *                      //A buffer to send data to/from the stack
- *                     dataport  Buf             buffer;
- *              }
- *          \endcode
- *
- *          <b> Limitations: </b> \n
- *          + Only IPv4 connections are supported
- *          + Only TCP socket is supported
- *          + Only 1 connection can be active at a given time
- *          + Each APP needs its own Network Stack
- *          + Network Stack needs to be specialized in Server/Client
- * @{
+ * Contains all relevent types and functions for the OS Socket API.
  */
 
 #pragma once
@@ -503,5 +463,3 @@ OS_Socket_regCallback(
 OS_Error_t
 OS_Socket_close(
     const OS_Socket_Handle_t handle);
-
-/** @} */
