@@ -168,7 +168,7 @@ typedef struct
          * Used by the TLS library to receive data from a connected socket.
          * If NULL, a default function will be used. This function is based on
          * the OS_Network API and requires ctx to be of type
-         * OS_NetworkSocket_Handle_t*.
+         * OS_Socket_Handle_t*.
          */
         int (*recv)(void* ctx, unsigned char* buf, size_t len);
 
@@ -176,7 +176,7 @@ typedef struct
          * Used by the TLS library to send data to a connected socket.
          * If NULL, a default function will be used. This function is based on
          * the OS_Network API and requires ctx to be of type
-         * OS_NetworkSocket_Handle_t*.
+         * OS_Socket_Handle_t*.
          */
         int (*send)(void* ctx, const unsigned char* buf, size_t len);
 
