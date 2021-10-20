@@ -84,6 +84,8 @@ OS_Socket_create(
  *                                           previously shut down.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the protocol is not supported.
  * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE If the host is not unreachable.
+ * @retval OS_ERROR_NETWORK_PROTO            If the function is called on the
+ *                                           wrong socket type.
  * @retval other                             Each component implementing this
  *                                           might have additional error codes.
  *
@@ -110,6 +112,8 @@ OS_Socket_connect(
  *                                             state.
  * @retval OS_ERROR_NETWORK_CONN_ALREADY_BOUND If the socket is already
  *                                             connected.
+ * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
+ *                                             wrong socket type.
  * @retval other                               Each component implementing this
  *                                             might have additional error
  *                                             codes.
@@ -137,6 +141,8 @@ OS_Socket_listen(
  * @retval OS_ERROR_TRY_AGAIN          If the resource is temporarily
  *                                     unavailable and the caller should try
  *                                     again.
+ * @retval OS_ERROR_NETWORK_PROTO      If the function is called on the
+ *                                     wrong socket type.
  * @retval OS_ERROR_INSUFFICIENT_SPACE If no free sockets could be found.
  * @retval OS_ERROR_CONNECTION_CLOSED  If the connection was closed by remote
  *                                     before it was accepted by the local host.
@@ -168,6 +174,10 @@ OS_Socket_accept(
  *                                        the dataport size or the handle
  *                                        context is invalid.
  * @retval OS_ERROR_IO                    If there is an input/output error.
+ * @retval OS_ERROR_NETWORK_CONN_NONE     If no connection is established when
+ *                                        calling this function.
+ * @retval OS_ERROR_NETWORK_PROTO         If the function is called on the wrong
+ *                                        socket type.
  * @retval OS_ERROR_TRY_AGAIN             If the resource is temporarily
  *                                        unavailable or the request would
  *                                        block and the caller should try again.
@@ -204,6 +214,8 @@ OS_Socket_read(
  * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
  *                                             or the requested length exceeds
  *                                             the dataport size.
+ * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
+ *                                             wrong socket type.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
  *                                             block and the caller should try
@@ -248,6 +260,8 @@ OS_Socket_recvfrom(
  *                                             exceeds the dataport size.
  * @retval OS_ERROR_IO                         If there is an input/output
  *                                             error.
+ * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
+ *                                             wrong socket type.
  * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
@@ -290,6 +304,8 @@ OS_Socket_write(
  *                                             or the requested length exceeds
  *                                             the dataport size.
  * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
+ * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
+ *                                             wrong socket type.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
  *                                             unavailable or the request would
  *                                             block and the caller should try
