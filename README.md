@@ -2,7 +2,7 @@
 
 ## Overview
 
-The OS Core API is a central repository for the TRENTOS-M APIs, which includes
+The OS Core API is a central repository for the TRENTOS APIs, which includes
 the following sub modules:
 
 * CertParser
@@ -14,7 +14,7 @@ the following sub modules:
 * Network
 * TLS
 
-Additionally all TRENTOS-M' CAmkES interfaces can be found here, as they are as
+Additionally all TRENTOS CAmkES interfaces can be found here, as they are as
 well considered the Core API.
 
 ### Concepts
