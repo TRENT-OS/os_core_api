@@ -211,7 +211,7 @@ OS_Socket_read(
  *                                             the Network Stack was fully
  *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid
  *                                             or the requested length exceeds
  *                                             the dataport size.
  * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
@@ -376,8 +376,7 @@ OS_Socket_getStatus(
     const if_OS_Socket_t* const ctx);
 
 /**
- * Get the events for the opened sockets socket communication is possible after
- * closure.
+ * Get the pending events for the opened sockets.
  *
  * @retval OS_SUCCESS                 Operation was successful.
  * @retval OS_ERROR_ABORTED           If the Network Stack has experienced a
@@ -391,8 +390,7 @@ OS_Socket_getStatus(
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
- * @param[in]  ctx            Interface context that should be used with the
- *                            handle.
+ * @param[in]  ctx            Interface context that should be used.
  * @param[in]  buf            Buffer to store the event data.
  * @param[in]  bufSize        Size of the buffer to store the event data.
  * @param[out] numberOfEvents Will be overwritten with the number of events.
@@ -412,8 +410,7 @@ OS_Socket_getPendingEvents(
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
- * @param[in] ctx Interface context that should be used with the
- *                handle.
+ * @param[in] ctx Interface context that should be used.
  */
 OS_Error_t
 OS_Socket_wait(
@@ -428,8 +425,7 @@ OS_Socket_wait(
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
- * @param[in] ctx Interface context that should be used with the
- *                handle.
+ * @param[in] ctx Interface context that should be used.
  */
 OS_Error_t
 OS_Socket_poll(
@@ -445,8 +441,7 @@ OS_Socket_poll(
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
- * @param[in] ctx      Interface context that should be used with the
- *                     handle.
+ * @param[in] ctx      Interface context that should be used.
  * @param[in] callback Function pointer to the function that should be invoked.
  * @param[in] arg      Argument that the registered function should be invoked
  *                     with.
