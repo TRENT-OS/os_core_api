@@ -11,7 +11,7 @@ the following sub modules:
 * FileSystem
 * Keystore
 * Logger
-* Network
+* Socket
 * TLS
 
 Additionally all TRENTOS CAmkES interfaces can be found here, as they are as
