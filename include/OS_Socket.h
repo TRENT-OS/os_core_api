@@ -9,9 +9,9 @@
  * OS Socket API
  *
  * @ingroup OS_Socket
- * @defgroup OS_Socket The OS Socket API
+ * @defgroup OS_Socket OS Socket API
  *
- * Contains all relevent types and functions for the OS Socket API.
+ * OS Socket API library
  */
 
 #pragma once
