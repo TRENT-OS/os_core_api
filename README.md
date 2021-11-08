@@ -2,8 +2,8 @@
 
 ## Overview
 
-The OS Core API is a central repository for the TRENTOS APIs, which includes
-the following sub modules:
+The OS Core API is the central definition of the TRENTOS APIs. It includes the
+following APIs:
 
 * CertParser
 * ConfigService
@@ -15,18 +15,18 @@ the following sub modules:
 * TLS
 
 Additionally all TRENTOS CAmkES interfaces can be found here, as they are as
-well considered the Core API.
+well considered part of the OS Core API.
 
 ### Concepts
 
-Each of the sub modules is standalone, with implementation linked via a separate
+Each of the APIs is standalone, with their implementation linked via a separate
 library.
 
 See library specific documentation for more details.
 
-### Declaration of API library in CMake
+### Linking of `os_core_api` in CMake
 
-For proper usage, include the `os_core_api` and implementation libraries in the
+For proper usage, include `os_core_api` and implementation libraries in the
 project:
 
 ```CMake
@@ -40,10 +40,10 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Example
 
-Assuming our CAmkES component wants to use `os_filesystem` API, the following
+Assuming a CAmkES component wants to use the `os_filesystem` API, the following
 must be configured:
 
-### Instantiation of API in CMake
+### Linking the `os_filesystem` API in CMake
 
 ```CMake
 DeclareCAmkESComponent(
@@ -58,9 +58,9 @@ DeclareCAmkESComponent(
 )
 ```
 
-### Using the API in C
+### Using the `os_filesystem` API in C
 
-Now one can use `OS_FileSystem.h` as follows:
+Now `OS_FileSystem.h` can be used as follows:
 
 ```C
 #include "OS_FileSystem.h"
