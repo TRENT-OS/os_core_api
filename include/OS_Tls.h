@@ -38,7 +38,7 @@ typedef enum
      * Forward all TLS API calls to a remote instance of the TLS API via CAmkES
      * RPC. This allows for isolation of the actual TLS protocol stack.
      */
-    OS_Tls_MODE_CLIENT,
+    OS_Tls_MODE_CLIENT
 } OS_Tls_Mode_t;
 
 /**
