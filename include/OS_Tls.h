@@ -216,6 +216,22 @@ typedef struct
         const char* caCerts;
 
         /**
+         * Here the own certificate is passed to the TLS API in PEM encoding
+         * (including headers) so that it can be used for authentication.
+         *
+         * This will be copied on call to OS_Tls_init().
+         */
+        const char* ownCert;
+
+        /**
+         * Here a private key is passed to the TLS API in PEM encoding
+         * (including headers) so it can be used for authentication.
+         *
+         * This will be copied on call to OS_Tls_init().
+         */
+        const char* privateKey;
+
+        /**
          * For simplicity, a user can just set some ciphersuites and be fine. The hash
          * given in the ciphersuites will be ENFORCED for everything (incl. session hash,
          * signature hashes etc.). Similary, the key size of the AES key will be used to
