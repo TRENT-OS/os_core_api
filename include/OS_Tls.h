@@ -207,9 +207,9 @@ typedef struct
         OS_Crypto_Handle_t handle;
 
         /**
-         * Here a list of certificates in PEM encoding (including headers) is
-         * passed to the TLS API so it can be used to verify the root of the
-         * server's certificate chain.
+         * Here a list of CA certificates is passed to the TLS API in PEM
+         * encoding (including headers) so it can be used to verify the root of
+         * the server's certificate chain.
          *
          * This will be copied on call to OS_Tls_init().
          */
