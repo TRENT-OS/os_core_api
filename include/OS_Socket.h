@@ -44,9 +44,8 @@ typedef struct
  * @retval OS_ERROR_NOT_INITIALIZED          If the function was called before
  *                                           the Network Stack was fully
  *                                           initialized.
- * @retval OS_ERROR_INVALID_PARAMETER        If one of the passed parameters is
- *                                           NULL or the handle context is
- *                                           invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER        If an invalid parameter or NULL
+ *                                           pointer was passed.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the passed domain or type
  *                                           are unsupported.
  * @retval OS_ERROR_NETWORK_UNREACHABLE      If the network is unreachable.
@@ -78,8 +77,8 @@ OS_Socket_create(
  *                                           before the Network Stack was fully
  *                                           initialized.
  * @retval OS_ERROR_INVALID_HANDLE           If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER        If the passed address is invalid or
- *                                           the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER        If an invalid parameter or NULL
+ *                                           pointer was passed.
  * @retval OS_ERROR_CONNECTION_CLOSED        If the socket connection was
  *                                           previously shut down.
  * @retval OS_ERROR_NETWORK_PROTO_NO_SUPPORT If the protocol is not supported.
@@ -107,7 +106,8 @@ OS_Socket_connect(
  *                                             before the Network Stack was
  *                                             fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER          If an invalid parameter or NULL
+ *                                             pointer was passed.
  * @retval OS_ERROR_CONNECTION_CLOSED          If the connection is in a closed
  *                                             state.
  * @retval OS_ERROR_NETWORK_CONN_ALREADY_BOUND If the socket is already
@@ -137,7 +137,8 @@ OS_Socket_listen(
  * @retval OS_ERROR_NOT_INITIALIZED    If the function was called before the
  *                                     Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE     If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER  If an invalid parameter or NULL pointer
+ *                                     was passed.
  * @retval OS_ERROR_TRY_AGAIN          If the resource is temporarily
  *                                     unavailable and the caller should try
  *                                     again.
@@ -170,9 +171,8 @@ OS_Socket_accept(
  * @retval OS_ERROR_NOT_INITIALIZED       If the function was called before the
  *                                        Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER     If the requested length exceeds
- *                                        the dataport size or the handle
- *                                        context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER     If an invalid parameter or NULL
+ *                                        pointer was passed.
  * @retval OS_ERROR_IO                    If there is an input/output error.
  * @retval OS_ERROR_NETWORK_CONN_NONE     If no connection is established when
  *                                        calling this function.
@@ -211,9 +211,8 @@ OS_Socket_read(
  *                                             the Network Stack was fully
  *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid
- *                                             or the requested length exceeds
- *                                             the dataport size.
+ * @retval OS_ERROR_INVALID_PARAMETER          If an invalid parameter or NULL
+ *                                             pointer was passed.
  * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
  *                                             wrong socket type.
  * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
@@ -254,10 +253,8 @@ OS_Socket_recvfrom(
  *                                             the Network Stack was fully
  *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If NULL is passed as a buffer
- *                                             pointer, the handle context is
- *                                             invalid or the requested length
- *                                             exceeds the dataport size.
+ * @retval OS_ERROR_INVALID_PARAMETER          If an invalid parameter or NULL
+ *                                             pointer was passed.
  * @retval OS_ERROR_IO                         If there is an input/output
  *                                             error.
  * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
@@ -300,9 +297,8 @@ OS_Socket_write(
  *                                             the Network Stack was fully
  *                                             initialized.
  * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER          If the handle context is invalid
- *                                             or the requested length exceeds
- *                                             the dataport size.
+ * @retval OS_ERROR_INVALID_PARAMETER          If an invalid parameter or NULL
+ *                                             pointer was passed.
  * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
  * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
  *                                             wrong socket type.
@@ -342,9 +338,8 @@ OS_Socket_sendto(
  * @retval OS_ERROR_NOT_INITIALIZED    If the function was called before the
  *                                     Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE     If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER  If the handle context is invalid or the
-                                       requested length exceeds the dataport
-                                       size.
+ * @retval OS_ERROR_INVALID_PARAMETER  If an invalid parameter or NULL pointer
+ *                                     was passed.
  * @retval OS_ERROR_IO                 If the specified address can not be
  *                                     found.
  * @retval OS_ERROR_INSUFFICIENT_SPACE If there is not enough space.
@@ -384,7 +379,8 @@ OS_Socket_getStatus(
  * @retval OS_ERROR_NOT_INITIALIZED   If the function was called before the
  *                                    Network Stack was fully initialized.
  * @retval OS_ERROR_INVALID_HANDLE    If an invalid handle was passed.
- * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER If an invalid parameter or NULL pointer
+ *                                    was passed.
  * @retval OS_ERROR_BUFFER_TOO_SMALL  If the buffer is not even large enough for
  *                                    one event.
  * @retval other                      Each component implementing this might
@@ -406,7 +402,8 @@ OS_Socket_getPendingEvents(
  * Block until a notification event gets received.
  *
  * @retval OS_SUCCESS                 Notification event found.
- * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER If an invalid parameter or NULL pointer
+ *                                    was passed.
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *
@@ -437,7 +434,8 @@ OS_Socket_poll(
  *
  * @retval OS_SUCCESS                 Callback successfully registered.
  * @retval OS_ERROR_GENERIC           If the callback could not be registered.
- * @retval OS_ERROR_INVALID_PARAMETER If the handle context is invalid.
+ * @retval OS_ERROR_INVALID_PARAMETER If an invalid parameter or NULL pointer
+ *                                    was passed.
  * @retval other                      Each component implementing this might
  *                                    have additional error codes.
  *

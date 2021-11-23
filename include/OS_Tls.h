@@ -390,8 +390,6 @@ OS_Tls_handshake(
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
  *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the write failed
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  * @retval OS_ERROR_WOULD_BLOCK if the socket send() signals during the write
  *  that it would block; parts may have been written already, as indicated by
@@ -425,8 +423,6 @@ OS_Tls_write(
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
  *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the read failed
- * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
- *  the size of the dataport
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  * @retval OS_ERROR_WOULD_BLOCK if the socket recv() signals during the read
  *  that it would block; parts may have been written already, as indicated by
