@@ -29,8 +29,8 @@ typedef enum
     OS_Tls_MODE_NONE = 0,
 
     /**
-     * Use TLS module as library, all calls to the API will internally mapped to
-     * be executed locally.
+     * Use TLS module as library, all calls to the API will be internally mapped
+     * and executed locally.
      */
     OS_Tls_MODE_LIBRARY,
 
@@ -42,7 +42,7 @@ typedef enum
 } OS_Tls_Mode_t;
 
 /**
- * Digest algorithms available
+ * Digest algorithms available.
  */
 typedef enum
 {
@@ -85,14 +85,14 @@ typedef enum
 } OS_Tls_CipherSuite_t;
 
 /**
- * Flags for setting options in the TLS provider lib.
+ * Flags for setting options in the TLS library.
  */
 typedef enum
 {
     OS_Tls_FLAG_NONE          = (1u << 0),
 
     /**
-     *  Produce debug output from underlying protocol provider
+     * Produce debug output from underlying protocol provider.
      */
     OS_Tls_FLAG_DEBUG         = (1u << 1),
 
@@ -105,16 +105,16 @@ typedef enum
     OS_Tls_FLAG_NO_VERIFY     = (1u << 2),
 
     /**
-     * In case the socket I/O indicates that an operation would block,
-     * don't attempt to resume I/O but return OS_ERROR_WOULD_BLOCK.
+     * In case the socket I/O indicates that an operation would block, do not
+     * attempt to resume I/O but return OS_ERROR_WOULD_BLOCK.
      */
     OS_Tls_FLAG_NON_BLOCKING  = (1u << 3)
 } OS_Tls_Flag_t;
 
 /**
- * Special return codes for socket I/O, in case they would block on read
- * or write. Theses specific values are expected by mbedTLS, so they cannot
- * be changed.
+ * Special return codes for socket I/O, in case they would block on read or
+ * write. Theses specific values are expected by mbedTLS, so they cannot be
+ * changed.
  */
 #define OS_Tls_SOCKET_READ_WOULD_BLOCK     -0x6900
 #define OS_Tls_SOCKET_WRITE_WOULD_BLOCK    -0x6880
@@ -128,8 +128,8 @@ typedef uint8_t OS_Tls_Digest_Flags_t;
 /// @endcond
 
 /**
- * For legacy reasons it may be important to override the param/algorithm choices
- * automatically derived from the chosen ciphersuites (where possible).
+ * For legacy reasons it may be important to override the param/algorithm
+ * choices automatically derived from the chosen ciphersuites (where possible).
  */
 typedef struct
 {
@@ -162,7 +162,7 @@ typedef struct
 typedef struct
 {
     /**
-     * Functions to use for socket I/O
+     * Functions to use for socket I/O.
      */
     struct
     {
@@ -190,13 +190,13 @@ typedef struct
     } socket;
 
     /**
-     * Configuration options related to cryptography
+     * Configuration options related to cryptography.
      */
     struct
     {
         /**
-         * Policy can be NULL, then it is set automatically based on the ciphersuites
-         * chosen by the user.
+         * Policy can be NULL, then it is set automatically based on the
+         * ciphersuites chosen by the user.
          *
          * This will be copied on call to OS_Tls_init().
          */
@@ -234,17 +234,18 @@ typedef struct
         const char* privateKey;
 
         /**
-         * For simplicity, a user can just set some ciphersuites and be fine. The hash
-         * given in the ciphersuites will be ENFORCED for everything (incl. session hash,
-         * signature hashes etc.). Similary, the key size of the AES key will be used to
-         * determine the minimum asymmetric key lengths automatically, so all parameters
-         * and algorithms will be internally consistent (as far as the suite allows it).
+         * For simplicity, a user can just set some ciphersuites and be fine.
+         * The hash given in the ciphersuites will be ENFORCED for everything
+         * (incl. session hash, signature hashes etc.). Similary, the key size
+         * of the AES key will be used to determine the minimum asymmetric key
+         * lengths automatically, so all parameters and algorithms will be
+         * internally consistent (as far as the suite allows it).
          */
         OS_Tls_CipherSuite_Flags_t cipherSuites;
     } crypto;
 
     /**
-     * Flags to set for TLS
+     * Flags to set for TLS.
      */
     OS_Tls_Flag_t flags;
 } TlsLib_Config_t;
@@ -257,23 +258,23 @@ typedef OS_Tls_t* OS_Tls_Handle_t;
 /// @endcond
 
 /**
- * Configuration of the TLS API. The mode value defines which of the union fields
+ * Configuration of the TLS API. The mode defines which of the union fields
  * needs to be filled in.
  */
 typedef struct
 {
     /**
-     * Mode to operate the API in
+     * Mode to operate the API.
      */
     OS_Tls_Mode_t mode;
 
     /**
-     * Configuration options for LIBRARY mode
+     * Configuration options for LIBRARY mode.
      */
     TlsLib_Config_t library;
 
     /**
-     * CAmkES interface for remote RPC server (to be used in CLIENT mode)
+     * CAmkES interface for remote RPC server to be used in CLIENT mode.
      */
     if_OS_Tls_t rpc;
 } OS_Tls_Config_t;
@@ -330,8 +331,8 @@ typedef struct
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_NOT_SUPPORTED if any of the choices in \p policy are at this
  *  point not supported by the TLS API (e.g., DH min lengths, ...)
  */
@@ -343,23 +344,23 @@ OS_Tls_init(
 /**
  * @brief Perform the TLS handshake.
  *
- * The critical part of a TLS protocol run is performing the TLS handshake. After
- * a TLS object has been initialized, the handshake has to performed.
+ * The critical part of a TLS protocol run is performing the TLS handshake.
+ * After a TLS object has been initialized, the handshake has to performed.
  *
  * Only after the handshake has been executed successfully, the read()/write()
  * functions can be called successfully.
  *
  * NOTE: Before this function is called, the socket handle passed via the config
  *       struct during init() must be ALREADY connected. The TLS API will never
- *       change the state of the socket explicitly, it will only call read()/write()
- *       for the transfer of protcol data.
+ *       change the state of the socket explicitly, it will only call read()/
+ *       write() for the transfer of protcol data.
  *
  * @param hTls (required) handle of the OS TLS API context
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is already established
  * @retval OS_ERROR_WOULD_BLOCK if the socket send()/recv() signals during the
  *  handshake that it would block
@@ -381,13 +382,13 @@ OS_Tls_handshake(
  *
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
- * @param dataSize (required) amount of bytes to write, will be set the amount of
- *  bytes that could be written
+ * @param dataSize (required) amount of bytes to write, will be set the amount
+ *  of bytes that could be written
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the write failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
@@ -416,13 +417,13 @@ OS_Tls_write(
  *
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
- * @param dataSize (required) amount of bytes requested, will be set to the amount
- *  of bytes that could be read
+ * @param dataSize (required) amount of bytes requested, will be set to the
+ *  amount of bytes that could be read
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the read failed
  * @retval OS_ERROR_INSUFFICIENT_SPACE if \p dataSize is greater than
  *  the size of the dataport
@@ -442,8 +443,8 @@ OS_Tls_read(
 /**
  * @brief Reset a TLS connection.
  *
- * Reset a TLS API context that has been already through a successful handshake()
- * and possibly multiple read()/write() calls.
+ * Reset a TLS API context that has been already through a successful
+ * handshake() and possibly multiple read()/write() calls.
  *
  * After a reset, provided that that the associated socket is still connected,
  * the TLS connection can be re-established with via the handshake() function.
@@ -452,8 +453,8 @@ OS_Tls_read(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the re-set failed
  */
 OS_Error_t
@@ -469,8 +470,8 @@ OS_Tls_reset(
  *
  * @return an error code
  * @retval OS_SUCCESS if operation succeeded
- * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid (e.g.,
- *  NULL pointer, invalid sizes, etc.)
+ * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
+ *  (e.g., NULL pointer, invalid sizes, etc.)
  */
 OS_Error_t
 OS_Tls_free(
