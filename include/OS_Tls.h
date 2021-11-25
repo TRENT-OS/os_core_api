@@ -97,8 +97,10 @@ typedef enum
     OS_Tls_FLAG_DEBUG         = (1u << 1),
 
     /**
-     * Do not attempt to validate server certificate. This is dangerous,
-     * so you better know what you are doing!
+     * Do not attempt to authenticate the peer.
+     * WARNING: Be careful when disabling peer authentication!
+     * NOTE: In TLS usually per default a client requires to authenticate the
+     * server, but a server does not require to authenticate the client.
      */
     OS_Tls_FLAG_NO_VERIFY     = (1u << 2),
 
@@ -209,7 +211,7 @@ typedef struct
         /**
          * Here a list of CA certificates is passed to the TLS API in PEM
          * encoding (including headers) so it can be used to verify the root of
-         * the server's certificate chain.
+         * the peer's certificate chain.
          *
          * This will be copied on call to OS_Tls_init().
          */
@@ -372,7 +374,7 @@ OS_Tls_handshake(
  * @brief Write to TLS connection.
  *
  * After handshake has been completed, this function can be used to write data
- * to the server via an established TLS tunnel.
+ * to the peer via an established TLS tunnel.
  *
  * NOTE: Internally, it will use the callback provided via the config struct to
  *       write() data to the socket.
@@ -406,7 +408,7 @@ OS_Tls_write(
  * @brief Read from a TLS connection.
  *
  * After handshake has been completed, this function can be used to read from an
- * established TLS connection. The server may close the session, this will be
+ * established TLS connection. The peer may close the session, this will be
  * signaled by returning OS_ERROR_CONNECTION_CLOSED.
  *
  * NOTE: Internally, it will use the callback provided via the config struct to
