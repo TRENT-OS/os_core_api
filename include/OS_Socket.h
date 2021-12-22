@@ -162,6 +162,26 @@ OS_Socket_accept(
     OS_Socket_Addr_t* const   srcAddr);
 
 /**
+ * Copy function pointer for passing custom functions to the read and write
+ * routines.
+ *
+ * @return `dest` is returned.
+ *
+ * @param[out] dest Pointer to the destination array where the content is to be
+ *                  copied, type-casted to a pointer of type void*.
+ * @param[in]  src  Pointer to the source of data to be copied, type-casted to a
+ *                  pointer of type const void*.
+ * @param[in]  num  Number of bytes to copy.
+ *
+ */
+typedef
+void*
+(*OS_Socket_copy_t)(
+    void* dest,
+    const void* src,
+    size_t num);
+
+/**
  * Read data from a socket. This function checks whether or not the socket
  * is bound and connected before it attempts to receive data.
  *
@@ -198,6 +218,48 @@ OS_Socket_read(
     void* const              buf,
     size_t                   requestedLen,
     size_t* const            actualLen);
+
+/**
+ * Read data from a socket using the given copy function. This function checks
+ * whether or not the socket is bound and connected before it attempts to
+ * receive data.
+ *
+ * @retval OS_SUCCESS                     Operation was successful.
+ * @retval OS_ERROR_ABORTED               If the Network Stack has
+ *                                        experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED       If the function was called before the
+ *                                        Network Stack was fully initialized.
+ * @retval OS_ERROR_INVALID_HANDLE        If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER     If an invalid parameter or NULL
+ *                                        pointer was passed.
+ * @retval OS_ERROR_IO                    If there is an input/output error.
+ * @retval OS_ERROR_NETWORK_CONN_NONE     If no connection is established when
+ *                                        calling this function.
+ * @retval OS_ERROR_NETWORK_PROTO         If the function is called on the wrong
+ *                                        socket type.
+ * @retval OS_ERROR_TRY_AGAIN             If the resource is temporarily
+ *                                        unavailable or the request would
+ *                                        block and the caller should try again.
+ * @retval OS_ERROR_CONNECTION_CLOSED     If the connection is in a closed
+ *                                        state.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN If the connection got shut down.
+ * @retval other                          Each component implementing this
+ *                                        might have additional error codes.
+ *
+ * @param[in]  handle       Handle of the socket to read from.
+ * @param[in]  buf          Buffer to store the read data.
+ * @param[in]  requestedLen Length of the data that should be read.
+ * @param[out] actualLen    Actual length that was read from the socket.
+ * @param[in]  copy_func    Optional custom copy function. If null is given,
+ *                          memcpy is used.
+ */
+OS_Error_t
+OS_Socket_readCustom(
+    const OS_Socket_Handle_t handle,
+    void* const              buf,
+    size_t                   requestedLen,
+    size_t* const            actualLen,
+    OS_Socket_copy_t         copy_func);
 
 /**
  * Receive data from a specified socket. This operation checks if the socket
@@ -243,8 +305,8 @@ OS_Socket_recvfrom(
     OS_Socket_Addr_t* const  srcAddr);
 
 /**
- * Write data on a socket. This function checks if the socket is bound,
- * connected and that it isn't shutdown locally.
+ * Write data on a socket using the given copy function. This function checks if
+ * the socket is bound, connected and that it isn't shutdown locally.
  *
  * @retval OS_SUCCESS                          Operation was successful.
  * @retval OS_ERROR_ABORTED                    If the Network Stack has
@@ -285,6 +347,53 @@ OS_Socket_write(
     const void* const        buf,
     const size_t             requestedLen,
     size_t* const            actualLen);
+
+/**
+ * Write data on a socket. This function checks if the socket is bound,
+ * connected and that it isn't shutdown locally.
+ *
+ * @retval OS_SUCCESS                          Operation was successful.
+ * @retval OS_ERROR_ABORTED                    If the Network Stack has
+ *                                             experienced a fatal error.
+ * @retval OS_ERROR_NOT_INITIALIZED            If the function was called before
+ *                                             the Network Stack was fully
+ *                                             initialized.
+ * @retval OS_ERROR_INVALID_HANDLE             If an invalid handle was passed.
+ * @retval OS_ERROR_INVALID_PARAMETER          If an invalid parameter or NULL
+ *                                             pointer was passed.
+ * @retval OS_ERROR_IO                         If there is an input/output
+ *                                             error.
+ * @retval OS_ERROR_NETWORK_PROTO              If the function is called on the
+ *                                             wrong socket type.
+ * @retval OS_ERROR_INSUFFICIENT_SPACE         If there is not enough space.
+ * @retval OS_ERROR_TRY_AGAIN                  If the resource is temporarily
+ *                                             unavailable or the request would
+ *                                             block and the caller should try
+ *                                             again.
+ * @retval OS_ERROR_CONNECTION_CLOSED          If the connection is in a closed
+ *                                             state.
+ * @retval OS_ERROR_NETWORK_CONN_NONE          If the socket is not connected.
+ * @retval OS_ERROR_NETWORK_CONN_SHUTDOWN      If the connection got shut down.
+ * @retval OS_ERROR_NETWORK_ADDR_NOT_AVAILABLE If the address is not available.
+ * @retval OS_ERROR_NETWORK_HOST_UNREACHABLE   If the host is not unreachable.
+ * @retval other                               Each component implementing this
+ *                                             might have additional error
+ *                                             codes.
+ *
+ * @param[in]  handle       Handle of the socket to write on.
+ * @param[in]  buf          Buffer containing data that should be sent.
+ * @param[in]  requestedLen Amount of data that should be written.
+ * @param[out] actualLen    Actual length that was written on the socket.
+ * @param[in]  copy_func    Optional custom copy function. If null is given,
+ *                          memcpy is used.
+ */
+OS_Error_t
+OS_Socket_writeCustom(
+    const OS_Socket_Handle_t handle,
+    const void* const        buf,
+    const size_t             requestedLen,
+    size_t* const            actualLen,
+    OS_Socket_copy_t         copy_func);
 
 /**
  * Send data on a destination socket without checking if the destination is
