@@ -93,8 +93,8 @@ OS_Socket_create(
  */
 OS_Error_t
 OS_Socket_connect(
-    const OS_Socket_Handle_t handle,
-    const OS_Socket_Addr_t*  dstAddr);
+    const OS_Socket_Handle_t      handle,
+    const OS_Socket_Addr_t* const dstAddr);
 
 /**
  * Listen for connections on an opened and bound socket.
@@ -196,7 +196,7 @@ OS_Error_t
 OS_Socket_read(
     const OS_Socket_Handle_t handle,
     void* const              buf,
-    size_t                   requestedLen,
+    const size_t             requestedLen,
     size_t* const            actualLen);
 
 /**
@@ -238,7 +238,7 @@ OS_Error_t
 OS_Socket_recvfrom(
     const OS_Socket_Handle_t handle,
     void* const              buf,
-    size_t                   requestedLen,
+    const size_t             requestedLen,
     size_t* const            actualLen,
     OS_Socket_Addr_t* const  srcAddr);
 
@@ -325,7 +325,7 @@ OS_Error_t
 OS_Socket_sendto(
     const OS_Socket_Handle_t      handle,
     const void* const             buf,
-    size_t                        requestedLen,
+    const size_t                  requestedLen,
     size_t* const                 actualLen,
     const OS_Socket_Addr_t* const dstAddr);
 
