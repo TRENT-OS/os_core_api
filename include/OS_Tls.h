@@ -382,18 +382,19 @@ OS_Tls_handshake(
  *
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
- * @param dataSize (required) amount of bytes to write, will be set the amount
- *  of bytes that could be written
+ * @param dataSize (required) amount of bytes to write, will be set to the
+ *  amount of bytes that have been sent (only valid if OS_SUCCESS is returned)
  *
  * @return an error code
- * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_SUCCESS if operation succeeded (number of bytes returned by
+ *  \p dataSize has been sent)
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
  *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the write failed
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  * @retval OS_ERROR_WOULD_BLOCK if the socket send() signals during the write
- *  that it would block; parts may have been written already, as indicated by
- *  the updated value in \p dataSize
+ *  that it would block and the call has to be repeated (no partial data has
+ *  been sent)
  * @retval OS_ERROR_CONNECTION_CLOSED if the socket send() signals that the
  *  connection was closed by the other side during the write
  */
@@ -416,17 +417,18 @@ OS_Tls_write(
  * @param hTls (required) handle of the OS TLS API context
  * @param data (required) pointer data buffer
  * @param dataSize (required) amount of bytes requested, will be set to the
- *  amount of bytes that could be read
+ *  amount of bytes that could be read (only valid if OS_SUCCESS is returned)
  *
  * @return an error code
- * @retval OS_SUCCESS if operation succeeded
+ * @retval OS_SUCCESS if operation succeeded (number of bytes returned by
+ *  \p dataSize has been read)
  * @retval OS_ERROR_INVALID_PARAMETER if one of the parameters was invalid
  *  (e.g., NULL pointer, invalid sizes, etc.)
  * @retval OS_ERROR_ABORTED if the read failed
  * @retval OS_ERROR_OPERATION_DENIED if the TLS session is not yet established
  * @retval OS_ERROR_WOULD_BLOCK if the socket recv() signals during the read
- *  that it would block; parts may have been written already, as indicated by
- *  the updated value in \p dataSize
+ *  that it would block and the call has to be repeated (no partial data has
+ *  been read)
  * @retval OS_ERROR_CONNECTION_CLOSED if the socket recv() signals that the
  *  connection was closed by the other side during the read
  */
