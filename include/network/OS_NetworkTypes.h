@@ -16,10 +16,10 @@
  *   - IPv6: ABCD:EF01:2345:6789:ABCD:EF01:2345:6789 (38 chars)
  *   - IPv6/IPv4 mixed: FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:129.144.152.138 (45 Chars)
  */
-#define IP_ADD_STR_MAX_LEN (45)
+#define IP_ADD_STR_MAX_LEN          45
 
 /** MAC Address size */
-#define MAC_SIZE    6
+#define MAC_SIZE                    6
 
 /**
  * Ethernet frames are used on layer 2. IEEE 802.3 originally defined the max
@@ -35,10 +35,10 @@
  *  |---------|---------|----------|-----------|--------|
  *  | 6 byte  | 6 byte  | 2 byte   | 1500 byte | 4 byte |
  */
-#define ETHERNET_MTU                    1500
+#define ETHERNET_MTU                1500
 
 /** Ethernet "jumbo frames", where the payload can be 9000 byte. */
-#define ETHERNET_JUMBO_FRAME_MTU        9000
+#define ETHERNET_JUMBO_FRAME_MTU    9000
 
 /**
  * With 802.1Q, the VLAN tags ("Q-tags") where added, so the max size increased
@@ -53,27 +53,27 @@
  * longer a max frame length. But for practical reasons, we can assume there
  * is just one tag - and thus we don't see frames longer than 1522 byte byte.
  */
-#define ETHERNET_FRAME_MAX_SIZE     ( (2 * MAC_SIZE) + 4 + 2 + ETHERNET_MTU + 4 )
+#define ETHERNET_FRAME_MAX_SIZE     ((2 * MAC_SIZE) + 4 + 2 + ETHERNET_MTU + 4)
 
 
 #if !defined(CUSTOM_OS_NETWORK_TYPES)
 
 // Protocol families.
 /** IPv4 protocol family. */
-#define OS_AF_INET 2
+#define OS_AF_INET                  2
 /** IPv6 protocol family. */
-#define OS_AF_INET6 10
+#define OS_AF_INET6                 10
 
 // Socket definitions.
 /** Stream socket - TCP. */
-#define OS_SOCK_STREAM 1
+#define OS_SOCK_STREAM              1
 /** Datagram socket - UDP. */
-#define OS_SOCK_DGRAM 2
+#define OS_SOCK_DGRAM               2
 
 // Special network addresses.
 /** Any address. */
-#define OS_INADDR_ANY_STR      "0.0.0.0"
+#define OS_INADDR_ANY_STR           "0.0.0.0"
 /** Loopback address. */
-#define OS_INADDR_LOOPBACK_STR "127.0.0.1"
+#define OS_INADDR_LOOPBACK_STR      "127.0.0.1"
 
 #endif
