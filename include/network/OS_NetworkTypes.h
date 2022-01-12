@@ -68,9 +68,9 @@
 
 // Socket definition
 /** Stream socket - TCP */
-#define OS_SOCK_STREAM 2
+#define OS_SOCK_STREAM 1
 /** Datagram socket - UDP */
-#define OS_SOCK_DGRAM 1
+#define OS_SOCK_DGRAM 2
 
 /** Special network addresses. */
 #define OS_INADDR_ANY_STR      "0.0.0.0"
