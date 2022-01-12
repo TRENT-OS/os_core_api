@@ -91,12 +91,11 @@ typedef struct
  * The Crypto API main configuration struct; first the mode needs to be set to
  * the desired value, then the respective sub-configuration must be filled in:
  *
- *                                     | cfg.memory | cfg.entropy |  cfg.rpc
- *   ----------------------------------+------------+-------------+-----------
- *              OS_Crypto_MODE_LIBRARY |      X     |      X      |
- *               OS_Crypto_MODE_CLIENT |      X     |             |    X
- *           OS_Crypto_MODE_KEY_SWITCH |      X     |      X      |    X
- *
+ * |                           | cfg.memory | cfg.entropy | cfg.rpc |
+ * |---------------------------|------------|-------------|---------|
+ * | OS_Crypto_MODE_LIBRARY    |     X      |      X      |         |
+ * | OS_Crypto_MODE_CLIENT     |     X      |             |    X    |
+ * | OS_Crypto_MODE_KEY_SWITCH |     X      |      X      |    X    |
  */
 typedef struct
 {
