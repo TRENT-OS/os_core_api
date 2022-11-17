@@ -1,0 +1,12 @@
+/*
+ * Copyright (C) 2022, HENSOLDT Cyber GmbH
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+procedure if_OS_SystemController_UART {
+    include "OS_Error.h";
+
+    OS_Error_t enable(in int uid);
+    OS_Error_t disable(in int uid);
+    OS_Error_t setBaudRate(in int uid);
+}
