@@ -8,6 +8,6 @@
 procedure if_OS_BlockingWrite
 {
    // takes bytes from the input dataport and blocks until the last byte is
-   // completely sent thru the channel implementing this interface
+   // completely sent through the channel implementing this interface
    void write(size_t len);
 };
