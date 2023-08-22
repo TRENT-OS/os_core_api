@@ -6,8 +6,8 @@
  * For commercial licensing, contact: info.cyber@hensoldt.net
  */
 
-#include "if_OS_Entropy.camkes.h"
-
 procedure if_OS_Entropy {
-    IF_OS_ENTROPY_CAMKES
+    size_t read(
+        in size_t len
+    );
 };

@@ -26,7 +26,7 @@ procedure if_OS_Storage
      *
      * @return Implementation specific.
      */
-    OS_Error_t
+    OS_Error_t 
     write(
         in  off_t  offset,      //!< [in]  Write start offset in bytes.
         in  size_t size,        //!< [in]  Number of bytes to be written.

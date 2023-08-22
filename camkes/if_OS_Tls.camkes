@@ -5,11 +5,17 @@
  *
  * For commercial licensing, contact: info.cyber@hensoldt.net
  */
-
-#include "if_OS_Tls.camkes.h"
+ 
 
 procedure if_OS_Tls {
     include "OS_Error.h";
 
-    IF_OS_TLS_CAMKES
+    OS_Error_t handshake();
+    OS_Error_t write(
+        inout size_t dataSize
+    );
+    OS_Error_t read(
+        inout size_t dataSize
+    );
+    OS_Error_t reset();
 };
