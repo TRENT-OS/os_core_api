@@ -1,8 +1,11 @@
 /*
  * OS return codes
+*
+ * Copyright (C) 2019-2024, HENSOLDT Cyber GmbH
+ * 
+ * SPDX-License-Identifier: GPL-2.0-or-later
  *
- * Copyright (C) 2019-2021, HENSOLDT Cyber GmbH
- * SPDX-License-Identifier: BSD-3-Clause
+ * For commercial licensing, contact: info.cyber@hensoldt.net
  */
 
 #pragma once

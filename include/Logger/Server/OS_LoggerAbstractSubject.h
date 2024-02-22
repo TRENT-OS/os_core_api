@@ -1,6 +1,9 @@
 /*
- * Copyright (C) 2020-2021, HENSOLDT Cyber GmbH
- * SPDX-License-Identifier: BSD-3-Clause
+ * Copyright (C) 2020-2024, HENSOLDT Cyber GmbH
+ * 
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * For commercial licensing, contact: info.cyber@hensoldt.net
  */
 
 /**
@@ -34,6 +37,7 @@
  *
  * @ingroup     OS_LoggerServer
 */
+
 #pragma once
 
 #include "OS_Error.h"
